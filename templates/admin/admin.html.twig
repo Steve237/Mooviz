@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Gestion des Films {% endblock %}
+
+{% block body %}
+
+<h1 style="text-align:center;padding-top:30px"> Ajouter une video</h1>
+<div style="width:800px; margin:auto; padding-top:20px">
+
+    {{form_start(form)}}
+
+    <div>{{form_row(form.videotitle, {"attr" : {'class':'form-control'}})}}</div>
+    <div>{{form_row(form.videodescription, {"attr" : {'class':'form-control'}})}}</div>
+    <div>{{form_row(form.imageFile, {"attr" : {'class':'form-control'}})}}</div>
+    <div>{{form_row(form.videolink, {"attr" : {'class':'form-control'}})}}</div>
+    <div>{{form_row(form.category, {"attr" : {'class':'form-control'}})}}</div>
+    <div>{{form_widget(form)}}</div>
+    <input type="submit" class="btn btn-primary" value"ajouter">
+
+    {{form_end(form)}}
+</div>
+{% endblock %}
