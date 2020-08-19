@@ -8,6 +8,7 @@ use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 class VideoController extends AbstractController
 {
@@ -57,12 +58,17 @@ class VideoController extends AbstractController
 
 
     /**
-    * @Route("/movie/{id}", name="movie")
+    * @Route("/movie/{id}/category/{idcategory}", name="movie")
+    * @ParamConverter("video", options={"mapping": {"id" : "id"}})
+    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     */
-    public function movie(Videos $video)
+    public function movie(VideosRepository $repository, Videos $video, Category $category)
     {   
+        $videos = $repository->getVideoByCategory($category);
         return $this->render('video/singlemovie.html.twig', [
-            "video" => $video
+            "videos" => $videos,
+            "video" => $video,
+            "category" => $category
         ]);
     }
 

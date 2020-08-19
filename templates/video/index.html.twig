@@ -18,20 +18,6 @@
 										
 										<video id="VideoLightbox-1" src="{{asset("videos/films/action/johnwick3.mp4")}}"  width="960" height="540"></video>
 
-										
-								      <div
-								        class="circle-rating-pro"
-								        data-value="0.86"
-								        data-animation-start-value="0.86"
-								        data-size="70"
-								        data-thickness="6"
-								        data-fill="{
-								          &quot;color&quot;: &quot;#42b740&quot;
-								        }"
-								        data-empty-fill="#def6de"
-								        data-reverse="true"
-								      ><span style="color:#42b740;">8.6</span></div>
-									
 										<div class="progression-studios-slider-dashboard-caption-width">
 											<div class="progression-studios-slider-caption-align">
 												<h6 style="color:white">Films</h6>
@@ -87,20 +73,7 @@
 										
 							         	<video id="VideoLightbox-2" src="{{asset("videos/films/action/bloodshot.mp4")}}" poster="{{asset("images/action/bloodshot.jpg")}}" width="960" height="540"></video>
 										
-								      <div
-								        class="circle-rating-pro"
-								        data-value="0.82"
-								        data-animation-start-value="0.82"
-								        data-size="70"
-								        data-thickness="6"
-								        data-fill="{
-								          &quot;color&quot;: &quot;#42b740&quot;
-								        }"
-								        data-empty-fill="#203521"
-								        data-reverse="true"
-								      ><span style="color:#42b740;">8.2</span></div>
-									
-										<div class="progression-studios-slider-dashboard-caption-width">
+									<div class="progression-studios-slider-dashboard-caption-width">
 											<div class="progression-studios-slider-caption-align">
 												<h6 class="light-fonts-pro">Films</h6>
 												<ul class="progression-studios-slider-rating">
@@ -166,7 +139,7 @@
 					{% for video in videos %}
 					<div class="col-12 col-md-6 col-lg-4 col-xl-3">
 						<div class="item-listing-container-skrn">
-							<a href="{{path("movie", {"id" : video.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
+							<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
 							<div class="item-listing-text-skrn">
 								<div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">{{video.videotitle}}</a></h6>
 							      <div
