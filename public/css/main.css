@@ -4683,9 +4683,14 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 	height: 335px;
 }
 
+.videosuggest {
+	width: 400px;
+	height: 200px;
+}
+
 .imagecategory:hover
 {
-background-color: cyan ;
+background-color: cyan;
 }
 
 .videosize
@@ -4696,3 +4701,22 @@ padding-left: 200px;
 
 }
 
+.videotitle
+{
+padding-left:170px;
+color:blue;
+}
+
+.titlevideo
+{
+
+color:red;
+
+}
+
+.videosuggest:hover
+{
+
+background-color: green;
+
+}

@@ -29,6 +29,29 @@ class VideosRepository extends ServiceEntityRepository
         
         ;
     }
+
+    public function showVideoByCategory($category, $id) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.category = :val')
+        ->andwhere('v.id != :id')
+        ->setParameter('val', $category)
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getResult()
+        
+        ;
+    }
+
+    public function search($videoTitle) {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.videotitle LIKE :videotitle')
+            ->setParameter('videotitle', '%'.$videoTitle.'%')
+            ->getQuery()
+            ->execute();
+    }
+
+
     
     
     

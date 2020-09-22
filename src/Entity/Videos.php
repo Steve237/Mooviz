@@ -62,6 +62,11 @@ class Videos
      */
     private $imageFile;
 
+    /**
+     * @ORM\Column(type="bigint", nullable=true)
+     */
+    private $views;
+
 
     public function __construct()
     {
@@ -177,6 +182,18 @@ class Videos
             // otherwise the event listeners won't be called and the file is lost
             $this->updatedAt = new \DateTimeImmutable();
         }
+    }
+
+    public function getViews(): ?string
+    {
+        return $this->views;
+    }
+
+    public function setViews(?string $views): self
+    {
+        $this->views = $views;
+
+        return $this;
     }
 
 

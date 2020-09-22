@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}Mooviz{% endblock %}</title>
+        <title>{% block title %}Moovyz{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheet %} 
@@ -17,12 +17,16 @@
 <div id="sidebar-bg">
 
 <header id="videohead-pro" class="sticky-header">
-  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black ">Essama Movie</h2></a></div>
+  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black ">Moovyz</h2></a></div>
   
   <div id="video-search-header">
   
     <div id="search-icon-more" style="background-image:url('{{asset("images/mobile-search-icon.png")}}')"></div>
-    <input type="text" placeholder="Search for Movies or TV Series" aria-label="Search">
+    {% form_theme searchForm 'bootstrap_4_layout.html.twig' %}
+    {{ form_start(searchForm) }}
+    {{ form_row(searchForm.videotitle, {'label': " ", 'attr': {'placeholder': 'mot clé...'}}) }}
+    <button class="btn btn-primary">rechercher</button>
+    {{ form_end(searchForm) }}
     <div id="video-search-header-filtering">
       <form id="video-search-header-filtering-padding">
         <div class="row">
@@ -270,6 +274,8 @@
 		<script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
 		<script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
     <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   {% endblock %}
 </body>
 </html>

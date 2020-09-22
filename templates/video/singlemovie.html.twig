@@ -11,12 +11,14 @@
 			</div>
 			
 			<div class="content-sidebar-section">
-				<h2 class="content-sidebar-sub-header adjusted-recent-reviews">Suggestion de vidéos</h2>
+				<h2 class="content-sidebar-sub-header adjusted-recent-reviews"> Vidéos recommandées </h2>
 				<ul id="sidebar-reviews-pro">
 					{% for video in videos %}
 					<li>
-						<div class="sidebar-review-time"><h6 style="color:blue;">{{video.videotitle}}</h6></div>
-						<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
+						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+							<h6 class="titlevideo">{{video.videotitle}}</h6>
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videosuggest">
+						</a>
 					</li>
 					{% endfor %}
 				</ul>
@@ -37,6 +39,10 @@
 			<div id="movie-detail-rating">
 				<div class="dashboard-container">
 					<div class="row">
+						<div class="videotitle">
+							<h3>{{video.videotitle}}</h3>
+							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}} </p></strong>
+						</div>
 					</div><!-- close .row -->
 				</div><!-- close .dashboard-container -->
 			</div><!-- close #movie-detail-rating -->
@@ -57,9 +63,7 @@
 					<div class="row">
 					
 					</div><!-- close .row -->
-				
 				</div><!-- close .movie-details-section -->
-				
 			</div><!-- close .dashboard-container -->
 		</main>
 {% endblock %}
