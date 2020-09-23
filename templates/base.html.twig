@@ -22,10 +22,8 @@
   <div id="video-search-header">
   
     <div id="search-icon-more" style="background-image:url('{{asset("images/mobile-search-icon.png")}}')"></div>
-    {% form_theme searchForm 'bootstrap_4_layout.html.twig' %}
     {{ form_start(searchForm) }}
-    {{ form_row(searchForm.videotitle, {'label': " ", 'attr': {'placeholder': 'mot clé...'}}) }}
-    <button class="btn btn-primary">rechercher</button>
+    {{ form_row(searchForm.videotitle, {'label': " ", 'attr': {'placeholder': 'Tapez un titre et validez'}}) }}
     {{ form_end(searchForm) }}
     <div id="video-search-header-filtering">
       <form id="video-search-header-filtering-padding">
