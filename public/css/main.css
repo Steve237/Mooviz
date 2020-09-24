@@ -4720,3 +4720,23 @@ color:red;
 background-color: green;
 
 }
+
+.html .body
+{
+
+	height:100%;
+
+}
+
+.errormessage {
+
+	min-height:760px;
+	min-width:300px;
+	margin:auto;
+}
+
+.errortext {
+
+	margin-top:300px;
+	color:red;
+}

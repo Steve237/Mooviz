@@ -5,7 +5,7 @@
 {% block body %}
 <main id="col-main">
 
-<div class="dashboard-container">
+  <div class="dashboard-container">
     <div class="row">
         {% if videos %}
         {% for video in videos %}
@@ -30,23 +30,22 @@
                 </div><!-- close .item-listing-text-skrn -->
             </div><!-- close .item-listing-container-skrn -->
         </div><!-- close .col -->
+      </div><!-- close .row STOP-->
         {% endfor %}
+        <ul class="page-numbers">
+          <li><a class="previous page-numbers" href="#!"><i class="fas fa-chevron-left"></i></a></li>
+          <li><span class="page-numbers current">1</span></li>
+          <li><a class="page-numbers" href="#!">2</a></li>
+          <li><a class="page-numbers" href="#!">3</a></li>
+          <li><a class="page-numbers" href="#!">4</a></li>
+          <li><a class="next page-numbers" href="#!"><i class="fas fa-chevron-right"></i></a></li>
+      </ul>
         {% else %}
-          {{errormessage}}
+          <div class="errormessage">
+              <h3 class="errortext">{{errormessage}}</h3>
+              <p>Retour à <a href="path('homepage')">l'accueil</a></p>
+          </div>
         {% endif %}
-    </div><!-- close .row STOP-->
-    
-    
-    <ul class="page-numbers">
-        <li><a class="previous page-numbers" href="#!"><i class="fas fa-chevron-left"></i></a></li>
-        <li><span class="page-numbers current">1</span></li>
-        <li><a class="page-numbers" href="#!">2</a></li>
-        <li><a class="page-numbers" href="#!">3</a></li>
-        <li><a class="page-numbers" href="#!">4</a></li>
-        <li><a class="next page-numbers" href="#!"><i class="fas fa-chevron-right"></i></a></li>
-    </ul>
-    
-            
-</div><!-- close .dashboard-container -->
+  </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}
