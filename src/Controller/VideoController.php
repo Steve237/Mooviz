@@ -38,7 +38,7 @@ class VideoController extends AbstractController
                 
                 $errormessage = "Aucune vidéo trouvée avec ce titre";
                 $videos = $repository->search($videoTitle);
-                return $this->render('video/showresult.html.twig', [
+                return $this->render('video/noresult.html.twig', [
                 "errormessage" => $errormessage,
                 "searchForm" => $searchForm->createView(),
                 "videos" => $videos
@@ -92,7 +92,7 @@ class VideoController extends AbstractController
                 
                 $errormessage = "Aucune vidéo trouvée avec ce titre";
                 $videos = $repository->search($videoTitle);
-                return $this->render('video/showresult.html.twig', [
+                return $this->render('video/noresult.html.twig', [
                 "errormessage" => $errormessage,
                 "searchForm" => $searchForm->createView(),
                 "videos" => $videos
@@ -145,7 +145,14 @@ class VideoController extends AbstractController
 
             if ($donnees == null) {
                 
-                echo "la vie est belle";
+                $errormessage = "Aucune vidéo trouvée avec ce titre";
+                $videos = $repository->search($videoTitle);
+                return $this->render('video/noresult.html.twig', [
+                "errormessage" => $errormessage,
+                "searchForm" => $searchForm->createView(),
+                "videos" => $videos
+
+                ]);
            
             }
 
@@ -155,7 +162,7 @@ class VideoController extends AbstractController
                 return $this->render('video/showresult.html.twig', [
                 "videos" => $videos,
                 "searchForm" => $searchForm->createView()
-        ]);
+            ]);
 
 
             }
@@ -201,7 +208,14 @@ class VideoController extends AbstractController
 
             if ($donnees == null) {
                 
-                echo "la vie est belle";
+                $errormessage = "Aucune vidéo trouvée avec ce titre";
+                $videos = $repository->search($videoTitle);
+                return $this->render('video/noresult.html.twig', [
+                "errormessage" => $errormessage,
+                "searchForm" => $searchForm->createView(),
+                "videos" => $videos
+
+                ]);
            
             }
 
@@ -248,7 +262,14 @@ class VideoController extends AbstractController
 
             if ($donnees == null) {
                 
-                echo "la vie est belle";
+                $errormessage = "Aucune vidéo trouvée avec ce titre";
+                $videos = $repository->search($videoTitle);
+                return $this->render('video/noresult.html.twig', [
+                "errormessage" => $errormessage,
+                "searchForm" => $searchForm->createView(),
+                "videos" => $videos
+
+                ]);
            
             }
 

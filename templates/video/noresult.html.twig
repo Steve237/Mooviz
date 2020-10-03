@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}No result{% endblock %}
+
+{% block body %}
+
+<main id="col-main">
+    <div class="dashboard-container">
+        <div class="errormessage">
+            <h3 class="errortext">{{errormessage}}</h3>
+            <h6 class="back_home">Retour à <a href="path('homepage')">l'accueil</a></h6>
+        </div>
+    </div>
+</main>
+{% endblock %}

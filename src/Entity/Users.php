@@ -2,13 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UsersRepository;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @UniqueEntity(fields={"username"}),
+ * message="Cet utilisateur existe déjà"
+ * )
+ * @UniqueEntity(fields={"email"}),
+ * message="Cette adresse email est déjà utilisée"
+ * )
  */
-class Users
+class Users implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -19,18 +31,14 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
+     * @Assert\Length(min=5, max=15, minMessage="Il faut plus de 5 caractères", maxMessage="Il faut maximum 15 caractères")
+    */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $email;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $inscriptiondate;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,8 +52,21 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
+     * @Assert\Length(min=5, max=20, minMessage="Il faut au moins 5 caractères", maxMessage="Il faut au maximum 20 caractères")
+    */
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=20, minMessage="Il faut au moins 5 caractères", maxMessage="Il faut au maximum 10 caractères")
+     * @Assert\EqualTo(propertyPath="password", message="les mots de passe ne correspondent pas")
+     */
+    private $confirmPassword;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $activation_token;
 
     public function getId(): ?int
     {
@@ -72,18 +93,6 @@ class Users
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getInscriptiondate(): ?\DateTimeInterface
-    {
-        return $this->inscriptiondate;
-    }
-
-    public function setInscriptiondate(\DateTimeInterface $inscriptiondate): self
-    {
-        $this->inscriptiondate = $inscriptiondate;
 
         return $this;
     }
@@ -123,4 +132,42 @@ class Users
 
         return $this;
     }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function setConfirmPassword(string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
+
+        return $this;
+    }
+
+    public function eraseCredentials()
+    {
+        
+    }
+    public function getSalt()
+    {
+        
+    }
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getActivationToken(): ?string
+    {
+        return $this->activation_token;
+    }
+
+    public function setActivationToken(?string $activation_token): self
+    {
+        $this->activation_token = $activation_token;
+
+        return $this;
+    }
+
 }

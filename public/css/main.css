@@ -4729,14 +4729,32 @@ background-color: green;
 }
 
 .errormessage {
-
-	min-height:760px;
+	
 	min-width:300px;
 	margin:auto;
 }
 
 .errortext {
-
-	margin-top:300px;
+	text-align: center;
 	color:red;
+	margin-top:300px;
+}
+
+.back_home {
+	text-align: center;
+
+}
+
+.size-form {
+
+min-height:500px;
+
+
+}
+
+.newpass {
+
+padding-top:15px;
+text-align: center;
+
 }
