@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Users;
 use App\Entity\Videos;
 use App\Entity\Category;
+use App\Entity\Comments;
+use App\Form\CommentType;
 use App\Form\VideoSearchType;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class VideoController extends AbstractController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/videolist", name="homepage")
      */
     public function homePage(VideosRepository $repository, CategoryRepository $repo, Request $request)
     {   
@@ -194,9 +198,14 @@ class VideoController extends AbstractController
         $entity->persist($video);
         $entity->flush();
 
-        $searchForm = $this->createForm(VideoSearchType::class);
+        $searchForm = $this->createForm(VideoSearchType::class, $video);
         $searchForm->handleRequest($request);
-        
+
+        $comments = new Comments();
+
+        $form = $this->createForm(CommentType::class, $comments);
+        $form->handleRequest($request);
+
         $donnees = $repository->findAll();
  
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
@@ -232,12 +241,29 @@ class VideoController extends AbstractController
 
         }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            $date = new \DateTime();
+
+            $comments->setVideo($video);
+            $comments->setAuthor($this->getUser());
+            $comments->setPublicationDate($date);
+            $entity->persist($comments);
+            $entity->flush();
+
+            return $this->redirectToRoute('movie',  array('id' => $video->getId(), 'idcategory' => $category->getId()));
+
+        }
+
         $videos = $repository->showVideoByCategory($category, $id);
         return $this->render('video/singlemovie.html.twig', [
             "videos" => $videos,
             "video" => $video,
             "category" => $category,
-            "searchForm" => $searchForm->createView()
+            "searchForm" => $searchForm->createView(),
+            'form' => $form->createView(),
+            'comments' => $comments
         ]);
     }
 

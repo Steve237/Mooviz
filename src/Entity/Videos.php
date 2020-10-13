@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VideosRepository;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -67,11 +69,17 @@ class Videos
      */
     private $views;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="video", orphanRemoval=true)
+     */
+    private $comments;
 
+   
     public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
+        $this->comments = new ArrayCollection();
 
     }
 
@@ -195,6 +203,39 @@ class Videos
 
         return $this;
     }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getVideo() === $this) {
+                $comment->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 
 
 }

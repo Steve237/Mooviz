@@ -29,17 +29,21 @@
 		
 		
 		<main id="col-main-with-sidebar">
-			<div class="videosize">
-				<video id="player" controls crossorigin playsinline autoplay width=1050> 
-					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4">
+			<section style="margin-left:5px">
+				<video controls id="videoPlayer" autoplay data-setup="{}" class="video-js vjs-big-play-centered">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4">	
+					<p class="vjs-no-js">
+						To view this video please enable JavaScript, and consider upgrading to a
+						web browser that
+						<a href="https://videojs.com/html5-video-support/" target="_blank"> supports HTML5 video</a>
+					</p>
 				</video>
-			</div>
-			
+			</section>
 			
 			<div id="movie-detail-rating">
 				<div class="dashboard-container">
 					<div class="row">
-						<div class="videotitle">
+						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 							<h3>{{video.videotitle}}</h3>
 							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}} </p></strong>
 						</div>
@@ -53,17 +57,48 @@
 					<p style="font-size:large">{{video.videodescription}}</p>
 				</div><!-- close .movie-details-section -->
 
+				{% if app.user %}
 				<div class="movie-details-section">
 					<h2 style="text-align:center;">Commentaires</h2>
 				</div><!-- close .movie-details-section -->
 
 					
 				<div class="movie-details-section">
-					<h2>Ajouter un commentaire</h2>
 					<div class="row">
-					
+						<div class="form-group col-md-10 col-lg-10 col-sm-10 col-xs-10">
+						{{form_start(form)}}
+							{{form_row(form.content, {
+								"attr" : {
+								"placeholder":"Entrez votre commentaire",
+								"class":"form-label form-control",
+								"rows":"6"
+								},
+								"label" : "Votre commentaire"
+							})}}
+
+							{{form_widget(form)}}
+							<button type="submit" class="btn btn-primary button-comment">Envoyer</button>
+						{{form_end(form)}}
+						</div>
+						{% if video.comments is not null %}
+						{% for comment in video.comments %}
+						<div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 section-comment">
+								<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 block-comment">
+									<p>Publié par : {{comment.author.username}}</p>
+									<p>{{comment.content}}</p>
+								</div>
+						</div>
+						{% endfor %}
+						{% else %}
+							<p>Aucun commentaire n'a été publié, soyez le premier à commenter.</p>
+						{% endif %}
+
 					</div><!-- close .row -->
 				</div><!-- close .movie-details-section -->
+				{% else %}
+					<p>Veuillez vous connecter pour accéder aux commentaires</p>
+				{% endif %}
+				
 			</div><!-- close .dashboard-container -->
 		</main>
 {% endblock %}

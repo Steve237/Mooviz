@@ -4766,3 +4766,27 @@ margin-top:170px;
 
 
 }
+
+.button-comment {
+
+	position:absolute;
+	right:18px;
+	margin-top:10px;
+}
+
+.section-comment {
+
+	margin-top:150px;
+	padding-left:10px;
+
+
+}
+
+.block-comment {
+
+	position:absolute;
+	left:35px;
+	border-bottom:solid 1px;
+	background-color:wheat;
+}
+
