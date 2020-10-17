@@ -4,7 +4,7 @@ security:
         App\Entity\Users:
             algorithm: auto
     providers:
-        users_in_memory: { memory: null }
+        in_memory: { memory: null }
         in_database:
             entity:
                 class: App\Entity\Users
@@ -15,11 +15,12 @@ security:
             security: false
         main:
             anonymous: true
+            
             provider: in_database
 
             form_login:
-                login_path: connexion
-                check_path: connexion
+                login_path: login
+                check_path: login
             
             logout:
                 path: deconnexion

@@ -87,18 +87,15 @@ class AuthController extends AbstractController
         $this->addFlash('message', 'Utilisateur activé avec succès');
 
         // On retourne à l'accueil
-        return $this->redirectToRoute('connexion');
+        return $this->redirectToRoute('login');
     }
 
     /**
-    * @Route("/connexion", name="connexion")
+    * @Route("/login", name="login")
     */
     public function connexion()
     {
-
-        return $this->render('auth/connexion.html.twig', [
-            
-        ]);
+        return $this->render('auth/connexion.html.twig');
     
     }
 
@@ -136,7 +133,7 @@ class AuthController extends AbstractController
                 $this->addFlash('danger', 'Cette adresse e-mail est inconnue');
             
                 // On retourne sur la page de connexion
-                return $this->redirectToRoute('connexion');
+                return $this->redirectToRoute('login');
             }
 
             // On génère un token
@@ -150,7 +147,7 @@ class AuthController extends AbstractController
                 $entityManager->flush();
             } catch (\Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
-                return $this->redirectToRoute('connexion');
+                return $this->redirectToRoute('login');
             }
 
             // On génère l'URL de réinitialisation de mot de passe
@@ -170,7 +167,7 @@ class AuthController extends AbstractController
             $this->addFlash('message', 'E-mail de réinitialisation du mot de passe envoyé !');
 
             // On redirige vers la page de login
-            return $this->redirectToRoute('connexion');
+            return $this->redirectToRoute('login');
         }
 
         // On envoie le formulaire à la vue
@@ -190,7 +187,7 @@ class AuthController extends AbstractController
         if ($user === null) {
             // On affiche une erreur
             $this->addFlash('danger', 'Token Inconnu');
-            return $this->redirectToRoute('connexion');
+            return $this->redirectToRoute('login');
         }
 
         // Si le formulaire est envoyé en méthode post
@@ -211,7 +208,7 @@ class AuthController extends AbstractController
             $this->addFlash('message', 'Mot de passe mis à jour');
 
             // On redirige vers la page de connexion
-            return $this->redirectToRoute('connexion');
+            return $this->redirectToRoute('login');
         
         } else {
             // Si on n'a pas reçu les données, on affiche le formulaire
