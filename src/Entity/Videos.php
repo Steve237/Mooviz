@@ -74,8 +74,7 @@ class Videos
      */
     private $comments;
 
-   
-    public function __construct()
+   public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
@@ -234,8 +233,5 @@ class Videos
 
         return $this;
     }
-
-    
-
 
 }

@@ -14,13 +14,18 @@
 			<div id="pricing-plans-background-image">
 				<div class="container">
 						<div class="registration-steps-page-container">
-	  					 <form class="registration-steps-form size-form" action="{{path('connexion')}}" method="post">
+							{% if error %}
+								<div class="alert alert-danger">
+									Les identifiants de connexion sont invalides
+								</div>
+							{% endif %}
+							<form class="registration-steps-form size-form" action="{{path('connexion')}}" method="post">
 							 
-							 <div class="registration-social-login-container">
+							<div class="registration-social-login-container">
 
                                 <div class="form-group">
                                     <label>Pseudo : </label>
-                                    <input type="text" required name="_username" class="form-control" placeholder="Entrez votre pseudo">
+                                    <input type="text" required name="_username" class="form-control" placeholder="Entrez votre pseudo" value="{{lastUserName}}">
                                 </div>
                                 <div class="form-group">
                                     <label>Password : </label>

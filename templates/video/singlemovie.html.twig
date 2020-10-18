@@ -29,14 +29,13 @@
 		
 		
 		<main id="col-main-with-sidebar">
-			<section style="margin-left:5px">
-				<video controls id="videoPlayer" autoplay data-setup="{}" class="video-js vjs-big-play-centered">
-					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4">	
-					<p class="vjs-no-js">
-						To view this video please enable JavaScript, and consider upgrading to a
-						web browser that
-						<a href="https://videojs.com/html5-video-support/" target="_blank"> supports HTML5 video</a>
-					</p>
+			<section class="video-container">
+				<video crossorigin playsinline  style="--plyr-color-main: red;" id="player">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="576">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="720">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="1080">	
+						
+					<a href="{{asset('videos/' ~ video.videolink)}}" download>Download</a>
 				</video>
 			</section>
 			
@@ -46,6 +45,7 @@
 						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 							<h3>{{video.videotitle}}</h3>
 							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}} </p></strong>
+							<button class="btn btn-primary">Playlist + </button>
 						</div>
 					</div><!-- close .row -->
 				</div><!-- close .dashboard-container -->
@@ -98,7 +98,6 @@
 				{% else %}
 					<p>Veuillez vous connecter pour accéder aux commentaires</p>
 				{% endif %}
-				
 			</div><!-- close .dashboard-container -->
 		</main>
 {% endblock %}

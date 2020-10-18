@@ -7,17 +7,20 @@
         {% block stylesheet %} 
         <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
         <link rel="stylesheet" href="{{asset("css/main.css")}}">
+        <link  rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
+
         {% endblock %} 
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
         <link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}"><!-- FontAwesome Icons -->
         <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}"><!-- iconsmind.com Icons -->
         <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+        
     </head>
 <body>
 <div id="sidebar-bg">
 
 <header id="videohead-pro" class="sticky-header">
-  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black;margin-top:20px; ">Strym</h2></a></div>
+  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black;margin-top:20px; ">Essama</h2></a></div>
   
   <div id="video-search-header">
   
@@ -131,7 +134,7 @@
   <div id="header-user-profile">
     <div id="header-user-profile-click" class="noselect">
       <img src="{{asset("images/demo/user-profile.jpg")}}" alt="Suzie">
-      <div id="header-username">Suzie Smith</div><i class="fas fa-angle-down"></i>
+      <div id="header-username">{{app.user.username}}</div><i class="fas fa-angle-down"></i>
     </div><!-- close #header-user-profile-click -->
     <div id="header-user-profile-menu">
       <ul>
@@ -139,7 +142,7 @@
         <li><a href="dashboard-favorites.html"><span class="icon-Favorite-Window"></span>My Favorites</a></li>
         <li><a href="dashboard-account.html"><span class="icon-Gears"></span>Account Details</a></li>
         <li><a href="#!"><span class="icon-Life-Safer"></span>Help/Support</a></li>
-        <li><a href="{{path('connexion')}}"><span class="icon-Power-3"></span>Log Out</a></li>
+        <li><a href="{{path('deconnexion')}}"><span class="icon-Power-3"></span>Log Out</a></li>
       </ul>
     </div><!-- close #header-user-profile-menu -->
   </div><!-- close #header-user-profile -->
@@ -276,7 +279,7 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script src="{{asset("js/video.js")}}"></script>
     <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
-    <script type="text/javascript" src="{{asset("js/video-player.js")}}"></script>
+    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     {% endblock %}
 </body>
 </html>

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
@@ -93,21 +94,24 @@ class AuthController extends AbstractController
     /**
     * @Route("/connexion", name="connexion")
     */
-    public function connexion()
+    public function connexion(AuthenticationUtils $util)
     {
 
         return $this->render('auth/connexion.html.twig', [
+            
+            "lastUserName" => $util->getLastUsername(),
+            
+            "error" => $util->getLastAuthenticationError()
             
         ]);
     
     }
 
-     /**
+    /**
     * @Route("/deconnexion", name="deconnexion")
     */
     public function deconnexion()
     {
-        return $this->render('auth/connexion.html.twig');
     
     }
 

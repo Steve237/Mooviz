@@ -21,7 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class VideoController extends AbstractController
 {
     /**
-     * @Route("/videolist", name="homepage")
+     * @Route("/main/videolist", name="homepage")
      */
     public function homePage(VideosRepository $repository, CategoryRepository $repo, Request $request)
     {   
@@ -75,7 +75,7 @@ class VideoController extends AbstractController
 
     
     /**
-     * @Route("/videos/{category}", name="videobycategory")
+     * @Route("/main/videos/{category}", name="videobycategory")
      */
     public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, Request $request)
     {   
@@ -130,7 +130,7 @@ class VideoController extends AbstractController
 
 
     /**
-     * @Route("/listmovies/{category}", name="moviebycategory")
+     * @Route("/main/listmovies/{category}", name="moviebycategory")
      */
     public function moviebyCategory(VideosRepository $repository, $category, CategoryRepository $repo, Request $request)
     {   
@@ -186,7 +186,7 @@ class VideoController extends AbstractController
 
 
     /**
-    * @Route("/movie/{id}/category/{idcategory}", name="movie")
+    * @Route("/main/movie/{id}/category/{idcategory}", name="movie")
     * @ParamConverter("video", options={"mapping": {"id" : "id"}})
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     */
@@ -269,7 +269,7 @@ class VideoController extends AbstractController
 
 
     /**
-    * @Route("/listvideo", name="allvideos")
+    * @Route("/main/listvideo", name="allvideos")
     */
     public function listVideo(VideosRepository $repository, CategoryRepository $repo, Request $request)
     {   

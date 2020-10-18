@@ -6,8 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -33,12 +31,13 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=15, minMessage="Il faut plus de 5 caractères", maxMessage="Il faut maximum 15 caractères")
+     * @Assert\Length(min=5,max=15,minMessage="Il faut minimum 5 caractères", maxMessage="Il faut maximum 15 caractères")
     */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="entrez une adresse email valide")
      */
     private $email;
 
@@ -49,14 +48,14 @@ class Users implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=20, minMessage="Il faut au moins 5 caractères", maxMessage="Il faut au maximum 20 caractères")
+     * @Assert\Length(min=5,max=20,minMessage="Il faut au moins 5 caractères",maxMessage="Il faut au maximum 20 caractères")
     */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=20, minMessage="Il faut au moins 5 caractères", maxMessage="Il faut au maximum 10 caractères")
-     * @Assert\EqualTo(propertyPath="password", message="les mots de passe ne correspondent pas")
+     * @Assert\Length(min=5,max=20,minMessage="Il faut au moins 5 caractères", maxMessage="Il faut au maximum 10 caractères")
+     * @Assert\EqualTo(propertyPath="password",message="les mots de passe ne correspondent pas")
      */
     private $confirmPassword;
 
@@ -75,10 +74,16 @@ class Users implements UserInterface
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $roles;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -156,7 +161,7 @@ class Users implements UserInterface
     }
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        return [$this->roles];
     }
 
     public function getActivationToken(): ?string
@@ -214,6 +219,17 @@ class Users implements UserInterface
         return $this;
     }
 
-    
+    public function setRoles(string $roles): self
+    {
+        if($roles === null) {
 
+            $this->roles = "ROLE_USER";
+        
+        } else {
+
+            $this->roles = $roles;
+        }
+        
+        return $this;
+    }
 }

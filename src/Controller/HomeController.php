@@ -27,6 +27,4 @@ class HomeController extends AbstractController
         return $this->render('home/pricing.html.twig');
     }
 
-
-
 }
