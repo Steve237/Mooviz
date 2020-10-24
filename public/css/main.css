@@ -4684,7 +4684,7 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 }
 
 .videosuggest {
-	width: 400px;
+	width: 450px;
 	height: 200px;
 }
 
@@ -4778,6 +4778,7 @@ margin-top:170px;
 
 	margin-top:150px;
 	padding-left:10px;
+	margin-bottom:5px;
 
 
 }
@@ -4786,8 +4787,10 @@ margin-top:170px;
 
 	position:absolute;
 	left:35px;
-	border-bottom:solid 1px;
-	background-color:wheat;
+	border:solid black 0.5px;
+	background-color:cyan;
+	color:black;
+
 }
 
 
@@ -4804,4 +4807,37 @@ margin-top:170px;
 	color:white;
 
 
+}
+
+.comment-button {
+
+	position:absolute;
+	bottom:2px;
+	right:2px
+}
+
+
+.update-comment {
+
+	background-color:green;
+	color:white;
+	margin-right:5px
+
+
+}
+
+.delete-comment {
+
+	background-color:green;
+	color:white;
+}
+
+.button-like {
+
+	margin-left:80px;
+}
+
+.button-dislike {
+
+	margin-left:15px;
 }

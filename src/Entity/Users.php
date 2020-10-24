@@ -79,10 +79,16 @@ class Users implements UserInterface
      */
     private $roles;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="user")
+     */
+    private $likes;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
        
     }
 
@@ -230,6 +236,37 @@ class Users implements UserInterface
             $this->roles = $roles;
         }
         
+        return $this;
+    }
+
+    /**
+     * @return Collection|VideoLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(VideoLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(VideoLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getUser() === $this) {
+                $like->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

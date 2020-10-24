@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VideosRepository;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
@@ -74,11 +76,17 @@ class Videos
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="video")
+     */
+    private $likes;
+
    public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
 
     }
 
@@ -232,6 +240,55 @@ class Videos
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VideoLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(VideoLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(VideoLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getVideo() === $this) {
+                $like->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Permet de savoir si un utilisateur a liké
+     * @param Users $user
+     * @return bool
+     */
+    public function isLikedByUser(Users $user) : bool {
+
+        foreach($this->likes as $like) {
+
+            if ($like->getUser() === $user) return true;
+
+        }
+
+        return false;
+
+
     }
 
 }

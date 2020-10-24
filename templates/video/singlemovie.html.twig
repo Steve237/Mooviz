@@ -11,18 +11,17 @@
 			</div>
 			
 			<div class="content-sidebar-section">
-				<h2 class="content-sidebar-sub-header adjusted-recent-reviews"> Vidéos recommandées </h2>
-				<ul id="sidebar-reviews-pro">
+				<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées </h2>
+				<ul id="sidebar-reviews-pro" style="text-align:center;">
 					{% for video in videos %}
 					<li>
 						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
 							<h6 class="titlevideo">{{video.videotitle}}</h6>
-							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videosuggest">
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videosuggest class=img-responsive">
 						</a>
 					</li>
 					{% endfor %}
 				</ul>
-				<a href="#!" class="btn btn-green-pro btn-sm">See All Reviews</a>
 			</div><!-- close .content-sidebar-section -->
 			
 		</div><!-- close #content-sidebar-pro -->
@@ -30,7 +29,7 @@
 		
 		<main id="col-main-with-sidebar">
 			<section class="video-container">
-				<video crossorigin playsinline  style="--plyr-color-main: red;" id="player">
+				<video crossorigin playsinline style="--plyr-color-main: red;" id="player">
 					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="576">
 					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="720">
 					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="1080">	
@@ -45,7 +44,15 @@
 						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 							<h3>{{video.videotitle}}</h3>
 							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}} </p></strong>
-							<button class="btn btn-primary">Playlist + </button>
+							<button class="btn btn-primary">Playlist +</button>
+							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+								{% if app.user and video.isLikedByUser(app.user) %}
+									<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
+								{% else %}
+									<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
+								{% endif %}
+								<span class="js-likes">{{video.likes | length}}</span>
+							</a>
 						</div>
 					</div><!-- close .row -->
 				</div><!-- close .dashboard-container -->
@@ -59,7 +66,7 @@
 
 				{% if app.user %}
 				<div class="movie-details-section">
-					<h2 style="text-align:center;">Commentaires</h2>
+					<h2 style="text-align:center;">Donnez votre avis.</h2>
 				</div><!-- close .movie-details-section -->
 
 					
@@ -83,10 +90,11 @@
 						{% if video.comments is not null %}
 						{% for comment in video.comments %}
 						<div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 section-comment">
-								<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 block-comment">
-									<p>Publié par : {{comment.author.username}}</p>
-									<p>{{comment.content}}</p>
-								</div>
+							<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 block-comment">
+								<p>Publié par : {{comment.author.username}}</p>
+								<p>{{comment.content}}</p>
+								<div class="comment-button"><button class="btn btn-primary update-comment">Modifier</button><button class="btn btn-primary delete-comment">Supprimer</button></div>
+							</div>
 						</div>
 						{% endfor %}
 						{% else %}

@@ -4,15 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Entity\Videos;
+use DateTimeInterface;
 use App\Entity\Category;
 use App\Entity\Comments;
+use App\Entity\VideoLike;
 use App\Form\CommentType;
 use App\Form\VideoSearchType;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
-use DateTimeInterface;
+use App\Repository\VideoLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -320,6 +323,52 @@ class VideoController extends AbstractController
             "videos" => $videos,
             "searchForm" => $searchForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("/main/video/{id}/like", name="video_like")
+    */
+    public function like(Videos $video, EntityManagerInterface $entity, VideoLikeRepository $likeRepo) : Response {
+
+        $user = $this->getUser();
+
+        //Permet de supprimer le like d'un utilisateur
+        if ($video->isLikedByUser($user)) {
+
+            $like = $likeRepo->findOneBy([
+                
+                'video' => $video,
+                'user' => $user
+            ]);
+
+            $entity->remove($like);
+            $entity->flush();
+
+            return $this->json([
+
+                'code' => 200,
+                'message' => 'Like bien supprimé',
+                'likes' => $likeRepo->count(['video' => $video])
+            ], 200);
+
+        }
+
+        $like = new VideoLike();
+        $like->setVideo($video);
+        $like->setUser($user);
+
+        $entity->persist($like);
+        $entity->flush();
+
+        return $this->json([
+            'code' => 200, 
+            'message' => 'like ok',
+            'likes' => $likeRepo->count(['video' => $video])
+        
+        
+        ], 200);
+
+
     }
 
 }

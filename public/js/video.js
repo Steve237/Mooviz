@@ -17,10 +17,7 @@ controls: [
     'fullscreen'
 ]
 
-
-
 });
-
 
 // Expose player so it can be used from the console
 window.player = player;
