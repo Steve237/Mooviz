@@ -4787,8 +4787,7 @@ margin-top:170px;
 
 	position:absolute;
 	left:35px;
-	border:solid black 0.5px;
-	background-color:cyan;
+	border-bottom:solid 1px black;
 	color:black;
 
 }
@@ -4819,8 +4818,8 @@ margin-top:170px;
 
 .update-comment {
 
-	background-color:green;
-	color:white;
+	background-color:gainsboro;
+	color:black;
 	margin-right:5px
 
 
@@ -4828,8 +4827,8 @@ margin-top:170px;
 
 .delete-comment {
 
-	background-color:green;
-	color:white;
+	background-color:gainsboro;
+	color:black;
 }
 
 .button-like {

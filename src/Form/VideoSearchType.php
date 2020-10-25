@@ -13,8 +13,7 @@ class VideoSearchType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('videotitle', SearchType::class)
-        ;
+            ->add('videotitle', SearchType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

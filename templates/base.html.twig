@@ -25,9 +25,7 @@
   <div id="video-search-header">
   
     <div id="search-icon-more" style="background-image:url('{{asset("images/mobile-search-icon.png")}}')"></div>
-    {{ form_start(searchForm) }}
-    {{ form_row(searchForm.videotitle, {'label': " ", 'attr': {'placeholder': 'Tapez un titre et validez'}}) }}
-    {{ form_end(searchForm) }}
+      {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
     <div id="video-search-header-filtering">
       <form id="video-search-header-filtering-padding">
         <div class="row">
