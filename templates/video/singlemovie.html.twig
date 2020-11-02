@@ -4,7 +4,7 @@
 
 {% block body %}
 		
-		<div id="content-sidebar-pro">
+		<div id="content-sidebar-pro" style="position:absolute;left:3px;">
 			
 			<div id="content-sidebar-image">
 				<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
@@ -64,48 +64,7 @@
 					<p style="font-size:large">{{video.videodescription}}</p>
 				</div><!-- close .movie-details-section -->
 
-				{% if app.user %}
-				<div class="movie-details-section">
-					<h2 style="text-align:center;">Donnez votre avis.</h2>
-				</div><!-- close .movie-details-section -->
-
-					
-				<div class="movie-details-section">
-					<div class="row">
-						<div class="form-group col-md-10 col-lg-10 col-sm-10 col-xs-10">
-						{{form_start(form)}}
-							{{form_row(form.content, {
-								"attr" : {
-								"placeholder":"Entrez votre commentaire",
-								"class":"form-label form-control",
-								"rows":"6"
-								},
-								"label" : "Votre commentaire"
-							})}}
-
-							{{form_widget(form)}}
-							<button type="submit" class="btn btn-primary button-comment">Envoyer</button>
-						{{form_end(form)}}
-						</div>
-						{% if video.comments is not null %}
-						{% for comment in video.comments %}
-						<div class="col-md-10 col-lg-10 col-sm-10 col-xs-10 section-comment">
-							<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 block-comment">
-								<p>Publié par : {{comment.author.username}}</p>
-								<p>{{comment.content}}</p>
-								<div class="comment-button"><button class="btn btn-primary update-comment">Modifier</button><button class="btn btn-primary delete-comment">Supprimer</button></div>
-							</div>
-						</div>
-						{% endfor %}
-						{% else %}
-							<p>Aucun commentaire n'a été publié, soyez le premier à commenter.</p>
-						{% endif %}
-
-					</div><!-- close .row -->
-				</div><!-- close .movie-details-section -->
-				{% else %}
-					<p>Veuillez vous connecter pour accéder aux commentaires</p>
-				{% endif %}
+				
 			</div><!-- close .dashboard-container -->
 		</main>
 {% endblock %}

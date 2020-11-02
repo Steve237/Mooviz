@@ -72,11 +72,6 @@ class Videos
     private $views;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="video", orphanRemoval=true)
-     */
-    private $comments;
-
-    /**
      * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="video")
      */
     private $likes;
@@ -85,7 +80,6 @@ class Videos
     {
     
         $this->publicationdate = new \DateTime('now');
-        $this->comments = new ArrayCollection();
         $this->likes = new ArrayCollection();
 
     }
@@ -207,37 +201,6 @@ class Videos
     public function setViews(?string $views): self
     {
         $this->views = $views;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Comments[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comments $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comments $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getVideo() === $this) {
-                $comment->setVideo(null);
-            }
-        }
 
         return $this;
     }

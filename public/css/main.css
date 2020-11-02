@@ -4815,6 +4815,12 @@ margin-top:170px;
 	right:2px
 }
 
+.update-comment-button {
+
+	position:absolute;
+	bottom:-38px;
+	right:-20px
+}
 
 .update-comment {
 
@@ -4839,4 +4845,18 @@ margin-top:170px;
 .button-dislike {
 
 	margin-left:15px;
+}
+
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}
+
+.block-suggestion {
+
+	position:absolute;
+	left:3px;
+
 }

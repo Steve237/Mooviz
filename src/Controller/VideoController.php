@@ -85,33 +85,11 @@ class VideoController extends AbstractController
         $entity->persist($video);
         $entity->flush();
 
-        $comments = new Comments();
-
-        $form = $this->createForm(CommentType::class, $comments);
-        $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-
-
-            $date = new \DateTime();
-
-            $comments->setVideo($video);
-            $comments->setAuthor($this->getUser());
-            $comments->setPublicationDate($date);
-            $entity->persist($comments);
-            $entity->flush();
-
-            return $this->redirectToRoute('movie',  array('id' => $video->getId(), 'idcategory' => $category->getId()));
-
-        }
-
         $videos = $repository->showVideoByCategory($category, $id);
         return $this->render('video/singlemovie.html.twig', [
             "videos" => $videos,
             "video" => $video,
-            "category" => $category,
-            'form' => $form->createView(),
-            'comments' => $comments
+            "category" => $category
         ]);
     }
 

@@ -270,8 +270,9 @@
 		<script src="{{asset("js/jquery-asRange.min.js")}}" defer></script><!-- Range Slider JS Plugin -->
 		<script src="{{asset("js/circle-progress.min.js")}}" defer></script><!-- Circle Progress JS Plugin -->
 		<script src="{{asset("js/afterglow.min.js")}}" defer></script><!-- Video Player JS Plugin -->
-		<script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
-		<script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
+    <script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
+    <script src="{{asset("js/commentform.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
+    <script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
     <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -279,39 +280,39 @@
     <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
     <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script>
+	  <script>
 		
-		function onClickBtnLike(event) {
+		  function onClickBtnLike(event) {
 
-			event.preventDefault();
+			  event.preventDefault();
 
-			const url = this.href;
+			  const url = this.href;
 
-      const spanCount = this.querySelector('span.js-likes');
-      const icone = this.querySelector('i');
+        const spanCount = this.querySelector('span.js-likes');
+        const icone = this.querySelector('i');
 
-			axios.get(url).then(function(response) {
+			  axios.get(url).then(function(response) {
         
         spanCount.textContent = response.data.likes;
 
-        if(icone.classList.contains('fas')) { 
+          if(icone.classList.contains('fas')) { 
           
-          icone.classList.replace('fas', 'far');
+            icone.classList.replace('fas', 'far');
 
-        } else {
+          } else {
 
-          icone.classList.replace('far', 'fas');
-        }
+            icone.classList.replace('far', 'fas');
+          }
         			
-      });
+        });
 		
-		}
+		  }
 		
-		document.querySelectorAll('a.js-like').forEach(function(link){
+		  document.querySelectorAll('a.js-like').forEach(function(link){
 
 			link.addEventListener('click', onClickBtnLike);
 		})
-	</script>
-    {% endblock %}
+  </script>
+{% endblock %}
 </body>
 </html>
