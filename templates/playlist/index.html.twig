@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello PlaylistController!{% endblock %}
+
+{% block body %}
+
+<main id="col-main">
+			
+	<div class="dashboard-container">
+        
+        <h3 style="margin-bottom:50px;margin-top:50px;text-align:center;text-decoration:underline">Votre playlist </h3>
+        <div class="row">
+
+            {% if playlists %}
+            
+            {% for playlist in playlists %}
+            
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="item-playlist-container-skrn">
+                    <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}"><img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+                    <div class="item-playlist-text-skrn">
+                        <h5><a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a></h5>
+                        <h6>8 Movies, 18 hrs 24 mins</h6>
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-playlist-container-skrn -->
+            </div><!-- close .col -->
+            
+            {% endfor %}
+
+            {%   else   %}
+
+            <div class style="height:100%;width:100%">
+
+                <h4 style="text-align:center;margin-top:200px">Votre playlist ne contient aucune vidéo</h4>
+
+            </div>
+            
+            {%  endif %}
+            
+        </div><!-- close .row -->
+        
+        {% if playlists %}
+
+        <ul class="page-numbers">
+            <li><a class="previous page-numbers" href="#!"><i class="fas fa-chevron-left"></i></a></li>
+            <li><span class="page-numbers current">1</span></li>
+            <li><a class="page-numbers" href="#!">2</a></li>
+            <li><a class="page-numbers" href="#!">3</a></li>
+            <li><a class="page-numbers" href="#!">4</a></li>
+            <li><a class="next page-numbers" href="#!"><i class="fas fa-chevron-right"></i></a></li>
+        </ul>
+
+        {% endif %}
+        
+                
+    </div><!-- close .dashboard-container -->
+</main>
+
+{% endblock %}

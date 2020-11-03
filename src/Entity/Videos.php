@@ -76,11 +76,17 @@ class Videos
      */
     private $likes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="video")
+     */
+    private $playlists;
+
    public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
         $this->likes = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
 
     }
 
@@ -246,6 +252,57 @@ class Videos
         foreach($this->likes as $like) {
 
             if ($like->getUser() === $user) return true;
+
+        }
+
+        return false;
+
+
+    }
+
+    /**
+     * @return Collection|Playlist[]
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): self
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists[] = $playlist;
+            $playlist->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): self
+    {
+        if ($this->playlists->contains($playlist)) {
+            $this->playlists->removeElement($playlist);
+            // set the owning side to null (unless already changed)
+            if ($playlist->getVideo() === $this) {
+                $playlist->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+    /**
+     * Permet de savoir si un utilisateur a ajouté la vidéo à la playlist
+     * @param Users $user
+     * @return bool
+     */
+    public function isSelectedByUser(Users $user) : bool {
+
+        foreach($this->playlists as $playlist) {
+
+            if ($playlist->getUser() === $user) return true;
 
         }
 

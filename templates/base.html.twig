@@ -228,25 +228,25 @@
           <li class="normal-item-pro">
             <a href="{{path("allvideos")}}">
         <span class="icon-Reel"></span>
-              Videos
+              Films
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="">
         <span class="icon-Movie"></span>
-              Musique
+              Séries
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="">
         <span class="icon-Movie-Ticket"></span>
-              Apprentissage
+              Nouveautés
             </a>
           </li>
           <li class="normal-item-pro">
-            <a href="">
+            <a href="{{path('playlistuser')}}">
           <span class="icon-Clock"></span>
-              Jeux vidéos
+              Playlist
             </a>
           </li>
 
@@ -280,6 +280,7 @@
     <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
     <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fa1b4242a7af500195a7761&product=inline-share-buttons" async="async"></script>
 	  <script>
 		
 		  function onClickBtnLike(event) {
@@ -312,6 +313,37 @@
 
 			link.addEventListener('click', onClickBtnLike);
 		})
+
+
+
+    function onClickAddPlaylist(event) {
+
+      event.preventDefault();
+
+    const url = this.href;
+
+    const symbole = this.querySelector('i');
+
+    axios.get(url).then(function(response) {
+
+      if(symbole.classList.contains('fas')) { 
+  
+        symbole.classList.replace('fas', 'far');
+
+      } else {
+
+        symbole.classList.replace('far', 'fas');
+      }
+      
+    });
+
+    }
+
+    document.querySelectorAll('a.js-play').forEach(function(link){
+
+      link.addEventListener('click', onClickAddPlaylist);
+  })
+
   </script>
 {% endblock %}
 </body>
