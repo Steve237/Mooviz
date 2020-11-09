@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Serializable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -20,7 +21,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * message="Cette adresse email est déjà utilisée"
  * )
  */
-class Users implements UserInterface
+class Users implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id()
@@ -84,6 +85,11 @@ class Users implements UserInterface
      */
     private $playlists;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $imageuser;
+
 
     public function __construct()
     {
@@ -121,12 +127,12 @@ class Users implements UserInterface
         return $this;
     }
 
-    public function getAvatar(): ?string
+    public function getAvatar()
     {
         return $this->avatar;
     }
 
-    public function setAvatar(string $avatar): self
+    public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
 
@@ -270,4 +276,42 @@ class Users implements UserInterface
 
         return $this;
     }
+
+    public function getImageuser(): ?Avatar
+    {
+        return $this->imageuser;
+    }
+
+    public function setImageuser(Avatar $imageuser): self
+    {
+        $this->imageuser = $imageuser;
+
+        // set the owning side of the relation if necessary
+        if ($imageuser->getUser() !== $this) {
+            $imageuser->setUser($this);
+        }
+
+        return $this;
+    }
+
+
+    public function serialize() {
+
+        return serialize(array(
+        $this->id,
+        $this->username,
+        $this->password,
+        ));
+        
+        }
+        
+        public function unserialize($serialized) {
+        
+        list (
+        $this->id,
+        $this->username,
+        $this->password,
+        ) = unserialize($serialized);
+        }
+        
 }

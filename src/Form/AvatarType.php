@@ -2,30 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Videos;
+use App\Entity\Avatar;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class VideoType extends AbstractType
+class AvatarType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('videotitle')
-            ->add('videodescription', TextareaType::class)
-            ->add('imageFile', FileType::class, ['required'=>false])
-            ->add('videolink')
-            ->add('category')
+            ->add('avatar', FileType::class, array('data_class' => null))
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Videos::class,
+            'data_class' => Avatar::class,
         ]);
     }
 }

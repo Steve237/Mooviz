@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profil{% endblock %}
+
+{% block body %}
+<div id="content-sidebar-pro" class="block-suggestion">
+			
+    <div id="content-sidebar-info">
+        {% if avatars %}
+        {% for avatar in avatars %}
+            <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="avatar-image">
+        {% endfor %}
+        {% else  %}
+            <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-image">
+        {% endif %}
+        <div id="profile-sidebar-name">
+            <h5>{{app.user.username}}</h5>
+        </div>
+        <div id="profile-sidebar-gradient"></div>
+        {% if avatars %}
+            {% for avatar in avatars %}
+            <a href="{{path('update_image', {'id' : avatar.id})}}" class="edit-profile-sidebar"><i class="fas fa-pencil-alt"></i></a>
+            {% endfor %}
+        {% else %}
+            <a href="{{path('avatar_update')}}" class="edit-profile-sidebar"><i class="fas fa-pencil-alt"></i></a>
+        {% endif %}
+    </div>
+    
+</div><!-- close #content-sidebar-pro -->
+
+<main id="col-main-with-sidebar">
+    
+    <div class="dashboard-container">
+        
+        <ul class="dashboard-sub-menu">
+            <li class="current"><a href="">Nouveautés</a></li>
+        </ul><!-- close .dashboard-sub-menu -->
+        
+        
+        <div class="row">
+            {% for video in videos %}
+            <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+              <div class="item-listing-container-skrn">
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
+                          <div
+                            class="circle-rating-pro"
+                            data-value="0.86"
+                            data-animation-start-value="0.86"
+                            data-size="32"
+                            data-thickness="3"
+                            data-fill="{
+                              &quot;color&quot;: &quot;#42b740&quot;
+                            }"
+                            data-empty-fill="#def6de"
+                            data-reverse="true"
+                          ><span style="color:#42b740;">8.6</span></div>
+                        </div><!-- close .item-listing-text-skrn-vertical-align -->
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-listing-container-skrn -->
+            </div><!-- close .col -->
+            {% endfor %}
+                            
+        </div><!-- close .row -->
+        
+        <ul class="page-numbers">
+            <li><a class="previous page-numbers" href="#!"><i class="fas fa-chevron-left"></i></a></li>
+            <li><span class="page-numbers current">1</span></li>
+            <li><a class="page-numbers" href="#!">2</a></li>
+            <li><a class="page-numbers" href="#!">3</a></li>
+            <li><a class="page-numbers" href="#!">4</a></li>
+            <li><a class="next page-numbers" href="#!"><i class="fas fa-chevron-right"></i></a></li>
+        </ul>
+      </div><!-- close .dashboard-container -->
+</main>
+
+{% endblock %}

@@ -26,7 +26,7 @@ class PlaylistController extends AbstractController
         $user = $this->getUser();
 
         $playlists = $repository->showVideoByUser($user);
-        return $this->render('playlist/index.html.twig', [
+        return $this->render('playlist/playlist.html.twig', [
             "playlists" => $playlists
         ]);
     

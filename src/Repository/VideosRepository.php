@@ -30,6 +30,25 @@ class VideosRepository extends ServiceEntityRepository
         ;
     }
 
+
+    public function getVideos() {
+
+        return $this->createQueryBuilder('v')
+        ->setMaxResults(10)
+        ->orderBy('v.id', 'DESC')
+        ->getQuery()
+        ->getResult()
+        
+        ;
+    }
+
+
+
+
+
+
+
+
     public function showVideoByCategory($category, $id) {
 
         return $this->createQueryBuilder('v')

@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 
 /**
@@ -48,7 +50,8 @@ class Videos
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
+     * @Assert\File(maxSize="450000k") 
+    */
     private $videolink;
 
     /**
@@ -81,7 +84,7 @@ class Videos
      */
     private $playlists;
 
-   public function __construct()
+    public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');

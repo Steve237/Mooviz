@@ -4678,6 +4678,7 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 	height: 370px;
 }
 
+
 .videoimage {
 	width: 400px;
 	height: 335px;
@@ -4847,16 +4848,76 @@ margin-top:170px;
 	margin-left:15px;
 }
 
-.visible {
-  visibility: visible;
-}
-.invisible {
-  visibility: hidden;
-}
 
 .block-suggestion {
 
 	position:absolute;
 	left:3px;
 
+}
+
+.upload-avatar {
+
+	width:300px;
+	margin:auto;
+	
+}
+
+
+.avatar-form {
+
+
+	height:50px;
+
+}
+
+.form-avatar {
+
+
+	margin-top:50px;
+	height:400px;
+	background-color:turquoise;
+
+}
+
+.avatar-section {
+
+
+	text-align:center;
+	margin-top:100px
+}
+
+.avatar-size {
+
+	width:200px;
+	height:200px
+
+}
+
+.submit-avatar {
+
+
+	margin-top:10px;
+
+
+}
+
+.avatar-image {
+
+
+	width:400px;
+	height:500px
+}
+
+.button-account {
+
+	margin-bottom:100px;
+	margin-left:20px
+
+}
+
+.avatar-account {
+
+	height:400px;
+	width:400px;
 }

@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre compte{% endblock %}
+
+{% block body %}
+
+	
+<main id="col-main">
+			
+    <div class="dashboard-container">
+        
+        <ul class="dashboard-sub-menu">
+            <li class="current"><a href="dashboard-account.html">Account Settings</a></li>
+            <li><a href="dashboard-account-payment.html">Payment Info</a></li>
+        </ul><!-- close .dashboard-sub-menu -->
+        
+        <div class="container-fluid">
+            <div class="row">
+            
+                <div class="col-12  col-lg-3">
+                    <div id="account-edit-photo">
+                        {% for avatar in avatars %}
+                            <div><img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account"></div>
+                            <p><a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">Modifiez votre avatar</a></p>
+                        {% endfor %}
+                    </div>
+                </div><!-- close .col -->
+                <div class="col">
+                    {{form_start(form)}}
+                    <form class="account-settings-form">
+                
+                    <h5>General Information</h5>
+                    <p class="small-paragraph-spacing">By letting us know your name, we can make our support experience much more personal.</p>
+                    <div class="row">
+                        <div class="col-sm">
+                              <div class="form-group">
+                                <label for="first-name" class="col-form-label">First Name:</label>
+                                {{form_row(form.username, {
+                                    "attr" : {
+                                        "class":"form-label form-control"
+                                    },
+                                    "label" : "Modifiez votre pseudo"
+                                })}}
+                              </div>
+                        </div><!-- close .col -->
+                    </div><!-- close .row -->
+                    <hr>
+                
+                    <h5>Account Information</h5>
+                    <p class="small-paragraph-spacing">You can change the email address you use here.</p>
+                    
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-group">
+                                <label for="e-mail" class="col-form-label">E-mail</label>
+                                {{form_row(form.email, {
+                                    "attr" : {
+                                            "class":"form-label form-control"
+                                        },
+                                    "label" : "Modifiez votre email"
+                                })}}
+                            </div>
+                        </div><!-- close .col -->
+                    </div><!-- close .row -->
+                    
+                    <hr>
+                    <h5>Change Password</h5>
+                    <p class="small-paragraph-spacing">You can change the password you use for your account here.</p>
+                    <div class="row">
+                        <div class="col-sm">
+                              <div class="form-group">
+                                {{form_row(form.password, {
+                                    "attr" : {
+                                            "class":"form-label form-control"
+                                        },
+                                    "label" : "Modifiez votre mot de passe"
+                                })}}
+                              </div>
+                        </div><!-- close .col -->
+                        <div class="col-sm">
+                            <div class="form-group">
+                                {{form_row(form.confirmPassword, {
+                                    "attr" : {
+                                            "class":"form-label form-control"
+                                        },
+                                    "label" : "Confirmez le nouveau mot de passe"
+                                })}}
+                            </div>
+                        </div><!-- close .col -->
+                    </div><!-- close .row -->
+                    
+                    {{form_widget(form)}}
+                    <input class="btn btn-primary button-account" type="submit" value="Saves Changes">
+                    </form>
+                    {{form_end(form)}}
+                
+                </div><!-- close .col -->
+            
+            </div><!-- close .row -->
+        </div><!-- close .container-fluid -->
+                
+    </div><!-- close .dashboard-container -->
+</main>
+{% endblock %}
