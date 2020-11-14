@@ -99,6 +99,12 @@
     "jms/metadata": {
         "version": "2.3.0"
     },
+    "knplabs/knp-components": {
+        "version": "v2.4.2"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.3.0"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -210,6 +216,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v5.0.8"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v5.0.8"

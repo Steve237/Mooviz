@@ -14,6 +14,7 @@ use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\VideoLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,10 +29,16 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videolist", name="homepage")
      */
-    public function homePage(VideosRepository $repository, CategoryRepository $repo)
+    public function homePage(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
+
+
+        $videos = $paginator->paginate(
+            $repository->findAllWithPagination(Category::class), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+        );
     
-        $videos = $repository->findAll(Category::class);
         $categories = $repo->findAll();
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
@@ -44,10 +51,16 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videos/{category}", name="videobycategory")
      */
-    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo)
+    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
         
-        $videos = $repository->getVideoByCategory($category);
+        $videos = $paginator->paginate(
+            $repository->getVideoByCategory($category),
+            $request->query->getInt('page', 1), /*page number*/
+                20 /*limit per page*/
+            );
+        
+        
         $categories = $repo->findAll();
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
@@ -60,10 +73,14 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/listmovies/{category}", name="moviebycategory")
      */
-    public function moviebyCategory(VideosRepository $repository, $category, CategoryRepository $repo)
+    public function moviebyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
  
-        $videos = $repository->getVideoByCategory($category);
+        $videos = $paginator->paginate(
+        $repository->getVideoByCategory($category),
+        $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+        );
         $categories = $repo->findAll();
         return $this->render('video/listmovie.html.twig', [
             "videos" => $videos,
@@ -97,10 +114,15 @@ class VideoController extends AbstractController
     /**
     * @Route("/main/listvideo", name="allvideos")
     */
-    public function listVideo(VideosRepository $repository, CategoryRepository $repo)
+    public function listVideo(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
         
-        $videos = $repository->findAll(Category::class);
+        $videos = $paginator->paginate(
+            $repository->findAllWithPagination(Category::class), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+        );
+        
         $categories = $repo->findAll();
 
         return $this->render('video/listmovie.html.twig', [
@@ -182,13 +204,17 @@ class VideoController extends AbstractController
      * @Route("/handleSearch", name="handleSearch")
      *
      */
-    public function handleSearch(Request $request, VideosRepository $repository) {
+    public function handleSearch(Request $request, VideosRepository $repository, PaginatorInterface $paginator) {
 
         $query = $request->request->get('form')['query'];
         
         if ($query) {
 
-            $videos = $repository->search($query);
+            $videos = $paginator->paginate(
+            $repository->search($query),
+            $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+        );
 
             if (!$videos) {
 
@@ -200,7 +226,7 @@ class VideoController extends AbstractController
 
                 return $this->render('video/showresult.html.twig', [
 
-                    'videos'=>$videos
+                    'videos' => $videos
         
         
         

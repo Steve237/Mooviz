@@ -49,8 +49,7 @@ class Videos
     private $videoimage;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\File(maxSize="450000k") 
+     * @ORM\Column(type="string", length=255) 
     */
     private $videolink;
 

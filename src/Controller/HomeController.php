@@ -17,8 +17,6 @@ class HomeController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/pricing", name="pricing")
      */

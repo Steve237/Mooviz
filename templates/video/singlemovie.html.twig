@@ -45,26 +45,32 @@
 							<h3>{{video.videotitle}}</h3>
 							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p></strong>
 							
-							<div style class="sharethis-inline-share-buttons"></div>
+							<div class="row">
+								<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
+									<div style class="sharethis-inline-share-buttons"></div>
+								</div>
 							
-							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
-								Playlist
-								{% if app.user and video.isSelectedByUser(app.user) %}
-									<span><i class="fas fa-star fa-2x"></i></span>
-								{% else %}
-									<span><i class="far fa-star fa-2x"></i></span>
-								{% endif %}
-							</a>
+								<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+									<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+										Playlist
+										{% if app.user and video.isSelectedByUser(app.user) %}
+											<span><i class="fas fa-star fa-2x"></i></span>
+										{% else %}
+											<span><i class="far fa-star fa-2x"></i></span>
+										{% endif %}
+									</a>
 							
 							
-							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
-								{% if app.user and video.isLikedByUser(app.user) %}
-									<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
-								{% else %}
-									<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
-								{% endif %}
-								<span class="js-likes">{{video.likes | length}}</span>
-							</a>
+									<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+										{% if app.user and video.isLikedByUser(app.user) %}
+											<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
+										{% else %}
+											<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
+										{% endif %}
+										<span class="js-likes">{{video.likes | length}}</span>
+									</a>
+								</div>
+							</div>
 						</div>
 					</div><!-- close .row -->
 				</div><!-- close .dashboard-container -->

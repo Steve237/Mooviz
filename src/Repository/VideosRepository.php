@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Videos;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Videos|null find($id, $lockMode = null, $lockVersion = null)
@@ -43,12 +44,6 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
-
-
-
-
-
-
     public function showVideoByCategory($category, $id) {
 
         return $this->createQueryBuilder('v')
@@ -56,6 +51,7 @@ class VideosRepository extends ServiceEntityRepository
         ->andwhere('v.id != :id')
         ->setParameter('val', $category)
         ->setParameter('id', $id)
+        ->setMaxResults(15)
         ->getQuery()
         ->getResult()
         
@@ -71,9 +67,18 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
-    
-    
-    
+    public function findAllWithPagination() : Query{
+
+        return $this->createQueryBuilder('v')
+            ->getQuery();
+        
+
+
+
+
+    }
+
+
     /*
     public function findOneBySomeField($value): ?Videos
     {

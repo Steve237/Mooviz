@@ -7,6 +7,8 @@ use App\Entity\Videos;
 use App\Entity\Playlist;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +22,17 @@ class PlaylistController extends AbstractController
     /**
      * @Route("/main/playlist", name="playlistuser")
      */
-    public function userPlaylist(PlaylistRepository $repository) {   
+    public function userPlaylist(PlaylistRepository $repository, PaginatorInterface $paginator, Request $request) {   
     
         $user = new Users();
         $user = $this->getUser();
 
-        $playlists = $repository->showVideoByUser($user);
+        $playlists = $paginator->paginate(
+        $repository->showVideoByUser($user),
+        $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+        );
+        
         return $this->render('playlist/playlist.html.twig', [
             "playlists" => $playlists
         ]);
