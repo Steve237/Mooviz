@@ -117,7 +117,7 @@
 				</ul>
 			</div><!-- close .progression-studios-slider - See /js/script.js file for options -->
 
-			<ul class="dashboard-genres-pro">
+			<ul class="dashboard-genres-pro" id="listvideo">
 
 				{% for category in categories %}
 				<li class="imagecategory">
@@ -134,7 +134,7 @@
 			<div class="dashboard-container">
 				
 				
-				<h4 class="heading-extra-margin-bottom hello" id="listvideo">Liste des videos</h4>
+				<h4 class="heading-extra-margin-bottom hello">Liste des videos</h4>
 				<div class="row">
 					{% for video in videos %}
 					<div class="col-12 col-md-6 col-lg-4 col-xl-3">
@@ -161,13 +161,11 @@
 					{% endfor %}
 				</div><!-- close .row STOP-->
 				
-				<div style="width:200px;margin:auto">
+				<div class="pagination">
 				<div class="navigation">
 					{{ knp_pagination_render(videos) }}
 				</div>
 				</div>
-				
-						
 			</div><!-- close .dashboard-container -->
 		</main>	
 {% endblock %}

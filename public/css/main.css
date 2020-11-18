@@ -4921,3 +4921,12 @@ margin-top:170px;
 	height:400px;
 	width:400px;
 }
+
+.pagination {
+
+	width:200px;
+	margin:auto;
+	margin-top:10px;
+	margin-bottom:15px;
+}
+

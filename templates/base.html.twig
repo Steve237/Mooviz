@@ -7,7 +7,7 @@
         {% block stylesheet %} 
         <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
         <link rel="stylesheet" href="{{asset("css/main.css")}}">
-        <link  rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
 
         {% endblock %} 
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
@@ -131,7 +131,7 @@
   
   <div id="header-user-profile">
     <div id="header-user-profile-click" class="noselect">
-      <img src="{{asset("images/demo/user-profile.jpg")}}" alt="Suzie">
+      {{ render(controller('App\\Controller\\UserController::showAvatar'))}}
       <div id="header-username">{{app.user.username}}</div><i class="fas fa-angle-down"></i>
     </div><!-- close #header-user-profile-click -->
     <div id="header-user-profile-menu">
@@ -281,70 +281,8 @@
     <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fa1b4242a7af500195a7761&product=inline-share-buttons" async="async"></script>
-	  <script>
-		
-		  function onClickBtnLike(event) {
-
-			  event.preventDefault();
-
-			  const url = this.href;
-
-        const spanCount = this.querySelector('span.js-likes');
-        const icone = this.querySelector('i');
-
-			  axios.get(url).then(function(response) {
-        
-        spanCount.textContent = response.data.likes;
-
-          if(icone.classList.contains('fas')) { 
-          
-            icone.classList.replace('fas', 'far');
-
-          } else {
-
-            icone.classList.replace('far', 'fas');
-          }
-        			
-        });
-		
-		  }
-		
-		  document.querySelectorAll('a.js-like').forEach(function(link){
-
-			link.addEventListener('click', onClickBtnLike);
-		})
-
-
-
-    function onClickAddPlaylist(event) {
-
-      event.preventDefault();
-
-    const url = this.href;
-
-    const symbole = this.querySelector('i');
-
-    axios.get(url).then(function(response) {
-
-      if(symbole.classList.contains('fas')) { 
-  
-        symbole.classList.replace('fas', 'far');
-
-      } else {
-
-        symbole.classList.replace('far', 'fas');
-      }
-      
-    });
-
-    }
-
-    document.querySelectorAll('a.js-play').forEach(function(link){
-
-      link.addEventListener('click', onClickAddPlaylist);
-  })
-
-  </script>
+    <script src="{{asset("js/videolike.js")}}"></script>
+    <script src="{{asset("js/playlist.js")}}"></script>
 {% endblock %}
 </body>
 </html>

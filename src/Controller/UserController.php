@@ -157,4 +157,19 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    /**
+     */
+    public function showAvatar(AvatarRepository $repoAvatar)
+    {
+
+        $username = new Users();
+        $username = $this->getUser();
+
+        $avatars = $repoAvatar->findByUser($username);
+
+        return $this->render('user/avatar.html.twig', [
+            'avatars' => $avatars,
+        ]);
+    }
 }

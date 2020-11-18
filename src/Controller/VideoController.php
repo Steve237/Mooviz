@@ -178,7 +178,6 @@ class VideoController extends AbstractController
 
     /**
      * //retourne le formulaire de recherche
-     * @Route("/main/searchbar", name="videosearch")
     */
     public function searchVideo() {
     
@@ -216,7 +215,7 @@ class VideoController extends AbstractController
             20 /*limit per page*/
         );
 
-            if (!$videos) {
+            if ($repository->search($query) == null) {
 
                 return $this->render('video/noresult.html.twig');
             }
