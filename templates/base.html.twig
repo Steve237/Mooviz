@@ -145,25 +145,8 @@
     </div><!-- close #header-user-profile-menu -->
   </div><!-- close #header-user-profile -->
   
-  <div id="header-user-notification">
-    <div id="header-user-notification-click" class="noselect">
-      <i class="far fa-bell"></i>
-      <span class="user-notification-count">3</span>
-    </div><!-- close #header-user-profile-click -->
-    <div id="header-user-notification-menu">
-      <h3>Notifications</h3>
-      <div id="header-notification-menu-padding">
-          <ul id="header-user-notification-list">
-            <li><a href="#!"><img src="{{asset("images/demo/user-profile-2.jpg")}}" alt="Profile">Lorem ipsum dolor sit amet, consec tetur adipiscing elit. <div class="header-user-notify-time">21 hours ago</div></a></li>
-            <li><a href="#!"><img src="{{asset("images/demo/user-profile-3.jpg")}}" alt="Profile">Donec vitae lacus id arcu molestie mollis. <div class="header-user-notify-time">3 days ago</div></a></li>
-            <li><a href="#!"><img src="{{asset("images/demo/user-profile-4.jpg")}}" alt="Profile">Aenean vitae lectus non purus facilisis imperdiet. <div class="header-user-notify-time">5 days ago</div></a></li>
-          </ul>
-          <div class="clearfix"></div>
-        </div><!-- close #header-user-profile-menu -->
-      </div>
-  </div><!-- close #header-user-notification -->
-  
-  
+  {{ render(controller('App\\Controller\\AdminController::showNotifications'))}}
+
   
   <div class="clearfix"></div>
   
@@ -271,7 +254,6 @@
 		<script src="{{asset("js/circle-progress.min.js")}}" defer></script><!-- Circle Progress JS Plugin -->
 		<script src="{{asset("js/afterglow.min.js")}}" defer></script><!-- Video Player JS Plugin -->
     <script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
-    <script src="{{asset("js/commentform.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
     <script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
     <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>

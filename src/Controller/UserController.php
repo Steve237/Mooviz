@@ -11,6 +11,7 @@ use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,9 +19,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/main/user", name="userprofile")
-     */
     public function userProfile(UsersRepository $repo, PlaylistRepository $repository, VideosRepository $videorepo, AvatarRepository $repoAvatar)
     {
 
@@ -36,7 +34,7 @@ class UserController extends AbstractController
         $playlists = $repository->showVideoByUser($username);
         $videos = $videorepo->getVideos();
 
-        return $this->render('user/userprofile.html.twig', [
+        return $this->render('user/mainprofile.html.twig', [
             'avatars' => $avatars,
             'user' => $user,
             'playlists' => $playlists,
@@ -46,9 +44,45 @@ class UserController extends AbstractController
 
    
 
+    /**
+     * @Route("/main/user", name="userprofile")
+     */
+    public function showNewVideo(VideosRepository $videorepo)
+    {
 
-     /**
+        $videos = $videorepo->getVideos();
+
+        return $this->render('user/userprofile.html.twig', [
+            
+            'videos' => $videos
+        ]);
+    }
+
+
+    /**
+     * @Route("/main/userplaylist", name="user_playlist")
+     */
+    public function showPlaylist(PlaylistRepository $repository, PaginatorInterface $paginator, Request $request)
+    {    
+            $user = new Users();
+            $user = $this->getUser();
+    
+            $playlists = $paginator->paginate(
+            $repository->showVideoByUser($user),
+            $request->query->getInt('page', 1), /*page number*/
+                20 /*limit per page*/
+            );
+            
+            return $this->render('user/userplaylist.html.twig', [
+                "playlists" => $playlists
+            ]);
+        
+    }
+
+    
+    /**
      * @Route("/main/update_avatar", name="avatar_update")
+     * //permet d'ajouter un avatar
      */
     public function userAvatar(Request $request, EntityManagerInterface $entity, AvatarRepository $repoAvatar) { 
 
@@ -88,9 +122,9 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/main/update_avatar/{id}", name="update_image")
+     * //permet de modifier un avatar
      */
     public function updateUser(Avatar $avatar, Request $request, EntityManagerInterface $entity) { 
 
@@ -127,6 +161,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/main/user_account/{id}", name="user_account")
+     * //permet d'accéder et de modifier les infos du compte user
     */
     public function userAccount(Users $user, Request $request, EntityManagerInterface $entity, AvatarRepository $repoAvatar, UsersRepository $repoUser, UserPasswordEncoderInterface $encoder) { 
 
@@ -159,6 +194,7 @@ class UserController extends AbstractController
 
 
     /**
+     *permet d'afficher avatar
      */
     public function showAvatar(AvatarRepository $repoAvatar)
     {

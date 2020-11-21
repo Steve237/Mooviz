@@ -1,0 +1,31 @@
+<div id="header-user-notification">
+    {% if notifications %}
+    <div id="header-user-notification-click" class="noselect">
+        <i class="fas fa-bell"></i>
+        <span class="user-notification-count">{{number}}</span>
+    </div><!-- close #header-user-profile-click -->
+    {% else %}
+    <div id="header-user-notification-click" class="noselect">
+        <i class="far fa-bell"></i>
+        <span class="user-notification-count">0</span>
+    </div><!-- close #header-user-profile-click -->
+    {% endif %}
+    
+    <div id="header-user-notification-menu">
+        <h3>Notifications</h3>
+        <div id="header-notification-menu-padding">
+            {% if notifications %}
+            <ul id="header-user-notification-list">
+                {% for notification in notifications %}
+                <li><a href="{{path("movie", {"id" : notification.video.id, "idcategory" : notification.video.category.id})}}"><img src="{{asset('images/upload/' ~ notification.video.videoimage)}}" alt="Profile" class="notification-image">{{notification.video.videotitle}}<div class="header-user-notify-time">{{notification.video.publicationdate|date("d/m/y")}}</div></a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <ul id="header-user-notification-list">
+                <p style="text-align:center;margin:5px">Aucune notification à afficher</p>
+            </ul>
+            {% endif %}
+            <div class="clearfix"></div>
+        </div><!-- close #header-user-profile-menu -->
+    </div>
+</div><!-- close #header-user-notification -->

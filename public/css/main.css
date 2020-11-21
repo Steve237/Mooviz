@@ -4930,3 +4930,16 @@ margin-top:170px;
 	margin-bottom:15px;
 }
 
+.link {
+
+	text-decoration:underline;
+	color:blue;
+
+}
+
+.notification-image {
+
+	width:45px;
+	height:45px;
+
+}
