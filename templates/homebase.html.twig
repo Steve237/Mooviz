@@ -113,6 +113,8 @@
 			</div><!-- close .container -->
 		</footer>
 		
+		{% block javascripts %}
+		
 		<!-- Required Framework JavaScript -->
 		<script src="js/libs/jquery-3.3.1.min.js"></script><!-- jQuery -->
 		<script src="js/libs/popper.min.js" defer></script><!-- Bootstrap Popper/Extras JS -->
@@ -124,6 +126,12 @@
 		<script src="js/navigation.js" defer></script><!-- Header Navigation JS -->
 		<script src="js/jquery.flexslider-min.js" defer></script><!-- Custom Document Ready JS -->		
 		<script src="js/script.js" defer></script><!-- Custom Document Ready JS -->
+		<script src="https://js.stripe.com/v3/"></script>
+		<script src="{{asset("js/payment.js")}}" defer></script><!-- Custom Document Ready JS -->
+
+
+
+		{% endblock %}
 		
 	</body>
 </html>
