@@ -31,7 +31,7 @@
                                     <label>Password : </label>
                                     <input type="password" required name="_password" class="form-control" placeholder="Entrez votre mot de passe">
                                 </div>
-
+								<input type="hidden" name="_target_path" value="{{path('home')}}"/>
                                 <div class="form-group last-form-group-continue">
                                     <input type="submit" class="btn btn-primary" value="continue">
 								</div>
@@ -50,7 +50,7 @@
 							 
 							 <div class="clearfix"></div>
 							
-							 <a class="not-a-member-pro" href="{{path('inscription')}}">Not a member? <span>Join Today!</span></a>
+							 <a class="not-a-member-pro" href="{{path('tarif')}}">Not a member? <span>Join Today!</span></a>
 								
 							<p class="newpass"><a href="{{path('recoveryPass')}}">Forgot your password?</a></p>
 							

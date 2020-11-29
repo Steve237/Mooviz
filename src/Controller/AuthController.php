@@ -4,12 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Form\ResetPassType;
+use App\Entity\Subscription;
 use App\Form\InscriptionType;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -19,12 +21,19 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class AuthController extends AbstractController
 {
     /**
-     * @Route("/inscription", name="inscription")
+     * @Route("/inscription/{plan}", name="inscription")
      */
-    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer)
-    {
+    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan)
+    {  
+        if( $request->isMethod('GET')  ) 
+        {
+            $session->set('planName', $plan);    
+            $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));    
+        }
+        
         $users = new Users();
         $form = $this->createForm(InscriptionType::class, $users);
+
 
         $form->handleRequest($request);
 
@@ -35,23 +44,68 @@ class AuthController extends AbstractController
             $users->setConfirmPassword($passwordCrypte);
         
             $users->setActivationToken(md5(uniqid()));
+            $users->setRoles('ROLE_USER');
+
+            $date = new \Datetime();
+            $date->modify('+1 year');
+            $subscription = new Subscription();
+            $subscription->setValidTo($date);
+            $subscription->setPlan($session->get('planName'));
+            $subscription->setFreePlanUsed(false);
+            
+            if($plan == Subscription::getPlanDataNameByIndex(0)) // free plan
+            {   
+                $date_free_user = new \Datetime();
+                $date_free_user->modify('+1 month');
+                $subscription->setFreePlanUsed(true);
+                $subscription->setPaymentStatus('paid');
+
+
+                $message = (new \Swift_Message('Nouveau compte'))
+                    // On attribue l'expéditeur
+                    ->setFrom('essonoadou@gmail.com')
+                    // On attribue le destinataire
+                    ->setTo($users->getEmail())
+                    // On crée le texte avec la vue
+                    ->setBody(
+                        $this->renderView('email/activation.html.twig', ['token' => $users->getActivationToken()]),
+                        'text/html'
+                    );
+                $mailer->send($message);
+
+                $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.'); 
+
+                return $this->redirectToRoute('connexion');
+            }
+
+
+            $users->setSubscription($subscription);
 
             $entity->persist($users);
             $entity->flush();   
-        
-            $message = (new \Swift_Message('Nouveau compte'))
-            // On attribue l'expéditeur
-            ->setFrom('essonoadou@gmail.com')
-            // On attribue le destinataire
-            ->setTo($users->getEmail())
-            // On crée le texte avec la vue
-            ->setBody($this->renderView('email/activation.html.twig', ['token' => $users->getActivationToken()]),
-            'text/html'
-            )
-            ;
-            $mailer->send($message);
 
-            $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.'); 
+            $userToken = $session->set('activationToken', $users->getActivationToken());
+            $userMail = $session->set('email', $users->getEmail());   
+            $userSubscription =  $session->set('subscription', $subscription);      
+
+            if($plan == Subscription::getPlanDataNameByIndex(1)) // starter plan
+            {   
+                $inscription = 'ok';
+                
+                $verif = $session->set('inscription', $inscription);
+
+                
+                return $this->redirectToRoute('checkout');
+            }
+
+            if($plan == Subscription::getPlanDataNameByIndex(2)) // starter plan
+            {   
+                $verifAuth = 'verif_ok';
+                
+                $verif = $session->set('inscription', $verifAuth);
+                
+                return $this->redirectToRoute('premium');
+            }
         
         }
         
@@ -63,7 +117,7 @@ class AuthController extends AbstractController
     /**
     * @Route("/activation/{token}", name="activation")
     */
-    public function activation($token, UsersRepository $users)
+    public function activation($token, UsersRepository $users, SessionInterface $session, EntityManagerInterface $entity)
     {
         // On recherche si un utilisateur avec ce token existe dans la base de données
         $user = $users->findOneBy(['activation_token' => $token]);
@@ -80,10 +134,15 @@ class AuthController extends AbstractController
 
         // On supprime le token
         $user->setActivationToken(null);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($user);
-        $entityManager->flush();
-
+        $entity->persist($user);
+        
+        //On indique que le forfait est payé
+        $subscription = $session->get('subscription');
+        $subscription->setPaymentStatus('paid');
+        $entity->persist($subscription);
+        
+        $entity->flush();
+        
         // On génère un message
         $this->addFlash('message', 'Utilisateur activé avec succès');
 
@@ -180,6 +239,25 @@ class AuthController extends AbstractController
         // On envoie le formulaire à la vue
         return $this->render('auth/recoveryPassword.html.twig',['form' => $form->createView()]);
     }
+
+
+
+    /**
+    * @Route("/test", name="test")
+    */
+    public function test(SessionInterface $session) {
+
+        //exemple utilisation token
+        $foo = $session->get('activationToken');   
+        
+        var_dump($foo);
+        die();
+
+
+    }
+
+
+
 
 
     /**

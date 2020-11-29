@@ -4,11 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
 		<link rel="stylesheet" href="{{asset("css/main.css")}}">
-		<link rel="stylesheet" href="icons/fontawesome/css/fontawesome-all.min.css"><!-- FontAwesome Icons -->
-		<link rel="stylesheet" href="icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css"><!-- iconsmind.com Icons -->
+		<link rel="stylesheet" href="{{asset('icons/fontawesome/css/fontawesome-all.min.css')}}"><!-- FontAwesome Icons -->
+		<link rel="stylesheet" href="{{asset('icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css')}}"><!-- iconsmind.com Icons -->
 		
 		<title>SKRN - Media Streaming App</title>
 	</head>
@@ -17,12 +17,12 @@
 		<header id="masthead-pro">
 			<div class="container">
 				
-				<h1><a href="{{path('home')}}"><img src="images/logo.png" alt="Logo"></a></h1>
+				<h1><a href="{{path('home')}}"><img src="{{asset('images/logo.png')}}" alt="Logo"></a></h1>
 				
 				<nav id="site-navigation-pro">
 					<ul class="sf-menu">
 						<li class="normal-item-pro">
-							<a href="{{path('home')}}">Home</a>
+							<a href="{{path('home')}}">Accueil</a>
 						</li>
 						<li class="normal-item-pro">
 							<!-- Sub-Menu Example >
@@ -40,7 +40,7 @@
 							< End Sub-Menu example -->
 						</li>
 						<li class="normal-item-pro current-menu-item">
-							<a href="{{path('pricing')}}">Pricing Plans</a>
+							<a href="{{path('tarif')}}">Tarifs</a>
 						</li>
 						<li class="normal-item-pro">
 							<a href="faqs.html">FAQs</a>
@@ -48,9 +48,9 @@
 					</ul>
 				</nav>
 				
-				<a href="{{path('inscription')}}" class="btn btn-header-pro btn-green-pro noselect">Start a Free Trial</a>
+				<a href="{{path('inscription', {'plan' : 'plan'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
 				
-				<a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Sign In</button></a>
+				<a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
 				
 				<div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
 				
@@ -80,7 +80,7 @@
 						< End Mobile Sub-Menu Example -->
 					</li>
 					<li>
-						<a href="signup-step1.html">Pricing Plans</a>
+						<a href="{{path('tarif')}}">Tarifs</a>
 					</li>
 					<li>
 						<a href="faqs.html">FAQs</a>
@@ -116,22 +116,20 @@
 		{% block javascripts %}
 		
 		<!-- Required Framework JavaScript -->
-		<script src="js/libs/jquery-3.3.1.min.js"></script><!-- jQuery -->
-		<script src="js/libs/popper.min.js" defer></script><!-- Bootstrap Popper/Extras JS -->
-		<script src="js/libs/bootstrap.min.js" defer></script><!-- Bootstrap Main JS -->
+		<script src="{{asset('js/libs/jquery-3.3.1.min.js')}}"></script><!-- jQuery -->
+		<script src="{{asset('js/libs/popper.min.js')}}" defer></script><!-- Bootstrap Popper/Extras JS -->
+		<script src="{{asset('js/libs/bootstrap.min.js')}}" defer></script><!-- Bootstrap Main JS -->
 
 		<!-- All JavaScript in Footer -->
 		
 		<!-- Additional Plugins and JavaScript -->
-		<script src="js/navigation.js" defer></script><!-- Header Navigation JS -->
-		<script src="js/jquery.flexslider-min.js" defer></script><!-- Custom Document Ready JS -->		
-		<script src="js/script.js" defer></script><!-- Custom Document Ready JS -->
+		<script src="{{asset('js/navigation.js')}}" defer></script><!-- Header Navigation JS -->
+		<script src="{{asset('js/jquery.flexslider-min.js')}}" defer></script><!-- Custom Document Ready JS -->		
+		<script src="{{asset('js/script.js')}}" defer></script><!-- Custom Document Ready JS -->
 		<script src="https://js.stripe.com/v3/"></script>
-		<script src="{{asset("js/payment.js")}}" defer></script><!-- Custom Document Ready JS -->
-
-
-
-		{% endblock %}
+		<script src="{{asset("js/subscription.js")}}" defer></script><!-- Custom Document Ready JS -->
+		<script src="{{asset("js/premium.js")}}" defer></script><!-- Custom Document Ready JS -->
+	{% endblock %}
 		
 	</body>
 </html>

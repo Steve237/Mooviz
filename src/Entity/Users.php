@@ -44,11 +44,6 @@ class Users implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
-     */
-    private $avatar;
-
-    /**
-     * @ORM\Column(type="string", length=255)
      * @Assert\Length(min=5,max=20,minMessage="Il faut au moins 5 caractères",maxMessage="Il faut au maximum 20 caractères")
     */
     private $password;
@@ -90,6 +85,11 @@ class Users implements UserInterface, \Serializable
      */
     private $imageuser;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Subscription::class, inversedBy="users", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $subscription;
+
 
     public function __construct()
     {
@@ -123,18 +123,6 @@ class Users implements UserInterface, \Serializable
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar($avatar)
-    {
-        $this->avatar = $avatar;
 
         return $this;
     }
@@ -312,6 +300,18 @@ class Users implements UserInterface, \Serializable
         $this->username,
         $this->password,
         ) = unserialize($serialized);
+        }
+
+        public function getSubscription(): ?Subscription
+        {
+            return $this->subscription;
+        }
+
+        public function setSubscription(?Subscription $subscription): self
+        {
+            $this->subscription = $subscription;
+
+            return $this;
         }
         
 }

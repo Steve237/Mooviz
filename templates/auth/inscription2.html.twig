@@ -1,0 +1,93 @@
+{% extends 'homebase.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+	<div id="content-pro">
+			
+  	 	<div class="container">
+			<div class="centered-headings-pro pricing-plans-headings">
+				<h1>Formulaire d'inscription</h1>
+			</div>
+		</div><!-- close .container -->
+			
+		<div id="pricing-plans-background-image">
+			<div class="container">
+				<div class="registration-steps-page-container">
+						
+					{{form_start(form)}}
+	  					<form class="registration-steps-form">
+							 
+							<div class="registration-social-login-container">
+
+    	  						<div class="form-group">
+									{{form_row(form.username,{
+										"attr" : {
+											"placeholder":"Entrez votre pseudo",
+											"class":"form-label form-control"
+										},
+										"label" : "Votre pseudo"
+									})}}
+								</div>
+    	  						<div class="form-group">
+									 {{form_row(form.email,{
+										"attr" : {
+											"placeholder":"Entrez votre adresse email",
+											"class":"form-label form-control"
+										},
+										"label" : "Votre Email"
+									})}}
+								</div>
+
+								<div class="form-group">
+									{{form_row(form.password,{
+										"attr" : {
+										"placeholder":"Entrez votre mot de passe",
+										"class":"form-label form-control"
+									},
+									"label" : "Votre Mot de passe"
+									})}}
+								</div>
+								<div class="form-group">
+									{{form_row(form.confirmPassword, {
+										"attr" : {
+									   		"placeholder":"Confirmez votre mot de passe",
+									   		"class":"form-label form-control"
+								   		},
+								   		"label" : "Confirmation du mot de passe"
+							   		})}}
+						   		</div>
+								 
+								<div class="registration-social-login-or">or</div>
+								 
+							</div><!-- close .registration-social-login-container -->
+							 
+							<div class="registration-social-login-options">
+								<h6>Sign up with one of your social accounts</h6>
+								<div class="social-icon-login facebook-color"><i class="fab fa-facebook-f"></i> Facebook</div>
+								<div class="social-icon-login twitter-color"><i class="fab fa-twitter"></i> Twitter</div>
+								<div class="social-icon-login google-color"><i class="fab fa-google-plus-g"></i> Google</div>
+							</div><!-- close .registration-social-login-options -->
+							 
+							<div class="clearfix"></div>
+	  						<div class="form-group last-form-group-continue">
+	  							<input type="submit" class="btn btn-primary" value="continue">
+								<span class="checkbox-remember-pro"><input type="checkbox" id="checkbox-terms"><label for="checkbox-terms" class="col-form-label">By clicking "Continue", you agree to our <a href="#!">Terms of Use</a> and 
+									<a href="#!">Privacy Policy</a> including the use of cookies.</label></span>
+								<div class="clearfix"></div>
+	  						</div>
+							{{form_widget(form)}}
+
+						</form>
+					{{form_end(form)}}
+							
+				</div><!-- close .registration-steps-page-container -->
+					
+			</div><!-- close .container -->
+		</div><!-- close #pricing-plans-background-image -->
+			
+	</div><!-- close #content-pro -->
+{% endblock %}
+		
+		
