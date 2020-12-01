@@ -19,7 +19,8 @@ class VideosRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Videos::class);
     }
-
+    
+    //affiche vidéos par categories
     public function getVideoByCategory($category) {
 
         return $this->createQueryBuilder('v')
@@ -31,7 +32,7 @@ class VideosRepository extends ServiceEntityRepository
         ;
     }
 
-
+    //Affiche 21 vidéos à la page profil (nouveautés)
     public function getVideos() {
 
         return $this->createQueryBuilder('v')
@@ -43,7 +44,7 @@ class VideosRepository extends ServiceEntityRepository
         ;
     }
 
-
+    //affiche suggestion des vidéos de la même categorie que la vidéo choisi
     public function showVideoByCategory($category, $id) {
 
         return $this->createQueryBuilder('v')
@@ -57,7 +58,8 @@ class VideosRepository extends ServiceEntityRepository
         
         ;
     }
-
+    
+    // assure la recherche des vidéos par titre
     public function search($videoTitle) {
         return $this->createQueryBuilder('v')
             ->andWhere('v.videotitle LIKE :videotitle')
@@ -66,16 +68,26 @@ class VideosRepository extends ServiceEntityRepository
             ->execute();
     }
 
-
+    //permet de réaliser la pagination
     public function findAllWithPagination() : Query{
 
         return $this->createQueryBuilder('v')
             ->getQuery();
         
+    }
 
 
 
+    //affiche les vidéos de l'user
+    public function getVideoByUser($user) {
 
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->getQuery()
+        ->getResult()
+        
+        ;
     }
 
 

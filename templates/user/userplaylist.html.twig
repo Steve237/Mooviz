@@ -8,6 +8,7 @@
 
         
         <div class="row">
+          {% if playlists %}
             {% for playlist in playlists %}
             <div class="col-12 col-md-6 col-lg-6 col-xl-4">
               <div class="item-listing-container-skrn">
@@ -31,6 +32,17 @@
                 </div><!-- close .item-listing-container-skrn -->
             </div><!-- close .col -->
             {% endfor %}
+
+            
+            {%   else   %}
+
+            <div class="no-playlist">
+
+                <h4 class="no-playlist-text">Votre playlist ne contient aucune vidéo</h4>
+
+            </div>
+            
+            {%  endif %}
                             
         </div><!-- close .row -->
         

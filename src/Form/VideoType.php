@@ -16,8 +16,8 @@ class VideoType extends AbstractType
         $builder
             ->add('videotitle')
             ->add('videodescription', TextareaType::class)
-            ->add('imageFile', FileType::class, ['required'=>false])
-            ->add('videolink')
+            ->add('videoimage', FileType::class)
+            ->add('videolink', FileType::class)
             ->add('category')
         ;
     }

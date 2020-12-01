@@ -90,11 +90,17 @@ class Users implements UserInterface, \Serializable
      */
     private $subscription;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="username")
+     */
+    private $videos;
+
 
     public function __construct()
     {
         $this->likes = new ArrayCollection();
         $this->playlists = new ArrayCollection();
+        $this->videos = new ArrayCollection();
        
     }
 
@@ -310,6 +316,37 @@ class Users implements UserInterface, \Serializable
         public function setSubscription(?Subscription $subscription): self
         {
             $this->subscription = $subscription;
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Videos[]
+         */
+        public function getVideos(): Collection
+        {
+            return $this->videos;
+        }
+
+        public function addVideo(Videos $video): self
+        {
+            if (!$this->videos->contains($video)) {
+                $this->videos[] = $video;
+                $video->setUsername($this);
+            }
+
+            return $this;
+        }
+
+        public function removeVideo(Videos $video): self
+        {
+            if ($this->videos->contains($video)) {
+                $this->videos->removeElement($video);
+                // set the owning side to null (unless already changed)
+                if ($video->getUsername() === $this) {
+                    $video->setUsername(null);
+                }
+            }
 
             return $this;
         }

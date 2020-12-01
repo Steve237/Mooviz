@@ -19,10 +19,7 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    // /**
-    //  * @return Category[] Returns an array of Category objects
-    //  */
-    /*
+   
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -34,8 +31,25 @@ class CategoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-    */
 
+
+    
+    public function FindId($videoname) {
+
+
+
+
+
+
+    }    
+    
+    
+
+    
+
+    
+    
+    
     /*
     public function findOneBySomeField($value): ?Category
     {

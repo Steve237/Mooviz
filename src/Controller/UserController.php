@@ -49,7 +49,7 @@ class UserController extends AbstractController
      */
     public function showNewVideo(VideosRepository $videorepo)
     {
-
+        //permet d'obtenir les nouvelles vidéos
         $videos = $videorepo->getVideos();
 
         return $this->render('user/userprofile.html.twig', [
@@ -61,6 +61,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/main/userplaylist", name="user_playlist")
+     * //permet de voir la playlist
      */
     public function showPlaylist(PlaylistRepository $repository, PaginatorInterface $paginator, Request $request)
     {    

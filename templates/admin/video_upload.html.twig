@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profil{% endblock %}
+
+{% block body %}
+
+{{ render(controller('App\\Controller\\UserController::userProfile'))}}
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="row">
+          {% if videos %}
+            {% for video in videos %}
+            <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+              <div class="item-listing-container-skrn">
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
+                          <div
+                            class="circle-rating-pro"
+                            data-value="0.86"
+                            data-animation-start-value="0.86"
+                            data-size="32"
+                            data-thickness="3"
+                            data-fill="{
+                              &quot;color&quot;: &quot;#42b740&quot;
+                            }"
+                            data-empty-fill="#def6de"
+                            data-reverse="true"
+                          ><span style="color:#42b740;">8.6</span></div>
+                        </div><!-- close .item-listing-text-skrn-vertical-align -->
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-listing-container-skrn -->
+            </div><!-- close .col -->
+            {% endfor %}
+
+            
+            {%   else   %}
+
+            <div class="no-playlist">
+
+                <h4 class="no-playlist-text">Vous n'avez pas encore ajouté de vidéos</h4>
+
+            </div>
+            
+            {%  endif %}
+                            
+        </div><!-- close .row -->
+        
+      </div><!-- close .dashboard-container -->
+</main>
+
+{% endblock %}

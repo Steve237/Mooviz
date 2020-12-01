@@ -64,11 +64,6 @@ class Videos
     private $sliderimage;
 
     /**
-     * @Vich\UploadableField(mapping="video_image", fileNameProperty="videoimage")
-     */
-    private $imageFile;
-
-    /**
      * @ORM\Column(type="bigint", nullable=true)
      */
     private $views;
@@ -87,6 +82,12 @@ class Videos
      * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="video", orphanRemoval=true)
      */
     private $notifications;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $username;
 
     public function __construct()
     {
@@ -140,24 +141,24 @@ class Videos
     }
 
 
-    public function getVideoimage(): ?string
+    public function getVideoimage()
     {
         return $this->videoimage;
     }
 
-    public function setVideoimage(?string $videoimage): self
+    public function setVideoimage($videoimage)
     {
         $this->videoimage = $videoimage;
 
         return $this;
     }
 
-    public function getVideolink(): ?string
+    public function getVideolink()
     {
         return $this->videolink;
     }
 
-    public function setVideolink(string $videolink): self
+    public function setVideolink($videolink)
     {
         $this->videolink = $videolink;
 
@@ -346,6 +347,18 @@ class Videos
                 $notification->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUsername(): ?Users
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?Users $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
