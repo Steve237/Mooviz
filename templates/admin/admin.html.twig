@@ -4,22 +4,22 @@
 
 {% block body %}
 
-<h1 style="text-align:center;padding-top:30px"> Ajouter une video</h1>
-<div style="width:800px; margin:auto; padding-top:20px">
-    <div class="progress">
+<h3 style="text-align:center;padding-top:30px;margin-top:50px;color:blue"> Ajouter une video</h3>
+<div style="width:800px; margin:auto; padding-top:20px;">
+    <div class="progress invisible" id="progress-bar">
         <div class="progress-bar"></div>
-        </div>
+    </div>
     <div id="uploadStatus"></div>
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
     {{form_start(form,  {"attr" : {'id':'uploadForm'}})}}
 
-    <div>{{form_row(form.videotitle, {"attr" : {'class':'form-control'}})}}</div>
-    <div>{{form_row(form.videodescription, {"attr" : {'class':'form-control'}})}}</div>
-    <div>{{form_row(form.videoimage, {"attr" : {'class':'form-control'}})}}</div>
-    <div>{{form_row(form.videolink, {"attr" : {'class':'form-control', 'id':'inputFile'}})}}</div>
-    <div>{{form_row(form.category, {"attr" : {'class':'form-control'}})}}</div>
-    <div>{{form_widget(form)}}</div>
-    <input type="submit" class="btn btn-primary" value"ajouter">
-
+    <div class="form-group">{{form_row(form.videotitle, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(form.videodescription, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(form.videoimage, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(form.videolink, {"attr" : {'class':'form-control', 'id':'inputFile'}})}}</div>
+    <div class="form-group">{{form_row(form.category, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_widget(form)}}</div>
+    <button type="submit" class="btn" onclick="changeClass()" style="margin-left:35px;background-color:blue;color:white">Ajouter video</button></div>
     {{form_end(form)}}
 </div>
 {% endblock %}

@@ -1,3 +1,12 @@
+//permet de rendre visible la barre de progrès lors du téléchargement
+function changeClass() {
+
+    document.getElementById("progress-bar").className = "visible";
+
+
+}
+
+//permet d'afficher le progrès de l'upload via la barre de progrès
 $(document).ready(function(){
     // File upload via Ajax
     $("#uploadForm").on('submit', function(e){

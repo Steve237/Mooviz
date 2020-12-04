@@ -13,6 +13,7 @@ use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotificationsRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -102,14 +103,18 @@ class AdminController extends AbstractController
      * @Route("/user_videos", name="user_videos")
      * //permet à l'user de voir les vidéos qu'il a ajouté
      */
-    public function addVideoFile(VideosRepository $videorepo) {
+    public function userVideo(VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
 
         $user = new Users();
         $userName = $this->getUser();
-        
-        $videos = $videorepo->getVideoByUser($userName);
 
-        return $this->render('admin/video_upload.html.twig', [
+        $videos = $paginator->paginate(
+            $videorepo->getVideoByUser($userName),
+            $request->query->getInt('page', 1), /*page number*/
+                20 /*limit per page*/
+            );
+
+        return $this->render('admin/user_video.html.twig', [
             
             'videos' => $videos
             
@@ -138,5 +143,4 @@ class AdminController extends AbstractController
 
 
     }
-
 }

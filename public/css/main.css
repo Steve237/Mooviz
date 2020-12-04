@@ -4960,3 +4960,10 @@ margin-top:170px;
 	margin-top:200px;
 
 }
+
+.visible {
+  visibility: visible;
+}
+.invisible {
+  visibility: hidden;
+}
