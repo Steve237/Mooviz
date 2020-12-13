@@ -221,9 +221,9 @@
             </a>
           </li>
           <li class="normal-item-pro">
-            <a href="">
+            <a href="{{path('followed_videos_list')}}">
         <span class="icon-Movie-Ticket"></span>
-              Nouveautés
+              Abonnements
             </a>
           </li>
           <li class="normal-item-pro">
@@ -264,13 +264,10 @@
     <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
     <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5fa1b4242a7af500195a7761&product=inline-share-buttons" async="async"></script>
     <script src="{{asset("js/videolike.js")}}"></script>
     <script src="{{asset("js/playlist.js")}}"></script>
     <script src="{{asset("js/upload.js")}}"></script>
     <script src="{{asset("js/input_file.js")}}"></script>
-
-
 {% endblock %}
 </body>
 </html>

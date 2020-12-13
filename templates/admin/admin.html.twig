@@ -4,8 +4,10 @@
 
 {% block body %}
 
-<h3 style="text-align:center;padding-top:30px;margin-top:50px;color:blue"> Ajouter une video</h3>
-<div style="width:800px; margin:auto; padding-top:20px;">
+<div class="close_admin_video_page"><i class="fas fa-window-close fa-3x"></i></div>
+<h3 class="title_admin_video"> Modifier une vidéo </h3>
+
+<div class="form_upload_video">
     <div class="progress invisible" id="progress-bar">
         <div class="progress-bar"></div>
     </div>
@@ -16,10 +18,10 @@
     <div class="form-group">{{form_row(form.videotitle, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_row(form.videodescription, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_row(form.videoimage, {"attr" : {'class':'form-control'}})}}</div>
-    <div class="form-group">{{form_row(form.videolink, {"attr" : {'class':'form-control', 'id':'inputFile'}})}}</div>
+    <div class="form-group">{{form_row(form.videolink, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_row(form.category, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_widget(form)}}</div>
-    <button type="submit" class="btn" onclick="changeClass()" style="margin-left:35px;background-color:blue;color:white">Ajouter video</button></div>
-    {{form_end(form)}}
+    <button type="submit" class="btn btn_video" onclick="changeClass()">Ajouter video</button>
 </div>
+{{form_end(form)}}
 {% endblock %}

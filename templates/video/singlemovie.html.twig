@@ -46,10 +46,6 @@
 							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p></strong>
 							
 							<div class="row">
-								<div class="col-md-6 col-lg-6 col-sm-6 col-xs-6">
-									<div style class="sharethis-inline-share-buttons"></div>
-								</div>
-							
 								<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
 									<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
 										Playlist
@@ -69,6 +65,19 @@
 										{% endif %}
 										<span class="js-likes">{{video.likes | length}}</span>
 									</a>
+									
+									{% if is_granted('ROLE_USER') and video.username != app.user %}
+										{% set isFollowed = video.username.followers.contains(app.user) %}
+										
+										<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}" 
+											class="btn btn-primary button_follow" id="follow">Follow
+										</button>
+										<button style="display: {% if isFollowed %}block{% else %}none{% endif %}" 
+											class="btn btn-primary button_follow" id="unfollow">UnFollow
+										</button>
+										
+									{% endif %}
+									
 								</div>
 							</div>
 						</div>
@@ -85,4 +94,55 @@
 				
 			</div><!-- close .dashboard-container -->
 		</main>
+{% endblock %}
+{% block javascript %}
+
+{{parent()}}
+
+<script>
+
+var followButton = document.getElementById('follow');
+var unfollowButton = document.getElementById('unfollow');
+
+addOnClick(
+    followButton,
+    unfollowButton,
+    '{{ path("following", {"id":video.username.id})}}'
+
+);
+
+addOnClick(
+    unfollowButton,
+    followButton,
+    '{{ path("unfollowing", {"id":video.username.id})}}'
+
+);
+
+function switchButtons(button, oppositeButton) {
+    button.disabled = false;
+	button.style.display = 'none';
+    oppositeButton.style.display = 'block';
+}
+
+function addOnClick(button, oppositeButton, path) {
+
+    button.addEventListener('click', function (event) {
+        button.disabled = true;
+
+        fetch(path, {'credentials' : 'include'}).then(function () {
+
+           
+            switchButtons(button, oppositeButton);
+            
+        }).catch(function () {
+
+            switchButtons(button, oppositeButton);
+
+
+        });
+
+        event.preventDefault();
+	});
+}
+</script>
 {% endblock %}

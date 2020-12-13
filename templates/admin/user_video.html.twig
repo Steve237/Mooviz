@@ -11,7 +11,7 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <a href="{{path('addvideo')}}"><button class="btn btn-primary" style="margin-bottom:10px;background-color:red;color:white">Ajouter vidéos</button></a>
+        <a href="{{path('addvideo')}}"><button class="btn btn-primary add_video">Ajouter vidéos</button></a>
         <div class="row">
           {% if videos %}
             {% for video in videos %}
@@ -22,8 +22,10 @@
                         <div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
                         </div><!-- close .item-listing-text-skrn-vertical-align -->
                     </div><!-- close .item-listing-text-skrn -->
-                    <div><button class="btn btn-primary btn-sm" style="margin-bottom:10px;margin-left:5px"><i class="far fa-edit fa-2x"></i></button> <button class="btn btn-primary btn-sm" style="margin-bottom:10px"><i class="fas fa-trash-alt fa-2x"></i></button> </div>
-
+                    <div>
+                        <a href="{{path('update_video', {'id': video.id})}}"><button class="btn btn-primary btn-sm btn_update"><i class="far fa-edit fa-2x"></i></button></a>
+                        <a href="{{path('delete_video', {'id': video.id})}}"><button class="btn btn-primary btn-sm btn_delete"><i class="fas fa-trash-alt fa-2x"></i></button></a>
+                    </div>
                 </div><!-- close .item-listing-container-skrn -->
             </div><!-- close .col -->
             {% endfor %}

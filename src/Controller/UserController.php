@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Entity\Avatar;
+use App\Entity\Videos;
 use App\Form\UsersType;
 use App\Form\AvatarType;
 use App\Repository\UsersRepository;
@@ -21,6 +22,7 @@ class UserController extends AbstractController
 {
     public function userProfile(UsersRepository $repo, PlaylistRepository $repository, VideosRepository $videorepo, AvatarRepository $repoAvatar)
     {
+        //Permet d'afficher l'avatar et username dans espace perso
 
         $user = $repo->findAll();
 
@@ -207,6 +209,34 @@ class UserController extends AbstractController
 
         return $this->render('user/avatar.html.twig', [
             'avatars' => $avatars,
+     
+            ]);
+    }
+
+    /**
+     *@Route("/main/user_followers", name="user_followers")
+     *permet d'obtenir la liste des users auxquels user est abonné avec leur avatar respectif
+     */
+    public function userFollower(AvatarRepository $repoAvatar)
+    {   
+        $username = new Users();
+        $user = $this->getUser();
+
+        $follow = $user->getFollowing();
+        
+        $videos = new Videos();
+
+        $avatars = $repoAvatar->findByUser($follow);
+
+
+        return $this->render('user/followers.html.twig' , [
+
+            "user" => $user,
+            "videos" => $videos,
+            "avatars" => $avatars
+
+
         ]);
     }
+
 }

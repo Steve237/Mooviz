@@ -4967,3 +4967,65 @@ margin-top:170px;
 .invisible {
   visibility: hidden;
 }
+
+.btn_video {
+
+
+margin-left:35px;
+background-color:blue;
+color:white;
+
+
+
+}
+
+.btn_update {
+
+	margin-bottom:10px;
+	margin-left:5px
+}
+
+.add_video {
+
+
+	margin-bottom:10px;
+	background-color:red;
+	color:white;
+}
+
+.title_admin_video {
+
+
+	text-align:center;
+	padding-top:30px;
+	margin-top:50px;
+	color:blue;
+
+
+}
+
+.close_admin_video_page {
+
+	position:absolute;
+	right:300px;
+	margin-top:50px
+
+}
+
+.form_upload_video{
+
+	width:800px; 
+	margin:auto; 
+	padding-top:20px;
+}
+
+.btn_delete {
+
+	margin-bottom:10px;
+}
+
+.button_follow {
+
+	margin-top:20px;
+	
+}

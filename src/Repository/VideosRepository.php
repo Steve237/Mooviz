@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Videos;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -90,7 +91,21 @@ class VideosRepository extends ServiceEntityRepository
         ;
     }
 
+    // récupère liste des vidéos où le créateur est suivi par l'utilisateur courant
 
+    public function findAllByUsers(Collection $users) {
+
+        $qb = $this->createQueryBuilder('v');
+        
+        return $qb->select('v')
+            ->andwhere('v.username IN (:following)')
+            ->setParameter('following', $users)
+            ->orderBy('v.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+    }
+    
     /*
     public function findOneBySomeField($value): ?Videos
     {

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class VideoType extends AbstractType
+class UploadType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -17,7 +17,6 @@ class VideoType extends AbstractType
             ->add('videotitle')
             ->add('videodescription', TextareaType::class)
             ->add('videoimage', FileType::class, array('data_class' => null))
-            ->add('videolink', FileType::class, array('data_class' => null))
             ->add('category')
         ;
     }

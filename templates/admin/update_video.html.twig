@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Gestion des Films {% endblock %}
+
+{% block body %}
+
+<a href="{{path('user_videos')}}"><div class="close_admin_video_page"><i class="fas fa-window-close fa-3x"></i></div></a>
+
+<h3 class="title_admin_video"> Modifier une vidéo </h3>
+<div class="form_upload_video">
+    <div class="progress invisible" id="progress-bar">
+        <div class="progress-bar"></div>
+    </div>
+    <div id="uploadStatus"></div>
+    {% form_theme updateform 'bootstrap_4_layout.html.twig' %}
+    {{form_start(updateform,  {"attr" : {'id':'uploadForm'}})}}
+
+    <div class="form-group">{{form_row(updateform.videotitle, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(updateform.videodescription, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(updateform.videoimage, {"attr" : {'class':'form-control', 'placeholder': video.videoimage}})}}</div>
+    <div class="form-group">{{form_row(updateform.category, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_widget(updateform)}}</div>
+    <button type="submit" class="btn btn_video" onclick="changeClass()">Ajouter video</button>
+</div>
+{{form_end(updateform)}}
+{% endblock %}
