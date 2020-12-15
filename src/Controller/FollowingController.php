@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Repository\VideosRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use App\Repository\VideosRepository;
 
 class FollowingController extends AbstractController
 {
@@ -61,21 +62,27 @@ class FollowingController extends AbstractController
      * @Route("/followed_videos_list", name="followed_videos_list")
      * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
      */
-    public function showFollowingVideo(TokenStorageInterface $tokenStorage, VideosRepository $videorepo) {
+    public function showFollowingVideo(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
 
         $currentUser = $tokenStorage->getToken()->getUser();
 
         if($currentUser instanceof Users) {
             
             //recupère liste des vidéos des utilisateurs auxquels il est abonné
-            $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
+            
+            $videos = $paginator->paginate(
+                $videorepo->findAllByUsers($currentUser->getFollowing()),
+                $request->query->getInt('page', 1), /*page number*/
+                20 /*limit per page*/
+
+            );
         
         } else {
 
             return $this->redirectToRoute('home');
         }
-    
-        return $this->render('following/index.html.twig', [
+
+        return $this->render('following/following_videos.html.twig', [
             'videos' => $videos,
      
             ]);

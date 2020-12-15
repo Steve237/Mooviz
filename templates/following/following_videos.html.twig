@@ -1,38 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Vos abonnements{% endblock %}
 
 {% block body %}
 <main id="col-main">
 
+  <h3 style="text-align:center;margin-top:30px;margin-bottom:30px">Les vidéos des utilisateurs auxquels vous êtes abonnés</h3>
+
 <div class="dashboard-container">
     <div class="row">
+        {% if videos %}
         {% for video in videos %}
         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
             <div class="item-listing-container-skrn">
                 <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
                 <div class="item-listing-text-skrn">
                     <div class="item-listing-text-skrn-vertical-align"><h6><a href="">{{video.videotitle}}</a></h6>
-                      <div
-                        class="circle-rating-pro"
-                        data-value="0.86"
-                        data-animation-start-value="0.86"
-                        data-size="32"
-                        data-thickness="3"
-                        data-fill="{
-                          &quot;color&quot;: &quot;#42b740&quot;
-                        }"
-                        data-empty-fill="#def6de"
-                        data-reverse="true"
-                      ><span style="color:#42b740;">8.6</span></div>
+                      <div>{{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}</div>
                     </div><!-- close .item-listing-text-skrn-vertical-align -->
                 </div><!-- close .item-listing-text-skrn -->
             </div><!-- close .item-listing-container-skrn -->
         </div><!-- close .col -->
         {% endfor %}
+        <div class="pagination">
+          <div class="navigation">
+              {{ knp_pagination_render(videos)}}
+          </div>
+        </div>
+        {% else %}
+        <h3 class="no_users_followed">Vous n'êtes encore abonné à aucun membre</h3>
+        {% endif %}
     </div><!-- close .row STOP-->
-    
-            
 </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}
