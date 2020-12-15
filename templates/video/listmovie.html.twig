@@ -5,6 +5,12 @@
 {% block body %}
 <main id="col-main">
 
+{% for message in app.flashes('no_channels') %}
+  <div class="alert alert-danger">
+      {{ message }}
+  </div>
+{% endfor %}
+
 <div class="dashboard-container">
 				
   <ul class="dashboard-genres-pro">

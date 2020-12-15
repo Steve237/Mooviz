@@ -161,6 +161,16 @@ class AdminController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
                 20 /*limit per page*/
             );
+        
+        $user_videos =  $videorepo->getVideoByUser($userName);
+
+        if(empty($user_videos)) {
+
+            $this->addFlash('no_videos', 'Vous n\'avez ajoutez aucune vidéo pour le moment, merci d\'en ajoutez.');
+            return $this->redirectToRoute('userprofile');
+
+
+        }
 
         return $this->render('admin/user_video.html.twig', [
             
@@ -172,7 +182,7 @@ class AdminController extends AbstractController
 
      /**
      * @Route("/delete_video/{id}", name="delete_video")
-     * //permet à l'user de voir les vidéos qu'il a ajouté
+     * //permet à l'user de supprimer les vidéos qu'il a ajouté
      */
     public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
 
@@ -185,8 +195,6 @@ class AdminController extends AbstractController
         
         
     }
-    
-    
     
     /**
      * 

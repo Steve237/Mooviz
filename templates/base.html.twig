@@ -128,7 +128,6 @@
   
   <div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
   
-  
   <div id="header-user-profile">
     <div id="header-user-profile-click" class="noselect">
       {{ render(controller('App\\Controller\\UserController::showAvatar'))}}
@@ -211,19 +210,19 @@
           <li class="normal-item-pro">
             <a href="{{path("allvideos")}}">
         <span class="icon-Reel"></span>
-              Films
-            </a>
-          </li>
-          <li class="normal-item-pro">
-            <a href="">
-        <span class="icon-Movie"></span>
-              Séries
+              Videos
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('followed_videos_list')}}">
-        <span class="icon-Movie-Ticket"></span>
+        <span class="icon-Movie"></span>
               Abonnements
+            </a>
+          </li>
+          <li class="normal-item-pro">
+            <a href="{{path('channels_list')}}">
+        <span class="icon-Movie-Ticket"></span>
+              Chaines
             </a>
           </li>
           <li class="normal-item-pro">
@@ -232,7 +231,12 @@
               Playlist
             </a>
           </li>
-
+          <li class="normal-item-pro">
+            <a href="{{path('addvideo')}}">
+          <span><i class="fas fa-upload"></i></span>
+              Ajoutez vidéo
+            </a>
+          </li>
         </ul>
     <div class="clearfix"></div>
 </nav>

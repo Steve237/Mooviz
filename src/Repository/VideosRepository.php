@@ -33,7 +33,7 @@ class VideosRepository extends ServiceEntityRepository
         ;
     }
 
-    //Affiche 21 vidéos à la page profil (nouveautés)
+    //Affiche 21 vidéos à la page de profil (nouveautés)
     public function getVideos() {
 
         return $this->createQueryBuilder('v')

@@ -6,7 +6,11 @@
 
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
 
-        
+        {% for message in app.flashes('no_videos') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
         <div class="row">
             {% for video in videos %}
             <div class="col-12 col-md-6 col-lg-6 col-xl-4">

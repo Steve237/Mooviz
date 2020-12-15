@@ -35,12 +35,15 @@ class UserController extends AbstractController
 
         $playlists = $repository->showVideoByUser($username);
         $videos = $videorepo->getVideos();
+        $current_user_videos = $videorepo->getVideoByUser($username);
 
         return $this->render('user/mainprofile.html.twig', [
             'avatars' => $avatars,
             'user' => $user,
             'playlists' => $playlists,
-            'videos' => $videos
+            'videos' => $videos,
+            'current_user_videos' => $current_user_videos
+
         ]);
     }
 
@@ -51,7 +54,7 @@ class UserController extends AbstractController
      */
     public function showNewVideo(VideosRepository $videorepo)
     {
-        //permet d'obtenir les nouvelles vidéos
+        //permet d'obtenir les 10 nouvelles vidéos
         $videos = $videorepo->getVideos();
 
         return $this->render('user/userprofile.html.twig', [
@@ -213,30 +216,5 @@ class UserController extends AbstractController
             ]);
     }
 
-    /**
-     *@Route("/main/user_followers", name="user_followers")
-     *permet d'obtenir la liste des users auxquels user est abonné avec leur avatar respectif
-     */
-    public function userFollower(AvatarRepository $repoAvatar)
-    {   
-        $username = new Users();
-        $user = $this->getUser();
-
-        $follow = $user->getFollowing();
-        
-        $videos = new Videos();
-
-        $avatars = $repoAvatar->findByUser($follow);
-
-
-        return $this->render('user/followers.html.twig' , [
-
-            "user" => $user,
-            "videos" => $videos,
-            "avatars" => $avatars
-
-
-        ]);
-    }
 
 }

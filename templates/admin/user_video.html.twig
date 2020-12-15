@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Votre profil{% endblock %}
+{% block title %}Vos vidéos{% endblock %}
 
 {% block body %}
 
@@ -8,16 +8,15 @@
 
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
-                {{ message }}
+                {{message}}
             </div>
         {% endfor %}
         <a href="{{path('addvideo')}}"><button class="btn btn-primary add_video">Ajouter vidéos</button></a>
         <div class="row">
-          {% if videos %}
             {% for video in videos %}
             <div class="col-12 col-md-6 col-lg-6 col-xl-4">
               <div class="item-listing-container-skrn">
-                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie img-responsive"></a>
                     <div class="item-listing-text-skrn">
                         <div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
                         </div><!-- close .item-listing-text-skrn-vertical-align -->
@@ -29,26 +28,12 @@
                 </div><!-- close .item-listing-container-skrn -->
             </div><!-- close .col -->
             {% endfor %}
-
-            
-            {%   else   %}
-
-            <div class="no-playlist">
-
-                <h4 class="no-playlist-text">Vous n'avez pas encore ajouté de vidéos</h4>
-
-            </div>
-            
-            {%  endif %}
-                            
         </div><!-- close .row -->
         <div class="pagination">
             <div class="navigation">
-                {{ knp_pagination_render(videos) }}
+                {{knp_pagination_render(videos)}}
             </div>
         </div>
-        
-      </div><!-- close .dashboard-container -->
+    </div><!-- close .dashboard-container -->
 </main>
-
 {% endblock %}

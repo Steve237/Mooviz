@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos chaines{% endblock %}
+
+{% block body %}
+
+<main id="col-main">
+    <div class="dashboard-container">
+
+        <ul class="dashboard-sub-menu">
+            <li class="current"><a href="#!">Vos chaines.</a></li>
+        </ul><!-- close .dashboard-sub-menu -->
+
+        <div class="row">
+            {% if user.following is not empty %}
+            {% for followed in user.following %}
+            {% for avatar in avatars %}
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                <div class="item-playlist-container-skrn">
+                    <a href="#!"><img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="Listing" class="img-responsive"></a>
+                    <div class="item-playlist-text-skrn">
+                        <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="User Profile" class="img-responsive">
+                        <h5><a href="#!">By: {{followed.username}}</a></h5>
+                        <h6>8 Movies, 18 hrs 24 mins</h6>
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-playlist-container-skrn -->
+            </div><!-- close .col -->
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            <div class="no-playlist">
+                <h4 class="no-playlist-text">Vous n'êtes abonné à aucune chaine</h4>
+            </div>
+            {% endif %}
+        </div><!-- close .row -->
+        {% if user.following %}
+        <div class="pagination">
+            <div class="navigation">
+                {{ knp_pagination_render(userChannel)}}
+            </div>
+        </div>
+        {% endif %}
+    </div><!-- close .dashboard-container -->
+</main>
+{% endblock %}
