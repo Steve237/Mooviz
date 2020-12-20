@@ -102,13 +102,16 @@
 				
 				<div class="comments"></div>  
 				{% for comment in comments | slice(0, 5) %}
-				<ul class="clearfix">
-					<li class="autre">
+				<ul class="clearfix" style="border-bottom:0.5px solid black;">
+					<li>
 						{{comment.content}}
 					</li> 
 					<li>
-					Publié par:	{{app.user.username}}   
-					</li>          
+					Publié par:	{{comment.username.username}} </br>
+					Date de publication: {{comment.date | date("d/m/y")}}
+					
+					</li>  		
+					<a></a><button class="btn btn-primary">Modifier</button><a href="{{path('delete_comment', {'id' : comment.id})}}"><button class="btn btn-primary">Supprimer</button></a>	
 				</ul>
 				{% endfor %}
 				<div id="statuscomment"></div>
@@ -202,15 +205,8 @@ function addOnClick(button, oppositeButton, path) {
 	});
 }
 
-
-
-
-
-
-//permet d'afficher le progrès de l'upload via la barre de progrès
-//permet d'afficher le progrès de l'upload via la barre de progrès
 $(document).ready(function(){
-    // File upload via Ajax
+    //poster un commentaire via ajax
     $("#sendcomment").on('submit', function(e){
         e.preventDefault();
         $.ajax({
@@ -223,7 +219,7 @@ $(document).ready(function(){
             processData:false,
             success: function(){
                 var comment = $('.commentBox').val();
-		$('<ul>').html('<li>' + comment + '</li>' + '<li>Publié par : {{app.user.username}}</li>').prependTo('.comments'); 
+		$('<ul style="border-bottom:0.5px solid black;">').html('<li>' + comment + '</li>' + '<li>Publié par : {{app.user.username}}</li>' + '<button class="btn btn-primary">Modifier</button><button class="btn btn-primary">Supprimer</button>').prependTo('.comments'); 
             }
         });
     });
@@ -252,20 +248,5 @@ $(document).ready(function(){
 	//
 	
 	document.getElementById("loadMoreComments").addEventListener("click", loadMoreComments);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 {% endblock %}

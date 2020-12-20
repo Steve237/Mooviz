@@ -177,6 +177,17 @@ class VideoController extends AbstractController
         ]);
     }
 
+    /**
+     * Permet de supprimer commentaire
+     * @Route("/delete_comment/{id}", name="delete_comment")
+     */
+    public function deleteComment(Comments $comment, EntityManagerInterface $entity)
+    {
+        $entity->remove($comment);
+        $entity->flush();
+        
+        return $this->redirectToRoute('user_videos');
+    }
     
     /**
     * @Route("/main/listvideo", name="allvideos")
