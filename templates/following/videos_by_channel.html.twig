@@ -4,11 +4,11 @@
 
 {% block body %}
 <main id="col-main">
+  
+<h5 style="text-align:center;margin-top:30px;margin-bottom:30px;text-decoration:underline">Vidéos de {{user.username}} </h5>
 
-  <h5 style="text-align:center;margin-top:30px;margin-bottom:30px">Vidéos des membres auxquels vous êtes abonnés</h5>
 
 <div class="dashboard-container">
-    
     <div class="row">
         {% for video in videos %}
         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
@@ -23,11 +23,13 @@
         </div><!-- close .col -->
         {% endfor %}
     </div><!-- close .row STOP-->
+    {% if videos %}
     <div class="pagination">
       <div class="navigation">
           {{ knp_pagination_render(videos)}}
       </div>
     </div>
+    {% endif %}
 </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

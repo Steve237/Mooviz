@@ -33,6 +33,16 @@ class PlaylistController extends AbstractController
             20 /*limit per page*/
         );
         
+        $have_playlist = $repository->showVideoByUser($user);
+
+            if(empty($have_playlist)){
+
+                $this->addFlash('no_channels', 'Vous n\'avez ajouté aucune vidéo à votre playlist.');
+                return $this->redirectToRoute('allvideos'); 
+
+            }
+
+
         return $this->render('playlist/playlist.html.twig', [
             "playlists" => $playlists
         ]);

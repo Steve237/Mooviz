@@ -125,11 +125,9 @@ class FollowingController extends AbstractController
             20 /*limit per page*/
 
         );
-
-        $channelUser = $repoUser->findUser($user);
-
+        
         //Si user n'a aucune chaine renvoie message flash pour l'informer
-        if(empty($channelUser)) {
+        if(empty($avatars)) {
 
             $this->addFlash('no_channels', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
             return $this->redirectToRoute('allvideos');
@@ -141,6 +139,28 @@ class FollowingController extends AbstractController
             "user" => $user,
             "videos" => $videos,
             "avatars" => $avatars
+        ]);
+    }
+
+
+
+     /**
+     * @Route("/channel/{id}", name="channel")
+     * //permet d'accéder à la liste des vidéos par chaine
+     */
+    public function Channel(Users $user, VideosRepository $repoVideo, Request $request, PaginatorInterface $paginator){
+
+        $videos = $paginator->paginate(
+            $repoVideo->getVideoByUser($user),
+            $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+
+        );
+
+        return $this->render('following/videos_by_channel.html.twig', [
+            
+            "videos" => $videos,
+            "user" => $user
         ]);
     }
 

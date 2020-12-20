@@ -119,6 +119,11 @@ class Users implements UserInterface, \Serializable
      */
     private $abonnements;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="username")
+     */
+    private $comments;
+
 
     public function __construct()
     {
@@ -128,6 +133,7 @@ class Users implements UserInterface, \Serializable
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->abonnements = new ArrayCollection();
+        $this->comments = new ArrayCollection();
 
        
     }
@@ -425,6 +431,37 @@ class Users implements UserInterface, \Serializable
                 // set the owning side to null (unless already changed)
                 if ($abonnement->getAbonne() === $this) {
                     $abonnement->setAbonne(null);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Comments[]
+         */
+        public function getComments(): Collection
+        {
+            return $this->comments;
+        }
+
+        public function addComment(Comments $comment): self
+        {
+            if (!$this->comments->contains($comment)) {
+                $this->comments[] = $comment;
+                $comment->setUsername($this);
+            }
+
+            return $this;
+        }
+
+        public function removeComment(Comments $comment): self
+        {
+            if ($this->comments->contains($comment)) {
+                $this->comments->removeElement($comment);
+                // set the owning side to null (unless already changed)
+                if ($comment->getUsername() === $this) {
+                    $comment->setUsername(null);
                 }
             }
 

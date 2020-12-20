@@ -28,9 +28,7 @@ class VideosRepository extends ServiceEntityRepository
         ->andwhere('v.category = :val')
         ->setParameter('val', $category)
         ->getQuery()
-        ->getResult()
-        
-        ;
+        ->getResult();
     }
 
     //Affiche 21 vidéos à la page de profil (nouveautés)
@@ -40,9 +38,17 @@ class VideosRepository extends ServiceEntityRepository
         ->setMaxResults(21)
         ->orderBy('v.id', 'DESC')
         ->getQuery()
-        ->getResult()
-        
-        ;
+        ->getResult();
+    }
+
+      public function showVideo($id) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.id = :id')
+        ->setParameter('id', $id)
+        ->orderBy('v.id', 'DESC')
+        ->getQuery()
+        ->getResult();
     }
 
     //affiche suggestion des vidéos de la même categorie que la vidéo choisi

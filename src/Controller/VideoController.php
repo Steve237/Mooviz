@@ -8,16 +8,18 @@ use DateTimeInterface;
 use App\Entity\Category;
 use App\Entity\Comments;
 use App\Entity\VideoLike;
-use App\Form\CommentType;
+use App\Form\CommentsType;
 use App\Form\VideoSearchType;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentsRepository;
 use App\Repository\VideoLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -93,8 +95,9 @@ class VideoController extends AbstractController
     * @Route("/main/movie/{id}/category/{idcategory}", name="movie")
     * @ParamConverter("video", options={"mapping": {"id" : "id"}})
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
+    * //Affiche contenu d'une vidéo
     */
-    public function movie(VideosRepository $repository, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request)
+    public function movie(VideosRepository $repository, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request, Comments $comments = null)
     {   
         $nbreview = $video->getViews();
         $nbreview++;
@@ -102,15 +105,79 @@ class VideoController extends AbstractController
         $entity->persist($video);
         $entity->flush();
 
+        $username = new Users();
+        
+        $user = $this->getUser();
+
+        if(!$comments) {
+
+
+            $comments = new Comments();
+
+        }
+
+        $userComments = $repoComment->findBy(["username" => $user, "video" => $video]);
+        
+
+        $commentform = $this->createForm(CommentsType::class, $comments);
+        $commentform->handleRequest($request);
+
+        if($request->isXmlHttpRequest()) {
+
+        if($commentform->isSubmitted() && $commentform->isValid()) {
+
+            $comments->setUsername($user);
+
+            $date_time = new \DateTime();
+            $comments->setDate($date_time);
+            $comments->setVideo($video);
+            
+            $entity->persist($comments);
+            $entity->flush();
+
+        }
+
+        }
+
         $videos = $repository->showVideoByCategory($category, $id);
+
+        $newvideos = $repository->getVideos();
+
+        $comments = $repoComment->findComment($video);
+
+
         return $this->render('video/singlemovie.html.twig', [
             "videos" => $videos,
             "video" => $video,
-            "category" => $category
+            "category" => $category,
+            'commentform' => $commentform->createView(),
+            "userComments" => $userComments,
+            "newvideos" => $newvideos,
+            "comments" => $comments
+
         ]);
     }
 
 
+     /**
+     * Permet de charger plus de commentaires
+     * @Route("/videos-{id}/{start}", name="loadMoreComments", requirements={"start": "\d+"})
+     */
+    public function loadMoreComments(VideosRepository $repo, CommentsRepository $repoComment, Videos $video, $start = 5)
+    {
+        $videos = $repo->findOneById($video);
+
+        $comments = $repoComment->findComment($video);
+
+        return $this->render('comments/comments.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start,
+            'comments' => $comments
+        ]);
+    }
+
+    
     /**
     * @Route("/main/listvideo", name="allvideos")
     */

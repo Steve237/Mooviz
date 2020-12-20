@@ -1,0 +1,12 @@
+{% for comment in comments | slice(start, start + 5)  %}
+<div>
+    <ul class="clearfix">
+        <li>
+            {{comment.content}}
+        </li>
+        <li>
+            Publié par: {{app.user.username}}
+        </li>              
+    </ul>
+</div>    
+{% endfor %}

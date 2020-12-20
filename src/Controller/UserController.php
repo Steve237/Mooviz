@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserController extends AbstractController
 {
@@ -78,6 +79,15 @@ class UserController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
                 20 /*limit per page*/
             );
+
+            $have_playlist = $repository->showVideoByUser($user);
+
+            if(empty($have_playlist)){
+
+                $this->addFlash('no_videos', 'Vous n\'avez ajouté aucune vidéo à votre playlist');
+                return $this->redirectToRoute('userprofile'); 
+
+            }
             
             return $this->render('user/userplaylist.html.twig', [
                 "playlists" => $playlists
@@ -85,7 +95,90 @@ class UserController extends AbstractController
         
     }
 
+    /**
+     * @Route("/main/user_channels", name="user_channels")
+     * //permet de voir la liste des chaines dans l'espace profil
+     */
+    public function showChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, Request $request, PaginatorInterface $paginator)
+    {    
+        $username = new Users();
+        
+        $user = $this->getUser();
+
+        $follow = $user->getFollowing();
+        
+        $videos = new Videos();
+
+        $avatars = $repoAvatar->findByUser($follow);
+
+        $userChannel = $paginator->paginate(
+            $repoUser->findUser($follow),
+            $request->query->getInt('page', 1), /*page number*/
+            20 /*limit per page*/
+
+        );
+
+
+        //Si user n'a aucune chaine renvoie message flash pour l'informer
+        if(empty($avatars)) {
+
+            $this->addFlash('no_videos', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
+            return $this->redirectToRoute('userprofile');
+
+        }
+
+        return $this->render('user/profile_page_channels.html.twig', [
+            "userChannel" => $userChannel,
+            "user" => $user,
+            "videos" => $videos,
+            "avatars" => $avatars
+        ]);
+        
+    }
+
+
+    /**
+     * @Route("/user_videos_channels", name="user_video_channels")
+     * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
+     */
+    public function showAllChannelVideos(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
+
+        $currentUser = $tokenStorage->getToken()->getUser();
+
+        if($currentUser instanceof Users) {
+            
+            //recupère liste des vidéos des utilisateurs auxquels il est abonné
+            
+            $videos = $paginator->paginate(
+                $videorepo->findAllByUsers($currentUser->getFollowing()),
+                $request->query->getInt('page', 1), /*page number*/
+                20 /*limit per page*/
+
+            );
+        
+        } else {
+
+            return $this->redirectToRoute('home');
+        }
+
+        $following_videos = $videorepo->findAllByUsers($currentUser->getFollowing());
+
+        if(empty($following_videos)) {
+
+            $this->addFlash('no_videos', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
+            return $this->redirectToRoute('userprofile');
+
+        }
+
+
+        return $this->render('user/user_videos_channels.html.twig', [
+            'videos' => $videos,
+     
+            ]);
     
+    }
+
+
     /**
      * @Route("/main/update_avatar", name="avatar_update")
      * //permet d'ajouter un avatar

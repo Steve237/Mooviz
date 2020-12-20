@@ -5037,3 +5037,19 @@ color:white;
 	margin:auto;
 	margin-top:250px;
 }
+
+.homepage_title {
+
+
+	font-size:28px;color:rgb(119, 107, 107);
+	position:absolute;top:25px;
+	left:15px
+}
+
+.comment_form {
+
+	overflow-y: scroll;
+	width:100%;
+	resize: none; /* Remove this if you want the user to resize the textarea */
+	margin-left:-22px;
+}
