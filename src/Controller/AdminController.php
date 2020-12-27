@@ -6,9 +6,9 @@ use App\Entity\Users;
 use App\Entity\Videos;
 use App\Form\VideoType;
 use App\Entity\Category;
+use App\Entity\Notifications;
 use App\Form\UploadType;
 use App\Form\CategoryType;
-use App\Entity\Notifications;
 use App\Repository\VideoRepository;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
@@ -29,7 +29,7 @@ class AdminController extends AbstractController
      * @Route("/upload", name="addvideo")
      * //Permet de télécharger des vidéos
      */
-    public function AddVideo(Videos $video = null, Notifications $notifications = null, Request $request, EntityManagerInterface $entitymanager)
+    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager)
     {
 
         if (!$video) {
@@ -37,10 +37,7 @@ class AdminController extends AbstractController
             $video = new Videos();
         }
 
-        if (!$notifications) {
-
-            $notifications = new Notifications();
-        }
+        $notification = new Notifications();
 
         $user = $this->getUser();
 
@@ -64,16 +61,10 @@ class AdminController extends AbstractController
 
             $video->setVideoImage($fileImage);
             $video->setUsername($user);
-
-
-
             $entitymanager->persist($video);
             $entitymanager->flush();
 
-            $notifications->setVideo($video);
-            $entitymanager->persist($notifications);
-            $entitymanager->flush();
-
+            
             return new JsonResponse('ok');
         }
             return new JsonResponse('err');
@@ -90,13 +81,9 @@ class AdminController extends AbstractController
      * @Route("/update_video/{id}", name="update_video")
      * //Permet de télécharger des vidéos
      */
-    public function UpdateVideo(Videos $video, Notifications $notifications = null, Request $request, EntityManagerInterface $entitymanager)
+    public function UpdateVideo(Videos $video, Request $request, EntityManagerInterface $entitymanager)
     {
 
-        if (!$notifications) {
-
-            $notifications = new Notifications();
-        }
 
         $updateform = $this->createForm(UploadType::class, $video);
         $updateform->handleRequest($request);
@@ -114,9 +101,6 @@ class AdminController extends AbstractController
             $entitymanager->persist($video);
             $entitymanager->flush();
 
-            $notifications->setVideo($video);
-            $entitymanager->persist($notifications);
-            $entitymanager->flush();
 
             return new JsonResponse('ok');
         }
@@ -197,13 +181,13 @@ class AdminController extends AbstractController
     }
     
     /**
-     * 
+     * //permet d'afficher toutes les notifications
      */
     public function showNotifications(NotificationsRepository $repo) {
 
-        //permet afficher nombre notifications 
+        $currentUser = $this->getUser(); 
 
-        $notifications = $repo->findAllNotification();
+        $notifications = $repo->findAllNotification($currentUser);
 
         $number = $repo->numberNotif();
 
@@ -216,4 +200,36 @@ class AdminController extends AbstractController
 
 
     }
+
+
+     /**
+     * @Route("/delete_notification/{id}", name="delete_notif")
+     * //permet de supprimer les notifications marqué comme vu
+     */
+    public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity) {
+
+        $entity->remove($notification);
+        $entity->flush();
+
+        return $this->redirectToRoute('homepage');
+
+
+    }
+
+
+    /**
+     * @Route("/delete_notifications", name="delete_all_notif")
+     * //permet de supprimer toutes les notifications
+     */
+    public function deleteAllNotifications(NotificationsRepository $repo, EntityManagerInterface $entity) {
+
+        $currentUser = $this->getUser(); 
+
+        $repo->deleteAllNotif($currentUser);
+
+        return $this->redirectToRoute('homepage');
+
+
+    }
+
 }

@@ -18,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Repository\AvatarRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -97,7 +98,7 @@ class VideoController extends AbstractController
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Affiche contenu d'une vidéo
     */
-    public function movie(VideosRepository $repository, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request, Comments $comments = null)
+    public function movie(VideosRepository $repository, AvatarRepository $repoAvatar, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request, Comments $comments = null)
     {   
         $nbreview = $video->getViews();
         $nbreview++;
@@ -116,7 +117,7 @@ class VideoController extends AbstractController
 
         }
 
-        $userComments = $repoComment->findBy(["username" => $user, "video" => $video]);
+        $comment = $repoComment->findComment($video);
         
 
         $commentform = $this->createForm(CommentsType::class, $comments);
@@ -143,7 +144,7 @@ class VideoController extends AbstractController
 
         $newvideos = $repository->getVideos();
 
-        $comments = $repoComment->findComment($video);
+        $userComments = $repoComment->findComment($video);
 
 
         return $this->render('video/singlemovie.html.twig', [
@@ -151,9 +152,9 @@ class VideoController extends AbstractController
             "video" => $video,
             "category" => $category,
             'commentform' => $commentform->createView(),
-            "userComments" => $userComments,
             "newvideos" => $newvideos,
-            "comments" => $comments
+            "comments" => $comments,
+            "userComments" => $userComments
 
         ]);
     }
@@ -163,18 +164,38 @@ class VideoController extends AbstractController
      * Permet de charger plus de commentaires
      * @Route("/videos-{id}/{start}", name="loadMoreComments", requirements={"start": "\d+"})
      */
-    public function loadMoreComments(VideosRepository $repo, CommentsRepository $repoComment, Videos $video, $start = 5)
+    public function loadMoreComments(VideosRepository $repo, $id, $start = 5)
     {
-        $videos = $repo->findOneById($video);
+        $videos = $repo->findOneById($id);
 
-        $comments = $repoComment->findComment($video);
-
-        return $this->render('comments/comments.html.twig', [
+        return $this->render('video/comments.html.twig', [
             
             'videos' => $videos,
             'start' => $start,
-            'comments' => $comments
         ]);
+    }
+
+
+      /**
+     * Permet de modifer un commentaire
+     * @Route("/update_comment/{id}", name="update_comment")
+
+    */
+    public function updateComment(Comments $comment, EntityManagerInterface $entity, Request $request)
+    {
+        
+        if($request->isXmlHttpRequest()) {
+
+            $usercomment = $request->request->get("commentaire");
+            $comment->setContent($usercomment);
+            $entity->persist($comment);
+            $entity->flush();
+
+
+
+        }
+
+        return $this->redirectToRoute('homepage');
     }
 
     /**

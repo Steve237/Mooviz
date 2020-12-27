@@ -79,11 +79,6 @@ class Videos
     private $playlists;
 
     /**
-     * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="video", orphanRemoval=true)
-     */
-    private $notifications;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -326,36 +321,7 @@ class Videos
 
     }
 
-    /**
-     * @return Collection|Notifications[]
-     */
-    public function getNotifications(): Collection
-    {
-        return $this->notifications;
-    }
 
-    public function addNotification(Notifications $notification): self
-    {
-        if (!$this->notifications->contains($notification)) {
-            $this->notifications[] = $notification;
-            $notification->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(Notifications $notification): self
-    {
-        if ($this->notifications->contains($notification)) {
-            $this->notifications->removeElement($notification);
-            // set the owning side to null (unless already changed)
-            if ($notification->getVideo() === $this) {
-                $notification->setVideo(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getUsername(): ?Users
     {

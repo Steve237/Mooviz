@@ -18,24 +18,75 @@ class Notifications
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Videos::class, inversedBy="notifications")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="notifications")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $video;
+    private $origin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="notifications")
+     */
+    private $destination;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $content;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getVideo(): ?Videos
+    public function getOrigin(): ?Users
     {
-        return $this->video;
+        return $this->origin;
     }
 
-    public function setVideo(?Videos $video): self
+    public function setOrigin(?Users $origin): self
     {
-        $this->video = $video;
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    public function getDestination(): ?Users
+    {
+        return $this->destination;
+    }
+
+    public function setDestination(?Users $destination): self
+    {
+        $this->destination = $destination;
+
+        return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function setContent(string $content): self
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

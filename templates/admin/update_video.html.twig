@@ -13,14 +13,84 @@
     </div>
     <div id="uploadStatus"></div>
     {% form_theme updateform 'bootstrap_4_layout.html.twig' %}
-    {{form_start(updateform,  {"attr" : {'id':'uploadForm'}})}}
+    {{form_start(updateform,  {"attr" : {'id':'video_update'}}, {'action': path('update_video', {'id': video.id}), 'method': 'POST'})}}
 
     <div class="form-group">{{form_row(updateform.videotitle, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_row(updateform.videodescription, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_row(updateform.videoimage, {"attr" : {'class':'form-control', 'placeholder': video.videoimage}})}}</div>
     <div class="form-group">{{form_row(updateform.category, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_widget(updateform)}}</div>
-    <button type="submit" class="btn btn_video" onclick="changeClass()">Ajouter video</button>
+    <button type="submit" class="btn btn_video" onclick="hideBar()">Ajouter video</button>
 </div>
 {{form_end(updateform)}}
+{% endblock %}
+{% block javascript %}
+{{parent()}}
+
+<script>
+//permet de rendre visible la barre de progrès lors du téléchargement
+
+function hideBar() {
+
+    document.getElementById("progress-bar").className = "visible";
+
+
+}
+
+//permet d'afficher le progrès de l'upload via la barre de progrès
+$(document).ready(function(){
+    // File upload via Ajax
+    $("#video_update").on('submit', function(e){
+        e.preventDefault();
+        var video_update = $(this);
+        var post_url = video_update.attr('action');
+        var post_data = video_update.serialize();
+        $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = ((evt.loaded / evt.total) * 100);
+                        $(".progress-bar").width(percentComplete + '%');
+                        $(".progress-bar").html(percentComplete+'%');
+                    }
+                }, false);
+                return xhr;
+            },
+            type: 'POST',
+            url: post_url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function(){
+                $(".progress-bar").width('0%');
+                $('#uploadStatus').html('<img src="{{asset("images/loader.gif")}}"/>');
+            },
+            error:function(){
+                $('#uploadStatus').html('<p style="color:#EA4335;">File upload failed, please try again.</p>');
+            },
+            success: function(resp){
+                if(resp == 'ok'){
+                    window.document.location = '/042491f448463ffa79e596a3333d0943';
+                }else if(resp == 'err'){
+                    $('#uploadStatus').html('<p style="color:#EA4335;">Please select a valid file to upload.</p>');
+                }
+            }
+        });
+    });
+	
+    // File type validation
+    $("#fileInput").change(function(){
+        var allowedTypes = ['video/mp4'];
+        var file = this.files[0];
+        var fileType = file.type;
+        if(!allowedTypes.includes(fileType)){
+            alert('Please select a valid file (PDF/DOC/DOCX/JPEG/JPG/PNG/GIF).');
+            $("#fileInput").val('');
+            return false;
+        }
+    });
+});
+</script>
 {% endblock %}

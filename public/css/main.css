@@ -4680,8 +4680,8 @@ li.flex-active-slide.progression_studios_animate_right .progression-studios-slid
 
 
 .videoimage {
-	width: 400px;
-	height: 335px;
+	width:300px;
+	height:250px;
 }
 
 .videosuggest {
@@ -5052,4 +5052,20 @@ color:white;
 	width:100%;
 	resize: none; /* Remove this if you want the user to resize the textarea */
 	margin-left:-22px;
+}
+
+.scroller {
+	width: 100%;
+	overflow-y: auto;
+	scrollbar-color: rebeccapurple green;
+	scrollbar-width: thin;
+  }
+
+.roundedImage{
+    overflow:hidden;
+    -webkit-border-radius:50px;
+    -moz-border-radius:50px;
+    border-radius:50px;
+    width:70px;
+    height:70px;
 }

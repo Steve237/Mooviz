@@ -124,6 +124,11 @@ class Users implements UserInterface, \Serializable
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="origin")
+     */
+    private $notifications;
+
 
     public function __construct()
     {
@@ -134,6 +139,7 @@ class Users implements UserInterface, \Serializable
         $this->following = new ArrayCollection();
         $this->abonnements = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
 
        
     }
@@ -462,6 +468,37 @@ class Users implements UserInterface, \Serializable
                 // set the owning side to null (unless already changed)
                 if ($comment->getUsername() === $this) {
                     $comment->setUsername(null);
+                }
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Notifications[]
+         */
+        public function getNotifications(): Collection
+        {
+            return $this->notifications;
+        }
+
+        public function addNotification(Notifications $notification): self
+        {
+            if (!$this->notifications->contains($notification)) {
+                $this->notifications[] = $notification;
+                $notification->setOrigin($this);
+            }
+
+            return $this;
+        }
+
+        public function removeNotification(Notifications $notification): self
+        {
+            if ($this->notifications->contains($notification)) {
+                $this->notifications->removeElement($notification);
+                // set the owning side to null (unless already changed)
+                if ($notification->getOrigin() === $this) {
+                    $notification->setOrigin(null);
                 }
             }
 

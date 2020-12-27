@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notifications;
 use App\Entity\Users;
 use App\Entity\Videos;
 use App\Repository\AvatarRepository;
@@ -24,12 +25,23 @@ class FollowingController extends AbstractController
     {
         $currentUser = $this->getUser();
 
+        $notification = new Notifications();
+
         if($userToFollow->getId() !== $currentUser) {
 
+            $date_time = new \DateTime();
+            
             $currentUser->getFollowing()->add($userToFollow);
-
             $entity->flush();
             
+            $notification->setOrigin($currentUser);
+            $notification->setDestination($userToFollow);
+            $notification->setContent("abonné à votre chaine");
+            $notification->setDate($date_time);
+
+            $entity->persist($notification);
+            $entity->flush();
+
             return $this->json([
                 'code' => 200, 
                 'message' => 'user ajouté'

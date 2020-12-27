@@ -1,0 +1,318 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{video.videotitle }}{% endblock %}
+
+{% block body %}
+		
+		<div id="content-sidebar-pro" style="position:absolute;left:3px;">
+			
+			<div id="content-sidebar-image">
+				<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
+			</div>
+			
+			<div class="content-sidebar-section">
+				<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées </h2>
+				<ul id="sidebar-reviews-pro" style="text-align:center;">
+					{% for video in videos %}
+					<li>
+						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+							<h6 class="titlevideo">{{video.videotitle}}</h6>
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videosuggest class=img-responsive">
+						</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div><!-- close .content-sidebar-section -->
+			
+		</div><!-- close #content-sidebar-pro -->
+		
+		
+		<main id="col-main-with-sidebar">
+			<section class="video-container">
+				<video crossorigin playsinline style="--plyr-color-main: red;" id="player" class="col-md-12 col-lg-12">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="576">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="720">
+					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="1080">	
+						
+					<a href="{{asset('videos/' ~ video.videolink)}}" download>Download</a>
+				</video>
+			</section>
+			
+			<div id="movie-detail-rating">
+				<div class="dashboard-container">
+					<div class="row">
+						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+							<h3>{{video.videotitle}}</h3>
+							<strong><p>Categorie : {{video.category.categoryName}} - Date de publication : {{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p></strong>
+							
+							<div class="row">
+								<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+									<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+										Playlist
+										{% if app.user and video.isSelectedByUser(app.user) %}
+											<span><i class="fas fa-star fa-2x"></i></span>
+										{% else %}
+											<span><i class="far fa-star fa-2x"></i></span>
+										{% endif %}
+									</a>
+							
+							
+									<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+										{% if app.user and video.isLikedByUser(app.user) %}
+											<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
+										{% else %}
+											<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
+										{% endif %}
+										<span class="js-likes">{{video.likes | length}}</span>
+									</a>
+									
+									{% if is_granted('ROLE_USER') and video.username != app.user %}
+										{% set isFollowed = video.username.followers.contains(app.user) %}
+										
+										<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}" 
+											class="btn btn-primary button_follow" id="follow">Follow
+										</button>
+										<button style="display: {% if isFollowed %}block{% else %}none{% endif %}" 
+											class="btn btn-primary button_follow" id="unfollow">UnFollow
+										</button>
+										
+									{% endif %}
+									
+								</div>
+							</div>
+						</div>
+					</div><!-- close .row -->
+				</div><!-- close .dashboard-container -->
+			</div><!-- close #movie-detail-rating -->
+
+			<div class="dashboard-container">
+				<div class="movie-details-section">
+					<h2>Description</h2>
+					<p style="font-size:large">{{video.videodescription}}</p>
+				</div><!-- close .movie-details-section -->
+				
+				
+				<div class="movie-details-section">
+					<h3>Commentaires</h3>
+					{% form_theme commentform 'bootstrap_4_layout.html.twig' %}
+					{{form_start(commentform, {"attr" : {'id':'sendcomment'}})}}
+						{{form_row(commentform.content, { 'attr': {'class': 'commentBox comment_form', 'rows':'10'}})}}
+						{{form_widget(commentform)}}
+						<button type="submit" onClick="showComment()" class="btn btn-primary">Postez</button>
+					{{form_end(commentform)}}
+				</div>
+				<div class="comments"></div>
+				
+				<div id="statuscomment">
+				{% if video.comments is not null %}
+				{% for comment in video.comments | slice(0, 5) %}
+				<ul class="clearfix" id="commentzone">
+					<li>
+						{{comment.content}}
+					</li> 
+					<li>
+					Publié par:	{{comment.username.username}} </br>
+					Date de publication: {{comment.date | date("d/m/y")}}
+					
+					</li>  		
+				</ul>
+				<div style="border-bottom:0.5px solid black;">
+				
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Modifiez</button><a href="{{path('delete_comment', {'id' : comment.id})}}"><button class="btn btn-primary">Supprimez</button></a>
+				
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Bootstrap Modal Popup</h4>
+					</div>
+					<div class="modal-body">
+
+					<form method="post" id="formulaire" action="{{path('update_comment', {'id' : comment.id })}}">
+					<input type="text" name="commentaire" class="commentaire" placeholder="name">
+					<input type="submit" id="btn" class="btn" value="SUBMIT">
+					</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+				</div>
+				</div>
+				</div>
+				{% else %}
+				<p>Aucun commentaire</p>
+				{% endfor %}
+				{% endif %}
+				</div>
+				</div>
+
+				<div class="row text-center">
+					<button id="loadMoreComments" class="btn btn-primary col-md-6 col-8 mx-auto">Voir plus de commentaires</button>
+				</div>
+				
+				
+				<div class="movie-details-section">
+					<h2>Nouveautés</h2>
+					<div class="row">
+						{% for video in newvideos %}
+						<div class="col-12 col-md-6 col-lg-6 col-xl-4">
+							<div class="item-listing-container-skrn">
+								<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+									<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" style="width:350px;height:350px" class="img-responsive">
+								</a>
+								<div class="item-listing-text-skrn">
+									<div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">{{video.videotitle}}</a></h6>
+								      <div
+								        class="circle-rating-pro"
+								        data-value="0.72"
+								        data-animation-start-value="0.72"
+								        data-size="32"
+								        data-thickness="3"
+								        data-fill="{
+								          &quot;color&quot;: &quot;#42b740&quot;
+								        }"
+								        data-empty-fill="#def6de"
+								        data-reverse="true"
+								      ><span style="color:#42b740;">7.2</span></div>
+									</div><!-- close .item-listing-text-skrn-vertical-align -->
+								</div><!-- close .item-listing-text-skrn -->
+							</div><!-- close .item-listing-container-skrn -->
+
+						
+						</div><!-- close .col -->
+						{% endfor %}
+					</div><!-- close .row -->
+				
+				</div><!-- close .movie-details-section -->
+
+			</div><!-- close .dashboard-container -->
+		</main>
+		<div id="main"></div>
+{% endblock %}
+
+{% block javascript %}
+{{parent()}}
+<script>
+var followButton = document.getElementById('follow');
+var unfollowButton = document.getElementById('unfollow');
+
+addOnClick(
+    followButton,
+    unfollowButton,
+    '{{ path("following", {"id":video.username.id})}}'
+
+);
+
+addOnClick(
+    unfollowButton,
+    followButton,
+    '{{ path("unfollowing", {"id":video.username.id})}}'
+
+);
+
+function switchButtons(button, oppositeButton) {
+    button.disabled = false;
+	button.style.display = 'none';
+    oppositeButton.style.display = 'block';
+}
+
+function addOnClick(button, oppositeButton, path) {
+
+    button.addEventListener('click', function (event) {
+        button.disabled = true;
+
+        fetch(path, {'credentials' : 'include'}).then(function () {
+
+           
+            switchButtons(button, oppositeButton);
+            
+        }).catch(function () {
+
+            switchButtons(button, oppositeButton);
+
+
+        });
+
+        event.preventDefault();
+	});
+}
+
+$(document).ready(function(){
+    //poster un commentaire via ajax
+    $("#sendcomment").on('submit', function(e){
+        e.preventDefault();
+        $.ajax({
+
+            type: 'POST',
+            url: "{{path('movie', {'id' : video.id, 'idcategory' : video.category.id})}}",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            success: function(){
+                var comment = $('.commentBox').val();
+		$('<ul style="border-bottom:0.5px solid black;">').html('<li>' + comment + '</li>' + '<li>Publié par : {{app.user.username}}</li>' + '<button class="btn btn-primary">Modifier</button><button class="btn btn-primary">Supprimer</button>').prependTo('.comments'); 
+            }
+        });
+    });
+});
+
+//permet d'envoyer formulaire modale
+$(document).ready(function (){
+$("#formulaire").submit(function (e){
+e.preventDefault();
+var formulaire = $(this);
+var post_url = formulaire.attr('action');
+var post_data = formulaire.serialize();
+$.ajax({
+type: "POST",
+url: post_url,
+data: post_data,
+success: function () {
+	$("#exampleModal").modal('hide');
+	var comment = $('.commentaire').val();
+	$('<ul style="border-bottom:0.5px solid black;">').html('<li>' + comment + '</li>' + '<li>Publié par : {{app.user.username}}</li>' + '<button class="btn btn-primary">Modifier</button><button class="btn btn-primary">Supprimer</button>').prependTo('.comments'); 
+	$("#statuscomment").load("video/hello.html"); // un élément portant l'id "content" existe dans contenu.html
+
+},
+error: function () {
+alert("server error");
+}
+});
+});
+});
+
+
+
+
+	click = 0;
+    function loadMoreComments(event) {
+        event.preventDefault();
+        click++;
+        var start = 5 * click;
+        const url = "{{path('loadMoreComments', {'id': video.id})}}/" + start;
+        axios.get(url).then(function(response) {
+            $("#statuscomment").append(response.data);
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("Vous n'êtes pas autorisé à effectuer cette action !");
+            }
+            else if (response.status === 404) {
+                window.alert("La page appelé n'existe pas");
+            }
+            else {
+                window.alert("Une erreur est survenue !");
+            }
+        });
+	}
+	//
+	
+	document.getElementById("loadMoreComments").addEventListener("click", loadMoreComments);
+
+</script>
+{% endblock %}

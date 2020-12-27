@@ -15,11 +15,16 @@
         <h3>Notifications</h3>
         <div id="header-notification-menu-padding">
             {% if notifications %}
-            <ul id="header-user-notification-list">
+            <ul id="header-user-notification-list" style="overflow:auto;">
                 {% for notification in notifications %}
-                <li><a href="{{path("movie", {"id" : notification.video.id, "idcategory" : notification.video.category.id})}}"><img src="{{asset('images/upload/' ~ notification.video.videoimage)}}" alt="Profile" class="notification-image">{{notification.video.videotitle}}<div class="header-user-notify-time">{{notification.video.publicationdate|date("d/m/y")}}</div></a></li>
+                    <li>
+
+                    <a href="#!" style="color:blue"><img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}">{{notification.origin.username}} s'est {{notification.content}} | {{notification.date | date("d/m/y") }} <a href="{{path('delete_notif', {'id' : notification.id })}}">Vu <i class="fas fa-check"></i></a></a>        
+                        
+                    </li>
                 {% endfor %}
             </ul>
+            <a href="{{path('delete_all_notif')}}"><button class="btn btn-primary">Marquez tout comme vu</button></a>
             {% else %}
             <ul id="header-user-notification-list">
                 <p style="text-align:center;margin:5px">Aucune notification à afficher</p>

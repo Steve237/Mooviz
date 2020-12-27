@@ -19,16 +19,18 @@ class NotificationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Notifications::class);
     }
 
-    
-    public function findAllNotification()
+
+        
+    public function findAllNotification($value)
     {
         return $this->createQueryBuilder('n')
-            ->orderBy('n.id', 'DESC')
-            ->setMaxResults(10)
+            ->orderBy('n.destination', 'DESC')
+            ->andWhere('n.destination = :val')
+            ->setParameter('val', $value)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
+
 
     public function numberNotif()
     {
@@ -40,6 +42,49 @@ class NotificationsRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
     }
 
+    public function deleteAllNotif($value) {
+
+        return $this->createQueryBuilder('n')
+        ->delete()
+        ->where('n.destination = :val')
+        ->setParameter('val', $value)
+        ->getQuery()
+        ->getResult();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // /**
+    //  * @return Notifications[] Returns an array of Notifications objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('n.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
 
     /*
     public function findOneBySomeField($value): ?Notifications
