@@ -36,6 +36,5 @@
             <li><a href="{{path('user_playlist')}}"><span class="link">Playlist</span></a></li>
             <li><a href="{{path('user_channels')}}"><span class="link">Chaines</span></a></li>
             <li><a href="{{path('user_video_channels')}}"><span class="link">Abonnements</span></a></li>
-            <li><a href="{{path('user_playlist')}}"><span class="link">Dashboard</span></a></li>
-            <li><a href="{{path('user_playlist')}}"><span class="link">A propos</span></a></li>
+            <li><a href="{{path('user_dashboard', {'id' : app.user.id})}}"><span class="link">A propos</span></a></li>
         </ul><!-- close .dashboard-sub-menu -->

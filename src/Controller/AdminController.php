@@ -206,12 +206,16 @@ class AdminController extends AbstractController
      * @Route("/delete_notification/{id}", name="delete_notif")
      * //permet de supprimer les notifications marqué comme vu
      */
-    public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity) {
+    public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity, Request $request) {
 
-        $entity->remove($notification);
-        $entity->flush();
 
-        return $this->redirectToRoute('homepage');
+            $entity->remove($notification);
+            $entity->flush();
+
+            return $this->json([
+                'code' => 200, 
+                'message' => 'user ajouté'
+            ], 200);
 
 
     }

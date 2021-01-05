@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre profil{% endblock %}
+
+{% block body %}
+
+{{ render(controller('App\\Controller\\UserController::userProfile'))}}
+
+
+<h3>Récapitulatif</h3>
+
+
+<ul class="list-group" style="margin-bottom:50px;">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Nombre de vidéos en ligne
+      <span class="badge badge-primary badge-pill">{{videoCount}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Nombre total de followers
+        <span class="badge badge-primary badge-pill">{{followerCount}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Nombre total de membres que vous suivez
+      <span class="badge badge-primary badge-pill">{{followingCount}}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Nombre total de vues
+        <span class="badge badge-primary badge-pill">{{viewCount}}</span>
+    </li>
+  </ul>
+
+  {% if app.user.videos == null %} 
+    Aucune vidéo
+  {% else %}
+  <h3>Classement des vidéos les plus populaires</h3>
+  <table class="table" style="margin-bottom:50px;">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Titre de la vidéo</th>
+        <th scope="col">Nombre de vues</th>
+        <th scope="col">Nombre de likes</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for bestVideo in maxVideoViews %}
+    {% set counter = ( counter | default(0) ) + 1 %}
+      <tr>
+        <th scope="row">{{ counter }}</th>
+        <td>{{bestVideo.videotitle}}</td>
+        <td>{{bestVideo.views}}</td>
+        <td>{{bestVideo.likes | length }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+  {% if app.user.videos == null %} 
+    Aucune vidéo
+  {% else %}
+  <h3>Classement des vidéos les moins populaires</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Titre de la vidéo</th>
+        <th scope="col">Nombre de vues</th>
+        <th scope="col">Nombre de likes</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for lastVideo in minVideoViews %}
+    {% set counter = ( counter | default(0) ) + 1 %}
+      <tr>
+        <th scope="row">{{ counter }}</th>
+        <td>{{lastVideo.videotitle}}</td>
+        {% if lastVideo.views == null %}
+        <td>Aucune vue</td>
+        {% else %}
+        <td>{{lastVideo.views}}</td>
+        {% endif %}
+        <td>{{lastVideo.likes | length }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+
+</div><!-- close .dashboard-container -->
+</main>
+{% endblock %}

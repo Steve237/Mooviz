@@ -11,6 +11,7 @@ use App\Repository\UsersRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\PlaylistRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -309,5 +310,37 @@ class UserController extends AbstractController
             ]);
     }
 
+
+
+    
+    /**
+     * @Route("/user_dashboard/{id}", name="user_dashboard")
+     * //permet d'accéder au tableau de bord de l'user
+    */
+    public function userDashboard(Users $user, VideosRepository $videoRepo) { 
+
+        $videoCount = $videoRepo->countUserVideos($user);
+
+        $followerCount = $videoRepo->countFollower($user->getFollowing());
+
+        $followingCount = $videoRepo->countFollowing($user->getFollowing());
+
+        $viewCount = $videoRepo->CountViews($user);
+
+        $maxVideoViews = $videoRepo->getMaxVideoByUser($user);
+
+        $minVideoViews = $videoRepo->getMinVideoByUser($user);
+
+        return $this->render('user/dashboard.html.twig', [
+
+            "videoCount" => $videoCount,
+            "followerCount" => $followerCount,
+            "followingCount" => $followingCount,
+            "viewCount" => $viewCount,
+            "maxVideoViews" => $maxVideoViews,
+            "minVideoViews" => $minVideoViews
+
+        ]);
+    }
 
 }

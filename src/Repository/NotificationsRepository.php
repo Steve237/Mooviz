@@ -20,7 +20,7 @@ class NotificationsRepository extends ServiceEntityRepository
     }
 
 
-        
+    //permet d'afficher les notifications
     public function findAllNotification($value)
     {
         return $this->createQueryBuilder('n')
@@ -31,7 +31,7 @@ class NotificationsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
+    //permet d'afficher nombre de notifications
     public function numberNotif()
     {
         return $this->createQueryBuilder('n')
@@ -42,6 +42,7 @@ class NotificationsRepository extends ServiceEntityRepository
         ->getSingleScalarResult();
     }
 
+    //permet de supprimer toutes les notifications
     public function deleteAllNotif($value) {
 
         return $this->createQueryBuilder('n')
@@ -52,22 +53,6 @@ class NotificationsRepository extends ServiceEntityRepository
         ->getResult();
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // /**
     //  * @return Notifications[] Returns an array of Notifications objects

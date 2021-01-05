@@ -41,6 +41,7 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+        //recupère vidéo par id
       public function showVideo($id) {
 
         return $this->createQueryBuilder('v')
@@ -83,8 +84,6 @@ class VideosRepository extends ServiceEntityRepository
         
     }
 
-
-
     //affiche les vidéos de l'user
     public function getVideoByUser($user) {
 
@@ -111,7 +110,83 @@ class VideosRepository extends ServiceEntityRepository
             ->getResult();
 
     }
+
+    //affiche le total de vidéos postés par user 
+    public function countUserVideos($user) {
+
+        return $this->createQueryBuilder('v')
+            ->select('count(v.username)')
+            ->andWhere('v.username = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
+
+
+
+    //affiche le total de membres qui vous suivent
+    public function countFollower(Collection $users) {
+
+        return $this->createQueryBuilder('v')
+            ->select('count(v.username)')
+            ->andwhere('v.username IN (:following)')
+            ->setParameter('following', $users)
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
+
+    //affiche le total de membres que vous suivez
+    public function countFollowing(Collection $users) {
+
+        return $this->createQueryBuilder('v')
+            ->select('count(v.username)')
+            ->andwhere('v.username IN (:followers)')
+            ->setParameter('followers', $users)
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
     
+    // récupère le nombre total de vues/user
+    public function CountViews($user) {
+
+        return $this->createQueryBuilder('v')
+        ->select('SUM (v.views) as numberView')
+        ->andWhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->getQuery()
+        ->getSingleScalarResult();
+    }
+
+
+    //retourne la vidéo la plus vue de l'user
+    public function getMaxVideoByUser($user) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->orderBy('v.views', 'DESC') 
+        ->setMaxResults(10) 
+        ->getQuery() 
+        ->getResult(); 
+    }
+
+
+    //affiche la vidéo la moins vue
+    public function getMinVideoByUser($user) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->orderBy('v.views', 'ASC') 
+        ->setMaxResults(10) 
+        ->getQuery() 
+        ->getResult(); 
+    }
+
+
     /*
     public function findOneBySomeField($value): ?Videos
     {

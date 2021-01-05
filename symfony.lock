@@ -96,6 +96,9 @@
     "egulias/email-validator": {
         "version": "2.1.17"
     },
+    "friendsofphp/proxy-manager-lts": {
+        "version": "v1.0.2"
+    },
     "jms/metadata": {
         "version": "2.3.0"
     },
@@ -395,6 +398,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.17.0"
     },
+    "symfony/polyfill-php80": {
+        "version": "v1.20.0"
+    },
     "symfony/process": {
         "version": "v5.0.8"
     },
@@ -406,6 +412,9 @@
     },
     "symfony/property-info": {
         "version": "v5.0.8"
+    },
+    "symfony/proxy-manager-bridge": {
+        "version": "v5.2.1"
     },
     "symfony/routing": {
         "version": "4.2",
