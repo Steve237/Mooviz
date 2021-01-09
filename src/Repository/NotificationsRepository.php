@@ -37,7 +37,6 @@ class NotificationsRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('n')
         ->select('count(n.id)')
         ->orderBy('n.id', 'DESC')
-        ->setMaxResults(10)
         ->getQuery()
         ->getSingleScalarResult();
     }

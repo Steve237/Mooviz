@@ -129,7 +129,7 @@ class VideosRepository extends ServiceEntityRepository
     public function countFollower(Collection $users) {
 
         return $this->createQueryBuilder('v')
-            ->select('count(v.username)')
+            ->select('count(DISTINCT v.username)')
             ->andwhere('v.username IN (:following)')
             ->setParameter('following', $users)
             ->getQuery()
@@ -141,7 +141,7 @@ class VideosRepository extends ServiceEntityRepository
     public function countFollowing(Collection $users) {
 
         return $this->createQueryBuilder('v')
-            ->select('count(v.username)')
+            ->select('count(DISTINCT v.username)')
             ->andwhere('v.username IN (:followers)')
             ->setParameter('followers', $users)
             ->getQuery()

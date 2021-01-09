@@ -321,7 +321,7 @@ class UserController extends AbstractController
 
         $videoCount = $videoRepo->countUserVideos($user);
 
-        $followerCount = $videoRepo->countFollower($user->getFollowing());
+        $followerCount = $videoRepo->countFollower($user->getFollowers());
 
         $followingCount = $videoRepo->countFollowing($user->getFollowing());
 
