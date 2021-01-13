@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre compte{% endblock %}
+
+{% block body %}
+
+<main id="col-main">
+
+    <div class="dashboard-container">
+
+        <ul class="dashboard-sub-menu">
+            <li><a href="dashboard-account.html">Account Settings</a></li>
+            <li class="current"><a href="dashboard-account-payment.html">Payment Info</a></li>
+        </ul><!-- close .dashboard-sub-menu -->
+
+        <h5>Current Plan</h5>
+
+        <div class="current-plan-account">
+
+            <div class="row">
+                {% if app.user.subscription.plan == "starter" %}
+                <div class="col-md">
+                    <h4>STARTER</h4>
+                    <h2><sup>€</sup>3<span> / month</span></h2>
+                </div><!-- close .col-sm -->
+                {% elseif  app.user.subscription.plan == "premium" %}
+                <div class="col-md">
+                    <h4>Premium</h4>
+                    <h2><sup>€</sup>30<span>/ Year</span></h2>
+                </div><!-- close .col-sm -->
+                {% else %}
+                <div class="col-md">
+                    <h4>Free</h4>
+                    <h2>Gratuit</h2>
+                </div><!-- close .col-sm -->
+                {% endif %}
+                <div class="col-md">
+                    <h5>Plan Features:</h5>
+                    <ul>
+                        <li>HD Available</li>
+                        <li>Watch on any Device</li>
+                        <li>70 movies and shows</li>
+                    </ul>
+                </div><!-- close .col-sm -->
+                <div class="col-md">
+                    <p class="small-paragraph-spacing"><a href="#!" class="btn btn-green-pro">Upgrade Plan</a></p>
+                    <p><a href="#!" class="btn">Billing Details</a></p>
+                </div><!-- close .col-sm -->
+                <div class="col-md">
+
+                </div><!-- close .col-sm -->
+            </div><!-- close .row -->
+
+            <div class="current-plan-billing">Your next annual renewal date will be February 26, 2018</div>
+            <div class="clearfix"></div>
+        </div><!-- close .current-plan-account -->
+
+        <hr>
+        <h5>Payment Method</h5>
+        <div class="row payment-method-container">
+            <div class="col-md">
+                <div class="right-border-payment">
+                    <p><a href="#!" class="btn"><i class="fas fa-plus"></i> Add new payment method</a></p>
+                </div>
+            </div><!-- close .col -->
+            <div class="col-md">
+                <h6>Refer a Friend and SAVE</h6>
+                <p>Receive <strong>1 MONTH FREE</strong> for each of your friends that purchase an account.</p>
+                <p><a href="#!" class="btn btn-green-pro">Refer a Friend</a></p>
+            </div><!-- close .col -->
+        </div><!-- close .row -->
+
+        <hr>
+
+        <p><a href="#!" class="btn">Cancel My Membership</a></p>
+        <br>
+
+    </div><!-- close .dashboard-container -->
+</main>
+{% endblock %}

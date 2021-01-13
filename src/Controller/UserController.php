@@ -294,6 +294,24 @@ class UserController extends AbstractController
 
 
     /**
+     * @Route("/main/payment_info/{id}", name="user_account")
+     * //permet d'accéder et de modifier les infos du compte user
+    */
+    public function userPayment(Users $user) {
+
+
+        return $this->render('user/userpayment.html.twig', [
+
+            
+        ]);
+
+
+
+    }
+
+
+
+    /**
      *permet d'afficher avatar
      */
     public function showAvatar(AvatarRepository $repoAvatar)

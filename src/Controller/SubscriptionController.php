@@ -2,10 +2,17 @@
 
 namespace App\Controller;
 
+use Stripe\Charge;
 use Stripe\Stripe;
+use Stripe\Customer;
+use App\Entity\Users;
+use Stripe\SetupIntent;
+use Stripe\PaymentIntent;
 use App\Entity\Subscription;
-use App\Repository\SubscriptionRepository;
+use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\SubscriptionRepository;
+use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,57 +20,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SubscriptionController extends AbstractController
 {
-
-    /**
-     * @Route("/checkout", name="checkout")
-     */
-    public function starter(SessionInterface $session)
-    {   
-        if(!$session->get('inscription')) {
-
-
-            return $this->redirectToRoute('tarif');
-
-        }
-        
-        //renvoie à la page de paiement
-        return $this->render('subscription/starter.html.twig');
-    }
-
-
-    /**
-     * @Route("/premium", name="premium")
-     */
-    public function premium(SessionInterface $session, SubscriptionRepository $repo)
-    {   
-        //Verifie si session inscription existe, sinon renvoie à tarif
-        if(!$session->get('inscription')) {
-
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-        //Vérifie si paiement déjà réussie et renvoie à tarif si user revient à cette page suite paiement réussi
-        $userMail = $session->get('email');        
-
-        $successfull = $repo->verifToken($userMail);
-
-        if($successfull) {
-
-            return $this->redirectToRoute('tarif');
-
-
-        }
-
-        
-        //renvoie à la page de paiement pour le pack premium
-        return $this->render('subscription/premium.html.twig');
-    }
-
+    
+    
     /**
      * @Route("/tarif", name="tarif")
      */
@@ -80,32 +42,173 @@ class SubscriptionController extends AbstractController
 
         ]);
     }
+    
+    
+    
+    
+    /**
+     * //page inscription
+     * @Route("/inscription/{plan}", name="inscription")
+     */
+    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan, SubscriptionRepository $repo)
+    {   
+        
+        
+        if( $request->isMethod('GET')  ) 
+        {
+            $session->set('planName', $plan);    
+            $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));    
+        }
+        
+        $users = new Users();
+        $form = $this->createForm(InscriptionType::class, $users);
+
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $passwordCrypte = $encoder->encodePassword($users, $users->getPassword());
+            $users->setPassword($passwordCrypte);
+            $users->setConfirmPassword($passwordCrypte);
+        
+            $users->setActivationToken(md5(uniqid()));
+            $users->setRoles('ROLE_USER');
+
+            $date = new \Datetime();
+            $date->modify('+1 year');
+            $subscription = new Subscription();
+            $subscription->setValidTo($date);
+            $subscription->setPlan($session->get('planName'));
+            $subscription->setFreePlanUsed(false);
+            
+            if($plan == Subscription::getPlanDataNameByIndex(0)) // free plan
+            {   
+                $date_free_user = new \Datetime();
+                $date_free_user->modify('+1 month');
+                $subscription->setFreePlanUsed(true);
+                $subscription->setPaymentStatus('paid');
+
+                $users->setSubscription($subscription);
+
+                $entity->persist($users);
+                $entity->flush();  
+
+                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
+            }
+
+
+            $users->setSubscription($subscription);
+
+            $entity->persist($users);
+            $entity->flush();   
+
+            $userToken = $session->set('activationToken', $users->getActivationToken());
+            $userMail = $session->set('email', $users->getEmail());   
+            $userSubscription =  $session->set('subscription', $subscription);      
+
+            if($plan == Subscription::getPlanDataNameByIndex(1)) // starter plan
+            {   
+
+                
+                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
+
+            }
+
+            if($plan == Subscription::getPlanDataNameByIndex(2)) // premium plan
+            {   
+                
+                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
+
+            }
+        
+        }
+        
+        return $this->render('auth/inscription.html.twig', [
+            "form" => $form->createView(),
+            'clientSecret' => null
+        ]);
+    }
 
 
     /**
-    * @Route("/7b9eae84f7af073e9b667e57cac32ce0", name="successToken")
+     * //page de paiement
+     * @Route("/payment/{id}", name="payment_later")
+     */
+    public function paymentLater(Users $users, SessionInterface $session, SubscriptionRepository $repo, UsersRepository $repoUser)
+    {  
+
+        $name = $users->getUserName(); 
+        $email = $users->getEmail();
+
+        //verifie si le paiement a déjà réussi
+        $successPayment = $repo->verifToken($email);
+
+        if($successPayment) {
+
+            return $this->redirectToRoute('tarif');
+        }  
+
+        Stripe::setApiKey('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
+
+        $customer = Customer::create(["name" => $name, "email" => $email]);
+
+        $intent = SetupIntent::create([
+            'customer' => $customer->id
+          ]);
+
+
+        return $this->render('subscription/payment.html.twig' , [
+
+            'clientSecret' => $intent->client_secret,
+            'payment_method_types' => ['card']
+
+        ]);
+
+    }
+
+    /**
+     * //redirection vers la page de paiement réussi avec token pour sécuriser la route cryptée.
+    * @Route("/7b9efxfre5856973e9b66ye57cac32ce0", name="success_payment")
     */
-    public function successToken() {
+    public function redirectIfSuccessPayment(SessionInterface $session, EntityManagerInterface $entity) {
 
         $random = random_bytes(10);
         $token = md5($random);
+        $new_token = $token;
 
-        return $this->redirectToRoute('success', ['token' => $token]);
+        $verif_token = $session->set('new_token', $new_token);
+
+        return $this->redirectToRoute('success_page');
 
 
     }
+
+    
+    
+    
     
     /**
-     * @Route("/success/{token}", name="success")
+     * //page affichant paiement réussi
+     * @Route("/success", name="success_page")
+     *
      */
-    public function success(\Swift_Mailer $mailer, SessionInterface $session, EntityManagerInterface $entity, $token)
+    public function successPage(SessionInterface $session, EntityManagerInterface $entity, \Swift_Mailer $mailer, SubscriptionRepository $repo)
     {   
-        //si pas de token renvoie à la page tarif
-        if(!$token) {
+        
+        //Vérifie si paiement déjà réussie
+        $userMail = $session->get('email');        
+
+        $successPayment = $repo->verifToken($userMail);
+
+        //si user n'est pas passé par la redirection suite paiement réussi retour vers tarif
+        if(!$session->get('new_token')) {
+
 
             return $this->redirectToRoute('tarif');
 
         }
+
 
         //si token généré lors inscription absent, retour à tarif
         if(!$session->get('activationToken')) {
@@ -113,7 +216,8 @@ class SubscriptionController extends AbstractController
             return $this->redirectToRoute('tarif');
 
         }
-        
+
+
         //envoie mail activation compte avec token et email user obtenue lors de l'inscription
         $activationtoken = $session->get('activationToken');   
         $email = $session->get('email'); 
@@ -133,115 +237,19 @@ class SubscriptionController extends AbstractController
 
             $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.');       
 
+            //confirme que le paiement a déjà été fait
+            if(!$successPayment) {
+
             //ajoute email du user dans table subscription si paiement réussi
             $subscription = $session->get('subscription'); 
             $subscription->setVerifpayment($email);
             $entity->persist($subscription);
             $entity->flush();
 
-        return $this->render('subscription/success.html.twig');    
-    }
+            }
 
-
-    /**
-     * @Route("/0a8b325a1197ab7d92c66b894c11ead2", name="redirect-error-premium")
-     */
-    public function pathErrorPremium() {
-
-        $random = random_bytes(10);
-        $token = md5($random);
-
-        return $this->redirectToRoute('error_premium', ['token' => $token]);
-
+           return $this->render('subscription/success.html.twig');  
 
     }
 
-    /**
-     * @Route("/error_payment_premium/{token}", name="error_premium")
-     */
-    public function errorPremium(SessionInterface $session, $token, SubscriptionRepository $repo) {
-
-
-        //si pas de token renvoie à la page tarif
-        if(!$token) {
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-        //si token généré lors inscription absent, retour à tarif
-        if(!$session->get('activationToken')) {
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-         //Vérifie si paiement déjà réussie et renvoie à tarif si user revient à cette page suite paiement réussi
-         $userMail = $session->get('email');        
-
-         $successfull = $repo->verifToken($userMail);
- 
-         if($successfull) {
- 
-             return $this->redirectToRoute('tarif');
- 
- 
-         }
- 
-
-         //renvoie à la page de paiement pour le pack premium
-         return $this->render('subscription/errorpremium.html.twig');
-    }
-    
-    
-    
-    
-    /**
-     * @Route("/b5bbafb55cff1accde53fa0c49d06747", name="redirect-error-starter")
-    */ public function pathErrorStarter() {
-
-        $random = random_bytes(10);
-        $token = md5($random);
-
-        return $this->redirectToRoute('error_starter', ['token' => $token]);
-
-
-    }
-
-    /**
-     * @Route("/error_payment_starter/{token}", name="error_starter")
-     */
-    public function errorStarter(SessionInterface $session, $token, SubscriptionRepository $repo) {
-
-
-        //si pas de token renvoie à la page tarif
-        if(!$token) {
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-        //si token généré lors inscription absent, retour à tarif
-        if(!$session->get('activationToken')) {
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-         //Vérifie si paiement déjà réussie et renvoie à tarif si user revient à cette page suite paiement réussi
-         $userMail = $session->get('email');        
-
-         $successfull = $repo->verifToken($userMail);
- 
-         if($successfull) {
- 
-             return $this->redirectToRoute('tarif');
- 
- 
-         }
- 
-        //renvoie à la page de paiement pour le pack starter
-         return $this->render('subscription/errorstarter.html.twig');
-    }
-    
 }

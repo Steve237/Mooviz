@@ -110,51 +110,16 @@ class VideoController extends AbstractController
         
         $user = $this->getUser();
 
-        if(!$comments) {
-
-
-            $comments = new Comments();
-
-        }
-
-        $comment = $repoComment->findComment($video);
-        
-
-        $commentform = $this->createForm(CommentsType::class, $comments);
-        $commentform->handleRequest($request);
-
-        if($request->isXmlHttpRequest()) {
-
-        if($commentform->isSubmitted() && $commentform->isValid()) {
-
-            $comments->setUsername($user);
-
-            $date_time = new \DateTime();
-            $comments->setDate($date_time);
-            $comments->setVideo($video);
-            
-            $entity->persist($comments);
-            $entity->flush();
-
-        }
-
-        }
-
         $videos = $repository->showVideoByCategory($category, $id);
 
         $newvideos = $repository->getVideos();
-
-        $userComments = $repoComment->findComment($video);
 
 
         return $this->render('video/singlemovie.html.twig', [
             "videos" => $videos,
             "video" => $video,
             "category" => $category,
-            'commentform' => $commentform->createView(),
-            "newvideos" => $newvideos,
-            "comments" => $comments,
-            "userComments" => $userComments
+            "newvideos" => $newvideos
 
         ]);
     }
@@ -275,6 +240,7 @@ class VideoController extends AbstractController
     }
 
 
+ 
     /**
      * //retourne le formulaire de recherche
     */
