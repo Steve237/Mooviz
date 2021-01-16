@@ -129,6 +129,11 @@ class Users implements UserInterface, \Serializable
      */
     private $notifications;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $customerid;
+
 
     public function __construct()
     {
@@ -501,6 +506,18 @@ class Users implements UserInterface, \Serializable
                     $notification->setOrigin(null);
                 }
             }
+
+            return $this;
+        }
+
+        public function getCustomerid(): ?string
+        {
+            return $this->customerid;
+        }
+
+        public function setCustomerid(?string $customerid): self
+        {
+            $this->customerid = $customerid;
 
             return $this;
         }

@@ -294,7 +294,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/main/payment_info/{id}", name="user_account")
+     * @Route("/main/payment_info/{id}", name="user_payment")
      * //permet d'accéder et de modifier les infos du compte user
     */
     public function userPayment(Users $user) {

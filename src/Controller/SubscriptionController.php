@@ -135,7 +135,7 @@ class SubscriptionController extends AbstractController
      * //page de paiement
      * @Route("/payment/{id}", name="payment_later")
      */
-    public function paymentLater(Users $users, SessionInterface $session, SubscriptionRepository $repo, UsersRepository $repoUser)
+    public function paymentLater(Users $users, SessionInterface $session, SubscriptionRepository $repo, UsersRepository $repoUser, EntityManagerInterface $entity)
     {  
 
         $name = $users->getUserName(); 
@@ -157,6 +157,9 @@ class SubscriptionController extends AbstractController
             'customer' => $customer->id
           ]);
 
+        $users->setCustomerid($customer->id);
+        $entity->persist($users);
+        $entity->flush();
 
         return $this->render('subscription/payment.html.twig' , [
 
@@ -184,9 +187,6 @@ class SubscriptionController extends AbstractController
 
     }
 
-    
-    
-    
     
     /**
      * //page affichant paiement réussi

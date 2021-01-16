@@ -10,8 +10,10 @@
     <div class="dashboard-container">
         
         <ul class="dashboard-sub-menu">
-            <li class="current"><a href="dashboard-account.html">Account Settings</a></li>
-            <li><a href="dashboard-account-payment.html">Payment Info</a></li>
+            <li class="current"><a href="{{path('user_account', {'id' : app.user.id })}}"><button type="submit" class="btn btn-primary">Paramètres du compte</button></a></li>
+            <form method="POST" action="/create-customer-portal-session" style="position:absolute;left:450px;top:125px;">
+                <button type="submit" class="btn btn-primary">Gestion de la facturation</button>
+            </form>
         </ul><!-- close .dashboard-sub-menu -->
         
         <div class="container-fluid">

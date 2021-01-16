@@ -9,8 +9,8 @@
     <div class="dashboard-container">
 
         <ul class="dashboard-sub-menu">
-            <li><a href="dashboard-account.html">Account Settings</a></li>
-            <li class="current"><a href="dashboard-account-payment.html">Payment Info</a></li>
+            <li><a href="{{path('user_account', {'id' : app.user.id })}}">Account Settings</a></li>
+            <li class="current"><a href="{{path('user_payment', {'id' : app.user.id })}}">Payment Info</a></li>
         </ul><!-- close .dashboard-sub-menu -->
 
         <h5>Current Plan</h5>
