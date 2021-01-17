@@ -11,8 +11,7 @@
 	</div>
 
 	<div class="content-sidebar-section">
-		<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées
-		</h2>
+		<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées</h2>
 		<ul id="sidebar-reviews-pro" style="text-align:center;">
 			{% for video in videos %}
 			<li>
@@ -31,13 +30,56 @@
 
 <main id="col-main-with-sidebar">
 	<section class="video-container">
-		<video crossorigin playsinline style="--plyr-color-main: red;" id="player" class="col-md-12 col-lg-12">
-			<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="576">
-			<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="720">
-			<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4" size="1080">
-
-			<a href="{{asset('videos/' ~ video.videolink)}}" download>Download</a>
-		</video>
+			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
+			  Sorry your browser can't support video tag.
+			</video>
+			<div class="video-controls">
+			  <!-- timebar -->
+			  <div class="video-timebar">
+				<div class="video-timebar-buffered"></div>
+				<div class="video-timebar-current"></div>
+				<div class="video-timebar-duration"></div>
+				<div class="video-timebar-circle"></div>
+				<div class="video-timebar-toolkit">
+				  
+				</div>
+			  </div>
+			  <div class="video-controls-box">
+				<!-- suound control -->
+				<div class="video-sound-control">
+				  <div class="video-sound-control-icon">
+					<i class="fa fa-volume-up volume-btn"></i>
+				  </div>
+				  <div class="video-sound-control-meter">
+					<div class="video-sound-control-meter-current"></div>
+					<div class="video-sound-control-meter-full"></div>
+				  </div>
+				</div>
+				<!-- play and pause btn -->
+				<div class="video-control-play-pause">
+				  <!-- current time -->
+				  <div class="video-current-time-box">
+					
+				  </div>
+				  <div class="video-control-btns">
+					<i class="fa fa-backward back-btn"></i>
+					<i class="fa fa-play-circle-o play-btn"></i>
+					<i class="fa fa-forward next-btn"></i>
+				  </div>
+				  <!-- video duration time -->
+				  <div class="video-duration-time-box">
+					
+				  </div>
+				</div>
+				<!-- subtitle , quality , fullsceen -->
+				<div class="video-control-subtitle">
+				  <!-- <span class="video-language">Hindi</span>
+				  <span class="video-quality">HD</span>
+				   -->
+				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
+				</div>
+			  </div>
+		  </div>
 	</section>
 
 	<div id="movie-detail-rating">
