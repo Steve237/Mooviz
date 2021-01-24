@@ -7,6 +7,7 @@ use App\Entity\Videos;
 use DateTimeInterface;
 use App\Entity\Category;
 use App\Entity\Comments;
+use App\Entity\Notifications;
 use App\Entity\VideoLike;
 use App\Form\CommentsType;
 use App\Form\VideoSearchType;
@@ -140,7 +141,13 @@ class VideoController extends AbstractController
 
         $comments = new Comments();
         $user = $this->getUser();
+        $username = $user->getUsername();
+
+        $notification = new Notifications();
         
+        $videoAuthor = $video->getUsername();
+        $videoTitle = $video->getVideoTitle();
+
         $commentform = $this->createForm(CommentsType::class, $comments);
         $commentform->handleRequest($request);
 
@@ -151,6 +158,15 @@ class VideoController extends AbstractController
             $comments->setDate($date_time);
             $comments->setVideo($video);
             $entity->persist($comments);
+            $entity->flush();
+
+            $notification->setOrigin($user);
+            $notification->setDestination($video->getUsername());
+            $notification->setContent($username . " a ajouté un commentaire à votre vidéo: " .$videoTitle);
+            $notification->setDate($date_time);
+            $notification->setType("newcomment");
+
+            $entity->persist($notification);
             $entity->flush();
 
             $this->addflash('success', 'votre commentaire a bien été ajouté');

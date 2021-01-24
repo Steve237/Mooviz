@@ -24,6 +24,7 @@ class FollowingController extends AbstractController
     public function follow(Users $userToFollow, EntityManagerInterface $entity)
     {
         $currentUser = $this->getUser();
+        $username = $currentUser->getUsername();
 
         $notification = new Notifications();
 
@@ -36,8 +37,9 @@ class FollowingController extends AbstractController
             
             $notification->setOrigin($currentUser);
             $notification->setDestination($userToFollow);
-            $notification->setContent("abonné à votre chaine");
+            $notification->setContent($username. " s'est abonné à votre chaine.");
             $notification->setDate($date_time);
+            $notification->setType('newfollower');
 
             $entity->persist($notification);
             $entity->flush();
