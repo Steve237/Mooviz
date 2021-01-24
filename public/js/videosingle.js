@@ -16,13 +16,6 @@ video.forEach((item,index)=>{
     isVideoPlaying?pauseVideo(index):playVideo(index);
   });
   
-  
-  window.addEventListener('keydown',function(evnt){
-    if(evnt.keyCode==32)
-      isVideoPlaying?pauseVideo(index):playVideo(index);
-  });
-  
-  
 });
 //play video
 function playVideo(index){
@@ -41,22 +34,10 @@ forwardBtn[0].addEventListener('click',function(){
   video[0].currentTime+=10;
 });
 
-//backward video
-window.addEventListener('keydown',function(evnt){
-  if(evnt.keyCode==39)
-    video[0].currentTime+=10;
-});
-
 
 //backward video
 backwardBtn[0].addEventListener('click',function(){
   video[0].currentTime-=10;
-});
-
-//backward video
-window.addEventListener('keydown',function(evnt){
-  if(evnt.keyCode==37)
-    video[0].currentTime-=10;
 });
 
 //timebar
@@ -137,11 +118,6 @@ let isVideoMute = false;
 
 volumeBtn[0].addEventListener('click',function(){
   isVideoMute?unmuteVideo():muteVideo();
-});
-
-window.addEventListener('keydown',function(evnt){
-  if(evnt.keyCode==77)
-    isVideoMute?unmuteVideo():muteVideo();
 });
 
 function muteVideo(){

@@ -137,16 +137,50 @@
 			<h2>Description</h2>
 			<p style="font-size:large">{{video.videodescription}}</p>
 		</div>
+		<div class="movie-details-section" id="comment-form">
+			<h3>Commentaires</h3>
+			{% form_theme commentform 'bootstrap_4_layout.html.twig' %}
+			{% set action = path('addcomment', {'id' : video.id, 'idcategory': video.category.id}) ~ '#comment-form' %}
+			{{form_start(commentform, {'action': action, 'method': 'POST'})}}
+				{{form_row(commentform.content, { 'attr': {'class': 'comment_form', 'rows':'10'}})}}
+				{{form_widget(commentform)}}
+				<button class="btn btn-primary">Postez</button>
+			{{form_end(commentform)}}
+		</div>
 
-
-		<div class="movie-details-section" style="margin-top:50px">
+		{% if comments %}
+		{% for message in app.flashes('success') %}
+    	<div class="alert alert-success">
+        {{ message }}
+    	</div>
+		{% endfor %}
+		<div class="scroller">
+		{% for comment in video.comments %}
+		<div class="comment-block">
+			<div class="button-comment">
+				<div class="button-element">
+				<a href="{{path('delete_comment', {"id" : comment.id, "idvideo" : video.id, "idcategory": video.category.id})}}"><button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button></a>
+				</div>
+			</div>
+			<div class="info-comment">
+				{{comment.content}}
+				<div class="comment-username">Publié par:	{{comment.username.username}}</div>
+				<div>Date de publication: {{comment.date | date("d/m/y")}}</div>
+			</div>
+		</div>
+		{% endfor %}
+		</div>
+		{% else %}
+			<p>Aucun commentaire n'a été ajouté, soyez le premier à commenter</p>
+		{% endif %}
+		<div class="movie-details-section videos-section">
 			<h2>Nouveautés</h2>
 			<div class="row">
 				{% for video in newvideos %}
 				<div class="col-12 col-md-6 col-lg-6 col-xl-4">
 					<div class="item-listing-container-skrn">
 						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
-							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" style="width:350px;height:350px" class="img-responsive">
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive dimension-image">
 						</a>
 						<div class="item-listing-text-skrn">
 							<div class="item-listing-text-skrn-vertical-align">
@@ -218,5 +252,7 @@
 			event.preventDefault();
 		});
 	}
+
+	
 </script>
 {% endblock %}

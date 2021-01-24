@@ -98,15 +98,13 @@ class VideoController extends AbstractController
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Affiche contenu d'une vidéo
     */
-    public function movie(VideosRepository $repository, AvatarRepository $repoAvatar, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request, Comments $comments = null)
+    public function movie(VideosRepository $repository, AvatarRepository $repoAvatar, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request)
     {   
         $nbreview = $video->getViews();
         $nbreview++;
         $video->setViews($nbreview);
         $entity->persist($video);
         $entity->flush();
-
-        $username = new Users();
         
         $user = $this->getUser();
 
@@ -114,65 +112,94 @@ class VideoController extends AbstractController
 
         $newvideos = $repository->getVideos();
 
+        $comments = new Comments();
+
+
+        $commentform = $this->createForm(CommentsType::class, $comments);
+
+        $comments = $repoComment->findComment($video);
 
         return $this->render('video/singlemovie.html.twig', [
             "videos" => $videos,
             "video" => $video,
             "category" => $category,
-            "newvideos" => $newvideos
+            "newvideos" => $newvideos,
+            "commentform" => $commentform->createView(),
+            "comments" => $comments
 
         ]);
     }
 
 
-     /**
-     * Permet de charger plus de commentaires
-     * @Route("/videos-{id}/{start}", name="loadMoreComments", requirements={"start": "\d+"})
-     */
-    public function loadMoreComments(VideosRepository $repo, $id, $start = 5)
-    {
-        $videos = $repo->findOneById($id);
-
-        return $this->render('video/comments.html.twig', [
-            
-            'videos' => $videos,
-            'start' => $start,
-        ]);
-    }
-
-
-      /**
-     * Permet de modifer un commentaire
-     * @Route("/update_comment/{id}", name="update_comment")
-
+    /**
+    * @Route("/main/addcomment/{id}/category/{idcategory}", name="addcomment")
+    * @ParamConverter("video", options={"mapping": {"id" : "id"}})
+    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     */
-    public function updateComment(Comments $comment, EntityManagerInterface $entity, Request $request)
-    {
+    public function AddComment(Videos $video, Request $request, EntityManagerInterface $entity, Category $category) {
+
+        $comments = new Comments();
+        $user = $this->getUser();
         
+        $commentform = $this->createForm(CommentsType::class, $comments);
+        $commentform->handleRequest($request);
+
+        if($commentform->isSubmitted() && $commentform->isValid()) {
+
+            $comments->setUsername($user);
+            $date_time = new \DateTime();
+            $comments->setDate($date_time);
+            $comments->setVideo($video);
+            $entity->persist($comments);
+            $entity->flush();
+
+            $this->addflash('success', 'votre commentaire a bien été ajouté');
+
+            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
+
+
+        }
+            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
+
+    }
+
+
+    /**
+    * Permet de modifer un commentaire
+    * @Route("/update_comment/{id}/video/{idvideo}/category/{idcategory}", name="update_comment")
+    * @ParamConverter("video", options={"mapping": {"idvideo" : "id"}})
+    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
+    */
+    public function updateComment(Comments $comment, Videos $video, Category $category, EntityManagerInterface $entity, Request $request)
+    {       
         if($request->isXmlHttpRequest()) {
 
-            $usercomment = $request->request->get("commentaire");
+            $usercomment = $request->request->get('commentaire');
             $comment->setContent($usercomment);
             $entity->persist($comment);
             $entity->flush();
 
+            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
 
 
         }
 
-        return $this->redirectToRoute('homepage');
+        return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
     }
 
     /**
      * Permet de supprimer commentaire
-     * @Route("/delete_comment/{id}", name="delete_comment")
+     * @Route("/delete_comment/{id}/video/{idvideo}/category/{idcategory}", name="delete_comment")
+     * @ParamConverter("video", options={"mapping": {"idvideo" : "id"}})
+     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
      */
-    public function deleteComment(Comments $comment, EntityManagerInterface $entity)
+    public function deleteComment(Comments $comment, Videos $video, Category $category, EntityManagerInterface $entity)
     {
         $entity->remove($comment);
         $entity->flush();
         
-        return $this->redirectToRoute('user_videos');
+        return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
+
     }
     
     /**

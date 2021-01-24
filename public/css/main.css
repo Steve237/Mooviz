@@ -4768,30 +4768,6 @@ margin-top:170px;
 
 }
 
-.button-comment {
-
-	position:absolute;
-	right:18px;
-	margin-top:10px;
-}
-
-.section-comment {
-
-	margin-top:150px;
-	padding-left:10px;
-	margin-bottom:5px;
-
-
-}
-
-.block-comment {
-
-	position:absolute;
-	left:35px;
-	border-bottom:solid 1px black;
-	color:black;
-
-}
 
 
 .video-container {
@@ -4807,35 +4783,6 @@ margin-top:170px;
 	color:white;
 
 
-}
-
-.comment-button {
-
-	position:absolute;
-	bottom:2px;
-	right:2px
-}
-
-.update-comment-button {
-
-	position:absolute;
-	bottom:-38px;
-	right:-20px
-}
-
-.update-comment {
-
-	background-color:gainsboro;
-	color:black;
-	margin-right:5px
-
-
-}
-
-.delete-comment {
-
-	background-color:gainsboro;
-	color:black;
 }
 
 .button-like {
@@ -5048,17 +4995,19 @@ color:white;
 
 .comment_form {
 
-	overflow-y: scroll;
+	overflow-y: auto;
 	width:100%;
 	resize: none; /* Remove this if you want the user to resize the textarea */
 	margin-left:-22px;
+	height:350px;
 }
 
 .scroller {
 	width: 100%;
-	overflow-y: auto;
-	scrollbar-color: rebeccapurple green;
+	scrollbar-color:green;
 	scrollbar-width: thin;
+	overflow-y: auto;
+	height:350px;
   }
 
 .roundedImage{
@@ -5070,6 +5019,45 @@ color:white;
     height:70px;
 }
 
+.comment-block {
+
+	margin-bottom:10px;
+	background-color:blanchedalmond;
+}
+
+.button-comment {
+
+	display:flex;
+	justify-content:flex-end;
+
+}
+
+.button-update-comment {
+
+	margin-right:5px
+}
+
+.info-comment {
+	overflow:auto;
+	width:70%;
+	margin-left:10px
+}
+
+.comment-username {
+
+	margin-top:20px;
+
+}
+
+.videos-section {
+
+	margin-top:20px;
+}
+
+.dimension-image {
+	width:350px;
+	height:350px;
+}
 
 /**
  * The CSS shown here will not be introduced in the Quickstart guide, but shows
