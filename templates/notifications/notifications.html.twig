@@ -17,16 +17,11 @@
             {% if notifications %}
             <ul id="header-user-notification-list" style="overflow:auto;">
                 {% for notification in notifications %}
-                    {% if notification.type == "newfollower" %}
-                        <li>
-                        <a href="#!" style="color:blue"><img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}">{{notification.origin.username}} s'est {{notification.content}} | {{notification.date | date("d/m/y") }} <a href="{{path('delete_notif', {'id' : notification.id })}}" class="delete_notif">Vu <i class="fas fa-check"></i></a></a>        
-                        </li>
-                    {% endif %}
-                    {% if notification.type == "newcomment" %}
                     <li>
-                        <a href="#!" style="color:blue"><img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}">{{notification.origin.username}} {{notification.content}} | {{notification.date | date("d/m/y") }} <a href="{{path('delete_notif', {'id' : notification.id })}}" class="delete_notif">Vu <i class="fas fa-check"></i></a></a>        
+
+                    <a href="#!" style="color:blue"><img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}"> {{notification.content}} | {{notification.date | date("d/m/y") }} <a href="{{path('delete_notif', {'id' : notification.id })}}" class="delete_notif">Vu <i class="fas fa-check"></i></a></a>        
+                        
                     </li>
-                    {% endif %}
                 {% endfor %}
             </ul>
             <a href="{{path('delete_all_notif')}}"><button class="btn btn-primary">Marquez tout comme vu</button></a>
