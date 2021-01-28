@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+		<link rel="stylesheet" href="{{asset("css/main.css")}}">
+		<link rel="stylesheet" href="{{asset('icons/fontawesome/css/fontawesome-all.min.css')}}"><!-- FontAwesome Icons -->
+		<link rel="stylesheet" href="{{asset('icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css')}}"><!-- iconsmind.com Icons -->
+		
+		<title>SKRN - Media Streaming App</title>
+	</head>
+	<body>
+		
+		<header id="masthead-pro">
+			<div class="container">
+				
+				<h1><a href="{{path('home')}}"><span class="homepage_title">Essama</span></a></h1>
+				
+				<nav id="site-navigation-pro">
+					<ul class="sf-menu">
+						<li class="normal-item-pro">
+							<a href="{{path('home')}}">Accueil</a>
+						</li>
+						<li class="normal-item-pro">
+							<!-- Sub-Menu Example >
+							<ul class="sub-menu">
+								<li class="normal-item-pro">
+									<a href="#!">Sub-menu item 1</a>
+								</li>
+								<li class="normal-item-pro">
+									<a href="#!">Sub-menu item 2</a>
+								</li>
+								<li class="normal-item-pro">
+									<a href="#!">Sub-menu item 3</a>
+								</li>
+							</ul> 
+							< End Sub-Menu example -->
+						</li>
+						<li class="normal-item-pro current-menu-item">
+							<a href="{{path('tarif')}}">Tarifs</a>
+						</li>
+						<li class="normal-item-pro">
+							<a href="faqs.html">FAQs</a>
+						</li>
+						<li>
+							<a href="{{path('contact')}}">Contact</a>
+						</li>
+					</ul>
+				</nav>
+				
+				<a href="{{path('inscription', {'plan' : 'plan'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
+				
+				<a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
+				
+				<div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
+				
+				<div class="clearfix"></div>
+			</div><!-- close .container -->
+			
+			<nav id="mobile-navigation-pro">
+			
+				<ul id="mobile-menu-pro">
+					<li>
+						<a href="index.html">Home</a>
+					</li>
+					<li>
+						<a href="dashboard-home.html">New Releases</a>
+						<!-- Mobile Sub-Menu Example >
+						<ul>
+							<li class="normal-item-pro">
+								<a href="#!">Sub-menu item 1</a>
+							</li>
+							<li class="normal-item-pro">
+								<a href="#!">Sub-menu item 2</a>
+							</li>
+							<li class="normal-item-pro">
+								<a href="#!">Sub-menu item 3</a>
+							</li>
+						</ul>
+						< End Mobile Sub-Menu Example -->
+					</li>
+					<li>
+						<a href="{{path('tarif')}}">Tarifs</a>
+					</li>
+					<li>
+						<a href="faqs.html">FAQs</a>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			
+				<button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
+			
+			</nav>
+        </header>
+        
+        {% block body %}{% endblock %}
+
+        <footer id="footer-pro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md">
+						<div class="copyright-text-pro">&copy; Copyright 2018 SKRN. All Rights Reserved</div>
+					</div><!-- close .col -->
+					<div class="col-md">
+						<ul class="social-icons-pro">
+							<li class="facebook-color"><a href="http://facebook.com/progressionstudios" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+							<li class="twitter-color"><a href="http://twitter.com/Progression_S" target="_blank"><i class="fab fa-twitter"></i></a></li>
+							<li class="youtube-color"><a href="http://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a></li>
+							<li class="vimeo-color"><a href="http://vimeo.com" target="_blank"><i class="fab fa-vimeo-v"></i></a></li>
+						</ul>
+					</div><!-- close .col -->
+				</div><!-- close .row -->
+			</div><!-- close .container -->
+		</footer>
+		
+		{% block javascripts %}
+		
+		<!-- Required Framework JavaScript -->
+		<script src="{{asset('js/libs/jquery-3.3.1.min.js')}}"></script><!-- jQuery -->
+		<script src="{{asset('js/libs/popper.min.js')}}" defer></script><!-- Bootstrap Popper/Extras JS -->
+		<script src="{{asset('js/libs/bootstrap.min.js')}}" defer></script><!-- Bootstrap Main JS -->
+
+		<!-- All JavaScript in Footer -->
+		
+		<!-- Additional Plugins and JavaScript -->
+		<script src="{{asset('js/navigation.js')}}" defer></script><!-- Header Navigation JS -->
+		<script src="{{asset('js/jquery.flexslider-min.js')}}" defer></script><!-- Custom Document Ready JS -->		
+		<script src="{{asset('js/script.js')}}" defer></script><!-- Custom Document Ready JS -->
+		<script src="https://js.stripe.com/v3/"></script>
+		<script src="{{asset("js/subscription.js")}}" defer></script><!-- Custom Document Ready JS -->
+		<script src="{{asset("js/premium.js")}}" defer></script><!-- Custom Document Ready JS -->
+	{% endblock %}
+		
+	</body>
+</html>
+		

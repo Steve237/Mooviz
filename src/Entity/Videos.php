@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
+use App\Entity\Users;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\VideosRepository;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\ArrayCollection;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 
 /**
@@ -28,7 +34,7 @@ class Videos
     private $videotitle;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     private $videodescription;
 
@@ -43,8 +49,8 @@ class Videos
     private $videoimage;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
+     * @ORM\Column(type="string", length=255) 
+    */
     private $videolink;
 
     /**
@@ -58,15 +64,39 @@ class Videos
     private $sliderimage;
 
     /**
-     * @Vich\UploadableField(mapping="video_image", fileNameProperty="videoimage")
+     * @ORM\Column(type="bigint", nullable=true)
      */
-    private $imageFile;
+    private $views;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="video")
+     */
+    private $likes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="video")
+     */
+    private $playlists;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="video")
+     */
+    private $comments;
 
     public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
+        $this->likes = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
+        $this->comments = new ArrayCollection();
 
     }
 
@@ -112,24 +142,24 @@ class Videos
     }
 
 
-    public function getVideoimage(): ?string
+    public function getVideoimage()
     {
         return $this->videoimage;
     }
 
-    public function setVideoimage(?string $videoimage): self
+    public function setVideoimage($videoimage)
     {
         $this->videoimage = $videoimage;
 
         return $this;
     }
 
-    public function getVideolink(): ?string
+    public function getVideolink()
     {
         return $this->videolink;
     }
 
-    public function setVideolink(string $videolink): self
+    public function setVideolink($videolink)
     {
         $this->videolink = $videolink;
 
@@ -179,5 +209,161 @@ class Videos
         }
     }
 
+    public function getViews(): ?string
+    {
+        return $this->views;
+    }
+
+    public function setViews(?string $views): self
+    {
+        $this->views = $views;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VideoLike[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(VideoLike $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(VideoLike $like): self
+    {
+        if ($this->likes->contains($like)) {
+            $this->likes->removeElement($like);
+            // set the owning side to null (unless already changed)
+            if ($like->getVideo() === $this) {
+                $like->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Permet de savoir si un utilisateur a liké
+     * @param Users $user
+     * @return bool
+     */
+    public function isLikedByUser(Users $user) : bool {
+
+        foreach($this->likes as $like) {
+
+            if ($like->getUser() === $user) return true;
+
+        }
+
+        return false;
+
+
+    }
+
+    /**
+     * @return Collection|Playlist[]
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): self
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists[] = $playlist;
+            $playlist->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): self
+    {
+        if ($this->playlists->contains($playlist)) {
+            $this->playlists->removeElement($playlist);
+            // set the owning side to null (unless already changed)
+            if ($playlist->getVideo() === $this) {
+                $playlist->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+    /**
+     * Permet de savoir si un utilisateur a ajouté la vidéo à la playlist
+     * @param Users $user
+     * @return bool
+     */
+    public function isSelectedByUser(Users $user) : bool {
+
+        foreach($this->playlists as $playlist) {
+
+            if ($playlist->getUser() === $user) return true;
+
+        }
+
+        return false;
+
+
+    }
+
+
+
+    public function getUsername(): ?Users
+    {
+        return $this->username;
+    }
+
+    public function setUsername(?Users $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getVideo() === $this) {
+                $comment->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

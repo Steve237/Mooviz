@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos abonnements{% endblock %}
+
+{% block body %}
+<main id="col-main">
+
+  <h5 style="text-align:center;margin-top:30px;margin-bottom:30px">Vidéos des membres auxquels vous êtes abonnés</h5>
+
+<div class="dashboard-container">
+    
+    <div class="row">
+        {% for video in videos %}
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+            <div class="item-listing-container-skrn">
+                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
+                <div class="item-listing-text-skrn">
+                    <div class="item-listing-text-skrn-vertical-align"><h6><a href="">{{video.videotitle}}</a></h6>
+                      <div>{{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}</div>
+                    </div><!-- close .item-listing-text-skrn-vertical-align -->
+                </div><!-- close .item-listing-text-skrn -->
+            </div><!-- close .item-listing-container-skrn -->
+        </div><!-- close .col -->
+        {% endfor %}
+    </div><!-- close .row STOP-->
+    <div class="pagination">
+      <div class="navigation">
+          {{ knp_pagination_render(videos)}}
+      </div>
+    </div>
+</div><!-- close .dashboard-container -->
+</main>
+{% endblock %}

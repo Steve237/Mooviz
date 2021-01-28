@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container">
+    
+    <div class="avatar-section">
+    
+        {% if avatar %}    
+
+            <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
+
+        {% else %}
+    
+            <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-size">
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="registration-steps-page-container form-avatar">
+    <div class="registration-steps-form">
+    {{form_start(form)}}
+        <div class="form-group">
+            
+            {{form_row(form.avatar, {
+                "attr" : {
+                    "class":"form-label form-control avatar-form"
+                },
+                "label" : "Modifiez votre avatar"
+            })}}
+
+            {{form_widget(form)}}
+            <div class="row">
+                <div class="col-md-6 col-lg-6">
+                    <button class="btn btn-primary submit-avatar" type="submit">Envoyer</button>
+                    <a href="{{path('userprofile')}}"><div class="btn btn-primary submit-avatar">Annuler</button></div></a>
+                </div>
+            </div>
+        </div>
+    {{form_end(form)}}
+    </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% for comment in videos.comments | slice(start + 5) %}
+<ul class="clearfix" id="commentzone">
+    <li>
+        {{comment.content}}
+    </li>
+    <li>
+        Publié par: {{comment.username.username}} </br>
+        Date de publication: {{comment.date | date("d/m/y")}}
+
+    </li>
+</ul>
+{% endfor %}

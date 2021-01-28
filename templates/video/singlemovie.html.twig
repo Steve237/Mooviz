@@ -3,63 +3,324 @@
 {% block title %}{{video.videotitle }}{% endblock %}
 
 {% block body %}
-		
-		<div id="content-sidebar-pro">
-			
-			<div id="content-sidebar-image">
-				<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
-			</div>
-			
-			<div class="content-sidebar-section">
-				<h2 class="content-sidebar-sub-header adjusted-recent-reviews">Suggestion de vidéos</h2>
-				<ul id="sidebar-reviews-pro">
-					{% for video in videos %}
-					<li>
-						<div class="sidebar-review-time"><h6 style="color:blue;">{{video.videotitle}}</h6></div>
-						<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
-					</li>
-					{% endfor %}
-				</ul>
-				<a href="#!" class="btn btn-green-pro btn-sm">See All Reviews</a>
-			</div><!-- close .content-sidebar-section -->
-			
-		</div><!-- close #content-sidebar-pro -->
-		
-		
-		<main id="col-main-with-sidebar">
-			<div class="videosize">
-				<video id="player" controls crossorigin playsinline autoplay width=1050> 
-					<source src="{{asset('videos/' ~ video.videolink)}}" type="video/mp4">
-				</video>
-			</div>
-			
-			
-			<div id="movie-detail-rating">
-				<div class="dashboard-container">
-					<div class="row">
-					</div><!-- close .row -->
-				</div><!-- close .dashboard-container -->
-			</div><!-- close #movie-detail-rating -->
-			
-			<div class="dashboard-container">
-				<div class="movie-details-section">
-					<h2>Description</h2>
-					<p style="font-size:large">{{video.videodescription}}</p>
-				</div><!-- close .movie-details-section -->
 
-				<div class="movie-details-section">
-					<h2 style="text-align:center;">Commentaires</h2>
-				</div><!-- close .movie-details-section -->
+<div id="content-sidebar-pro" style="position:absolute;left:3px;">
 
+	<div id="content-sidebar-image">
+		<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
+	</div>
+
+	<div class="content-sidebar-section">
+		<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées</h2>
+		<ul id="sidebar-reviews-pro" style="text-align:center;">
+			{% for video in videos %}
+			<li>
+				<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+					<h6 class="titlevideo">{{video.videotitle}}</h6>
+					<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster"
+						class="videosuggest class=img-responsive">
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+	</div><!-- close .content-sidebar-section -->
+
+</div><!-- close #content-sidebar-pro -->
+
+
+<main id="col-main-with-sidebar">
+	<section class="video-container">
+			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
+			  Sorry your browser can't support video tag.
+			</video>
+			<div class="video-controls">
+			  <!-- timebar -->
+			  <div class="video-timebar">
+				<div class="video-timebar-buffered"></div>
+				<div class="video-timebar-current"></div>
+				<div class="video-timebar-duration"></div>
+				<div class="video-timebar-circle"></div>
+				<div class="video-timebar-toolkit">
+				  
+				</div>
+			  </div>
+			  <div class="video-controls-box">
+				<!-- suound control -->
+				<div class="video-sound-control">
+				  <div class="video-sound-control-icon">
+					<i class="fa fa-volume-up volume-btn"></i>
+				  </div>
+				  <div class="video-sound-control-meter">
+					<div class="video-sound-control-meter-current"></div>
+					<div class="video-sound-control-meter-full"></div>
+				  </div>
+				</div>
+				<!-- play and pause btn -->
+				<div class="video-control-play-pause">
+				  <!-- current time -->
+				  <div class="video-current-time-box">
 					
-				<div class="movie-details-section">
-					<h2>Ajouter un commentaire</h2>
+				  </div>
+				  <div class="video-control-btns">
+					<i class="fa fa-backward back-btn"></i>
+					<i class="fa fa-play-circle-o play-btn"></i>
+					<i class="fa fa-forward next-btn"></i>
+				  </div>
+				  <!-- video duration time -->
+				  <div class="video-duration-time-box">
+					
+				  </div>
+				</div>
+				<!-- subtitle , quality , fullsceen -->
+				<div class="video-control-subtitle">
+				  <!-- <span class="video-language">Hindi</span>
+				  <span class="video-quality">HD</span>
+				   -->
+				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
+				</div>
+			  </div>
+		  </div>
+	</section>
+
+	<div id="movie-detail-rating">
+		<div class="dashboard-container">
+			<div class="row">
+				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+					<div>
+						<img src="{{asset('images/avatar/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
+						{{video.username.username}} | nombre de followers : {{video.username.followers | length}}
+					</div>
+					<h3>{{video.videotitle}}</h3>
+					<strong>
+						<p>Categorie : {{video.category.categoryName}} - Date de publication :
+							{{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p>
+					</strong>
+
 					<div class="row">
-					
-					</div><!-- close .row -->
+						<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+								Playlist
+								{% if app.user and video.isSelectedByUser(app.user) %}
+								<span><i class="fas fa-star fa-2x"></i></span>
+								{% else %}
+								<span><i class="far fa-star fa-2x"></i></span>
+								{% endif %}
+							</a>
+
+
+							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+								{% if app.user and video.isLikedByUser(app.user) %}
+								<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
+								{% else %}
+								<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
+								{% endif %}
+								<span class="js-likes">{{video.likes | length}}</span>
+							</a>
+
+							{% if is_granted('ROLE_USER') and video.username != app.user %}
+							{% set isFollowed = video.username.followers.contains(app.user) %}
+
+							<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
+								class="btn btn-primary button_follow" id="follow">Follow
+							</button>
+							<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
+								class="btn btn-primary button_follow" id="unfollow">UnFollow
+							</button>
+
+							{% endif %}
+
+						</div>
+					</div>
+				</div>
+			</div><!-- close .row -->
+		</div><!-- close .dashboard-container -->
+	</div><!-- close #movie-detail-rating -->
+
+	<div class="dashboard-container">
+		<div class="movie-details-section">
+			<h2>Description</h2>
+			<p style="font-size:large">{{video.videodescription}}</p>
+		</div>
+		<div class="movie-details-section" id="comment-form">
+			<h3>Commentaires</h3>
+			{% form_theme commentform 'bootstrap_4_layout.html.twig' %}
+			{% set action = path('addcomment', {'id' : video.id, 'idcategory': video.category.id}) ~ '#comment-form' %}
+			{{form_start(commentform, {'action': action, 'method': 'POST'})}}
+				{{form_row(commentform.content, { 'attr': {'class': 'comment_form', 'rows':'10'}})}}
+				{{form_widget(commentform)}}
+				<button class="btn btn-primary">Postez</button>
+			{{form_end(commentform)}}
+		</div>
+
+		{% if comments %}
+		{% for message in app.flashes('success') %}
+    	<div class="alert alert-success">
+        {{ message }}
+    	</div>
+		{% endfor %}
+		<div class="scroller">
+		{% for comment in comments %}
+			{% if comment.parent == null %}
+		<div class="comment-block">
+			<div class="button-comment">
+				<div class="button-element">
+				<a href="{{path('delete_comment', {"id" : comment.id, "idvideo" : video.id, "idcategory": video.category.id})}}"><button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button></a>
+				</div>
+			</div>
+			<div class="info-comment">
+				<div class="comment-username">
+					<img src="{{asset('images/avatar/' ~ comment.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
+					{{comment.username.username}}
+				</div>
+				{{comment.content}}
+				<div>Date de publication: {{comment.date | date("d/m/y")}}</div>
+				<div style="margin-bottom:10px";><button class="btn btn btn-small btn-primary" data-reply data-id="{{comment.id}}" data-toggle="modal" data-target="#exampleModal">Répondre</button></div>
+			
+				{% for reply in comment.replies %}
+					<div style="margin-left:50px;background-color:beige;margin-bottom:5px">
+						<div class="button-comment">
+							<div class="button-element">
+							<a href="{{path('delete_comment', {"id" : reply.id, "idvideo" : video.id, "idcategory": video.category.id})}}"><button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button></a>
+							</div>
+						</div>
+
+					<div class="comment-username"> 
+						<img src="{{asset('images/avatar/' ~ reply.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
+						{{reply.username.username}}
+					</div>
+					{{reply.content}}
+					<div class="comment-username"> Réponse publié par:	{{reply.username.username}}</div>
+					<div>Date de publication: {{reply.date | date("d/m/y")}}</div>
+					<div><button class="btn btn btn-small btn-primary" data-reply data-id="{{reply.id}}" data-toggle="modal" data-target="#exampleModal">Répondre</button></div>
+					</div>
+				{% endfor %}
+
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+					  <div class="modal-content">
+						<div class="modal-header">
+						  <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+						  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						  </button>
+						</div>
+						<div class="modal-body">
+						  <form action="{{path('addcomment', {'id' : video.id, 'idcategory': video.category.id}) ~ '#comment-form'}}" method="post">
+							<div class="form-group">
+							  <label for="message-text" class="col-form-label">Message:</label>
+							  <textarea id="comments_content" name="comments[content]" class="comment_form" rows="10">
+
+							  </textarea>
+							  <input type="hidden" id="comments_parentid" name="parentid" value="{{comment.id}}">
+							  <input type="hidden" id="comments__token" name="comments[_token]" value="{{ csrf_token('token')}}">
+							</div>
+							<button type="submit" class="btn btn-primary">Send message</button>
+
+						  </form>
+						</div>
+						<div class="modal-footer">
+						  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					  </div>
+					</div>
+				  </div>
+			</div>
+		</div>
+			{% endif %}
+		{% endfor %}
+		</div>
+		{% else %}
+			<p>Aucun commentaire n'a été ajouté, soyez le premier à commenter</p>
+		{% endif %}
+		<div class="movie-details-section videos-section">
+			<h2>Nouveautés</h2>
+			<div class="row">
+				{% for video in newvideos %}
+				<div class="col-12 col-md-6 col-lg-6 col-xl-3">
+					<div class="item-listing-container-skrn">
+						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive dimension-image">
+						</a>
+						<div class="item-listing-text-skrn">
+							<div class="item-listing-text-skrn-vertical-align">
+								<h6><a href="dashboard-movie-profile.html">{{video.videotitle}}</a></h6>
+								<div class="circle-rating-pro" data-value="0.72" data-animation-start-value="0.72"
+									data-size="32" data-thickness="3" data-fill="{
+								          &quot;color&quot;: &quot;#42b740&quot;
+								        }" data-empty-fill="#def6de" data-reverse="true"><span style="color:#42b740;">7.2</span></div>
+							</div><!-- close .item-listing-text-skrn-vertical-align -->
+						</div><!-- close .item-listing-text-skrn -->
+					</div><!-- close .item-listing-container-skrn -->
+
+
+				</div><!-- close .col -->
+				{% endfor %}
+			</div><!-- close .row -->
+
+		</div><!-- close .movie-details-section -->
+
+	</div><!-- close .dashboard-container -->
+</main>
+{% endblock %}
+
+{% block javascript %}
+{{parent()}}
+<script>
+	var followButton = document.getElementById('follow');
+	var unfollowButton = document.getElementById('unfollow');
+
+	addOnClick(
+		followButton,
+		unfollowButton,
+		'{{ path("following", {"id":video.username.id})}}'
+
+	);
+
+	addOnClick(
+		unfollowButton,
+		followButton,
+		'{{ path("unfollowing", {"id":video.username.id})}}'
+
+	);
+
+	function switchButtons(button, oppositeButton) {
+		button.disabled = false;
+		button.style.display = 'none';
+		oppositeButton.style.display = 'block';
+	}
+
+	function addOnClick(button, oppositeButton, path) {
+
+		button.addEventListener('click', function (event) {
+			button.disabled = true;
+
+			fetch(path, {
+				'credentials': 'include'
+			}).then(function () {
+
+
+				switchButtons(button, oppositeButton);
+
+			}).catch(function () {
+
+				switchButtons(button, oppositeButton);
+
+
+			});
+
+			event.preventDefault();
+		});
+	}
+
+	window.onload = () => {
+
+		document.querySelectorAll("[data-reply]").forEach(element => {
+			element.addEventListener("click", function() {
 				
-				</div><!-- close .movie-details-section -->
-				
-			</div><!-- close .dashboard-container -->
-		</main>
+				document.querySelector("#comments_parentid").value = this.dataset.id;
+			});
+		});
+	}
+
+</script>
 {% endblock %}
