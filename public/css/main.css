@@ -5038,15 +5038,29 @@ color:white;
 }
 
 .info-comment {
-	overflow:auto;
-	width:70%;
+	
 	margin-left:10px
+}
+
+.content-comment {
+
+	min-height:50px;
+	overflow-y: auto;
+	margin-top:20px;
+
 }
 
 .comment-username {
 
 	margin-top:5px;
 
+}
+
+.reply-section {
+
+	margin-left:50px;
+	background-color:beige;
+	margin-bottom:5px;
 }
 
 .videos-section {
@@ -5057,6 +5071,16 @@ color:white;
 .dimension-image {
 	width:350px;
 	height:350px;
+}
+
+.video-description {
+
+	font-size:large;
+}
+
+.response-button {
+
+	margin-bottom:10px;
 }
 
 /**

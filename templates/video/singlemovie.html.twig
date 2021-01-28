@@ -82,11 +82,11 @@
 		  </div>
 	</section>
 
-	<div id="movie-detail-rating">
+	<div id="movie-detail-rating" style="height:270px">
 		<div class="dashboard-container">
 			<div class="row">
 				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-					<div>
+					<div style="margin-bottom:20px">
 						<img src="{{asset('images/avatar/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
 						{{video.username.username}} | nombre de followers : {{video.username.followers | length}}
 					</div>
@@ -107,7 +107,6 @@
 								{% endif %}
 							</a>
 
-
 							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
 								{% if app.user and video.isLikedByUser(app.user) %}
 								<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
@@ -118,6 +117,7 @@
 							</a>
 
 							{% if is_granted('ROLE_USER') and video.username != app.user %}
+							<div style="margin-left:280px;position:relative;bottom:55px">
 							{% set isFollowed = video.username.followers.contains(app.user) %}
 
 							<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
@@ -126,6 +126,7 @@
 							<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
 								class="btn btn-primary button_follow" id="unfollow">UnFollow
 							</button>
+							</div>
 
 							{% endif %}
 
@@ -139,7 +140,7 @@
 	<div class="dashboard-container">
 		<div class="movie-details-section">
 			<h2>Description</h2>
-			<p style="font-size:large">{{video.videodescription}}</p>
+			<p class="video-description">{{video.videodescription}}</p>
 		</div>
 		<div class="movie-details-section" id="comment-form">
 			<h3>Commentaires</h3>
@@ -170,14 +171,13 @@
 			<div class="info-comment">
 				<div class="comment-username">
 					<img src="{{asset('images/avatar/' ~ comment.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
-					{{comment.username.username}}
+					{{comment.username.username}} | {{comment.date | date("d/m/y")}}
 				</div>
-				{{comment.content}}
-				<div>Date de publication: {{comment.date | date("d/m/y")}}</div>
-				<div style="margin-bottom:10px";><button class="btn btn btn-small btn-primary" data-reply data-id="{{comment.id}}" data-toggle="modal" data-target="#exampleModal">Répondre</button></div>
+				<div class="content-comment">{{comment.content}}</div>
+				<div class="response-button"><button class="btn btn btn-small btn-primary" data-reply data-id="{{comment.id}}" data-toggle="modal" data-target="#exampleModal">Répondre</button></div>
 			
 				{% for reply in comment.replies %}
-					<div style="margin-left:50px;background-color:beige;margin-bottom:5px">
+					<div class="reply-section">
 						<div class="button-comment">
 							<div class="button-element">
 							<a href="{{path('delete_comment', {"id" : reply.id, "idvideo" : video.id, "idcategory": video.category.id})}}"><button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button></a>
@@ -186,11 +186,9 @@
 
 					<div class="comment-username"> 
 						<img src="{{asset('images/avatar/' ~ reply.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
-						{{reply.username.username}}
+						{{reply.username.username}} | {{reply.date | date("d/m/y")}}
 					</div>
-					{{reply.content}}
-					<div class="comment-username"> Réponse publié par:	{{reply.username.username}}</div>
-					<div>Date de publication: {{reply.date | date("d/m/y")}}</div>
+					<div class="content-comment">{{reply.content}}</div>
 					<div><button class="btn btn btn-small btn-primary" data-reply data-id="{{reply.id}}" data-toggle="modal" data-target="#exampleModal">Répondre</button></div>
 					</div>
 				{% endfor %}
