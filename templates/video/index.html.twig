@@ -8,14 +8,18 @@
 			<div class="flexslider progression-studios-dashboard-slider">
 		      <ul class="slides">
 					<li class="progression_studios_animate_left">
-						<div class="progression-studios-slider-dashboard-image-background" style="background-image:url('{{asset("images/johnwick.gif")}}');background-size:1920px 821px">
-							<div class="progression-studios-slider-display-table">
+						<div class="progression-studios-slider-dashboard-image-background video-header-content">
+                            <div class="video-header-container">
+                            <video autoplay loop muted id="video-header">
+                                <source src="{{asset("videos/films/action/johnwick3.mp4")}}">
+                            </video>
+                            </div>
+                            
+                            <div class="progression-studios-slider-display-table overlay">
 								<div class="progression-studios-slider-vertical-align">
 								
 									<div class="container">
-										
-										<a class="progression-studios-slider-play-btn afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i></a>
-										
+																				
 										<video id="VideoLightbox-1" src="{{asset("videos/films/action/johnwick3.mp4")}}"  width="960" height="540"></video>
 
 										<div class="progression-studios-slider-dashboard-caption-width">
@@ -37,9 +41,9 @@
 													tueurs du monde.
 												</p>
 												
-												<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i> Voir la vidéo </a>
-												
-												
+                                                <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1" onclick="stopVideo()"><i class="fas fa-play"></i> Voir la vidéo </a>
+
+
 												<div class="progression-studios-slider-more-options">
 													<i class="fas fa-ellipsis-h"></i>
 													<ul>
@@ -63,14 +67,19 @@
 						</div><!-- close .progression-studios-slider-image-background -->
 					</li>
 					<li class="progression_studios_animate_in">
-						<div class="progression-studios-slider-dashboard-image-background" style="background-image:url('{{asset("images/bloodshot.gif")}}');background-size:1920px 821px">
-							<div class="progression-studios-slider-display-table">
+						<div class="progression-studios-slider-dashboard-image-background">
+                            
+                            <div class="video-header-container">
+                                <video autoplay loop muted class="video-header" id="video-background">
+                                    <source src="{{asset("videos/films/action/bloodshot.mp4")}}">
+                                </video>
+                            </div>
+                            
+                            <div class="progression-studios-slider-display-table overlay">
 								<div class="progression-studios-slider-vertical-align">
 								
 									<div class="container">
-										
-										<a class="progression-studios-slider-play-btn afterglow" href="#VideoLightbox-2"><i class="fas fa-play"></i></a>
-										
+																				
 							         	<video id="VideoLightbox-2" src="{{asset("videos/films/action/bloodshot.mp4")}}" poster="{{asset("images/action/bloodshot.jpg")}}" width="960" height="540"></video>
 										
 									<div class="progression-studios-slider-dashboard-caption-width">
@@ -91,7 +100,7 @@
 													décide de se venger de ceux qui lui ont infligé cette expérience.
 												</p>
 												
-												<a class="btn btn-green-pro btn-slider-pro afterglow" href="#VideoLightbox-2"><i class="fas fa-play"></i> Voir la vidéo</a>
+												<a class="btn btn-green-pro btn-slider-pro afterglow" href="#VideoLightbox-2" onclick="videoStop()"><i class="fas fa-play"></i> Voir la vidéo</a>
 												<div class="progression-studios-slider-more-options">
 													<i class="fas fa-ellipsis-h"></i>
 													<ul>

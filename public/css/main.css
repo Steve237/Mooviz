@@ -5038,15 +5038,29 @@ color:white;
 }
 
 .info-comment {
-	overflow:auto;
-	width:70%;
+	
 	margin-left:10px
+}
+
+.content-comment {
+
+	min-height:50px;
+	overflow-y: auto;
+	margin-top:20px;
+
 }
 
 .comment-username {
 
 	margin-top:5px;
 
+}
+
+.reply-section {
+
+	margin-left:50px;
+	background-color:beige;
+	margin-bottom:5px;
 }
 
 .videos-section {
@@ -5058,6 +5072,40 @@ color:white;
 	width:350px;
 	height:350px;
 }
+
+.video-description {
+
+	font-size:large;
+}
+
+.response-button {
+
+	margin-bottom:10px;
+}
+
+.video-header-content {
+
+	position:relative;
+}
+
+.video-header-content .video-header {
+    position:relative;
+    z-index:0;
+}
+
+.overlay {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:1;
+}
+
+
+.video-header-container {
+
+	background-color: black;
+}
+
 
 /**
  * The CSS shown here will not be introduced in the Quickstart guide, but shows
