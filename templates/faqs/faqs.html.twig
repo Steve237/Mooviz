@@ -1,0 +1,119 @@
+{% extends 'homebase.html.twig' %}
+
+{% block title %}Foire aux questions{% endblock %}
+
+{% block body %}
+<div id="page-title-pro">
+    <div class="container">
+        <div class="row">
+            <h1>Foire aux questions.</h1>
+            <h6>Vous ne trouvez pas de réponse? <a href="{{path('faq')}}">Contactez nous</a></h6>
+        </div><!-- close .row -->
+    </div><!-- close .container -->
+</div><!-- close #page-title-pro -->
+
+<div id="content-pro">
+
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-md">
+                <h6 class="light-weight-heading faq-title">Qu'est ce que Milion?</h6>
+                <p>Milion est un site de vidéos en ligne, permettant à chacun de ses membres, non seulement de voir,
+                    mais aussi d'ajouter leurs propres vidéos afin de les partager aux autres membres du site. Il offre
+                    la possibilité de s'abonner au flux d'autres utilisateurs afin de pouvoir visionner leurs vidéos, et vice versa.
+                    Mais aussi de constituer une playlist de vidéos que vous préférez, ou souhaiterez voir plus tard.
+                    Chaque membre dispose d'un espace personnel où il peut gérer ses propres vidéos, sa playlist, ainsi que les vidéos
+                    des utilisateurs auxquels il est abonné. Vous pourrez voir et partager des films, des clips, des documentaires, etc...
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Quels sont les différents abonnements?</h6>
+                <p>Nous proposons principalement deux types d'abonnements, un abonnement starter de 3 euros/mois, et un abonnement premium de 30 euros/an.
+                Chacun de ces abonnements permet de profiter de l'ensemble des fonctionnalités du site. Il est possible de résilier son abonnement à tout moment.
+               
+
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Pourrais je avoir accès à mes factures et gérer mes abonnements?</h6>
+                <p>
+                Oui. Chaque membre inscrit dispose d'un espace personnel, au sein de l'application, lui permettant de changer de forfait, d'accéder à ses factures, ou même de supprimer son compte
+                et mettre fin à son abonnement.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Vais je pouvoir voir mes vidéos partout? </h6>
+                <p>Oui, l'application a été conçu afin que vous puissiez visionner vos contenus préférés
+                sur tous les types d'écrans, smartphone, tablette tactile, ordinateurs, et même télévision.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Comment s'inscrire?</h6>
+                <p>
+                    Pour vous inscrire, il suffit de remplir le formulaire d'inscription à la page d'accueil. Vous serez ensuite redirigé vers
+                    un formulaire de paiement. Dès que vous aurez rempli et validé ce dernier, vous recevrez un email sur l'adresse email que
+                    vous aurez renseigné, cet email contient un lien pour activer votre compte, il suffira de cliquer sur ce dernier
+                    afin que votre compte soit activé, vous pourrez alors vous connecter à l'application. Il est impératif de renseigner une adresse email
+                    à laquelle vous avez accès, sinon vous ne pourrez pas activer votre compte à l'issue de l'inscription.
+
+                </p>
+            </div><!-- close .col-md -->
+
+
+            <div class="col-md">
+                <h6 class="light-weight-heading faq-title">Essai gratuit</h6>
+                <p>Nous offrons également une période d'essai de 1 mois gratuit, via le plan free, 
+                    à l'issue duquel débute le plan starter si l'utilisateur inscrit n'a pas supprimé son compte auparavant.</p>
+                <hr>
+                
+                <h6 class="light-weight-heading faq-title">Est ce que je peux publier tout ce que je veux?</h6>
+                <p>
+                    Vous pouvez publier tous types de vidéos, correspondant aux différentes catégories du site,
+                    à condition que cela ne porte pas atteinte à autrui. Toute vidéo à caractère pornographique ou raciste sera banni. 
+                    Nous nous accordons le droit de supprimer toute vidéo et image qui serait contraire aux valeurs de notre société. Chaque vidéo pourra faire l'objet d'un signalement, 
+                    le cas échéant la vidéo sera analysée par nos soins, et si il s'avère effectivement qu'elle comporte du contenu que nous désapprouvons, elle sera supprimée, et l'utilisateur
+                    qui l'a ajouté sera informé par email des raisons pour laquelle nous l'avons supprimé.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Est ce que le paiement est sécurisé?</h6>
+                <p>
+                    Absolument, le paiement est sécurisé. Il est réalisé par l'intermédiaire de Stripe, plateforme
+                    de paiement en ligne reconnu dans le monde entier, et utilisé par de nombreuses applications en ligne.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Quel est votre politique de remboursement?</h6>
+                <p>
+                    Chaque membre inscrit dispose d'un délai de 14 jours à compter de son inscription pour se rétracter.
+                    Pour cela il lui suffira de nous en informer via le formulaire de contact. Si il a été débité la somme
+                    lui sera remboursé, puis son compte sera supprimé. Dans le cadre du plan free, aucun débit n'est fait avant la fin 
+                    de la période d'essai de 1 mois, donc si il ne souhaite pas basculer sur le plan starter, il lui suffira de supprimer 
+                    son compte avant la fin de cette période.
+                </p>
+                <p>
+                    Si l'utilisateur ayant souscrit au plan starter souhaite résilier son abonnement après la période de rétraction de 14 jours,
+                    le mois en cours suite au débit ne sera pas remboursé. Mais son compte sera cloturé. 
+                    Et bien sûr il ne fera l'objet d'aucun prélévement à la prochaine échéance.
+                </p>
+                <p>
+                    En ce qui concerne les membres inscrits avec le plan premium, si il supprime leur compte après le délai de rétraction
+                    ils ne feront l'objet d'aucun remboursement. Leur compte sera supprimé et ils ne feront plus l'objet
+                    d'aucun débit.
+                </p>
+
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Vous avez d'autres questions?</h6>
+                <p>
+                    Si vous avez d'autres questions, ou si vous souhaitez plus de précision concernant notre site,
+                    vous pouvez nous les adresser via le <a href="{{path('contact')}}">formulaire de contact</a>. 
+                    Nous vous répondrons dans les meilleurs délais.
+                </p>
+            </div><!-- close .col-md -->
+        </div><!-- close .row -->
+
+
+        <div class="clearfix"></div>
+    </div><!-- close .container -->
+
+
+</div><!-- close #content-pro -->
+
+{% endblock %}
