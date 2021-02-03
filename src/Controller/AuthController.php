@@ -43,6 +43,20 @@ class AuthController extends AbstractController
         // On supprime le token
         $user->setActivationToken(null);
         $entity->persist($user);
+
+        $stripe = new \Stripe\StripeClient('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
+          
+        $stripe->subscriptions->create([
+            
+            'customer' => $user->getCustomerid(),
+            'items' => [
+              ['price' => 'price_1Hrd49LfEkLbwHD1TCJkouof']
+            ],
+            'trial_period_days' => 31,
+            'collection_method' => 'charge_automatically'
+
+
+        ]);
         
         //On indique que le forfait est payé
         $subscription = $session->get('subscription');

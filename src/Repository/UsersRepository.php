@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Users;
+use Doctrine\ORM\Query;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ class UsersRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Users::class);
     }
-
+  
 
     public function findUser($user)
     {
@@ -29,6 +30,15 @@ class UsersRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
+    }
+
+     //permet de réaliser la pagination
+     public function findAllWithPagination() : Query
+     {
+
+        return $this->createQueryBuilder('u')
+            ->getQuery();
+        
     }
   
 

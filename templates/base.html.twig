@@ -47,7 +47,7 @@
     </div><!-- close #header-user-profile-menu -->
   </div><!-- close #header-user-profile -->
   
-  {{ render(controller('App\\Controller\\AdminController::showNotifications'))}}
+  {{ render(controller('App\\Controller\\ProfileController::showNotifications'))}}
 
   
   <div class="clearfix"></div>
@@ -138,6 +138,12 @@
             <a href="{{path('addvideo')}}">
           <span><i class="fas fa-upload"></i></span>
               Ajoutez vidéo
+            </a>
+          </li>
+          <li class="normal-item-pro">
+            <a href="{{path('admin_space', {plan : 'premium'})}}">
+          <span><i class="fas fa-user"></i></span>
+              Admin
             </a>
           </li>
         </ul>

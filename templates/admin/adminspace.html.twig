@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace administrateur{% endblock %}
+
+{% block body %}
+    <h1 style="text-align:center;margin-top:20px;"> Espace administrateur </h1>
+
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{message}}
+    </div>
+    {% endfor %}
+    <div class="container" style="margin-top:50px">
+        <h5>Liste des membres</h5>
+        <a href='{{path('admin_space', {plan : 'premium'})}}'>
+            <button class="btn btn-primary">Membres premium</button>
+        </a>
+        <a href='{{path('admin_space', {plan : 'starter'})}}'>
+            <button class="btn btn-primary">Membres Starter</button>
+        </a>
+        <a href='{{path('admin_space', {plan : 'free'})}}'>
+            <button class="btn btn-primary">Membres Free</button>
+        </a>
+        <table class="table" style="margin-top:20px">
+            <thead>
+                <tr>
+                    <th scope="col">Nom de l'utilisateur</th>
+                    <th scope="col">Plan souscrit</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                {% if user.subscription.plan == plan %}
+
+              <tr>
+                <td>{{user.username}}</td>
+                <td>{{user.subscription.plan}}</td>
+                <td>{{user.subscription.paymentstatus}}</td>
+                <td>
+                    <a href="{{path('update_user', {'id' : user.id})}}">
+                        <button class="btn btn-primary">Modifier</button>
+                    </a>
+                    <a href="{{path('delete_user', {'id' : user.id})}}">
+                        <button class="btn btn-primary">Supprimer</button>
+                    </a>
+                </td>
+              </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+          </table>
+          {{payment.customer.email}}
+          <div class="pagination">
+            <div class="navigation">
+              {{ knp_pagination_render(users) }}
+            </div>
+          </div>
+          
+        </div>
+{% endblock %}

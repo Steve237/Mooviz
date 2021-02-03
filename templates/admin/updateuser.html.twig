@@ -1,0 +1,10 @@
+<form action="{{path('update_user', {'id': user.id})}}" method="post">
+    <input type="email" name="email" value="{{user.email}}">
+    <input type="username" name="username" value="{{user.username}}">
+    <select name="roles" id="roles">
+        <option value="">--Please choose an option--</option>
+        <option value="ROLE_USER">ROLE_USER</option>
+        <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+    </select>
+    <input type="submit" value="envoyer">
+</form>
