@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Users;
+use App\Entity\Webhook;
 use Stripe\StripeClient;
 use App\Form\AdminUserType;
+use App\Repository\SubscriptionRepository;
 use App\Repository\UsersRepository;
+use App\Repository\VideosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +19,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin_space/{plan}", name="admin_space")
+     * @Route("/users_list", name="users_list")
      */
-    public function admin_space($plan, UsersRepository $repoUser, Request $request, PaginatorInterface $paginator): Response
+    public function admin_space(UsersRepository $repoUser, Request $request, PaginatorInterface $paginator): Response
     {   
         
         $users = $paginator->paginate(
@@ -27,16 +30,9 @@ class AdminController extends AbstractController
             20 /*limit per page*/
         );
         
-
-        if ($plan != 'starter' && $plan != 'premium' && $plan != 'free') {
-
-            return $this->redirectToRoute('homepage');
-        }
-          
         return $this->render('admin/adminspace.html.twig', [
             
             'users' => $users,
-            'plan' => $plan,
         ]);
     }
 
@@ -62,7 +58,6 @@ class AdminController extends AbstractController
 
 
         }
-
 
         return $this->render('admin/updateuser.html.twig', [
             
