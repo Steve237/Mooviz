@@ -87,11 +87,6 @@ class Users implements UserInterface, \Serializable
     private $imageuser;
 
     /**
-     * @ORM\OneToOne(targetEntity=Subscription::class, inversedBy="users", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $subscription;
-
-    /**
      * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="username")
      */
     private $videos;
@@ -133,6 +128,31 @@ class Users implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $customerid;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $plan;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verifsubscription;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activated;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $payed;
 
 
     public function __construct()
@@ -353,18 +373,6 @@ class Users implements UserInterface, \Serializable
         ) = unserialize($serialized);
         }
 
-        public function getSubscription(): ?Subscription
-        {
-            return $this->subscription;
-        }
-
-        public function setSubscription(?Subscription $subscription): self
-        {
-            $this->subscription = $subscription;
-
-            return $this;
-        }
-
         /**
          * @return Collection|Videos[]
          */
@@ -413,8 +421,6 @@ class Users implements UserInterface, \Serializable
 
 
             return $this->following;
-
-
         }
 
         /**
@@ -518,6 +524,66 @@ class Users implements UserInterface, \Serializable
         public function setCustomerid(?string $customerid): self
         {
             $this->customerid = $customerid;
+
+            return $this;
+        }
+
+        public function getPlan(): ?string
+        {
+            return $this->plan;
+        }
+
+        public function setPlan(string $plan): self
+        {
+            $this->plan = $plan;
+
+            return $this;
+        }
+
+        public function getCreatedAt(): ?\DateTimeInterface
+        {
+            return $this->createdAt;
+        }
+
+        public function setCreatedAt(\DateTimeInterface $createdAt): self
+        {
+            $this->createdAt = $createdAt;
+
+            return $this;
+        }
+
+        public function getVerifsubscription(): ?string
+        {
+            return $this->verifsubscription;
+        }
+
+        public function setVerifsubscription(?string $verifsubscription): self
+        {
+            $this->verifsubscription = $verifsubscription;
+
+            return $this;
+        }
+
+        public function getActivated(): ?bool
+        {
+            return $this->activated;
+        }
+
+        public function setActivated(bool $activated): self
+        {
+            $this->activated = false;
+
+            return $this;
+        }
+
+        public function getPayed(): ?bool
+        {
+            return $this->payed;
+        }
+
+        public function setPayed(?bool $payed): self
+        {
+            $this->payed = $payed;
 
             return $this;
         }

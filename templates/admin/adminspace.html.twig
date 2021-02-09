@@ -4,23 +4,23 @@
 
 {% block body %}
     
-
-    {% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{message}}
-    </div>
-    {% endfor %}
-    <div class="container" style="margin-top:50px">
+    <div class="container">
+      {% for message in app.flashes('success') %}
+      <div class="alert alert-success" style="margin-top:20px">
+          {{message}}
+      </div>
+      {% endfor %}
         <ul class="dashboard-sub-menu">
-            <li class="current"><a href="dashboard-account.html">Liste des membres</a></li>
-            <li><a href="dashboard-account-payment.html">Notifications</a></li>
+            <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
+            <li><a href="{{path('notifications_list')}}">Notifications</a></li>
         </ul><!-- close .dashboard-sub-menu -->
         <table class="table" style="margin-top:20px;width:100%">
             <thead>
                 <tr>
                     <th scope="col">Nom de l'utilisateur</th>
                     <th scope="col">Plan souscrit</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Etat Abonnement</th>
+                    <th scope="col">Etat paiement</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -28,12 +28,30 @@
                 {% for user in users %}
               <tr>
                 <td>{{user.username}}</td>
-                <td>{{user.subscription.plan}}</td>
-                <td>{{user.subscription.paymentstatus}}</td>
+                <td>{{user.plan}}</td>
+                {% if user.activated == 1 %}
+                <td>Abonnement actif</td>
+                {% else %}
+                <td>Abonnement inactif</td>
+                {% endif %}
+                {% if user.activated == 1 %}
+                <td>Paiement à jour</td>
+                {% else %}
+                <td>Paiement en attente</td>
+                {% endif %}
                 <td>
                     <a href="{{path('update_user', {'id' : user.id})}}">
                         <button class="btn btn-primary">Modifier</button>
                     </a>
+                    {% if user.roles == ["ROLE_BLOCKED"] %}
+                    <a href="{{path('deblock_user', {'id' : user.id})}}">
+                      <button class="btn btn-primary">Débloquer</button>
+                    </a>
+                    {% else %}
+                    <a href="{{path('block_user', {'id' : user.id})}}">
+                      <button class="btn btn-primary">Bloquer</button>
+                    </a>
+                    {% endif %}
                     <a href="{{path('delete_user', {'id' : user.id})}}">
                         <button class="btn btn-primary">Supprimer</button>
                     </a>

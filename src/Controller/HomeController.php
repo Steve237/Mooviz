@@ -13,11 +13,7 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/index.html.twig', [
-            
-            'name' => Subscription::getPlanDataNames(),
-            'price' => Subscription::getPlanDataPrices()
-        ]);
+        return $this->render('home/index.html.twig', []);
     }
 
     /**

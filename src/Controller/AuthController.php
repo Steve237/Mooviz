@@ -37,12 +37,9 @@ class AuthController extends AbstractController
             $this->addFlash('message', 'Lien invalide:echec activation du compte');
 
             // On retourne à l'accueil
-            return $this->redirectToRoute('accueil');
+            return $this->redirectToRoute('home');
         }
 
-        // On supprime le token
-        $user->setActivationToken(null);
-        $entity->persist($user);
 
         $stripe = new \Stripe\StripeClient('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
           
@@ -58,15 +55,16 @@ class AuthController extends AbstractController
 
         ]);
         
-        //On indique que le forfait est payé
-        $subscription = $session->get('subscription');
-        $subscription->setPaymentStatus('paid');
-        $entity->persist($subscription);
-        
+        //On indique que l'abonnement est souscrit
+        // On supprime le token
+        $user->setActivationToken(null);
+        $user->setActivated(true);
+        $user->setRoles('ROLE_USER');
+        $entity->persist($user);
         $entity->flush();
         
         // On génère un message
-        $this->addFlash('message', 'Utilisateur activé avec succès');
+        $this->addFlash('success', 'votre compte a été activé avec succès');
 
         // On retourne à l'accueil
         return $this->redirectToRoute('connexion');
@@ -178,10 +176,7 @@ class AuthController extends AbstractController
 
     }
 
-
-
-
-
+    
     /**
     * @Route("/reset_pass/{token}", name="app_reset_password")
     */

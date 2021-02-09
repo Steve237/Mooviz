@@ -11,7 +11,6 @@ use Stripe\PaymentIntent;
 use App\Entity\Subscription;
 use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\SubscriptionRepository;
 use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,91 +32,55 @@ class SubscriptionController extends AbstractController
     {   
         
         //renvoie à la liste des tarifs
-        return $this->render('subscription/tarif.html.twig', [
-
-            'name' => Subscription::getPlanDataNames(),
-            'price' => Subscription::getPlanDataPrices(),
-
-
-
-        ]);
+        return $this->render('subscription/tarif.html.twig');
     }
     
     /**
      * //page inscription
      * @Route("/inscription/{plan}", name="inscription")
      */
-    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan, SubscriptionRepository $repo)
+    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan)
     {   
-        
-        
         if( $request->isMethod('GET')  ) 
         {
-            $session->set('planName', $plan);    
-            $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));    
+            if($plan != 'starter' && $plan != 'premium') {
+
+
+                return $this->redirectToRoute('tarif');
+
+
+            }
         }
         
-        $users = new Users();
-        $form = $this->createForm(InscriptionType::class, $users);
+        $user = new Users();
+        
+        $form = $this->createForm(InscriptionType::class, $user);
 
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            $passwordCrypte = $encoder->encodePassword($users, $users->getPassword());
-            $users->setPassword($passwordCrypte);
-            $users->setConfirmPassword($passwordCrypte);
+            $passwordCrypte = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($passwordCrypte);
+            $user->setConfirmPassword($passwordCrypte);
         
-            $users->setActivationToken(md5(uniqid()));
-            $users->setRoles('ROLE_USER');
+            $user->setActivationToken(md5(uniqid()));
+            $user->setRoles('ROLE_AWAITING');
 
             $date = new \Datetime();
-            $date->modify('+1 year');
-            $subscription = new Subscription();
-            $subscription->setValidTo($date);
-            $subscription->setPlan($session->get('planName'));
-            $subscription->setFreePlanUsed(false);
-            
-            if($plan == Subscription::getPlanDataNameByIndex(0)) // free plan
-            {   
-                $date_free_user = new \Datetime();
-                $date_free_user->modify('+1 month');
-                $subscription->setFreePlanUsed(true);
-                $subscription->setPaymentStatus('paid');
+            $user->setCreatedAt($date);
+            $user->setPlan($plan);
+            $user->setActivated(false);
 
-                $users->setSubscription($subscription);
-
-                $entity->persist($users);
-                $entity->flush();  
-
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-            }
-
-
-            $users->setSubscription($subscription);
-
-            $entity->persist($users);
+            $entity->persist($user);
             $entity->flush();   
 
-            $userToken = $session->set('activationToken', $users->getActivationToken());
-            $userMail = $session->set('email', $users->getEmail());   
-            $userSubscription =  $session->set('subscription', $subscription);      
 
-            if($plan == Subscription::getPlanDataNameByIndex(1)) // starter plan
-            {   
-
-                
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-
-            }
-
-            if($plan == Subscription::getPlanDataNameByIndex(2)) // premium plan
-            {   
-                
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-
-            }
+            $userToken = $session->set('activationToken', $user->getActivationToken());
+            $userMail = $session->set('email', $user->getEmail()); 
+            
+            return $this->redirectToRoute('payment', ['id' => $user->getId()]);
         
         }
         
@@ -130,17 +93,15 @@ class SubscriptionController extends AbstractController
 
     /**
      * //page de paiement
-     * @Route("/payment/{id}", name="payment_later")
+     * @Route("/payment/{id}", name="payment")
      */
-    public function paymentLater(Users $users, SessionInterface $session, SubscriptionRepository $repo, UsersRepository $repoUser, EntityManagerInterface $entity)
+    public function paymentLater(Users $user, SessionInterface $session, UsersRepository $repoUser, EntityManagerInterface $entity)
     {  
-
-        $name = $users->getUserName(); 
-        $email = $users->getEmail();
-
-        $subscription = $session->get('subscription'); 
+        $name = $user->getUserName(); 
+        $email = $user->getEmail();
+        $userId = $user->getId();
             
-        if($subscription->getVerifpayment() != null) {
+        if($user->getVerifsubscription() != null) {
             
             return $this->redirectToRoute('tarif');
         }
@@ -156,8 +117,8 @@ class SubscriptionController extends AbstractController
           ]);
 
         //On enregistre en base de données l'id du client afin de pouvoir l'utiliser plus tard
-        $users->setCustomerid($customer->id);
-        $entity->persist($users);
+        $user->setCustomerid($customer->id);
+        $entity->persist($user);
         $entity->flush();
 
         return $this->render('subscription/payment.html.twig' , [
@@ -166,7 +127,9 @@ class SubscriptionController extends AbstractController
             'clientSecret' => $intent->client_secret,
             
             //indique que la méthode de paiement est carte bleu.
-            'payment_method_types' => ['card']
+            'payment_method_types' => ['card'],
+
+            'userId' => $userId
 
         ]);
 
@@ -174,9 +137,9 @@ class SubscriptionController extends AbstractController
 
     /**
     * //redirection vers la page de paiement réussi avec token pour sécuriser la route cryptée.
-    * @Route("/7b9efxfre5856973e9b66ye57cac32ce0", name="success_payment")
+    * @Route("/7b9efxfre5856973e9b66ye57cac32ce0/{id}", name="success_payment")
     */
-    public function redirectIfSuccessPayment(SessionInterface $session, EntityManagerInterface $entity) {
+    public function redirectIfSuccessPayment(Users $user, SessionInterface $session, EntityManagerInterface $entity) {
 
         //On créé un token et on l'enregistre en session pour être sur que le client est bien passé ici
 
@@ -184,9 +147,8 @@ class SubscriptionController extends AbstractController
         $token = md5($random);
         $new_token = $token;
 
-        $subscription = $session->get('subscription'); 
-        $subscription->setVerifpayment($new_token);
-        $entity->persist($subscription);
+        $user->setVerifSubscription($new_token);
+        $entity->persist($user);
         $entity->flush();
 
         $verif_token = $session->set('new_token', $new_token);
@@ -200,12 +162,12 @@ class SubscriptionController extends AbstractController
      * @Route("/success", name="success_page")
      *
      */
-    public function successPage(SessionInterface $session, EntityManagerInterface $entity, \Swift_Mailer $mailer, SubscriptionRepository $repo)
+    public function successPage(SessionInterface $session, UsersRepository $repo, EntityManagerInterface $entity, \Swift_Mailer $mailer  )
     {   
         
         //Vérifie si client a été enregistré et si il est bien passé par la redirection
         $verif_token = $session->get('new_token');        
-        $successPayment = $repo->verifToken($verif_token);
+        $successPayment = $repo->verifSubscriber($verif_token);
 
        //si token généré lors inscription absent, retour à tarif
         if(!$session->get('activationToken')) {
@@ -214,6 +176,7 @@ class SubscriptionController extends AbstractController
 
         }
 
+        //si token succès en mémoire dans la table user, envoi mail activation du compte
         if ($successPayment) {
 
             //envoie mail activation compte avec token et email user obtenue lors de l'inscription

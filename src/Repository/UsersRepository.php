@@ -32,6 +32,38 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
 
+    public function getCustomer($customer)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.username')
+            ->andWhere('u.customerid = :val')
+            ->setParameter('val', $customer)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+
+    public function findCustomer($customer)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.customerid = :val')
+            ->setParameter('val', $customer)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+    public function verifSubscriber($value)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.verifsubscription = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
      //permet de réaliser la pagination
      public function findAllWithPagination() : Query
      {

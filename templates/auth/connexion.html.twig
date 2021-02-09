@@ -4,10 +4,20 @@
 
 {% block body %}
 	<div id="content-pro">
-			
   	 		<div class="container">
 					<div class="centered-headings-pro pricing-plans-headings">
-						<h1>Formulaire de connexion</h1>
+					{% for message in app.flashes('message') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+					{% endfor %}
+					{% for message in app.flashes('success') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+					{% endfor %}
+						
+					<h1>Formulaire de connexion</h1>
 					</div>
 			</div><!-- close .container -->
 			

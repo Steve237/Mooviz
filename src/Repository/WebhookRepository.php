@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Webhook;
+use Doctrine\ORM\Query;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,28 @@ class WebhookRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Webhook::class);
     }
+
+
+     //permet de supprimer toutes les notifications
+     public function deleteAllWebhook() {
+
+        return $this->createQueryBuilder('w')
+        ->delete()
+        ->where('w.id != 0')
+        ->getQuery()
+        ->getResult();
+
+    }
+
+     //permet de réaliser la pagination
+     public function findAllWithPagination() : Query
+     {
+
+        return $this->createQueryBuilder('w')
+            ->getQuery();
+        
+    }
+
 
     // /**
     //  * @return Webhook[] Returns an array of Webhook objects

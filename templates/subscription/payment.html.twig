@@ -168,7 +168,7 @@
 
                         <div class="row">
                             <div class="billing-form-pro">
-                                <form method="post" id="payment-form" action="{{path('success_payment')}}">
+                                <form method="post" id="payment-form" action="{{path('success_payment', {'id':userId})}}">
                                     <input type="hidden" name="action" value="submit-payment">
 
 
