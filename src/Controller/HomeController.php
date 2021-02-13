@@ -16,12 +16,14 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', []);
     }
 
-    /**
-     * @Route("/pricing", name="pricing")
+     /**
+     * @Route("/tarif", name="tarif")
      */
-    public function pricing()
-    {
-        return $this->render('home/pricing.html.twig');
+    public function tarifs()
+    {   
+        
+        //renvoie à la liste des tarifs
+        return $this->render('subscription/tarif.html.twig');
     }
 
 }

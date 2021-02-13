@@ -13,23 +13,16 @@
         {% endfor %}
         <div class="row">
             {% for video in videos %}
-            <div class="col-12 col-md-6 col-lg-6 col-xl-4">
+            <div class="col-12 col-md-6 col-lg-6 col-xl-3">
               <div class="item-listing-container-skrn">
-                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" style="width:350px;height:350px;"></a>
-                    <div class="item-listing-text-skrn">
-                        <div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
-                          <div
-                            class="circle-rating-pro"
-                            data-value="0.86"
-                            data-animation-start-value="0.86"
-                            data-size="32"
-                            data-thickness="3"
-                            data-fill="{
-                              &quot;color&quot;: &quot;#42b740&quot;
-                            }"
-                            data-empty-fill="#def6de"
-                            data-reverse="true"
-                          ><span style="color:#42b740;">8.6</span></div>
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" style="width:100%;height:350px;"></a>
+                    <div class="item-listing-text-skrn" style="margin-left:-20px">
+                        <div class="item-listing-text-skrn-vertical-align">
+                          <h6 style="width:300px;text-overflow:ellipsis;padding: 2px 5px;white-space: nowrap;overflow: hidden;"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
+                          <div style="float:left">
+                            <img src="{{asset('images/avatar/' ~ video.username.imageuser.avatar)}}" style="width:35px;height:35px;" class="rounded-circle">
+									          {{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+                          </div>
                         </div><!-- close .item-listing-text-skrn-vertical-align -->
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-listing-container-skrn -->

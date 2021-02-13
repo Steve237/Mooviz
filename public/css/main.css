@@ -2450,7 +2450,7 @@ h1.light-weight-heading, h2.light-weight-heading, h3.light-weight-heading, h4.li
 
 .faq-title {
 
-	color:red;
+	color:blue;
 
 
 }
@@ -4924,12 +4924,7 @@ margin-top:170px;
 
 .btn_video {
 
-
 margin-left:35px;
-background-color:blue;
-color:white;
-
-
 
 }
 
@@ -4952,10 +4947,8 @@ color:white;
 
 	text-align:center;
 	padding-top:30px;
-	margin-top:50px;
+	margin-top:15px;
 	color:blue;
-
-
 }
 
 .close_admin_video_page {
@@ -4971,6 +4964,33 @@ color:white;
 	width:800px; 
 	margin:auto; 
 	padding-top:20px;
+	background-color:gainsboro;
+	border-radius: 10px 10px 10px 10px;
+	padding:50px;
+}
+
+.form_upload_contact{
+
+	width:800px; 
+	margin:auto; 
+	padding-top:20px;
+	margin-top:130px;
+	margin-bottom:180px;
+	border-radius: 10px 10px 10px 10px;
+	padding:50px;
+	background-color:gainsboro;
+}
+
+.form_upload_avatar{
+
+	width:800px; 
+	margin:auto; 
+	padding-top:20px;
+	margin-top:50px;
+	margin-bottom:180px;
+	border-radius: 10px 10px 10px 10px;
+	padding:50px;
+	background-color:gainsboro;
 }
 
 .btn_delete {
@@ -4995,7 +5015,7 @@ color:white;
 .homepage_title {
 
 
-	font-size:28px;color:rgb(119, 107, 107);
+	font-size:28px;color:red;
 	position:absolute;top:25px;
 	left:15px
 }
@@ -5004,10 +5024,19 @@ color:white;
 
 	overflow-y: auto;
 	width:100%;
-	resize: none; /* Remove this if you want the user to resize the textarea */
+	resize: none;
 	margin-left:-22px;
 	height:350px;
 }
+
+.contact-form {
+
+	overflow-y: auto;
+	width:100%;
+	resize: none; 
+	height:350px;
+}
+
 
 .scroller {
 	width: 100%;
@@ -5390,4 +5419,29 @@ color:white;
 		cursor: pointer;
 	  }
 	  
+	.height_section {
 
+		height:35px;
+	}
+
+	.height_between {
+
+		height:25px;
+	}
+
+	.contact_form_title {
+		
+		text-align:center;
+	}
+
+	.free_title {
+		color:red;
+	}
+
+	.success_section {
+
+		margin:auto;
+		margin-top:50px;
+		height:300px;
+		background-color:turquoise;
+	}

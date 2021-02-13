@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}Vydeo{% endblock %}</title>
+        <title>{% block title %}Mylion{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         {% block stylesheet %} 
@@ -20,7 +20,7 @@
 <div id="sidebar-bg">
 
 <header id="videohead-pro" class="sticky-header">
-  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black;margin-top:20px; ">Milion</h2></a></div>
+  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black;margin-top:20px;">Mylion</h2></a></div>
   
   <div id="video-search-header">
   
@@ -106,43 +106,43 @@
         <ul id="vertical-sidebar-nav" class="sf-menu">
           <li class="normal-item-pro current-menu-item">
             <a href="{{path("homepage")}}">
-        <span class="icon-Old-TV"></span>
+        <span><img src="https://img.icons8.com/color/48/000000/home.png"/></span>
               Accueil
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path("allvideos")}}">
-        <span class="icon-Reel"></span>
+        <span><img src="https://img.icons8.com/color/48/000000/video.png"/></span>
               Videos
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('followed_videos_list')}}">
-        <span class="icon-Movie"></span>
+        <span><img src="https://img.icons8.com/nolan/64/starred-ticket.png"/></span>
               Abonnements
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('channels_list')}}">
-        <span class="icon-Movie-Ticket"></span>
+        <span><img src="https://img.icons8.com/fluent/48/000000/chain.png"/></span>
               Chaines
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('playlistuser')}}">
-          <span class="icon-Clock"></span>
+          <span><img src="https://img.icons8.com/color/48/000000/video-playlist.png"/></span>
               Playlist
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('addvideo')}}">
-          <span><i class="fas fa-upload"></i></span>
+          <span><img src="https://img.icons8.com/nolan/64/upload.png"/></i></span>
               Ajoutez vidéo
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('users_list')}}">
-          <span><i class="fas fa-user"></i></span>
+          <span><img src="https://img.icons8.com/color/48/000000/admin-settings-male.png"/></i></span>
               Admin
             </a>
           </li>
@@ -183,6 +183,7 @@
     <script src="{{asset("js/contactform.js")}}"></script>
     <script src="{{asset("js/videosingle.js")}}"></script>
     <script src="{{asset("js/video-header.js")}}"></script>
+    <script src="{{asset("js/response.js")}}"></script>
 {% endblock %}
 </body>
 </html>

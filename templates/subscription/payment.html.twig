@@ -14,58 +14,58 @@
     <!-- iconsmind.com Icons -->
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
-    <title>SKRN - Media Streaming App</title>
+    <title>Mylion</title>
 </head>
 
 <body>
-
     <header id="masthead-pro">
         <div class="container">
-
-            <h1><a href="index.html"><img src="images/logo.png" alt="Logo"></a></h1>
-
+            
+            <h1><a href="{{path('home')}}"><span class="homepage_title">Mylion</span></a></h1>
+            
             <nav id="site-navigation-pro">
                 <ul class="sf-menu">
                     <li class="normal-item-pro">
-                        <a href="index.html">Home</a>
+                        <a href="{{path('home')}}">Accueil</a>
                     </li>
                     <li class="normal-item-pro">
-                        <a href="dashboard-home.html">New Releases</a>
                         <!-- Sub-Menu Example >
-							<ul class="sub-menu">
-								<li class="normal-item-pro">
-									<a href="#!">Sub-menu item 1</a>
-								</li>
-								<li class="normal-item-pro">
-									<a href="#!">Sub-menu item 2</a>
-								</li>
-								<li class="normal-item-pro">
-									<a href="#!">Sub-menu item 3</a>
-								</li>
-							</ul> 
-							< End Sub-Menu example -->
+                        <ul class="sub-menu">
+                            <li class="normal-item-pro">
+                                <a href="#!">Sub-menu item 1</a>
+                            </li>
+                            <li class="normal-item-pro">
+                                <a href="#!">Sub-menu item 2</a>
+                            </li>
+                            <li class="normal-item-pro">
+                                <a href="#!">Sub-menu item 3</a>
+                            </li>
+                        </ul> 
+                        < End Sub-Menu example -->
                     </li>
                     <li class="normal-item-pro current-menu-item">
-                        <a href="signup-step1.html">Pricing Plans</a>
+                        <a href="{{path('tarif')}}">Tarifs</a>
                     </li>
                     <li class="normal-item-pro">
-                        <a href="faqs.html">FAQs</a>
+                        <a href="{{path('faqs')}}">FAQs</a>
+                    </li>
+                    <li>
+                        <a href="{{path('contact')}}">Contact</a>
                     </li>
                 </ul>
             </nav>
-
-            <a href="signup-step1.html" class="btn btn-header-pro btn-green-pro noselect">Start a Free Trial</a>
-
-            <button class="btn btn-header-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign
-                In</button>
-
+            
+            <a href="{{path('inscription', {'plan' : 'starter'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
+            
+            <a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
+            
             <div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
-
+            
             <div class="clearfix"></div>
         </div><!-- close .container -->
-
+        
         <nav id="mobile-navigation-pro">
-
+        
             <ul id="mobile-menu-pro">
                 <li>
                     <a href="index.html">Home</a>
@@ -73,31 +73,30 @@
                 <li>
                     <a href="dashboard-home.html">New Releases</a>
                     <!-- Mobile Sub-Menu Example >
-						<ul>
-							<li class="normal-item-pro">
-								<a href="#!">Sub-menu item 1</a>
-							</li>
-							<li class="normal-item-pro">
-								<a href="#!">Sub-menu item 2</a>
-							</li>
-							<li class="normal-item-pro">
-								<a href="#!">Sub-menu item 3</a>
-							</li>
-						</ul>
-						< End Mobile Sub-Menu Example -->
+                    <ul>
+                        <li class="normal-item-pro">
+                            <a href="#!">Sub-menu item 1</a>
+                        </li>
+                        <li class="normal-item-pro">
+                            <a href="#!">Sub-menu item 2</a>
+                        </li>
+                        <li class="normal-item-pro">
+                            <a href="#!">Sub-menu item 3</a>
+                        </li>
+                    </ul>
+                    < End Mobile Sub-Menu Example -->
                 </li>
                 <li>
-                    <a href="signup-step1.html">Pricing Plans</a>
+                    <a href="{{path('tarif')}}">Tarifs</a>
                 </li>
                 <li>
                     <a href="faqs.html">FAQs</a>
                 </li>
             </ul>
             <div class="clearfix"></div>
-
-            <button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal"
-                role="button">Sign In</button>
-
+        
+            <button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
+        
         </nav>
     </header>
 
@@ -106,39 +105,39 @@
 
         <div class="container">
             <div class="centered-headings-pro pricing-plans-headings">
-                <h6>For one low monthly price</h6>
-                <h1>Instantly watch TV shows &amp; Movies</h1>
+                <h5 class="free_title">Essai gratuit pendant 1 mois.</h5>
+			    <h3>Regardez et partagez vos vidéos favoris.</h3>
             </div>
         </div><!-- close .container -->
 
         <div class="container">
             <ul id="registration-steps-pro">
                 <li>
-                    <a href="signup-step1.html">
-                        <div class="registration-step-circle-icon">01</div>
-                        <div class="registration-step-number">Step 1</div>
-                        <h5 class="registration-step-title">Choose your plan</h5>
+                    <a href="">
+                        <div class="registration-step-circle-icon">01.</div>
+                        <div class="registration-step-number">Etape 1.</div>
+                        <h5 class="registration-step-title">Choisissez votre plan.</h5>
                     </a>
                 </li>
                 <li>
-                    <a href="signup-step2.html">
-                        <div class="registration-step-circle-icon">02</div>
-                        <div class="registration-step-number">Step 2</div>
-                        <h5 class="registration-step-title">Create your account</h5>
+                    <a href="">
+                    <div class="registration-step-circle-icon">02.</div>
+                    <div class="registration-step-number">Etape 2.</div>
+                    <h5 class="registration-step-title">Créez votre compte.</h5>
                     </a>
                 </li>
                 <li class="current-menu-item">
-                    <a href="signup-step3.html">
-                        <div class="registration-step-circle-icon">03</div>
-                        <div class="registration-step-number">Step 3</div>
-                        <h5 class="registration-step-title">Billing information</h5>
+                    <a href="">
+                        <div class="registration-step-circle-icon">03.</div>
+                        <div class="registration-step-number">Etape 3.</div>
+                        <h5 class="registration-step-title">Informations de facturation.</h5>
                     </a>
                 </li>
                 <li>
-                    <a href="signup-step4.html">
-                        <div class="registration-step-circle-icon">04</div>
-                        <div class="registration-step-number">Step 4</div>
-                        <h5 class="registration-step-title">Welcome to SKRN!</h5>
+                    <a href="">
+                        <div class="registration-step-circle-icon">04.</div>
+                        <div class="registration-step-number">Etape 4.</div>
+                        <h5 class="registration-step-title">Activation du compte.</h5>
                     </a>
                 </li>
             </ul>
@@ -180,11 +179,11 @@
                                     <div class="form-group">
 
                                         <div class="billing-plan-container">
-                                            <h5>Your Plan: {{app.session.get('planName')|capitalize}}</h5>
-                                            {% if app.session.get('planName') == "free" %}
-                                            Gratuit pendant 1 mois
+                                            <h5>Your Plan: {{plan |capitalize}}</h5>
+                                            {% if plan == "starter" %}
+                                            Prix : 5€</span><span class="duration">/mois.</span>
                                             {% else %}
-                                            <h3>{{app.session.get('planPrice')|capitalize}}</span><span class="duration">/mois</span></h3>
+                                            Prix : 30€ <span class="duration">/an.</span>
                                             {% endif %}
                                         </div><!-- close .billing-plan-container -->
 

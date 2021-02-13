@@ -71,37 +71,6 @@
     </tbody>
   </table>
   {% endif %}
-
-  {% if app.user.videos == null %} 
-    Aucune vidéo
-  {% else %}
-  <h3>Classement des vidéos les moins populaires</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Titre de la vidéo</th>
-        <th scope="col">Nombre de vues</th>
-        <th scope="col">Nombre de likes</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for lastVideo in minVideoViews %}
-    {% set counter = ( counter | default(0) ) + 1 %}
-      <tr>
-        <th scope="row">{{ counter }}</th>
-        <td>{{lastVideo.videotitle}}</td>
-        {% if lastVideo.views == null %}
-        <td>Aucune vue</td>
-        {% else %}
-        <td>{{lastVideo.views}}</td>
-        {% endif %}
-        <td>{{lastVideo.likes | length }}</td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
 -</div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

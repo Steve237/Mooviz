@@ -11,20 +11,20 @@
     </div><!-- close #header-user-profile-click -->
     {% endif %}
     
-    <div id="header-user-notification-menu">
+    <div id="header-user-notification-menu" style="width:500px">
         <h3>Notifications</h3>
         <div id="header-notification-menu-padding">
             {% if notifications %}
-            <ul id="header-user-notification-list" style="overflow:auto;">
+            <div id="header-user-notification-list" style="overflow:auto;padding:10px;background-color:turquoise">
                 {% for notification in notifications %}
-                    <li>
-
-                    <a href="#!" style="color:blue"><img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}"> {{notification.content}} | {{notification.date | date("d/m/y") }} <a href="{{path('delete_notif', {'id' : notification.id })}}" class="delete_notif">Vu <i class="fas fa-check"></i></a></a>        
-                        
-                    </li>
+                    <div>
+                        <img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}" style="width:40px;height:40px" class="rounded-circle"> 
+                        {{notification.content}} | {{notification.date | date("d/m/y") }}.
+                    </div>
+                    <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif"><button class="btn btn-primary">Vu<i class="fas fa-check"></i></button></a>       
                 {% endfor %}
-            </ul>
-            <a href="{{path('delete_all_notif')}}"><button class="btn btn-primary">Marquez tout comme vu</button></a>
+            </div>
+            <a href="{{path('notif_delete_all')}}"><button class="btn btn-primary" style="margin-top:30px">Marquez tout comme vu</button></a>
             {% else %}
             <ul id="header-user-notification-list">
                 <p style="text-align:center;margin:5px">Aucune notification à afficher</p>

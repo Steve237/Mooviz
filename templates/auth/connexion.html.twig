@@ -6,11 +6,7 @@
 	<div id="content-pro">
   	 		<div class="container">
 					<div class="centered-headings-pro pricing-plans-headings">
-					{% for message in app.flashes('message') %}
-					<div class="alert alert-success">
-						{{ message }}
-					</div>
-					{% endfor %}
+					
 					{% for message in app.flashes('success') %}
 					<div class="alert alert-success">
 						{{ message }}
@@ -60,9 +56,9 @@
 							 
 							 <div class="clearfix"></div>
 							
-							 <a class="not-a-member-pro" href="{{path('tarif')}}">Not a member? <span>Join Today!</span></a>
+							 <a class="not-a-member-pro" href="{{path('tarif')}}">Pas encore membre? <span>Inscrivez vous!</span></a>
 								
-							<p class="newpass"><a href="{{path('recoveryPass')}}">Forgot your password?</a></p>
+							<p class="newpass"><a href="{{path('recoveryPass')}}">Mot de passe oublié?</a></p>
 							
 							</form>
 							

@@ -1,6 +1,6 @@
 {% extends 'homebase.html.twig' %}
 
-{% block title %}Homepage{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
 
@@ -23,20 +23,18 @@
 						<img src="{{asset("images/devices.jpg")}}" class="img-fluid" alt="Watch in Any Devices">
 					</div>
 					<div class="col-md my-auto"><!-- .my-auto vertically centers contents --> 
-						<h2 class="short-border-bottom">Compatible sur tous les écrans</h2>
-						<p>Tv, ordinateur, tablette, ou bien smartphone, notre site est conçu afin de vous permettre de visionner les films et séries qu'il contient sur tous types d'écran.</p>
-						<div style="height:15px;"></div>
-						<p><a class="btn btn-green-pro" href="signup-step1.html" role="button">Learn More</a></p>
+						<h2 class="short-border-bottom">Compatible sur tous les écrans.</h2>
+						<p>Tv, ordinateur, tablette, ou bien smartphone, notre site est conçu afin de vous permettre de visionner les vidéos qu'il contient sur tous vos écrans.</p>
+						<p><a class="btn btn-green-pro" href="{{path('faqs')}}" role="button">En savoir plus.</a></p>
 					</div>
 				</div><!-- close .row -->
 				
 				
 				<div class="row">
 					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
-	  					<h2 class="short-border-bottom">Créez votre propre playlist</h2>
-						<p>Nous vous offrons la possibilité de concevoir votre propre playlist avec les films et séries que vous souhaitez, afin de les regarder lorsque vous voudrez</p>
-						<div style="height:15px;"></div>
-						<p><a class="btn btn-green-pro" href="signup-step1.html" role="button">Commencez à visionner.</a></p>
+	  					<h2 class="short-border-bottom">Créez votre propre playlist.</h2>
+						<p>Nous vous offrons la possibilité de concevoir votre propre playlist avec toutes les vidéos que vous souhaitez, afin de les regarder lorsque vous voudrez.</p>
+						<p><a class="btn btn-green-pro" href="{{path('inscription', {'plan' : 'starter'})}}" role="button">Commencez à visionner.</a></p>
 					</div>
 					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
 						<img src="{{asset('images/player.png')}}" class="img-fluid" alt="Make Your Own Playlist">
@@ -49,14 +47,13 @@
 						<img src="{{asset('images/playok.png')}}" class="img-fluid" alt="Watch in Ultra HD">
 					</div>
 					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
-	  					<h2 class="short-border-bottom">Videos en Hd</h2>
-						<p>Toutes les vidéos diffusés au sein du site sont en haute définition.</p>
-						<div style="height:15px;"></div>
-						<p><a class="btn btn-green-pro" href="signup-step1.html" role="button">Start Your Free Trial</a></p>
+	  					<h2 class="short-border-bottom">Videos en Hd.</h2>
+						<p>Les vidéos diffusées au sein du site sont en haute définition.</p>
+						<p><a class="btn btn-green-pro" href="{{path('inscription', {'plan' : 'starter'})}}" role="button">Commencez votre essai gratuit.</a></p>
 					</div>
 				</div><!-- close .row -->
 				
-				<div style="height:35px;"></div>
+				<div class="height_section"></div>
 				
 				<div class="clearfix"></div>
 		</div><!-- close .container -->
@@ -69,30 +66,35 @@
 				
 				<div class="row">
 					<div class="mx-auto">
-						<div style="height:70px;"></div>
-						<h2 class="short-border-bottom">Nos plans et tarifs</h2>
+						<h2 class="short-border-bottom">Nos plans et tarifs.</h2>
 					</div>
 				</div><!-- close .row -->
 				
-				<div style="height:25px;"></div>
+				<div class="height_between"></div>
 				
 				<div class="row">
 					<div class="col-md">
 						<ul class="checkmark-list-pro">
-							<li>Essai Gratuit pendant 1 mois</li>
-							<li>Accès libre à tous les films et séries du site</li>
+							<li>Essai Gratuit pendant 1 mois.</li>
+							<li>Accès libre à toutes les videos du site.</li>
 						</ul>
 					</div>
 					<div class="col-md">
 						<ul class="checkmark-list-pro">
-							<li>Regardez nos films et séries sur votre smartphone, tablette, pc, ou télévision.</li>
-							<li>Vous pouvez aussi télécharger des vidéos afin de les voir hors ligne</li>
+							<li>Regardez les vidéos du site sur votre smartphone, tablette, pc, ou télévision.</li>
+							<li>Vous pourrez aussi télécharger des vidéos afin de les voir hors ligne.</li>
 						</ul>
 					</div>
 					<div class="col-md">
 						<ul class="checkmark-list-pro">
-							<li>Films et séries en haute définition</li>
-							<li>Abonnement résiliable à tout moment avec 1 mois essai gratuit.</li>
+							<li>Vidéos en haute définition.</li>
+							<li>Abonnement résiliable à tout moment.</li>
+						</ul>
+					</div>
+					<div class="col-md">
+						<ul class="checkmark-list-pro">
+							<li>Constituez votre playlist.</li>
+							<li>Abonnez vous à vos chaines favoris.</li>
 						</ul>
 					</div>
 				</div><!-- close .row -->
@@ -102,27 +104,34 @@
 					<div class="row">
 						<div class="col-md">
 							<div class="pricing-table-col">
-								<h6>Essai pendant 1 mois</h6>
-								<h2>Free</h2>
+								<h6>Pack Starter.</h6>
+								<h6>Abonnement mensuel.</h6>
+								<h2><sup>€</sup>5<span>/mois.</span></h2>
 								<ul>
-									<li>Vidéos en HD</li>
-									<li>Accessible sur tous types d'écrans</li>
-									<li>Accès à tous le catalogue</li>
-									<li>Téléchargement réservé aux abonnés</li>
+									<li>Vidéos en HD.</li>
+									<li>Accessible sur tous types d'écrans.</li>
+									<li>Accès à tous le catalogue.</li>
+									<li>Téléchargement de vidéos.</li>
+									<li>Possibilité d'ajouter des vidéos.</li>
+									<li>Créer votre playlist.</li>
+									<li>Abonnez vous à vos chaines préférées.</li>
 								</ul>
-								<p><a class="btn" href="{{path('inscription', {'plan':'starter'})}}" role="button">Choisissez un plan</a></p>
+								<p><a class="btn" href="{{path('inscription', {'plan':'starter'})}}" role="button">Choisir ce plan</a></p>
 							</div><!-- close .pricing-table-col -->
 						</div><!-- close .col-md-12 -->
 						<div class="col-md">
 							<div class="pricing-table-col">
-								<h6>Abonnement annuel</h6>
-								<h2><sup>€</sup>30<span> / an</span></h2>
+								<h6>Pack Premium.</h6>
+								<h6>Abonnement annuel.</h6>
+								<h2><sup>€</sup>30<span>/an.</span></h2>
 								<ul>
-									<li>Vidéos en HD</li>
-									<li>Adaptés à tous types d'écran</li>
-									<li>Accès à tous le catalogue</li>
-									<li>Téléchargement possible</li>
-									<li>Notification à chaque nouveau film ajouté</li>
+									<li>Vidéos en HD.</li>
+									<li>Accessible sur tous les écrans.</li>
+									<li>Accès à tous le catalogue.</li>
+									<li>Téléchargement de vidéos.</li>
+									<li>Possibilité d'ajouter des vidéos.</li>
+									<li>Créer votre playlist.</li>
+									<li>Abonnez vous à vos chaines préférées.</li>
 								</ul>
 								<p><a class="btn" href="{{path('inscription', {'plan':'premium'})}}" role="button">Choisir ce plan</a></p>
 							</div><!-- close .pricing-table-col -->

@@ -203,7 +203,7 @@ class ProfileController extends AbstractController
 
 
      /**
-     * @Route("/delete_notification/{id}", name="delete_notif")
+     * @Route("/notification_delete/{id}", name="notif_delete")
      * //permet de supprimer les notifications marqué comme vu
      */
     public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity, Request $request) {
@@ -222,7 +222,7 @@ class ProfileController extends AbstractController
 
 
     /**
-     * @Route("/delete_notifications", name="delete_all_notif")
+     * @Route("/notifications_delete", name="notif_delete_all")
      * //permet de supprimer toutes les notifications
      */
     public function deleteAllNotifications(NotificationsRepository $repo, EntityManagerInterface $entity) {

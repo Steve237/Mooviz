@@ -174,33 +174,7 @@ class VideoController extends AbstractController
 
         }
 
-        if ($request->isMethod('POST')) {
-
-            $parentid = $request->request->get("parentid");
-            
-            $em = $this->getDoctrine()->getManager();
-            
-            if($parentid != null) {
-                
-                $parent =  $em->getRepository(Comments::class)->find($parentid);
-            }
-            
-            $comments->setUsername($user);
-            $date_time = new \DateTime();
-            $comments->setDate($date_time);
-            $comments->setVideo($video);
-            $comments->setParent($parent ?? null);
-            $entity->persist($comments);
-            $entity->flush();
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
-            
-        }
-
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
+       return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
     }
 
 

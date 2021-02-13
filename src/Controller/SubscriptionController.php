@@ -86,7 +86,8 @@ class SubscriptionController extends AbstractController
         
         return $this->render('auth/inscription.html.twig', [
             "form" => $form->createView(),
-            'clientSecret' => null
+            'clientSecret' => null,
+            'plan' => $plan
         ]);
     }
 
@@ -100,6 +101,7 @@ class SubscriptionController extends AbstractController
         $name = $user->getUserName(); 
         $email = $user->getEmail();
         $userId = $user->getId();
+        $plan = $user->getPlan();
             
         if($user->getVerifsubscription() != null) {
             
@@ -129,7 +131,9 @@ class SubscriptionController extends AbstractController
             //indique que la méthode de paiement est carte bleu.
             'payment_method_types' => ['card'],
 
-            'userId' => $userId
+            'userId' => $userId,
+
+            'plan' => $plan
 
         ]);
 
@@ -192,21 +196,15 @@ class SubscriptionController extends AbstractController
                 // On crée le texte avec la vue
                 ->setBody($this->renderView('email/activation.html.twig', ['token' => $activationtoken]),
                 'text/html'
-                )
-                ;
+                );
                 $mailer->send($message);
-
-                $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.');       
-
         }
 
         else {
-
-
+            
             return $this->redirectToRoute('tarif');
         }
 
         return $this->render('subscription/success.html.twig');  
-
     }
 }
