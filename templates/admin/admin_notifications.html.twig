@@ -15,7 +15,7 @@
         <li class="current"><a href="{{path('notifications_list')}}">Notifications</a></li>
     </ul><!-- close .dashboard-sub-menu -->
     
-    {% if notifications != null %}
+    {% if notifications | length %}
     <a href="{{path('delete_notifications')}}"><button class="btn btn-primary" style="margin-top:20px">Marquer tout comme vu.</button></a>
     <ul class="list-group" style="margin-top:10px;">
         {% for notification in notifications %}
@@ -27,7 +27,7 @@
         </div>
         {% endfor %}
         {% else %}
-            <h3>Vous n'avez aucune notification pour le moment.</h3>
+            <h5>Vous n'avez aucune notification pour le moment.</h5>
         {% endif %}
     </ul>
 </div>
