@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210126101442 extends AbstractMigration
+final class Version20210215103443 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,16 +20,12 @@ final class Version20210126101442 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comments ADD parent_id INT DEFAULT NULL');
-        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962A727ACA70 FOREIGN KEY (parent_id) REFERENCES comments (id)');
-        $this->addSql('CREATE INDEX IDX_5F9E962A727ACA70 ON comments (parent_id)');
+        $this->addSql('ALTER TABLE videobackground CHANGE videoduration videoduration VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962A727ACA70');
-        $this->addSql('DROP INDEX IDX_5F9E962A727ACA70 ON comments');
-        $this->addSql('ALTER TABLE comments DROP parent_id');
+        $this->addSql('ALTER TABLE videobackground CHANGE videoduration videoduration VARCHAR(10) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`');
     }
 }

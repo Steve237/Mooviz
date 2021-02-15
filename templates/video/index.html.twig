@@ -11,7 +11,7 @@
 						<div class="progression-studios-slider-dashboard-image-background video-header-content">
                             <div class="video-header-container">
                             <video autoplay loop muted id="video-header">
-                                <source src="{{asset("videos/films/action/johnwick3.mp4")}}">
+                                <source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
                             </video>
                             </div>
                             
@@ -20,7 +20,7 @@
 								
 									<div class="container">
 																				
-										<video id="VideoLightbox-1" src="{{asset("videos/films/action/johnwick3.mp4")}}"  width="960" height="540"></video>
+										<video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}"  width="960" height="540"></video>
 
 										<div class="progression-studios-slider-dashboard-caption-width">
 											<div class="progression-studios-slider-caption-align">
@@ -28,31 +28,17 @@
 												<ul class="progression-studios-slider-rating">
 													<li>PG-13</li><li>HD</li>
 												</ul>
-												<h2><a href="dashboard-movie-profile.html" style="color:white">John Wick 3</a></h2>
+												<h2><a href="#VideoLightbox-1" style="color:white">{{firstBackgroundVideo[0].videotitle}}</a></h2>
 												<ul class="progression-studios-slider-meta">
-													<li style="color:white">9 Mai 2019 (USA)</li>
-													<li style="color:white">163 min.</li>
-													<li style="color:white">Action</li>
+													<li style="color:white">Date de sortie : {{firstBackgroundVideo[0].parutiondate | date("d/m/Y")}}</li>
+													<li style="color:white">Durée : {{firstBackgroundVideo[0].videoduration}}</li>
+													<li style="color:white">{{firstBackgroundVideo[0].category.categoryname}}</li>
 												</ul>
 												<p class="progression-studios-slider-description" style="color:white;font-size:large">
-													John Wick a transgressé une règle fondamentale : 
-													il a tué à l'intérieur même de l'Hôtel Continental. Excommunié, tous les services liés au Continental 
-													lui sont fermés et sa tête mise à prix. John se retrouve sans soutien, traqué par tous les plus dangereux 
-													tueurs du monde.
+													{{firstBackgroundVideo[0].videodescription}}
 												</p>
 												
                                                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1" onclick="stopVideo()"><i class="fas fa-play"></i> Voir la vidéo </a>
-
-
-												<div class="progression-studios-slider-more-options">
-													<i class="fas fa-ellipsis-h"></i>
-													<ul>
-														<li><a href="#!">Ajouter aux favoris</a></li>
-														<li><a href="#!">Ajouter à la playlist</a></li>
-														<li><a href="#!">Partager</a></li>
-														<li><a href="#!">Ecrire un commentaire</a></li>
-													</ul>
-												</div>
 												<div class="clearfix"></div>      
 												
 											</div><!-- close .progression-studios-slider-caption-align -->
@@ -71,7 +57,7 @@
                             
                             <div class="video-header-container">
                                 <video autoplay loop muted class="video-header" id="video-background">
-                                    <source src="{{asset("videos/films/action/bloodshot.mp4")}}">
+                                    <source src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}">
                                 </video>
                             </div>
                             
@@ -80,7 +66,7 @@
 								
 									<div class="container">
 																				
-							         	<video id="VideoLightbox-2" src="{{asset("videos/films/action/bloodshot.mp4")}}" poster="{{asset("images/action/bloodshot.jpg")}}" width="960" height="540"></video>
+							         	<video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}" width="960" height="540"></video>
 										
 									<div class="progression-studios-slider-dashboard-caption-width">
 											<div class="progression-studios-slider-caption-align">
@@ -88,28 +74,17 @@
 												<ul class="progression-studios-slider-rating">
 													<li>PG-13</li><li>HD</li>
 												</ul>
-												<h2 class="light-fonts-pro"><a href="dashboard-movie-profile.html" style="color:white">Bloodshot</a></h2>
+												<h2 class="light-fonts-pro"><a href="#VideoLightbox-2" style="color:white">{{secondBackgroundVideo[0].videotitle}}</a></h2>
 												<ul class="progression-studios-slider-meta">
-													<li style="color:white">25 Mars, 2020 (USA)</li>
-													<li style="color:white">149 min.</li>
-													<li style="color:white">Action</li>
+													<li style="color:white">Date de sortie: {{secondBackgroundVideo[0].parutiondate | date("d/m/Y")}}</li>
+													<li style="color:white">Durée : {{secondBackgroundVideo[0].videoduration}}</li>
+													<li style="color:white">{{secondBackgroundVideo[0].category.categoryname}}</li>
 												</ul>
 												<p class="progression-studios-slider-description light-fonts-pro" style="color:white;font-size:large">
-													Bloodshot est un ancien soldat doté de pouvoirs de régénération et de meta-morphing suite à l'injection de nanites dans son sang. 
-													Après avoir vu sa mémoire effacée à plusieurs reprises, il finit par découvrir qui il est et 
-													décide de se venger de ceux qui lui ont infligé cette expérience.
+													{{secondBackgroundVideo[0].videodescription}}
 												</p>
 												
 												<a class="btn btn-green-pro btn-slider-pro afterglow" href="#VideoLightbox-2" onclick="videoStop()"><i class="fas fa-play"></i> Voir la vidéo</a>
-												<div class="progression-studios-slider-more-options">
-													<i class="fas fa-ellipsis-h"></i>
-													<ul>
-														<li><a href="#!">Ajouter aux favoris</a></li>
-														<li><a href="#!">Ajouter au Playlist</a></li>
-														<li><a href="#!">Partager</a></li>
-														<li><a href="#!">Ecrire un commentaire</a></li>
-													</ul>
-												</div>
 												<div class="clearfix"></div>
 												
 											</div><!-- close .progression-studios-slider-caption-align -->

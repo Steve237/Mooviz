@@ -20,6 +20,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AvatarRepository;
+use App\Repository\VideobackgroundRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +34,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videolist", name="homepage")
      */
-    public function homePage(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function homePage(VideosRepository $repository, VideobackgroundRepository $repoBackground, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
 
 
@@ -42,11 +43,17 @@ class VideoController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             20 /*limit per page*/
         );
+
+        $firstBackgroundVideo = $repoBackground->findById(1);
+        $secondBackgroundVideo = $repoBackground->findById(2);
     
         $categories = $repo->findAll();
         return $this->render('video/index.html.twig', [
+            
             "videos" => $videos,
-            "categories" => $categories
+            "categories" => $categories,
+            "firstBackgroundVideo" => $firstBackgroundVideo,
+            "secondBackgroundVideo" => $secondBackgroundVideo
         ]);
     
     }

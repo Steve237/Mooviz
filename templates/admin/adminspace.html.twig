@@ -5,7 +5,7 @@
 {% block body %}
     
     <div class="container">
-      {% for message in app.flashes('success') %}
+      {% for message in app.flashes('success_update') %}
       <div class="alert alert-success" style="margin-top:20px">
           {{message}}
       </div>
@@ -13,7 +13,8 @@
         <ul class="dashboard-sub-menu">
             <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
             <li><a href="{{path('notifications_list')}}">Notifications</a></li>
-        </ul><!-- close .dashboard-sub-menu -->
+            <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+      </ul><!-- close .dashboard-sub-menu -->
         <table class="table" style="margin-top:20px;width:100%">
             <thead>
                 <tr>

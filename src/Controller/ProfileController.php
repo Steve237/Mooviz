@@ -79,7 +79,7 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/update_video/{id}", name="update_video")
-     * //Permet de télécharger des vidéos
+     * //Permet de modifier vidéo
      */
     public function UpdateVideo(Videos $video, Request $request, EntityManagerInterface $entitymanager)
     {

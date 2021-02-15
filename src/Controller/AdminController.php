@@ -8,15 +8,19 @@ use App\Entity\Users;
 use App\Entity\Webhook;
 use Stripe\StripeClient;
 use App\Form\AdminUserType;
+use App\Entity\Videobackground;
+use App\Form\VideoBackgroundType;
 use App\Repository\UsersRepository;
 use App\Repository\VideosRepository;
 use App\Repository\WebhookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\SubscriptionRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\VideobackgroundRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
@@ -319,4 +323,66 @@ class AdminController extends AbstractController
 
             return new Response(Response::HTTP_OK);
     }
+
+
+    /** 
+     * //donne accès à la liste des backgrounds videos
+    * @Route("/videos_background", name="videos_background")
+    */
+    public function videoBackgroundList(VideobackgroundRepository $videoRepo) 
+    {
+        $videos = $videoRepo->findAll();
+
+        return $this->render('admin/videos_background.html.twig', 
+        [
+            "videos" => $videos
+
+        ]);
+       
+    }
+
+    /**
+    * @Route("/update_video_background/{id}", name="update_video_background")
+    */
+    public function updateVideoBackground(Videobackground $video, EntityManagerInterface $entity, Request $request) 
+    {   
+        $videoBackgroundForm = $this->createForm(VideoBackgroundType::class, $video);
+        $videoBackgroundForm->handleRequest($request);
+
+        if($request->isXmlHttpRequest()) {
+        
+            if($videoBackgroundForm->isSubmitted() && $videoBackgroundForm->isValid()) {
+                
+            //upload de la vidéo
+            $videoFile = $video->getVideoLink();
+            $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
+            $videoFile->move($this->getParameter('video_directory'), $fileVideo);
+
+            $video->setVideoLink('/uploads/'.$fileVideo);
+            $entity->persist($video);
+            $entity->flush();
+            
+            return new JsonResponse('ok');
+        }
+            return new JsonResponse('err');
+        }
+        
+        return $this->render('admin/update_video_background.html.twig', 
+        [   
+            "videoBackgroundForm" => $videoBackgroundForm->createView(),
+            "video" => $video
+
+        ]);
+    }
+
+    /**
+    * @Route("/success_update_video_background", name="success_update_video_background")
+    */
+    public function successUpdateVideoBackground() 
+    {   
+        $this->addFlash('success_upload', 'votre vidéo a été modifié avec succès');
+        
+        return $this->redirectToRoute('videos_background');
+    }
+
 }
