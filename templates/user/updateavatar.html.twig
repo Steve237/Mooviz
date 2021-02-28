@@ -6,7 +6,7 @@
     
         {% if avatar %}    
 
-            <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
+            <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
 
         {% else %}
     
@@ -16,16 +16,20 @@
 
     </div>
 
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
     <div class="form_upload_avatar">
 
     {{form_start(form)}}
         <div class="form-group">
             
-            {{form_row(form.avatar, {
+            {{form_row(form.imageFile, {
                 "attr" : {
                     "class":"form-label form-control avatar-form"
                 },
-                "label" : "Modifiez votre avatar"
+                "label" : "Ajoutez votre avatar"
             })}}
 
             {{form_widget(form)}}
@@ -38,4 +42,7 @@
         </div>
     {{form_end(form)}}
     </div>
+</div>
+</div>
+</div>
 {% endblock %}

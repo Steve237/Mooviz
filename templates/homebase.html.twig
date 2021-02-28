@@ -64,10 +64,10 @@
 			
 				<ul id="mobile-menu-pro">
 					<li>
-						<a href="index.html">Home</a>
+						<a href="{{path('home')}}">Accueil</a>
 					</li>
 					<li>
-						<a href="dashboard-home.html">New Releases</a>
+						<a href="{{path('tarif')}}">Tarifs</a>
 						<!-- Mobile Sub-Menu Example >
 						<ul>
 							<li class="normal-item-pro">
@@ -83,16 +83,13 @@
 						< End Mobile Sub-Menu Example -->
 					</li>
 					<li>
-						<a href="{{path('tarif')}}">Tarifs</a>
+						<a href="{{path('faqs')}}">Faqs</a>
 					</li>
 					<li>
-						<a href="faqs.html">FAQs</a>
+						<a href="{{path('contact')}}">Contact</a>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
-			
-				<button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
-			
 			</nav>
         </header>
         

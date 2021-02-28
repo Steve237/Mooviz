@@ -5,11 +5,7 @@
 {% block body %}
 
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
-
-
-<h3>Récapitulatif</h3>
-
-
+<h6>Récapitulatif</h6>
 <ul class="list-group" style="margin-bottom:50px;">
     <li class="list-group-item d-flex justify-content-between align-items-center">
         Nombre de vidéos en ligne
@@ -48,7 +44,7 @@
   {% if app.user.videos == null %} 
     Aucune vidéo
   {% else %}
-  <h3>Classement des vidéos les plus populaires</h3>
+  <h6>Classement des vidéos les plus populaires</h6>
   <table class="table" style="margin-bottom:50px;">
     <thead>
       <tr>
@@ -70,7 +66,19 @@
     {% endfor %}
     </tbody>
   </table>
+
+  {% for bestVideo in maxVideoViews %}
+  <ul class="list-group admin-list d-md-none" style="margin-bottom:50px;">
+  {% set counter = ( counter | default(0) ) + 1 %}
+  <div style='margin-bottom:30px'>
+      <li class="list-group-item">Position : {{counter}}</li>
+      <li class="list-group-item">Titre : {{bestVideo.videotitle}}</li>
+      <li class="list-group-item">Nombre de vues : {{bestVideo.views}} </li>
+      <li class="list-group-item">Nombre de likes: {{bestVideo.likes | length }}</li>
+  </div>
+  {% endfor %}
+  </ul>
   {% endif %}
--</div><!-- close .dashboard-container -->
+</div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

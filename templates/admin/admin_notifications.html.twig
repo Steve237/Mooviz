@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container admin-section">
     {% for message in app.flashes('success') %}
     <div class="alert alert-success" style="margin-top:20px">
         {{message}}
@@ -18,7 +18,7 @@
     
     {% if notifications | length %}
     <a href="{{path('delete_notifications')}}"><button class="btn btn-primary" style="margin-top:20px">Marquer tout comme vu.</button></a>
-    <ul class="list-group" style="margin-top:10px;">
+    <ul class="list-group admin-list" style="margin-top:10px;">
         {% for notification in notifications %}
         <div style='margin-bottom:30px'>
         <li class="list-group-item">Type : {{notification.type}}</li>

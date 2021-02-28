@@ -47,7 +47,7 @@ class AdminController extends AbstractController
     /**
     * @Route("/update_user/{id}", name="update_user")
     */
-    public function updateUser(Users $user, Request $request, EntityManagerInterface $entity): Response
+    public function updateUser(Users $user, Request $request, EntityManagerInterface $entity, UsersRepository $repoUser): Response
     {   
 
         if ($request->isMethod('POST')) {
@@ -55,6 +55,25 @@ class AdminController extends AbstractController
            $email = $request->request->get('email');
            $username = $request->request->get('username');
            $roles = $request->request->get('roles');
+
+           $userExist = $repoUser->findUser($username);
+           $emailExist = $repoUser->findEmail($email);
+
+            if($userExist){
+
+                $this->addFlash('user_exist', 'Ce nom est déjà utilisé.');
+                return $this->redirectToRoute('update_user', ['id' => $user->getId()]);
+            }
+
+            
+            if($emailExist){
+
+                $this->addFlash('email_exist', 'Cet email est déjà utilisé.');
+                return $this->redirectToRoute('update_user', ['id' => $user->getId()]);
+
+            }
+
+
 
            $user->setEmail($email);
            $user->setUsername($username);
@@ -326,7 +345,7 @@ class AdminController extends AbstractController
 
 
     /** 
-     * //donne accès à la liste des backgrounds videos
+    * //donne accès à la liste des backgrounds videos
     * @Route("/videos_background", name="videos_background")
     */
     public function videoBackgroundList(VideobackgroundRepository $videoRepo) 

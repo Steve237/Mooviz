@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\VideobackgroundRepository;
+;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VideobackgroundRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=VideobackgroundRepository::class)
@@ -19,6 +22,12 @@ class Videobackground
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 35,
+     *      minMessage = "Votre titre doit contenir au moins 2 caractères",
+     *      maxMessage = "Votre titre doit contenir au moins 35 caractères"
+     * )
      */
     private $videotitle;
 
@@ -34,6 +43,11 @@ class Videobackground
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\File(
+     *      maxSize = "1000M",
+     *      mimeTypes = {"video/mp4"},
+     *      mimeTypesMessage = "Nous acceptons uniquement les vidéos au format mp4."
+     * )
      */
     private $videolink;
 

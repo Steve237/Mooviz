@@ -62,7 +62,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videos/{category}", name="videobycategory")
      */
-    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request, VideobackgroundRepository $repoBackground)
     {   
         
         $videos = $paginator->paginate(
@@ -71,11 +71,15 @@ class VideoController extends AbstractController
                 20 /*limit per page*/
             );
         
+        $firstBackgroundVideo = $repoBackground->findById(1);
+        $secondBackgroundVideo = $repoBackground->findById(2);
         
         $categories = $repo->findAll();
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
-            "categories" => $categories
+            "categories" => $categories,
+            "firstBackgroundVideo" => $firstBackgroundVideo,
+            "secondBackgroundVideo" => $secondBackgroundVideo
            
         ]);
     }

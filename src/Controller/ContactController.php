@@ -39,7 +39,7 @@ class ContactController extends AbstractController
             ;
             $mailer->send($message);
 
-            $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.');
+            $this->addFlash('success_contact_message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.');
         }
 
         return $this->render('contact/contact.html.twig', [

@@ -15,8 +15,8 @@
             
             {% for playlist in playlists %}
             
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="item-playlist-container-skrn">
+            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+                <div class="item-playlist-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
                     <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}"><img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie"></a>
                     <div class="item-playlist-text-skrn">
                         <h5 style="width:300px;text-overflow:ellipsis;padding: 2px 5px;white-space: nowrap;overflow: hidden"><a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a></h5>

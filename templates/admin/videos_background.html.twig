@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container admin-section">
     {% for message in app.flashes('success_upload') %}
       <div class="alert alert-success" style="margin-top:20px">
           {{message}}
@@ -16,7 +16,7 @@
         <li class="current"><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
     </ul><!-- close .dashboard-sub-menu -->
     
-    <ul class="list-group" style="margin-top:10px;">
+    <ul class="list-group admin-list" style="margin-top:10px;">
         {% for video in videos %}
         <div style='margin-bottom:30px'>
             <li class="list-group-item">Titre : {{video.videotitle}}</li>

@@ -204,13 +204,12 @@ class UserController extends AbstractController
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
             $file->move($this->getParameter('upload_directory'), $fileName);
 
+            $date = new \DateTime();
             $avatar->setAvatar($fileName);
             $avatar->setUser($user);
-
+            $avatar->setUpdatedAt($date);
             $entity->persist($avatar);
             $entity->flush();
-
-
             return $this->redirectToRoute("userprofile");
 
         }
@@ -235,15 +234,11 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             
-            $file = $avatar->getAvatar();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move($this->getParameter('upload_directory'), $fileName);
-
-            $avatar->setAvatar($fileName);
+            $date = new \DateTime();
+            $avatar->setUpdatedAt($date);
             $entity->persist($avatar);
             $entity->flush();
-
-
+            
             return $this->redirectToRoute("userprofile");
 
         }

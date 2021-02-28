@@ -1,0 +1,16 @@
+<a href="{{path('mobile_notifications')}}">
+{% if notifications %}
+<i class="fas fa-bell"></i>
+<span class="user-notification-count">{{number}}</span>
+Voir les notifications
+{% else %}
+<i class="far fa-bell"></i>
+<span class="user-notification-count">0</span>
+Aucune notification
+{% endif %}
+</a>
+
+
+
+
+

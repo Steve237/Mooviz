@@ -1,9 +1,9 @@
 <div id="content-sidebar-pro" class="block-suggestion">
 			
-    <div id="content-sidebar-info">
+    <div id="content-sidebar-info" class="d-none d-md-block">
         {% if avatars %}
         {% for avatar in avatars %}
-            <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="avatar-image">
+            <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-image">
         {% endfor %}
         {% else  %}
             <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-image">
@@ -38,3 +38,24 @@
             <li><a href="{{path('user_video_channels')}}"><span class="link">Abonnements</span></a></li>
             <li><a href="{{path('user_dashboard', {'id' : app.user.id})}}"><span class="link">A propos</span></a></li>
         </ul><!-- close .dashboard-sub-menu -->
+
+        <div id="content-sidebar-info" class="d-md-none">
+            {% if avatars %}
+            {% for avatar in avatars %}
+                <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-image">
+            {% endfor %}
+            {% else  %}
+                <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-image">
+            {% endif %}
+            <div id="profile-sidebar-name">
+                <h5>{{app.user.username}}</h5>
+            </div>
+            <div id="profile-sidebar-gradient"></div>
+            {% if avatars %}
+                {% for avatar in avatars %}
+                <a href="{{path('update_image', {'id' : avatar.id})}}" class="edit-profile-sidebar"><i class="fas fa-pencil-alt"></i></a>
+                {% endfor %}
+            {% else %}
+                <a href="{{path('avatar_update')}}" class="edit-profile-sidebar"><i class="fas fa-pencil-alt"></i></a>
+            {% endif %}
+        </div>

@@ -12,6 +12,29 @@
 						{{ message }}
 					</div>
 					{% endfor %}
+
+					{% for message in app.flashes('success_updatepass') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+					{% endfor %}
+
+					{% for message in app.flashes('unknown_token') %}
+					<div class="alert alert-danger">
+						{{ message }}
+					</div>
+					{% endfor %}
+
+					{% for message in app.flashes('warning') %}
+					<div class="alert alert-danger">
+						{{ message }}
+					</div>
+					{% endfor %}
+					{% for message in app.flashes('invalid_token') %}
+					<div class="alert alert-danger">
+						{{ message }}
+					</div>
+					{% endfor %}
 						
 					<h1>Formulaire de connexion</h1>
 					</div>
@@ -58,7 +81,7 @@
 							
 							 <a class="not-a-member-pro" href="{{path('tarif')}}">Pas encore membre? <span>Inscrivez vous!</span></a>
 								
-							<p class="newpass"><a href="{{path('recoveryPass')}}">Mot de passe oublié?</a></p>
+							<p class="newpass"><a href="{{path('recoverypass')}}">Mot de passe oublié?</a></p>
 							
 							</form>
 							

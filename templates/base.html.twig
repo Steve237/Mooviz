@@ -38,11 +38,11 @@
     </div><!-- close #header-user-profile-click -->
     <div id="header-user-profile-menu">
       <ul>
-        <li><a href="{{path('userprofile')}}"><span class="icon-User"></span>My Profile</a></li>
+        <li><a href="{{path('userprofile')}}"><span class="icon-User"></span>Mon profil</a></li>
         <li><a href=""><span class="icon-Favorite-Window"></span>My Favorites</a></li>
-        <li><a href="{{path('user_account', {'id': app.user.id})}}"><span class="icon-Gears"></span>Account Details</a></li>
+        <li><a href="{{path('user_account', {'id': app.user.id})}}"><span class="icon-Gears"></span>Mon compte</a></li>
         <li><a href="#!"><span class="icon-Life-Safer"></span>Help/Support</a></li>
-        <li><a href="{{path('deconnexion')}}"><span class="icon-Power-3"></span>Log Out</a></li>
+        <li><a href="{{path('deconnexion')}}"><span class="icon-Power-3"></span>Deconnexion</a></li>
       </ul>
     </div><!-- close #header-user-profile-menu -->
   </div><!-- close #header-user-profile -->
@@ -56,49 +56,56 @@
   
     <ul id="mobile-menu-pro">
           <li class="current-menu-item">
-            <a href="dashboard-home.html">
+            <a href="{{path("homepage")}}">
         <span class="icon-Old-TV"></span>
-              TV Series
+            Accueil
             </a>
           <li>
           <li>
-            <a href="dashboard-movies.html">
+            <a href="{{path("allvideos")}}">
         <span class="icon-Reel"></span>
-              Movies
+              Videos
             </a>
           </li>
           <li>
-            <a href="dashboard-playlists.html">
+          <a href="{{path('followed_videos_list')}}">
         <span class="icon-Movie"></span>
-              Playlists
+            Abonnements
             </a>
           </li>
           <li>
-            <a href="dashboard-new-arrivals.html">
+        <a href="{{path('channels_list')}}">
         <span class="icon-Movie-Ticket"></span>
-              New Arrivals
+          Chaines
             </a>
           </li>
           <li>
-            <a href="dashboard-coming-soon.html">
+            <a href="{{path('playlistuser')}}">
         <span class="icon-Clock"></span>
-              Coming Soon
+              Playlist
             </a>
           </li>
           <li>
-            <a href="#!">
-        <i class="far fa-bell"></i>
-        <span class="user-notification-count">3</span>
-              Notifications
+            <a href="{{path('addvideo')}}">
+        <span class="icon-Clock"></span>
+              Ajoutez vidéo
             </a>
           </li>
-    </ul>
+          <li>
+            <a href="{{path('users_list')}}">
+        <span class="icon-Clock"></span>
+              Admin
+            </a>
+          </li>
+          <li>
+            {{ render(controller('App\\Controller\\ProfileController::showNotificationsOnMobile'))}}
+          </li>
+        </ul>
     <div class="clearfix"></div>
     
     <div id="search-mobile-nav-pro">
-      <input type="text" placeholder="Search for Movies or TV Series" aria-label="Search">
+      {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
     </div>
-    
   </nav>
   
 </header>
@@ -183,6 +190,6 @@
     <script src="{{asset("js/contactform.js")}}"></script>
     <script src="{{asset("js/videosingle.js")}}"></script>
     <script src="{{asset("js/video-header.js")}}"></script>
-{% endblock %}
+  {% endblock %}
 </body>
 </html>

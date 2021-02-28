@@ -15,8 +15,8 @@
             {% for followed in user.following %}
             {% for avatar in avatars %}
             <a href="{{path('channel', {'id': followed.id})}}">
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="item-playlist-container-skrn">
+            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+                <div class="item-playlist-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
                     <a href="{{path('channel', {'id': followed.id})}}"><img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive"></a>
                     <div class="item-playlist-text-skrn">
                         <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">

@@ -32,11 +32,13 @@ class NotificationsRepository extends ServiceEntityRepository
     }
 
     //permet d'afficher nombre de notifications
-    public function numberNotif()
+    public function numberNotif($user)
     {
         return $this->createQueryBuilder('n')
         ->select('count(n.id)')
         ->orderBy('n.id', 'DESC')
+        ->andWhere('n.destination = :val')
+        ->setParameter('val', $user)
         ->getQuery()
         ->getSingleScalarResult();
     }

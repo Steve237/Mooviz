@@ -44,12 +44,13 @@ class Videos
     private $publicationdate;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(length=255)
      */
     private $videoimage;
 
     /**
-     * @ORM\Column(type="string", length=255) 
+    * @ORM\Column(length=255)
+    * 
     */
     private $videolink;
 

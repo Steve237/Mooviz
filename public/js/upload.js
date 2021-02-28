@@ -31,16 +31,15 @@ $(document).ready(function(){
             processData:false,
             beforeSend: function(){
                 $(".progress-bar").width('0%');
-                $('#uploadStatus').html('<img src="images/loader.gif"/>');
             },
             error:function(){
-                $('#uploadStatus').html('<p style="color:#EA4335;">File upload failed, please try again.</p>');
+                $('#uploadStatus').html('<p style="color:#EA4335;">Le téléchargement a échoué, merci de recommencer.</p>');
             },
             success: function(resp){
                 if(resp == 'ok'){
-                    window.document.location = '/042491f448463ffa79e596a3333d0943';
+                    window.document.location = '/upload_video_successfull';
                 }else if(resp == 'err'){
-                    $('#uploadStatus').html('<p style="color:#EA4335;">Please select a valid file to upload.</p>');
+                    $('#uploadStatus').html('<p style="color:#EA4335;">Le téléchargement a échoué: nous acceptons uniquement les vidéos au format mp4 et les images au format jpg, jpeg, ou png</p>');
                 }
             }
         });
@@ -52,7 +51,7 @@ $(document).ready(function(){
         var file = this.files[0];
         var fileType = file.type;
         if(!allowedTypes.includes(fileType)){
-            alert('Please select a valid file (PDF/DOC/DOCX/JPEG/JPG/PNG/GIF).');
+            alert('Veuillez télécharger une vidéo au format mp4.');
             $("#fileInput").val('');
             return false;
         }

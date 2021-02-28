@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div id="content-sidebar-pro" style="position:absolute;left:3px;">
+<div id="content-sidebar-pro" class="d-none d-md-block" style="position:absolute;left:3px;">
 
 	<div id="content-sidebar-image">
 		<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
@@ -82,56 +82,74 @@
 		  </div>
 	</section>
 
-	<div id="movie-detail-rating" style="height:270px">
+	<div id="movie-detail-rating">
 		<div class="dashboard-container">
 			<div class="row">
 				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-					<div style="margin-bottom:20px">
-						<img src="{{asset('images/avatar/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
-						{{video.username.username}} | nombre de followers : {{video.username.followers | length}}
+					<div style="display:flex;flex-direction:row;justify-content:space-between">
+					<div class="video-user-info">
+						<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
+						{{video.username.username}} | followers : {{video.username.followers | length}}
 					</div>
-					<h4>{{video.videotitle}}</h4>
+					{% if is_granted('ROLE_USER') and video.username != app.user %}
+					<div>
+					{% set isFollowed = video.username.followers.contains(app.user) %}
+
+					<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
+						class="btn btn-primary button_follow" id="follow">Follow
+					</button>
+					<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
+						class="btn btn-primary button_follow" id="unfollow">UnFollow
+					</button>
+					</div>
+					</div>
+					
+					<p class="videoname">{{video.videotitle}}</p>
 					<strong>
-						<p>Categorie : {{video.category.categoryName}} - Date de publication :
+						<p class="video-data">Categorie : {{video.category.categoryName}} - Date de publication :
 							{{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p>
 					</strong>
 
-					<div class="row">
-						<div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+					<div class="section_buttons_videos d-none d-md-block">
 							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
 								Playlist
 								{% if app.user and video.isSelectedByUser(app.user) %}
-								<span><i class="fas fa-star fa-2x"></i></span>
+								<span><i class="fas fa-2x fa-star"></i></span>
 								{% else %}
-								<span><i class="far fa-star fa-2x"></i></span>
+								<span><i class="far fa-2x fa-star"></i></span>
 								{% endif %}
 							</a>
 
 							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
 								{% if app.user and video.isLikedByUser(app.user) %}
-								<span class="button-like"><i class="fas fa-thumbs-up fa-2x"></i></span>
+								<span class="button-like"><i class="fas fa-2x fa-thumbs-up"></i></span>
 								{% else %}
-								<span class="button-like"><i class="far fa-thumbs-up fa-2x"></i></span>
+								<span class="button-like"><i class="far fa-2x fa-thumbs-up"></i></span>
 								{% endif %}
 								<span class="js-likes">{{video.likes | length}}</span>
 							</a>
-
-							{% if is_granted('ROLE_USER') and video.username != app.user %}
-							<div style="margin-left:280px;position:relative;bottom:55px">
-							{% set isFollowed = video.username.followers.contains(app.user) %}
-
-							<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
-								class="btn btn-primary button_follow" id="follow">Follow
-							</button>
-							<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
-								class="btn btn-primary button_follow" id="unfollow">UnFollow
-							</button>
-							</div>
-
-							{% endif %}
-
 						</div>
-					</div>
+						<div class="section_buttons_videos d-sm-none">
+							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+								Playlist
+								{% if app.user and video.isSelectedByUser(app.user) %}
+								<span><i class="fas fa-star"></i></span>
+								{% else %}
+								<span><i class="far fa-star"></i></span>
+								{% endif %}
+							</a>
+
+							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+								{% if app.user and video.isLikedByUser(app.user) %}
+								<span class="button-like"><i class="fas fa-thumbs-up"></i></span>
+								{% else %}
+								<span class="button-like"><i class="far fa-thumbs-up"></i></span>
+								{% endif %}
+								<span class="js-likes">{{video.likes | length}}</span>
+							</a>
+						</div>
+						
+					{% endif %}
 				</div>
 			</div><!-- close .row -->
 		</div><!-- close .dashboard-container -->
@@ -142,59 +160,21 @@
 			<h2>Description</h2>
 			<p class="video-description">{{video.videodescription}}</p>
 		</div>
-		<div class="movie-details-section" id="comment-form">
-			<h3>Commentaires</h3>
-			{% form_theme commentform 'bootstrap_4_layout.html.twig' %}
-			{% set action = path('addcomment', {'id' : video.id, 'idcategory': video.category.id}) ~ '#comment-form' %}
-			{{form_start(commentform, {'action': action, 'method': 'POST'})}}
-				{{form_row(commentform.content, { 'attr': {'class': 'comment_form', 'rows':'10'}})}}
-				{{form_widget(commentform)}}
-				<button class="btn btn-primary">Postez</button>
-			{{form_end(commentform)}}
-		</div>
-
-		{% if comments %}
-		{% for message in app.flashes('success') %}
-    	<div class="alert alert-success">
-        {{ message }}
-    	</div>
-		{% endfor %}
-		<div class="scroller">
-		{% for comment in comments %}
-		<div class="comment-block">
-			<div class="button-comment">
-				<div class="button-element">
-				<a href="{{path('delete_comment', {"id" : comment.id, "idvideo" : video.id, "idcategory": video.category.id})}}"><button class="btn btn-primary"><i class="fas fa-trash-alt"></i></button></a>
-				</div>
-			</div>
-			<div class="info-comment">
-				<div class="comment-username">
-					<img src="{{asset('images/avatar/' ~ comment.username.imageuser.avatar)}}" class="rounded-circle" style="width:50px;height:50px">
-					{{comment.username.username}} | {{comment.date | date("d/m/y")}}
-				</div>
-				<div class="content-comment">{{comment.content}}</div>
-			</div>
-		</div>
-		{% endfor %}
-		</div>
-		{% else %}
-			<p>Aucun commentaire n'a été ajouté, soyez le premier à commenter</p>
-		{% endif %}
 
 		<div class="movie-details-section videos-section">
 			<h2>Nouveautés</h2>
 			<div class="row">
 				{% for video in newvideos %}
-				<div class="col-12 col-md-6 col-lg-6 col-xl-3">
-					<div class="item-listing-container-skrn">
+				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
+					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
 						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
-							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive dimension-image">
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive imagemovie">
 						</a>
 						<div class="item-listing-text-skrn">
 							<div class="item-listing-text-skrn-vertical-align">
-								<h6 style="width:300px;text-overflow:ellipsis;white-space: nowrap;overflow:hidden;margin-left:-20px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
+								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
 								<div style="float:left;margin-left:-20px">
-									<img src="{{asset('images/avatar/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
+									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
 									{{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
 								</div>
 							</div><!-- close .item-listing-text-skrn-vertical-align -->

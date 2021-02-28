@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier video description {% endblock %}
+
+{% block body %}
+
+<p class="title_admin_video"> Modifier la description de la video </p>
+
+<div class="container">
+<div class="row">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+<div class="form_upload_video">
+    {% form_theme formvideodescription 'bootstrap_4_layout.html.twig' %}
+    {{form_start(formvideodescription,  {"attr" : {'id':'video_update'}}, {'action': path('update_video_description', {'id': video.id}), 'method': 'POST'})}}
+    <div class="form-group">{{form_row(formvideodescription.videotitle, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(formvideodescription.videodescription, {"attr" : {'class':'form-control contact-form', 'rows':5}})}}</div>
+    <div class="form-group">{{form_widget(formvideodescription)}}</div>
+    <button type="submit" class="btn btn_video">Modifier vidéo</button>
+    {{form_end(formvideodescription)}}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}

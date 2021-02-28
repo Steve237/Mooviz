@@ -6,9 +6,10 @@ use App\Entity\Users;
 use App\Entity\Videos;
 use App\Form\VideoType;
 use App\Entity\Category;
-use App\Entity\Notifications;
 use App\Form\UploadType;
 use App\Form\CategoryType;
+use App\Entity\Notifications;
+use App\Form\VideoDescriptionType;
 use App\Repository\VideoRepository;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
@@ -16,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotificationsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -78,13 +80,11 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/update_video/{id}", name="update_video")
-     * //Permet de modifier vidéo
+     * @Route("/update_video_image/{id}", name="update_video_image")
+     * //Permet de modifier image de la vidéo.
      */
-    public function UpdateVideo(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
     {
-
-
         $updateform = $this->createForm(UploadType::class, $video);
         $updateform->handleRequest($request);
         
@@ -92,12 +92,12 @@ class ProfileController extends AbstractController
         
             if ($updateform->isSubmitted() && $updateform->isValid()) {
             
+
             $videoImage = $video->getVideoImage();
             $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
             $videoImage->move($this->getParameter('image_directory'), $fileImage);
-
             $video->setVideoImage($fileImage);
-            
+
             $entitymanager->persist($video);
             $entitymanager->flush();
 
@@ -115,17 +115,51 @@ class ProfileController extends AbstractController
     
     }
 
+    /**
+     * @Route("/update_video_description/{id}", name="update_video_description")
+     * //Permet de modifier la description de la vidéo
+     */
+    public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    {
+        $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
+        $formvideodescription->handleRequest($request);
+        
+        if ($formvideodescription->isSubmitted() && $formvideodescription->isValid()) {
+            
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+            return $this->redirectToRoute('success_update');
+        }
 
+        return $this->render('admin/update_video_description.html.twig', [
+
+            "formvideodescription" => $formvideodescription->createView(),
+            "video" => $video
+        ]);
+    
+    }
 
 
     /**
-     *  @Route("/042491f448463ffa79e596a3333d0943", name="success_upload")
+     *  @Route("/upload_video_successfull", name="success_upload")
      * //cette fonction redirige vers la page des vidéos user avec message success
      * //route cryptée afin que personne ne puisse la deviner
      */
     public function showMessageSuccessUpload() {
 
-        $this->addFlash('success', 'votre vidéo a été ajouté avec succès');
+        $this->addFlash('success', 'Votre vidéo a été ajouté avec succès.');
+        
+        return $this->redirectToRoute('user_videos');
+        
+    }
+
+
+     /**
+     * @Route("/update_video_successfull", name="success_update")
+     */
+    public function showMessageSuccessUpdateVideo() {
+
+        $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
         
         return $this->redirectToRoute('user_videos');
         
@@ -181,7 +215,7 @@ class ProfileController extends AbstractController
     }
     
     /**
-     * //permet d'afficher toutes les notifications
+     * permet d'afficher toutes les notifications
      */
     public function showNotifications(NotificationsRepository $repo) {
 
@@ -189,7 +223,7 @@ class ProfileController extends AbstractController
 
         $notifications = $repo->findAllNotification($currentUser);
 
-        $number = $repo->numberNotif();
+        $number = $repo->numberNotif($currentUser);
 
 
         return $this->render('notifications/notifications.html.twig', [
@@ -198,6 +232,43 @@ class ProfileController extends AbstractController
             "number" => $number
         ]);
 
+
+    }
+
+    /**
+     * //permet d'afficher nombre notifications sur mobile
+     */
+    public function showNotificationsOnMobile(NotificationsRepository $repo) {
+
+        $currentUser = $this->getUser(); 
+
+        $number = $repo->numberNotif($currentUser);
+
+        $notifications = $repo->findAllNotification($currentUser);
+
+
+        return $this->render('notifications/mobilenotifications.html.twig', [
+
+            "number" => $number,
+            "notifications" => $notifications
+        ]);
+
+    }
+
+    /**
+     * //permet d'afficher toutes les notifications sur mobile
+     * @Route("/mobile_notifications", name="mobile_notifications")
+     */
+    public function showNotifOnMobile(NotificationsRepository $repo) {
+
+        $currentUser = $this->getUser(); 
+
+        $notifications = $repo->findAllNotification($currentUser);
+
+        return $this->render('notifications/listnotifications.html.twig', [
+
+            "notifications" => $notifications
+        ]);
 
     }
 
@@ -232,7 +303,6 @@ class ProfileController extends AbstractController
         $repo->deleteAllNotif($currentUser);
 
         return $this->redirectToRoute('homepage');
-
 
     }
 
