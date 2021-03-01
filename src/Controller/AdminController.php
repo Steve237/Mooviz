@@ -458,7 +458,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * //retourne le formulaire de recherche
+     * //retourne le formulaire de recherche d'utilisateur
     */
     public function searchUser() {
     

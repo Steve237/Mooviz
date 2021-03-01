@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -29,7 +30,7 @@ class ProfileController extends AbstractController
 {
     /**
      * @Route("/upload", name="addvideo")
-     * //Permet de télécharger des vidéos
+     * //Permet d'ajouter des vidéos
      */
     public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager)
     {
@@ -215,7 +216,7 @@ class ProfileController extends AbstractController
     }
     
     /**
-     * permet d'afficher toutes les notifications
+     * permet d'afficher toutes les notifications sur écran classique
      */
     public function showNotifications(NotificationsRepository $repo) {
 
@@ -291,10 +292,9 @@ class ProfileController extends AbstractController
 
     }
 
-
     /**
      * @Route("/notifications_delete", name="notif_delete_all")
-     * //permet de supprimer toutes les notifications
+     * //permet de supprimer toutes les notifications de l'user
      */
     public function deleteAllNotifications(NotificationsRepository $repo, EntityManagerInterface $entity) {
 
@@ -305,5 +305,78 @@ class ProfileController extends AbstractController
         return $this->redirectToRoute('homepage');
 
     }
+
+
+    /**
+     * //retourne le formulaire de recherche de vidéos dans l'espace membre
+    */
+    public function searchUserVideos() {
+    
+        $form = $this->createFormBuilder(null)
+            
+        ->setAction($this->generateUrl("user_videos_search"))
+            ->add('query', TextType::class)
+
+            ->getForm();
+        
+        
+        return $this->render('user/user_video_search.html.twig', [
+
+
+            'form' => $form->createView()
+
+        ]);
+
+    }
+
+    /**
+     * //traite la requête envoyé dans le formulaire de recherche.
+     * @Route("/main/user_videos_search", name="user_videos_search")
+     *
+     */
+    public function userVideoSearch(Request $request, VideosRepository $repository, PaginatorInterface $paginator) {
+
+        $user = $this->getUser();
+        $query = $request->request->get('form')['query'];
+        
+        if ($query) {
+
+            $videos = $paginator->paginate(
+            $repository->userVideoSearch($query, $user),
+            $request->query->getInt('page', 1),
+            20 /*limit per page*/
+        );
+
+            if ($repository->userVideoSearch($query, $user) == null) {
+
+                return $this->render('user/no_user_videos.html.twig');
+            }
+
+            else {
+
+
+                return $this->render('user/user_videos_result.html.twig', [
+
+                    'videos' => $videos
+        
+                ]);
+
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

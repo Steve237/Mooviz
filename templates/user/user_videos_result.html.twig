@@ -6,12 +6,6 @@
 
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
 
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{message}}
-            </div>
-        {% endfor %}
-        
         <a href="{{path('addvideo')}}"><button class="btn btn-primary add_video">Ajouter vidéos</button></a>
         
         {{render(controller('App\\Controller\\ProfileController::searchUserVideos'))}}

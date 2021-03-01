@@ -89,6 +89,17 @@ class VideosRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    // assure la recherche des vidéos par titre
+    public function userVideoSearch($videoTitle, $username) {
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.videotitle LIKE :videotitle')
+            ->andWhere('v.username = :val')
+            ->setParameter('videotitle', '%'.$videoTitle.'%')
+            ->setParameter('val', $username)
+            ->getQuery()
+            ->execute();
+    }
+
     //permet de réaliser la pagination
     public function findAllWithPagination() : Query{
 
