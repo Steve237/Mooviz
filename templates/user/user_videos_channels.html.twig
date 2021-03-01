@@ -20,7 +20,7 @@
           </h6>
           <div style="float:left;margin-left:-20px">
             <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" style="width:35px;height:35px;" class="rounded-circle">
-            {{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+            <a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
           </div>
         </div><!-- close .item-listing-text-skrn-vertical-align -->
       </div><!-- close .item-listing-text-skrn -->

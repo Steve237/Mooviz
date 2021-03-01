@@ -119,8 +119,11 @@ class VideoController extends AbstractController
         $entity->flush();
         
         $user = $this->getUser();
+        $userId = $user->getId();
 
         $videos = $repository->showVideoByCategory($category, $id);
+        
+        $user_videos = $repository->showVideoByUserId($userId);
 
         $newvideos = $repository->getVideos();
 
@@ -137,7 +140,8 @@ class VideoController extends AbstractController
             "category" => $category,
             "newvideos" => $newvideos,
             "commentform" => $commentform->createView(),
-            "comments" => $comments
+            "comments" => $comments,
+            "user_videos" => $user_videos
 
         ]);
     }
@@ -317,7 +321,7 @@ class VideoController extends AbstractController
 
     /**
      * //traite la requête envoyé dans le formulaire de recherche
-     * @Route("/handleSearch", name="handleSearch")
+     * @Route("/main/handleSearch", name="handleSearch")
      *
      */
     public function handleSearch(Request $request, VideosRepository $repository, PaginatorInterface $paginator) {

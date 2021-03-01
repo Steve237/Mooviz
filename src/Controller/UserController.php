@@ -2,16 +2,18 @@
 
 namespace App\Controller;
 
+use Stripe\Stripe;
 use App\Entity\Users;
 use App\Entity\Avatar;
 use App\Entity\Videos;
+use App\Entity\Webhook;
 use App\Form\UsersType;
 use App\Form\AvatarType;
 use App\Repository\UsersRepository;
+use App\Repository\VideoRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\PlaylistRepository;
-use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +28,6 @@ class UserController extends AbstractController
     {
         //Permet d'afficher l'avatar et username dans espace perso
 
-        $user = $repo->findAll();
-
         $username = new Users();
         $username = $this->getUser();
 
@@ -41,7 +41,6 @@ class UserController extends AbstractController
 
         return $this->render('user/mainprofile.html.twig', [
             'avatars' => $avatars,
-            'user' => $user,
             'playlists' => $playlists,
             'videos' => $videos,
             'current_user_videos' => $current_user_videos
@@ -269,14 +268,35 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             
+            $username = $user->getUsername();
+            $email = $user->getEmail();
+
             $passwordCrypte = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($passwordCrypte);
             $user->setConfirmPassword($passwordCrypte);
-
             $entity->persist($user);
             $entity->flush();
 
-            return $this->redirectToRoute("userprofile");
+            $stripe = new \Stripe\StripeClient(
+                'sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe'
+              );
+              $stripe->customers->update(
+                $user->getCustomerid(),
+                ["name" => $username, "email" => $email]
+              );
+    
+                $date = new \Datetime();
+    
+                $notification = new Webhook();
+                $notification->setType('modification');
+                $notification->setContent('modification des identifiants');  
+                $notification->setCreatedAt($date);
+                $notification->setUsername($username);
+                $entity->persist($notification);
+                $entity->flush();  
+
+                $this->addflash('update_user_infos', 'Vos identifiants ont été modifiés avec succès.');
+                return $this->redirectToRoute("userprofile");
 
         }
 
@@ -304,8 +324,6 @@ class UserController extends AbstractController
 
 
     }
-
-
 
     /**
      *permet d'afficher avatar

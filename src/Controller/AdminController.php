@@ -9,6 +9,7 @@ use App\Entity\Webhook;
 use Stripe\StripeClient;
 use App\Form\AdminUserType;
 use App\Entity\Videobackground;
+use App\Entity\Videos;
 use App\Form\VideoBackgroundType;
 use App\Repository\UsersRepository;
 use App\Repository\VideosRepository;
@@ -22,12 +23,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class AdminController extends AbstractController
 {
 
     /**
-     * @Route("/users_list", name="users_list")
+     * @Route("/admin/users_list", name="users_list")
      */
     public function admin_space(UsersRepository $repoUser, Request $request, PaginatorInterface $paginator): Response
     {   
@@ -45,7 +48,7 @@ class AdminController extends AbstractController
     }
 
     /**
-    * @Route("/update_user/{id}", name="update_user")
+    * @Route("/admin/update_user/{id}", name="update_user")
     */
     public function updateUser(Users $user, Request $request, EntityManagerInterface $entity, UsersRepository $repoUser): Response
     {   
@@ -109,7 +112,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/delete_user/{id}", name="delete_user")
+     * @Route("/admin/delete_user/{id}", name="delete_user")
      */
     public function deleteUser(Users $user, EntityManagerInterface $entity)
     {   
@@ -144,7 +147,7 @@ class AdminController extends AbstractController
 
 
     /**
-    * @Route("/notifications_list", name="notifications_list")
+    * @Route("/admin/notifications_list", name="notifications_list")
     */
     public function AdminNotificationList(EntityManagerInterface $entity, WebhookRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
@@ -161,7 +164,7 @@ class AdminController extends AbstractController
 
 
     /**
-    * @Route("/delete_notification/{id}", name="delete_notification")
+    * @Route("/admin/delete_notification/{id}", name="delete_notification")
     */
     public function deleteNotification(Webhook $webhook, EntityManagerInterface $entity, WebhookRepository $repo)
     {   
@@ -174,7 +177,7 @@ class AdminController extends AbstractController
     }
 
      /**
-    * @Route("/delete_notifications", name="delete_notifications")
+    * @Route("/admin/delete_notifications", name="delete_notifications")
     */
     public function deleteNotifications(EntityManagerInterface $entity, WebhookRepository $repo)
     {   
@@ -187,7 +190,7 @@ class AdminController extends AbstractController
 
 
     /**
-    * @Route("/block_user/{id}", name="block_user")
+    * @Route("/admin/block_user/{id}", name="block_user")
     */
     public function blockUser(Users $user, EntityManagerInterface $entity)
     {   
@@ -202,7 +205,7 @@ class AdminController extends AbstractController
 
 
     /**
-    * @Route("/deblock_user/{id}", name="deblock_user")
+    * @Route("/admin/deblock_user/{id}", name="deblock_user")
     */
     public function deblockUser(Users $user, EntityManagerInterface $entity)
     {   
@@ -217,7 +220,7 @@ class AdminController extends AbstractController
 
     
     /**
-    * @Route("/webhook", name="webhook")
+    * @Route("/admin/webhook", name="webhook")
     */
     public function Webhook() {
 
@@ -260,7 +263,7 @@ class AdminController extends AbstractController
 
     /**
      * //Envoi notification pour indiquer paiement réussie
-    * @Route("/payment_intent_success", name="payment_intent_success")
+    * @Route("/admin/payment_intent_success", name="payment_intent_success")
     */
     public function handlePaymentIntentSucceeded($paymentIntent) {
 
@@ -287,7 +290,7 @@ class AdminController extends AbstractController
 
      /**
     * Met à jour le statut de paiement de l'utilisateur pour indiquer que son abonnement est à jour
-    * @Route("/update_payment_status/{customer}", name="update_payment_status")
+    * @Route("/admin/update_payment_status/{customer}", name="update_payment_status")
     */
     public function updatePaymentStatus($customer, UsersRepository $repoUser, EntityManagerInterface $entity) 
     {
@@ -302,7 +305,7 @@ class AdminController extends AbstractController
 
     /**
      * //Envoi notification pour indiquer paiement réussie
-    * @Route("/payment_intent_failed", name="payment_intent_failed")
+    * @Route("/admin/payment_intent_failed", name="payment_intent_failed")
     */
     public function invoicePaymentFailed($paymentIntent) {
 
@@ -329,7 +332,7 @@ class AdminController extends AbstractController
 
     /**
     * Met à jour le statut de paiement de l'utilisateur pour indiquer que son abonnement a échoué.
-    * @Route("/failed_payment_status/{customer}", name="failed_payment_status")
+    * @Route("/admin/failed_payment_status/{customer}", name="failed_payment_status")
     */
     public function paymentFailed($customer, UsersRepository $repoUser, EntityManagerInterface $entity) 
     {
@@ -346,7 +349,7 @@ class AdminController extends AbstractController
 
     /** 
     * //donne accès à la liste des backgrounds videos
-    * @Route("/videos_background", name="videos_background")
+    * @Route("/admin/videos_background", name="videos_background")
     */
     public function videoBackgroundList(VideobackgroundRepository $videoRepo) 
     {
@@ -361,7 +364,7 @@ class AdminController extends AbstractController
     }
 
     /**
-    * @Route("/update_video_background/{id}", name="update_video_background")
+    * @Route("/admin/update_video_background/{id}", name="update_video_background")
     */
     public function updateVideoBackground(Videobackground $video, EntityManagerInterface $entity, Request $request) 
     {   
@@ -395,7 +398,7 @@ class AdminController extends AbstractController
     }
 
     /**
-    * @Route("/success_update_video_background", name="success_update_video_background")
+    * @Route("/admin/success_update_video_background", name="success_update_video_background")
     */
     public function successUpdateVideoBackground() 
     {   
@@ -404,4 +407,111 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('videos_background');
     }
 
+
+    /**
+    * @Route("/admin/adminspace_videos", name="adminspace_videos")
+    */
+    public function adminspaceVideos(VideosRepository $videoRepo, PaginatorInterface $paginator, Request $request) 
+    {       
+        
+            $videos = $paginator->paginate(
+            $videoRepo->findAllWithPagination(), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            21 /*limit per page*/
+        );
+        
+        return $this->render('admin/admin_videos.html.twig', 
+        [
+            "videos" => $videos
+
+        ]);
+
+    }
+
+    /**
+     * @Route("/admin/admin_delete_video/{id}", name="admin_delete_video")
+     * //permet à l'user de supprimer les vidéos qu'il a ajouté
+     */
+    public function deleteVideoInAdminspace(Videos $video, EntityManagerInterface $entityManager, \Swift_Mailer $mailer) {
+
+        $videotitle = $video->getVideotitle();
+        $username = $video->getusername();
+        $email = $username->getEmail();
+
+         // On crée le message
+         $message = (new \Swift_Message('Suppression de vidéo'))
+         // On attribue l'expéditeur
+         ->setFrom('essonoadou@gmail.com')
+         // On attribue le destinataire
+         ->setTo($email)
+         // On crée le texte avec la vue
+         ->setBody($this->renderView('email/delete_video_message.html.twig', ["videotitle" => $videotitle]),'text/html')
+     ;
+        $mailer->send($message);
+        
+        $entityManager->remove($video);
+        $entityManager->flush();
+
+        $this->addFlash('admin_delete_video', 'Cette vidéo a été supprimé avec succès');
+        
+        return $this->redirectToRoute('adminspace_videos');
+    }
+
+    /**
+     * //retourne le formulaire de recherche
+    */
+    public function searchUser() {
+    
+        $form = $this->createFormBuilder(null)
+            
+        ->setAction($this->generateUrl("user_search"))
+            ->add('query', TextType::class)
+
+            ->getForm();
+        
+        
+        return $this->render('admin/user_search.html.twig', [
+
+
+            'form' => $form->createView()
+
+        ]);
+
+    }
+
+    /**
+     * //traite la requête envoyé dans le formulaire de recherche.
+     * @Route("/admin/user_search", name="user_search")
+     *
+     */
+    public function userSearch(Request $request, UsersRepository $repository, PaginatorInterface $paginator) {
+
+        $query = $request->request->get('form')['query'];
+        
+        if ($query) {
+
+            $users = $paginator->paginate(
+            $repository->userSearch($query),
+            $request->query->getInt('page', 1),
+            20 /*limit per page*/
+        );
+
+            if ($repository->userSearch($query) == null) {
+
+                return $this->render('admin/no_user.html.twig');
+            }
+
+            else {
+
+
+                return $this->render('admin/user_search_result.html.twig', [
+
+                    'users' => $users
+        
+                ]);
+
+            }
+
+        }
+    }
 }

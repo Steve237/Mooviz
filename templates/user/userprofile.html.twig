@@ -11,6 +11,13 @@
             {{ message }}
         </div>
         {% endfor %}
+        
+        {% for message in app.flashes('update_user_infos') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
+        
         <div class="row">
             {% for video in videos %}
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
@@ -21,7 +28,7 @@
                           <h6 style="width:300px;text-overflow:ellipsis;padding: 2px 5px;white-space: nowrap;overflow: hidden;"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
                           <div style="float:left">
                             <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" style="width:35px;height:35px;" class="rounded-circle">
-									          {{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+                            <a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
                           </div>
                         </div><!-- close .item-listing-text-skrn-vertical-align -->
                     </div><!-- close .item-listing-text-skrn -->

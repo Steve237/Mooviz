@@ -89,7 +89,7 @@
 					<div style="display:flex;flex-direction:row;justify-content:space-between">
 					<div class="video-user-info">
 						<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
-						{{video.username.username}} | followers : {{video.username.followers | length}}
+						<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | followers : {{video.username.followers | length}}
 					</div>
 					{% if is_granted('ROLE_USER') and video.username != app.user %}
 					<div>
@@ -162,8 +162,9 @@
 		</div>
 
 		<div class="movie-details-section videos-section">
-			<h2>Nouveautés</h2>
+			<h2>Voir aussi</h2>
 			<div class="row">
+				{% if user_videos is null %}
 				{% for video in newvideos %}
 				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
 					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
@@ -175,15 +176,33 @@
 								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
 								<div style="float:left;margin-left:-20px">
 									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-									{{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+									<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
 								</div>
 							</div><!-- close .item-listing-text-skrn-vertical-align -->
 						</div><!-- close .item-listing-text-skrn -->
 					</div><!-- close .item-listing-container-skrn -->
-
-
 				</div><!-- close .col -->
 				{% endfor %}
+				{% else %}
+				{% for video in user_videos %}
+				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
+					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
+						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive imagemovie">
+						</a>
+						<div class="item-listing-text-skrn">
+							<div class="item-listing-text-skrn-vertical-align">
+								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
+								<div style="float:left;margin-left:-20px">
+									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
+									<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+								</div>
+							</div><!-- close .item-listing-text-skrn-vertical-align -->
+						</div><!-- close .item-listing-text-skrn -->
+					</div><!-- close .item-listing-container-skrn -->
+				</div><!-- close .col -->
+				{% endfor %}
+				{% endif %}
 			</div><!-- close .row -->
 
 		</div><!-- close .movie-details-section -->
@@ -191,7 +210,6 @@
 	</div><!-- close .dashboard-container -->
 </main>
 {% endblock %}
-
 {% block javascript %}
 {{parent()}}
 <script>

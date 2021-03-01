@@ -21,7 +21,7 @@
                     <div class="item-playlist-text-skrn">
                         <h5 style="width:300px;text-overflow:ellipsis;padding: 2px 5px;white-space: nowrap;overflow: hidden"><a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a></h5>
                         <img src="{{asset('images/avatar/' ~ playlist.video.username.imageuser.avatar)}}" style="width:45px;height:45px">
-                        <h5>{{playlist.video.username.username}} | {% if playlist.video.views is not null %} Vues : {{playlist.video.views}} {% else %} Aucune vue {% endif %}</h5>
+                        <h5><a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{playlist.video.username.username}}</a> | {% if playlist.video.views is not null %} Vues : {{playlist.video.views}} {% else %} Aucune vue {% endif %}</h5>
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-playlist-container-skrn -->
             </div><!-- close .col -->

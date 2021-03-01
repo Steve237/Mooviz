@@ -46,7 +46,7 @@
                     <h6 style="width:300px;text-overflow:ellipsis;white-space: nowrap;overflow:hidden;margin-left:-20px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
 									  <div style="float:left;margin-left:-20px">
 										  <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-										  {{video.username.username}} | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+										  <a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
 									  </div>
                   </div><!-- close .item-listing-text-skrn-vertical-align -->
                 </div><!-- close .item-listing-text-skrn -->

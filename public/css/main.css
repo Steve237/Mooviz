@@ -2112,7 +2112,6 @@ a.movie-detail-header-play-btn i {
 
 /* Rating */
 #movie-detail-rating {
-	border-bottom:1px solid #e4e4e4;
 	margin-bottom:45px;
 	padding:35px 0px 25px 0px;
 }
@@ -4875,12 +4874,12 @@ background-color: green;
 	
 	min-width:300px;
 	margin:auto;
+	margin-top:150px;
 }
 
 .errortext {
 	text-align: center;
 	color:red;
-	margin-top:300px;
 }
 
 .back_home {
@@ -4974,6 +4973,27 @@ margin-top:170px;
 
 	text-align:center;
 	margin-top:100px
+}
+
+
+@media(max-width:300px){
+
+
+	
+	
+	.errortext{
+
+		font-size:small;
+		width:220px;
+	}
+
+	.back_home{
+
+		font-size:small;
+		width:220px;
+
+	}
+
 }
 
 .avatar-size {
@@ -5112,13 +5132,20 @@ margin-bottom:15px;
 	margin-bottom:20px;
 }
 
+
+.video_title_color{
+
+	color:blue;
+}
+
 .form_upload_contact{
 	margin:auto; 
 	padding-top:20px;
 	margin-top:100px;
 	margin-bottom:80px;
 	border-radius: 10px 10px 10px 10px;
-	background-color:gainsboro;
+	background-color:turquoise;
+	height:595px;
 }
 
 .form_update_user{
@@ -5378,7 +5405,19 @@ margin-bottom:15px;
 
 }
 
-@media(max-width:438px) {
+@media(max-width:576px) {
+
+	.search_user {
+
+		width:300px;
+		margin-left:-10px
+
+	}
+}
+
+
+
+@media(max-width:600px) {
 
 	ul.dashboard-sub-menu li {
 	display: block;

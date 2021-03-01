@@ -84,6 +84,14 @@ class UsersRepository extends ServiceEntityRepository
         
     }
   
+     // assure la recherche des utilisateurs par nom
+     public function userSearch($username) {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username LIKE :username')
+            ->setParameter('username', '%'.$username.'%')
+            ->getQuery()
+            ->execute();
+    }
 
     /*
     public function findOneBySomeField($value): ?Users

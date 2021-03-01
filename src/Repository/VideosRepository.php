@@ -52,6 +52,19 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+      //recupère vidéo par id de celui qui l'a posté
+      public function showVideoByUserId($userId) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.username = :userid')
+        ->setParameter('userid', $userId)
+        ->orderBy('v.id', 'DESC')
+        ->setMaxResults(20)
+        ->getQuery()
+        ->getResult();
+    }
+
+
     //affiche suggestion des vidéos de la même categorie que la vidéo choisi
     public function showVideoByCategory($category, $id) {
 
@@ -80,6 +93,7 @@ class VideosRepository extends ServiceEntityRepository
     public function findAllWithPagination() : Query{
 
         return $this->createQueryBuilder('v')
+            ->orderBy('v.id', 'DESC')
             ->getQuery();
         
     }
