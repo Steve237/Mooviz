@@ -21,25 +21,21 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('videotitle', TextType::class, [
-                "label" => "Titre de la vidéo.",
                 "constraints" => [
                     new Length([
                         'min' => 2,
-                        'max' => 35,
+                        'max' => 50,
                         'minMessage' => "Votre titre doit contenir au moins 2 caractères",
                         'maxMessage' => "Votre titre doit contenir au moins 35 caractères"
                     ])
                 ]
             ])
-            ->add('videodescription', TextareaType::class, [
-                "label" => "Ajoutez une description.",
-            ])
+            ->add('videodescription', TextareaType::class)
             ->add('videoimage', FileType::class, [
                 "data_class" => null,
-                "label" => "Ajoutez une image.",
                 "constraints" => [
                     new File([
-                        'maxSize' => '5M',
+                        'maxSize' => '10000000k',
                         'mimeTypes' => [
                             'image/jpg',
                             'image/jpeg',
@@ -52,7 +48,6 @@ class VideoType extends AbstractType
 
             ->add('videolink', FileType::class, [
                 "data_class" => null,
-                "label" => "Ajoutez une vidéo.",
                 "constraints" => [
                     new File([
                         'maxSize' => '1000M',

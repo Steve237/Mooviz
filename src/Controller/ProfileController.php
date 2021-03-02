@@ -25,6 +25,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProfileController extends AbstractController
 {
@@ -32,7 +34,7 @@ class ProfileController extends AbstractController
      * @Route("/upload", name="addvideo")
      * //Permet d'ajouter des vidéos
      */
-    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager)
+    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager, ValidatorInterface $validator)
     {
 
         if (!$video) {
@@ -50,7 +52,8 @@ class ProfileController extends AbstractController
         if($request->isXmlHttpRequest()) {
         
             if ($form->isSubmitted() && $form->isValid()) {
-            
+
+
             //upload de la vidéo
             $videoFile = $video->getVideoLink();
             $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();

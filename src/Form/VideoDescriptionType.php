@@ -22,7 +22,7 @@ class VideoDescriptionType extends AbstractType
                 "constraints" => [
                     new Length([
                         'min' => 2,
-                        'max' => 35,
+                        'max' => 50,
                         'minMessage' => "Votre titre doit contenir au moins 2 caractères",
                         'maxMessage'=> "Votre titre doit contenir au moins 35 caractères"
                     ])
