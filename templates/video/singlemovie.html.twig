@@ -74,9 +74,11 @@
 				<!-- subtitle , quality , fullsceen -->
 				<div class="video-control-subtitle">
 				  <!-- <span class="video-language">Hindi</span>
-				  <span class="video-quality">HD</span>
+				  
+					<span class="video-quality">HD</span>
 				   -->
 				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
+
 				</div>
 			  </div>
 		  </div>
@@ -156,8 +158,21 @@
 							{{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p>
 					</strong>
 					<div style="margin-bottom:15px">
-					<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&t=video" class="share facebook" data-network="facebook">Partager sur Facebook</a>
-					</div>
+					<ul class="list-inline">
+						<li class="list-inline-item">
+							<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&t={{video.videotitle}}" class="share facebook" data-network="facebook" target="_blank"><img src="{{asset('images/icones/facebook-icon.png')}}"></a>
+						</li>
+						<li class="list-inline-item">
+							<a href="https://twitter.com/share?url=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&text={{video.videotitle}}" class="share twitter" data-network="twitter" target="_blank"><img src="{{asset('images/icones/twitter-icon.png')}}"></a>
+						</li>
+						<li class="list-inline-item">
+							<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&title={{video.videotitle}}&source=mylion" class="share linkedin" data-network="linkedin" target="_blank"><img src="{{asset('images/icones/linkedin.png')}}"></a>
+						</li>
+						<li class="list-inline-item">
+							<a href="http://pinterest.com/pin/create/button/?url={{path('partage', {'id' : video.id})}}&description={{video.videotitle}}" target="_blank"><img src="{{asset('images/icones/pinterest-icon.png')}}"></a>
+						</li>
+					</ul>
+				</div>
 				<h2>Description</h2>
 
 			<p class="video-description">{{video.videodescription}}</p>
