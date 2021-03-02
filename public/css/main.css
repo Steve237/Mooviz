@@ -4926,6 +4926,18 @@ margin-top:170px;
 
 }
 
+@media(max-width:576px) {
+
+.text-size {
+
+	font-size:small;
+	color:red
+}
+
+
+}
+
+
 .button-like {
 
 	margin-left:80px;
@@ -5493,7 +5505,29 @@ margin-bottom:15px;
 		background-color: black;
 	  }
 
-	  @media(max-width:400px) {
+	  .share-video-container{
+		position: relative;
+		width: 80%;
+		margin: auto;
+		overflow: hidden;
+		border-radius: 5px;
+		box-shadow:0 0 50px #000;
+		margin-top:5px;
+		background-color: black;
+		margin-top:100px;
+		border:blue solid 1px;
+	  }
+
+
+	  .share-page-site-title {
+		
+		position:absolute;
+		top:0px;
+		left:0px;
+		color:red;
+	}
+
+		@media(max-width:400px) {
 
 		.video-control-btns i.fa{
 			margin:0 10px;
@@ -5650,6 +5684,19 @@ margin-bottom:15px;
 		box-shadow: inset 100px 100px 100px #000,inset -100px 0 100px #000;
 		z-index: 3;
 	  }
+
+	  .share-video-container:hover .video::before{
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		opacity: 1;
+		box-shadow: inset 100px 100px 100px #000,inset -100px 0 100px #000;
+		z-index: 3;
+	  }
+
+
 	  .video-controls{
 		position: absolute;
 		padding: 5px;
@@ -5664,6 +5711,10 @@ margin-bottom:15px;
 		z-index: 5;
 	  }
 	  .video-container:hover .video-controls{
+		transform: translateY(0);
+	  }
+
+	  .share-video-container:hover .video-controls{
 		transform: translateY(0);
 	  }
 	  .video-timebar{

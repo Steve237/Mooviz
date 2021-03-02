@@ -146,6 +146,24 @@ class VideoController extends AbstractController
         ]);
     }
 
+    /**
+    * @Route("/share/movie/{id}", name="partage")
+    * //Affiche contenu d'une vidéo
+    */
+    public function shareMovie(Videos $video, EntityManagerInterface $entity)
+    {   
+        $nbreview = $video->getViews();
+        $nbreview++;
+        $video->setViews($nbreview);
+        $entity->persist($video);
+        $entity->flush();
+
+        return $this->render('video/sharemovie.html.twig', [
+            "video" => $video,
+
+        ]);
+    }
+
 
     /**
     * @Route("/main/addcomment/{id}/category/{idcategory}", name="addcomment")
