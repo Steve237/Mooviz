@@ -70,12 +70,14 @@
 				  <!-- <span class="video-language">Hindi</span>
 				  <span class="video-quality">HD</span>
 				   -->
-				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
+				   {% if is_granted('ROLE_USER') %}
+				   <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><span style="font-size:small;color:white">Switch</span></a>
+				   {% endif %}
+				<span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
 				</div>
 			  </div>
 		  </div>
 	</section>
-
 	<div id="movie-detail-rating" style="margin:auto;width:80%;">
 		<div class="dashboard-container">
 			<div class="row">
@@ -85,8 +87,12 @@
 						<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
 						<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | followers : {{video.username.followers | length}}
 					</div>
+					{% if is_granted('ROLE_USER') %}
+					<div>
+						<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><button class="btn btn-primary btn-sm">Back</button></a>
 					</div>
-					
+					{% endif %}
+					</div>
 					<p class="videoname">{{video.videotitle}}</p>
 					<strong>
 						<p class="video-data">Categorie : {{video.category.categoryName}} - Date de publication :
