@@ -48,7 +48,7 @@ class VideoController extends AbstractController
         $secondBackgroundVideo = $repoBackground->findById(2);
     
         $categories = $repo->findAll();
-        return $this->render('video/index.html.twig', [
+        return $this->render('video/videolist.html.twig', [
             
             "videos" => $videos,
             "categories" => $categories,
@@ -163,7 +163,6 @@ class VideoController extends AbstractController
 
         ]);
     }
-
 
     /**
     * @Route("main/switched_player/movie/{id}", name="second_player")

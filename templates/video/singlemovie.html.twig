@@ -29,7 +29,7 @@
 
 <main id="col-main-with-sidebar">
 	<section class="video-container">
-			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
+			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" id="videoplayer" autoplay>
 			  Sorry your browser can't support video tag.
 			</video>
 			<div class="video-controls">
@@ -185,7 +185,7 @@
 				{% if user_videos is null %}
 				{% for video in newvideos %}
 				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
-					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
+					<div class="item-listing-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
 						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
 							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive imagemovie">
 						</a>
@@ -204,7 +204,7 @@
 				{% else %}
 				{% for video in user_videos %}
 				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
-					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
+					<div class="item-listing-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
 						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
 							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive imagemovie">
 						</a>
@@ -224,7 +224,6 @@
 			</div><!-- close .row -->
 
 		</div><!-- close .movie-details-section -->
-
 	</div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

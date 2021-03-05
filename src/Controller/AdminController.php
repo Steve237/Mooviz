@@ -112,13 +112,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/delete_user/{id}", name="delete_user")
-     */
+    * @Route("/admin/delete_user/{id}", name="delete_user")
+    */
     public function deleteUser(Users $user, EntityManagerInterface $entity)
     {   
         $date = new \Datetime();
+       
+        
+        $userConnected = $this->getUser();
+        $userId = $userConnected->getId();
+        
         $username = $user->getUsername();
 
+        if($user->getId() != $userId) {
+
+            return $this->redirectToRoute('connexion');
+        }
+        
         $notification = new Webhook();
         $notification->setType('suppression');
         $notification->setContent('suppression de compte');  
@@ -430,7 +440,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/admin/admin_delete_video/{id}", name="admin_delete_video")
-     * //permet à l'user de supprimer les vidéos qu'il a ajouté
+     * //permet à l'admin de supprimer les vidéos
      */
     public function deleteVideoInAdminspace(Videos $video, EntityManagerInterface $entityManager, \Swift_Mailer $mailer) {
 

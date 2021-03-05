@@ -21,7 +21,7 @@
         <div class="row">
             {% for video in videos %}
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
+              <div class="item-listing-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
                     <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" style="width:100%;height:350px;"></a>
                     <div class="item-listing-text-skrn" style="margin-left:-20px">
                         <div class="item-listing-text-skrn-vertical-align">

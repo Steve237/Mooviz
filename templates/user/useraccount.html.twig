@@ -21,10 +21,15 @@
             
                 <div class="col-12  col-lg-3">
                     <div id="account-edit-photo">
+                        {% if avatars %}
                         {% for avatar in avatars %}
                             <div><img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account"></div>
                             <p><a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">Modifiez votre avatar</a></p>
                         {% endfor %}
+                        {% else  %}
+                            <div><img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account"></div>
+                        {% endif %}
+                        <a href="{{path('account_delete', {'id': app.user.id})}}" class="btn btn-primary" style="margin-top:15px;color:white;background-color:red">Supprimer votre compte</a>
                     </div>
                 </div><!-- close .col -->
                 <div class="col">
@@ -95,12 +100,10 @@
                     <input class="btn btn-primary button-account" type="submit" value="Mettre à jour">
                     </form>
                     {{form_end(form)}}
-                
                 </div><!-- close .col -->
             
             </div><!-- close .row -->
         </div><!-- close .container-fluid -->
-                
     </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

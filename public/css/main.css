@@ -5951,5 +5951,7 @@ margin-bottom:15px;
 		background-color:turquoise;
 	}
 
-
+	.video-card:hover {
+		background-color: turquoise;
+	  }
 

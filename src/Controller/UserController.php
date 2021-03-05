@@ -303,7 +303,8 @@ class UserController extends AbstractController
         return $this->render('user/useraccount.html.twig', [
 
             'form' => $form->createView(),
-            'avatars' => $avatars
+            'avatars' => $avatars,
+            'user' => $user
         ]);
     }
 
@@ -373,6 +374,48 @@ class UserController extends AbstractController
             "minVideoViews" => $minVideoViews
 
         ]);
+    }
+
+    /**
+    * @Route("/main/account_delete/{id}", name="account_delete")
+    */
+    public function deleteUser(Users $user, EntityManagerInterface $entity)
+    {   
+        $date = new \Datetime();
+
+        $userConnected = $this->getUser();
+        $userId = $userConnected->getId();
+        
+        $username = $user->getUsername();
+
+        if($user->getId() != $userId) {
+
+            return $this->redirectToRoute('connexion');
+        }
+
+        $notification = new Webhook();
+        $notification->setType('suppression');
+        $notification->setContent('suppression de compte');  
+        $notification->setCreatedAt($date);
+        $notification->setUsername($username);
+        $entity->persist($notification);
+        $entity->flush();  
+        
+        $stripe = new \Stripe\StripeClient(
+            'sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe'
+          );
+          
+          $stripe->customers->delete(
+            
+            $user->getCustomerid(),
+            []
+          );
+
+        $entity->remove($user);
+        $entity->flush();
+
+        return $this->redirectToRoute('home');
+        
     }
 
 }
