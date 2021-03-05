@@ -148,7 +148,7 @@ class VideoController extends AbstractController
 
     /**
     * @Route("/share/movie/{id}", name="partage")
-    * //Affiche contenu d'une vidéo
+    * //Permet de partager une vidéo.
     */
     public function shareMovie(Videos $video, EntityManagerInterface $entity)
     {   
@@ -164,6 +164,33 @@ class VideoController extends AbstractController
         ]);
     }
 
+
+    /**
+    * @Route("main/switched_player/movie/{id}", name="second_player")
+    * //Permet d'afficher contenu de la vidéo sur une autre page.
+    */
+    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, VideosRepository $repository)
+    {   
+        $nbreview = $video->getViews();
+        $nbreview++;
+        $video->setViews($nbreview);
+        $entity->persist($video);
+        $entity->flush();
+
+        $user = $this->getUser();
+        $userId = $user->getId();
+        
+        $user_videos = $repository->showVideoByUserId($userId);
+
+        $newvideos = $repository->getVideos();
+
+        return $this->render('video/second_player.html.twig', [
+            "video" => $video,
+            "newvideos" => $newvideos,
+            "user_videos" => $user_videos
+
+        ]);
+    }
 
     /**
     * @Route("/main/addcomment/{id}/category/{idcategory}", name="addcomment")

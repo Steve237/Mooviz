@@ -1,4 +1,3 @@
-//video
 const video = document.querySelectorAll('.video');
 //play pause forward backward 
 const playBtn = document.querySelectorAll('.play-btn');

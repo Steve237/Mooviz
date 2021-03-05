@@ -1,34 +1,29 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Mylion{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% block stylesheet %} 
+        <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
+        <link rel="stylesheet" href="{{asset("css/main.css")}}">
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
 
-{% block title %}{{video.videotitle }}{% endblock %}
-
-{% block body %}
-
-<div id="content-sidebar-pro" class="d-none d-md-block" style="position:absolute;left:3px;">
-
-	<div id="content-sidebar-image">
-		<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="videoimage">
-	</div>
-
-	<div class="content-sidebar-section">
-		<h2 class="content-sidebar-sub-header adjusted-recent-reviews" style="text-align:center;"> Vidéos recommandées</h2>
-		<ul id="sidebar-reviews-pro" style="text-align:center;">
-			{% for video in videos %}
-			<li>
-				<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
-					<h6 class="titlevideo">{{video.videotitle}}</h6>
-					<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster"
-						class="videosuggest class=img-responsive">
-				</a>
-			</li>
-			{% endfor %}
-		</ul>
-	</div><!-- close .content-sidebar-section -->
-</div><!-- close #content-sidebar-pro -->
-
-
-<main id="col-main-with-sidebar">
-	<section class="video-container">
+        {% endblock %} 
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+        <link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}"><!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}"><!-- iconsmind.com Icons -->
+        <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    </head>
+<body>
+{% if app.user %}
+<a href="{{path('homepage')}}"><h3 class="share-page-site-title">Mylion</h3></a>
+{% else %}
+<a href="{{path('home')}}"><h3 class="share-page-site-title">Mylion</h3></a>
+{% endif %}
+<main id="col-main-with-sidebar" style="margin:auto;">
+	<section class="share-video-container">
 			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
 			  Sorry your browser can't support video tag.
 			</video>
@@ -73,19 +68,17 @@
 				<!-- subtitle , quality , fullsceen -->
 				<div class="video-control-subtitle">
 				  <!-- <span class="video-language">Hindi</span>
-				  
-					<span class="video-quality">HD</span>
+				  <span class="video-quality">HD</span>
 				   -->
-				  <a href="{{path('partage', {'id':video.id})}}"><span style="font-size:small;color:white">Switch</span></a>
-
-				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
-
+				   {% if is_granted('ROLE_USER') %}
+				   <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><span style="font-size:small;color:white">Switch</span></a>
+				   {% endif %}
+				<span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
 				</div>
 			  </div>
 		  </div>
 	</section>
-
-	<div id="movie-detail-rating">
+	<div id="movie-detail-rating" style="margin:auto;width:80%">
 		<div class="dashboard-container">
 			<div class="row">
 				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -205,12 +198,12 @@
 				{% for video in user_videos %}
 				<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
 					<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
-						<a href="{{path("movie", {"id" : video.id, "idcategory": video.category.id})}}">
+						<a href="{{path('second_player', {'id':video.id})}}">
 							<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster" class="img-responsive imagemovie">
 						</a>
 						<div class="item-listing-text-skrn">
 							<div class="item-listing-text-skrn-vertical-align">
-								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
+								<p class="video_icone_title"><a href="{{path('second_player', {'id':video.id})}}">{{video.videotitle}}</a></p>
 								<div style="float:left;margin-left:-20px">
 									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
 									<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
@@ -227,54 +220,23 @@
 
 	</div><!-- close .dashboard-container -->
 </main>
-{% endblock %}
-{% block javascript %}
-{{parent()}}
-<script>
-	var followButton = document.getElementById('follow');
-	var unfollowButton = document.getElementById('unfollow');
-
-	addOnClick(
-		followButton,
-		unfollowButton,
-		'{{ path("following", {"id":video.username.id})}}'
-
-	);
-
-	addOnClick(
-		unfollowButton,
-		followButton,
-		'{{ path("unfollowing", {"id":video.username.id})}}'
-
-	);
-
-	function switchButtons(button, oppositeButton) {
-		button.disabled = false;
-		button.style.display = 'none';
-		oppositeButton.style.display = 'block';
-	}
-
-	function addOnClick(button, oppositeButton, path) {
-
-		button.addEventListener('click', function (event) {
-			button.disabled = true;
-
-			fetch(path, {
-				'credentials': 'include'
-			}).then(function () {
-
-
-				switchButtons(button, oppositeButton);
-
-			}).catch(function () {
-
-				switchButtons(button, oppositeButton);
-
-
-			});
-
-			event.preventDefault();
-		});
-	}
-</script>
-{% endblock %}
+<footer id="footer-pro">
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <div class="copyright-text-pro">&copy; Copyright 2021 Mylion. All Rights Reserved</div>
+            </div><!-- close .col -->
+            <div class="col-md">
+                <ul class="social-icons-pro">
+                    <li class="facebook-color"><a href="http://facebook.com/progressionstudios" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                    <li class="twitter-color"><a href="http://twitter.com/Progression_S" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                    <li class="youtube-color"><a href="http://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                    <li class="vimeo-color"><a href="http://vimeo.com" target="_blank"><i class="fab fa-vimeo-v"></i></a></li>
+                </ul>
+            </div><!-- close .col -->
+        </div><!-- close .row -->
+    </div><!-- close .container -->
+</footer>
+<script src="{{asset("js/videosingle.js")}}"></script>
+</body>
+</html>
