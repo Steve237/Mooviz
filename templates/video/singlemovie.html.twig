@@ -76,7 +76,7 @@
 				  
 					<span class="video-quality">HD</span>
 				   -->
-				  <a href="{{path('partage', {'id':video.id})}}"><span style="font-size:small;color:white">Switch</span></a>
+				  <a href="{{path('second_player', {'id':video.id})}}"><span style="font-size:small;color:white">Switch</span></a>
 
 				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
 
@@ -213,7 +213,7 @@
 								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
 								<div style="float:left;margin-left:-20px">
 									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-									<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+									<a href="{{path('second_player', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
 								</div>
 							</div><!-- close .item-listing-text-skrn-vertical-align -->
 						</div><!-- close .item-listing-text-skrn -->
