@@ -154,6 +154,16 @@ class Users implements UserInterface, \Serializable
      */
     private $payed;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Likes::class, mappedBy="userid")
+     */
+    private $userlikes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $dislikes;
+
 
     public function __construct()
     {
@@ -165,6 +175,8 @@ class Users implements UserInterface, \Serializable
         $this->abonnements = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->userlikes = new ArrayCollection();
+        $this->dislikes = new ArrayCollection();
 
        
     }
@@ -587,7 +599,61 @@ class Users implements UserInterface, \Serializable
 
             return $this;
         }
+
+        /**
+         * @return Collection|Likes[]
+         */
+        public function getUserlikes(): Collection
+        {
+            return $this->userlikes;
+        }
+
+        public function addUserlike(Likes $userlike): self
+        {
+            if (!$this->userlikes->contains($userlike)) {
+                $this->userlikes[] = $userlike;
+                $userlike->addUserid($this);
+            }
+
+            return $this;
+        }
+
+        public function removeUserlike(Likes $userlike): self
+        {
+            if ($this->userlikes->removeElement($userlike)) {
+                $userlike->removeUserid($this);
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Videodislike[]
+         */
+        public function getDislikes(): Collection
+        {
+            return $this->dislikes;
+        }
+
+        public function addDislike(Videodislike $dislike): self
+        {
+            if (!$this->dislikes->contains($dislike)) {
+                $this->dislikes[] = $dislike;
+                $dislike->setUser($this);
+            }
+
+            return $this;
+        }
+
+        public function removeDislike(Videodislike $dislike): self
+        {
+            if ($this->dislikes->removeElement($dislike)) {
+                // set the owning side to null (unless already changed)
+                if ($dislike->getUser() === $this) {
+                    $dislike->setUser(null);
+                }
+            }
+
+            return $this;
+        }
 }
-
-
-
