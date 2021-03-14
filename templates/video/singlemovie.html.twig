@@ -277,7 +277,9 @@
 					<div style="display:flex;flex-direction:row;justify-content:space-between">
 					<div class="video-user-info">
 						<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
-						<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue"><span class="text-size">{{video.username.username}}</span></a> | <span class="text-size">followers</span> : {{video.username.followers | length}}
+						<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue"><span class="text-size">{{video.username.username}}</span></a> | 
+						<span class="text-size">followers</span> : {{video.username.followers | length}} 
+						<span style="margin-left:35px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><button class="btn btn-primary btn-xs-small">Switch</button></a></span>
 					</div>
 					{% if is_granted('ROLE_USER') and video.username != app.user %}
 					<div>
@@ -292,58 +294,79 @@
 					</div>
 				</div>
 					
-					<div class="section_buttons_videos d-none d-md-block">
-							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
-								Playlist
-								{% if app.user and video.isSelectedByUser(app.user) %}
-								<span><i class="fas fa-2x fa-star"></i></span>
-								{% else %}
-								<span><i class="far fa-2x fa-star"></i></span>
-								{% endif %}
-							</a>
+				<div class="section_buttons_videos d-none d-md-block" style="margin-top:30px">
+					<div class="btn-group" role="group" aria-label="Basic example">
+					<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+						{% if app.user and video.isSelectedByUser(app.user) %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="fas fa-2x fa-star"></i>
+						</button>
+						{% else %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="far fa-2x fa-star"></i>
+						</button>
+						{% endif %}
+					</a>
 
-							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
-								{% if app.user and video.isLikedByUser(app.user) %}
-								<span class="button-like"><i class="fas fa-2x fa-thumbs-up"></i></span>
-								{% else %}
-								<span class="button-like"><i class="far fa-2x fa-thumbs-up"></i></span>
-								{% endif %}
-								<span class="js-likes">{{video.likes | length}}</span>
-							</a>
-					</div>
-						<div class="section_buttons_videos d-sm-none">
-							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
-								Playlist
-								{% if app.user and video.isSelectedByUser(app.user) %}
-								<span><i class="fas fa-star"></i></span>
-								{% else %}
-								<span><i class="far fa-star"></i></span>
-								{% endif %}
-							</a>
+					<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+						{% if app.user and video.isLikedByUser(app.user) %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="fas fa-2x fa-thumbs-up"></i>
+							<span class="js-likes">{{video.likes | length}}</span>
+						</button>
+						{% else %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="far fa-2x fa-thumbs-up"></i>
+							<span class="js-likes">{{video.likes | length}}</span>
+						</button>
+						{% endif %}
+					</a>
+				</div>
+				</div>
+				
+				<div class="section_buttons_videos d-sm-none" style="margin-top:30px">
+					<div class="btn-group" role="group" aria-label="Basic example">
+					<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+						{% if app.user and video.isSelectedByUser(app.user) %}
+					<button type="button" class="btn btn-small btn-secondary">
+						<i class="fas fa-star"></i>
+					</button>
+					{% else %}
+					<button type="button" class="btn btn-small btn-secondary">
+						<i class="far fa-star"></i>
+					</button>
+					{% endif %}
+					</a>
 
-							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
-								{% if app.user and video.isLikedByUser(app.user) %}
-								<span class="button-like"><i class="fas fa-thumbs-up"></i></span>
-								{% else %}
-								<span class="button-like"><i class="far fa-thumbs-up"></i></span>
-								{% endif %}
-								<span class="js-likes">{{video.likes | length}}</span>
-							</a>
-						</div>
+					<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+						{% if app.user and video.isLikedByUser(app.user) %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="fas fa-thumbs-up"></i>
+							<span class="js-likes">{{video.likes | length}}</span>
+						</button>
+						{% else %}
+						<button type="button" class="btn btn-small btn-secondary">
+							<i class="far fa-thumbs-up"></i>
+							<span class="js-likes">{{video.likes | length}}</span>
+						</button>
+						{% endif %}
+					</a>
+				</div>
+				</div>
 					{% endif %}
 				</div>
 			</div><!-- close .row -->
 		</div><!-- close .dashboard-container -->
 	</div><!-- close #movie-detail-rating -->
 
-	<div class="dashboard-container">
+	<div class="dashboard-container" style="margin-top:20px">
 		<div class="movie-details-section">
 			<p class="videoname">{{video.videotitle}}</p>
 					<strong>
 						<p class="video-data">Categorie : {{video.category.categoryName}} - Date de publication :
 							{{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}</p>
 					</strong>
-					<div style="margin-bottom:15px">
+					<div style="margin-bottom:35px">
 					<ul class="list-inline">
 						<li class="list-inline-item">
 							<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&t={{video.videotitle}}" class="share facebook" data-network="facebook" target="_blank"><img src="{{asset('images/icones/facebook-icon.png')}}"></a>
@@ -356,9 +379,6 @@
 						</li>
 						<li class="list-inline-item">
 							<a href="http://pinterest.com/pin/create/button/?url={{path('partage', {'id' : video.id})}}&description={{video.videotitle}}" target="_blank"><img src="{{asset('images/icones/pinterest-icon.png')}}"></a>
-						</li>
-						<li class="list-inline-item">
-							<a href="{{path('second_player', {'id':video.id})}}"><button class="btn btn-primary btn-small">Switch</button></a>
 						</li>
 					</ul>
 				</div>
