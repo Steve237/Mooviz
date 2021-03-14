@@ -1,8 +1,247 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{video.videotitle }}{% endblock %}
-
 {% block body %}
+<script type="text/javascript">
+		    FWDUVPUtils.onReady(function () {
+        new FWDUVPlayer({
+				//main settings
+				instanceName: "player{{video.id}}",
+				parentId: "myDiv",
+				playlistsId: "playlists",
+				mainFolderPath: "{{asset('content')}}",
+				skinPath: "{{asset('metal_skin_dark')}}",
+				displayType: "responsive",
+				initializeOnlyWhenVisible: "no",
+				useVectorIcons: "no",
+				fillEntireVideoScreen: "no",
+				fillEntireposterScreen: "yes",
+				goFullScreenOnButtonPlay: "no",
+				playsinline: "yes",
+				privateVideoPassword: "428c841430ea18a70f7b06525d4b748a",
+				youtubeAPIKey: "",
+				useHEXColorsForSkin: "no",
+				normalHEXButtonsColor: "#FF0000",
+				selectedHEXButtonsColor: "#000000",
+				useDeepLinking: "yes",
+				googleAnalyticsTrackingCode: "",
+				useResumeOnPlay: "yes",
+				showPreloader: "yes",
+				preloaderBackgroundColor: "#000000",
+				preloaderFillColor: "#FFFFFF",
+				addKeyboardSupport: "yes",
+				autoScale: "yes",
+				showButtonsToolTip: "yes",
+				stopVideoWhenPlayComplete: "no",
+				playAfterVideoStop: "yes",
+				autoPlay: "no",
+				autoPlayText: "Click To Unmute",
+				loop: "no",
+				shuffle: "no",
+				showErrorInfo: "yes",
+				maxWidth: 1400,
+				maxHeight: 830,
+				volume: .8,
+				rewindTime: 10,
+				buttonsToolTipHideDelay: 1.5,
+				backgroundColor: "#eeeeee",
+				videoBackgroundColor: "#000000",
+				posterBackgroundColor: "#000000",
+				buttonsToolTipFontColor: "#FFFFFF",
+				//logo settings
+				showLogo: "yes",
+				logoPath: "",
+				hideLogoWithController: "yes",
+				logoPosition: "topRight",
+				logoLink: "http://www.webdesign-flash.ro/",
+				logoPath: "",
+				logoMargins: 10,
+				//playlists/categories settings
+				showPlaylistsSearchInput: "no",
+				usePlaylistsSelectBox: "no",
+				showPlaylistsButtonAndPlaylists: "yes",
+				showPlaylistsByDefault: "no",
+				thumbnailSelectedType: "opacity",
+				startAtPlaylist: 0,
+				buttonsMargins: 15,
+				thumbnailMaxWidth: 350,
+				thumbnailMaxHeight: 350,
+				horizontalSpaceBetweenThumbnails: 40,
+				verticalSpaceBetweenThumbnails: 40,
+				inputBackgroundColor: "#333333",
+				inputColor: "#000000",
+				//playlist settings
+				showPlaylistButtonAndPlaylist: "no",
+				playlistPosition: "right",
+				showPlaylistByDefault: "no",
+				showPlaylistName: "no",
+				showSearchInput: "no",
+				showLoopButton: "yes",
+				showShuffleButton: "yes",
+				showPlaylistOnFullScreen: "no",
+				showNextAndPrevButtons: "yes",
+				showThumbnail: "yes",
+				showOnlyThumbnail: "no",
+				forceDisableDownloadButtonForFolder: "yes",
+				addMouseWheelSupport: "yes",
+				startAtRandomVideo: "no",
+				stopAfterLastVideoHasPlayed: "no",
+				addScrollOnMouseMove: "no",
+				randomizePlaylist: 'no',
+				folderVideoLabel: "VIDEO ",
+				playlistRightWidth: 310,
+				playlistBottomHeight: 380,
+				startAtVideo: 0,
+				maxPlaylistItems: 50,
+				thumbnailWidth: 71,
+				thumbnailHeight: 71,
+				spaceBetweenControllerAndPlaylist: 1,
+				spaceBetweenThumbnails: 1,
+				scrollbarOffestWidth: 8,
+				scollbarSpeedSensitivity: .5,
+				playlistBackgroundColor: "#eeeeee",
+				playlistNameColor: "#000000",
+				thumbnailNormalBackgroundColor: "#ffffff",
+				thumbnailHoverBackgroundColor: "#eeeeee",
+				thumbnailDisabledBackgroundColor: "#eeeeee",
+				searchInputBackgroundColor: "#F3F3F3",
+				searchInputColor: "#888888",
+				youtubeAndFolderVideoTitleColor: "#000000",
+				folderAudioSecondTitleColor: "#999999",
+				youtubeOwnerColor: "#777777",
+				youtubeDescriptionColor: "#777777",
+				mainSelectorBackgroundSelectedColor: "#000000",
+				mainSelectorTextNormalColor: "#000000",
+				mainSelectorTextSelectedColor: "#FFFFFFF",
+				mainButtonBackgroundNormalColor: "#FFFFFF",
+				mainButtonBackgroundSelectedColor: "#000000",
+				mainButtonTextNormalColor: "#000000",
+				mainButtonTextSelectedColor: "#FFFFFF",
+				//controller settings
+				showController: "yes",
+				showControllerWhenVideoIsStopped: "yes",
+				showNextAndPrevButtonsInController: "yes",
+				showRewindButton: "yes",
+				showPlaybackRateButton: "yes",
+				showVolumeButton: "yes",
+				showTime: "yes",
+				showInfoButton: "yes",
+				showDownloadButton: "yes",
+				showShareButton: "no",
+				showEmbedButton: "no",
+				showChromecastButton: "yes",
+				showFullScreenButton: "yes",
+				disableVideoScrubber: "no",
+				showScrubberWhenControllerIsHidden: "yes",
+				showMainScrubberToolTipLabel: "yes",
+				repeatBackground: "no",
+				controllerHeight: 42,
+				controllerHideDelay: 3,
+				startSpaceBetweenButtons: 7,
+				spaceBetweenButtons: 8,
+				scrubbersOffsetWidth: 2,
+				mainScrubberOffestTop: 14,
+				timeOffsetLeftWidth: 5,
+				timeOffsetRightWidth: 3,
+				timeOffsetTop: 0,
+				volumeScrubberHeight: 80,
+				volumeScrubberOfsetHeight: 12,
+				timeColor: "#FFFFFF",
+				youtubeQualityButtonNormalColor: "#494949",
+				youtubeQualityButtonSelectedColor: "#FFFFFF",
+				scrubbersToolTipLabelBackgroundColor: "#494949",
+				scrubbersToolTipLabelFontColor: "#FFFFFF",
+				//advertisement on pause window
+				aopwTitle: "Advertisement",
+				aopwWidth: 400,
+				aopwHeight: 240,
+				aopwBorderSize: 6,
+				aopwTitleColor: "#000000",
+				//subtitle
+				subtitlesOffLabel: "Subtitle off",
+				//popup add windows
+				showPopupAdsCloseButton: "yes",
+				//embed window and info window
+				embedAndInfoWindowCloseButtonMargins: 15,
+				borderColor: "#CDCDCD",
+				mainLabelsColor: "#000000",
+				secondaryLabelsColor: "#494949",
+				shareAndEmbedTextColor: "#777777",
+				inputBackgroundColor: "#b2b2b2",
+				inputColor: "#333333",
+				//login
+				playIfLoggedIn: "no",
+				playIfLoggedInMessage: "Please <a href='https://google.com' target='_blank'>login</a> to play this video.",
+				//audio visualizer
+				audioVisualizerLinesColor: "#0099FF",
+				audioVisualizerCircleColor: "#FFFFFF",
+				//lightbox settings
+				closeLightBoxWhenPlayComplete: "no",
+				lightBoxBackgroundOpacity: .6,
+				lightBoxBackgroundColor: "#000000",
+				//sticky on scroll
+				stickyOnScroll: "no",
+				stickyOnScrollShowOpener: "yes",
+				stickyOnScrollWidth: "700",
+				stickyOnScrollHeight: "394",
+				//sticky display settings
+				showOpener: "yes",
+				showOpenerPlayPauseButton: "yes",
+				verticalPosition: "bottom",
+				horizontalPosition: "center",
+				showPlayerByDefault: "yes",
+				animatePlayer: "yes",
+				openerAlignment: "right",
+				mainBackgroundImagePath: "{{asset('content/minimal_skin_dark/main-background.png')}}",
+				openerEqulizerOffsetTop: -1,
+				openerEqulizerOffsetLeft: 3,
+				offsetX: 0,
+				offsetY: 0,
+				//playback rate / speed
+				defaultPlaybackRate: 1, //0.25, 0.5, 1, 1.25, 1.2, 2
+				//cuepoints
+				executeCuepointsOnlyOnce: "no",
+				//annotations
+				showAnnotationsPositionTool: "no",
+				//ads
+				openNewPageAtTheEndOfTheAds: "no",
+				adsButtonsPosition: "left",
+				skipToVideoText: "You can skip to video in: ",
+				skipToVideoButtonText: "Skip Ad",
+				adsTextNormalColor: "#FFFFFF",
+				adsTextSelectedColor: "#494949",
+				adsBorderNormalColor: "#BBBBBB",
+				adsBorderSelectedColor: "#494949",
+				//a to b loop
+				useAToB: "yes",
+				atbTimeBackgroundColor: "transparent",
+				atbTimeTextColorNormal: "#888888",
+				atbTimeTextColorSelected: "#000000",
+				atbButtonTextNormalColor: "#FFFFFF",
+				atbButtonTextSelectedColor: "#FFFFFF",
+				atbButtonBackgroundNormalColor: "#888888",
+				atbButtonBackgroundSelectedColor: "#000000",
+				//thumbnails preview
+				thumbnailsPreviewWidth: 196,
+				thumbnailsPreviewHeight: 110,
+				thumbnailsPreviewBackgroundColor: "#000000",
+				thumbnailsPreviewBorderColor: "#666",
+				thumbnailsPreviewLabelBackgroundColor: "#666",
+				thumbnailsPreviewLabelFontColor: "#FFF",
+				// context menu
+				showContextmenu: 'yes',
+				showScriptDeveloper: "no",
+				contextMenuBackgroundColor: "#ebebeb",
+				contextMenuBorderColor: "#ebebeb",
+				contextMenuSpacerColor: "#CCC",
+				contextMenuItemNormalColor: "#666666",
+				contextMenuItemSelectedColor: "#000",
+				contextMenuItemDisabledColor: "#AAA"
+			});
+		});
+		var vid = document.getElementById("vid");
+	vid.muted = false;
+</script>
 
 <div id="content-sidebar-pro" class="d-none d-md-block" style="position:absolute;left:3px;">
 
@@ -28,63 +267,9 @@
 
 
 <main id="col-main-with-sidebar">
-	<section class="video-container">
-			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" id="videoplayer" autoplay>
-			  Sorry your browser can't support video tag.
-			</video>
-			<div class="video-controls">
-			  <!-- timebar -->
-			  <div class="video-timebar">
-				<div class="video-timebar-buffered"></div>
-				<div class="video-timebar-current"></div>
-				<div class="video-timebar-duration"></div>
-				<div class="video-timebar-circle"></div>
-				<div class="video-timebar-toolkit">
-				  
-				</div>
-			  </div>
-			  <div class="video-controls-box">
-				<!-- suound control -->
-				<div class="video-sound-control">
-				  <div class="video-sound-control-icon">
-					<i class="fa fa-volume-up volume-btn"></i>
-				  </div>
-				  <div class="video-sound-control-meter">
-					<div class="video-sound-control-meter-current"></div>
-					<div class="video-sound-control-meter-full"></div>
-				  </div>
-				</div>
-				<!-- play and pause btn -->
-				<div class="video-control-play-pause">
-				  <!-- current time -->
-				  <div class="video-current-time-box">
-					
-				  </div>
-				  <div class="video-control-btns">
-					<i class="fa fa-backward back-btn"></i>
-					<i class="fa fa-play-circle-o play-btn"></i>
-					<i class="fa fa-forward next-btn"></i>
-				  </div>
-				  <!-- video duration time -->
-				  <div class="video-duration-time-box">
-					
-				  </div>
-				</div>
-				<!-- subtitle , quality , fullsceen -->
-				<div class="video-control-subtitle">
-				  <!-- <span class="video-language">Hindi</span>
-				  
-					<span class="video-quality">HD</span>
-				   -->
-				  <a href="{{path('second_player', {'id':video.id})}}"><span style="font-size:small;color:white">Switch</span></a>
-
-				  <span class="video-full-screen-icon"><i class="fa fa-expand"></i></span>
-
-				</div>
-			  </div>
-		  </div>
+	<section class="video-container" id="myDiv">
+		{% include 'video/_videoplaylist.html.twig' %}
 	</section>
-
 	<div id="movie-detail-rating">
 		<div class="dashboard-container">
 			<div class="row">
@@ -105,7 +290,7 @@
 						class="btn btn-sm btn-primary button_follow" id="unfollow">UnFollow
 					</button>
 					</div>
-					</div>
+				</div>
 					
 					<div class="section_buttons_videos d-none d-md-block">
 							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
@@ -125,7 +310,7 @@
 								{% endif %}
 								<span class="js-likes">{{video.likes | length}}</span>
 							</a>
-						</div>
+					</div>
 						<div class="section_buttons_videos d-sm-none">
 							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
 								Playlist
@@ -171,6 +356,9 @@
 						</li>
 						<li class="list-inline-item">
 							<a href="http://pinterest.com/pin/create/button/?url={{path('partage', {'id' : video.id})}}&description={{video.videotitle}}" target="_blank"><img src="{{asset('images/icones/pinterest-icon.png')}}"></a>
+						</li>
+						<li class="list-inline-item">
+							<a href="{{path('second_player', {'id':video.id})}}"><button class="btn btn-primary btn-small">Switch</button></a>
 						</li>
 					</ul>
 				</div>

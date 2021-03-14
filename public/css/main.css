@@ -4914,9 +4914,21 @@ margin-top:170px;
 .video-container {
 
 	margin-left:5px;
-	max-width: 100%;
+	max-width: 95%;
+	margin-top:10px;
 
 }
+
+
+.second-video-container {
+
+	margin:auto;
+	max-width: 95%;
+	margin-top:100px;
+
+}
+
+
 
 .button-playlist {
 
@@ -5961,4 +5973,39 @@ margin-bottom:15px;
 	  .click-to-dislike-video {
 		display: none;
 	  }
-	  
+
+	  .error-404-message {
+
+		text-align:center; 
+		margin-top:300px;
+		color:red
+
+	  }
+
+	  .button-error-404 {
+
+		text-align:center;
+		margin-top:10px;
+	}
+
+
+	.error-403-message {
+
+		text-align:center; 
+		margin-top:300px;
+		color:red
+
+	  }
+
+	  .button-error-403 {
+
+		text-align:center;
+		margin-top:10px;
+	}
+
+
+
+
+
+
+  
