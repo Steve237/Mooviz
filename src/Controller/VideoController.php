@@ -165,10 +165,12 @@ class VideoController extends AbstractController
     }
 
     /**
-    * @Route("main/switched_player/movie/{id}", name="second_player")
+    * @Route("main/switched_player/movie/{id}/category/{idcategory}", name="second_player")
+    * @ParamConverter("video", options={"mapping": {"id" : "id"}})
+    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Permet d'afficher contenu de la vidéo sur une autre page.
     */
-    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, VideosRepository $repository)
+    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, Category $category, VideosRepository $repository)
     {   
         $nbreview = $video->getViews();
         $nbreview++;
@@ -178,6 +180,9 @@ class VideoController extends AbstractController
 
         $user = $this->getUser();
         $userId = $user->getId();
+
+        $videos = $repository->showVideoByCategory($category, $video);
+
         
         $user_videos = $repository->showVideoByUserId($userId);
 
@@ -185,6 +190,7 @@ class VideoController extends AbstractController
 
         return $this->render('video/second_player.html.twig', [
             "video" => $video,
+            "videos" => $videos,
             "newvideos" => $newvideos,
             "user_videos" => $user_videos
 

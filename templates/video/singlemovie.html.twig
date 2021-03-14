@@ -421,7 +421,7 @@
 								<p class="video_icone_title"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></p>
 								<div style="float:left;margin-left:-20px">
 									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-									<a href="{{path('second_player', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+									<a href="{{path('second_player', {'id': video.username.id, 'idcategory' : video.category.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
 								</div>
 							</div><!-- close .item-listing-text-skrn-vertical-align -->
 						</div><!-- close .item-listing-text-skrn -->
