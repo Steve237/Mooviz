@@ -1,0 +1,66 @@
+<!--  Playlists -->
+<ul id="playlists" style="display:none;">
+    <li data-source="playlist{{video.id}}" data-playlist-name="MY HTML PLAYLIST 1" data-thumbnail-path="content/thumbnails/p-html.jpg">
+        <p class="fwduvp-categories-title"><span class="fwduvp-header">Title: </span><span class="fwduvp-title">My HTML playlist 1</span></p>
+        <p class="fwduvp-categories-type"><span class="fwduvp-header">Type: </span>HTML</p>
+        <p class="fwduvp-categories-description"><span class="fwduvp-header">Description: </span>Created using <strong>HTML markup</strong>, all format are supported and it can have mixed video formats.</p>
+    </li>
+</ul>
+
+<!--  HTML playlist -->
+<ul id="playlist{{video.id}}" style="display:none;">
+    
+    <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+        <div data-video-short-description="">
+            <div>
+                <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+            </div>
+        </div>
+        <div data-video-long-description="">
+            <div>
+                <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+                <p class="fwduvp-link">For more information about this please follow <a href="http://www.webdesign-flash.ro/p/royal-3d-coverflow/" target="_blank">this link</a></p>
+            </div>
+        </div>
+    </li>
+
+    {% if user_videos is null %}
+	{% for video in newvideos %}
+    <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+        <div data-video-short-description="">
+            <div>
+                <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+            </div>
+        </div>
+        <div data-video-long-description="">
+            <div>
+                <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+                <p class="fwduvp-link">For more information about this please follow <a href="http://www.webdesign-flash.ro/p/royal-3d-coverflow/" target="_blank">this link</a></p>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    {% else %}
+    {% for video in user_videos %}
+    <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+        <div data-video-short-description="">
+            <div>
+                <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+            </div>
+        </div>
+        <div data-video-long-description="">
+            <div style="text-align:center;padding-top:10px;padding-bottom:10px">
+                <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+                <p class="fwduvp-link">Pour voir les vidéos de la chaine<a href="{{path('channel', {'id': video.username.id})}}" target="_blank">Appuyez ici</a></p>
+            </div>
+        </div>
+    </li>
+    {% endfor %}
+    {% endif %}
+</ul>

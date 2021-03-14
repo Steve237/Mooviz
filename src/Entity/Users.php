@@ -87,11 +87,6 @@ class Users implements UserInterface, \Serializable
     private $imageuser;
 
     /**
-     * @ORM\OneToOne(targetEntity=Subscription::class, inversedBy="users", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $subscription;
-
-    /**
      * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="username")
      */
     private $videos;
@@ -134,6 +129,41 @@ class Users implements UserInterface, \Serializable
      */
     private $customerid;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $plan;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verifsubscription;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activated;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $payed;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Likes::class, mappedBy="userid")
+     */
+    private $userlikes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $dislikes;
+
 
     public function __construct()
     {
@@ -145,6 +175,8 @@ class Users implements UserInterface, \Serializable
         $this->abonnements = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->userlikes = new ArrayCollection();
+        $this->dislikes = new ArrayCollection();
 
        
     }
@@ -353,18 +385,6 @@ class Users implements UserInterface, \Serializable
         ) = unserialize($serialized);
         }
 
-        public function getSubscription(): ?Subscription
-        {
-            return $this->subscription;
-        }
-
-        public function setSubscription(?Subscription $subscription): self
-        {
-            $this->subscription = $subscription;
-
-            return $this;
-        }
-
         /**
          * @return Collection|Videos[]
          */
@@ -413,8 +433,6 @@ class Users implements UserInterface, \Serializable
 
 
             return $this->following;
-
-
         }
 
         /**
@@ -521,7 +539,121 @@ class Users implements UserInterface, \Serializable
 
             return $this;
         }
+
+        public function getPlan(): ?string
+        {
+            return $this->plan;
+        }
+
+        public function setPlan(string $plan): self
+        {
+            $this->plan = $plan;
+
+            return $this;
+        }
+
+        public function getCreatedAt(): ?\DateTimeInterface
+        {
+            return $this->createdAt;
+        }
+
+        public function setCreatedAt(\DateTimeInterface $createdAt): self
+        {
+            $this->createdAt = $createdAt;
+
+            return $this;
+        }
+
+        public function getVerifsubscription(): ?string
+        {
+            return $this->verifsubscription;
+        }
+
+        public function setVerifsubscription(?string $verifsubscription): self
+        {
+            $this->verifsubscription = $verifsubscription;
+
+            return $this;
+        }
+
+        public function getActivated(): ?bool
+        {
+            return $this->activated;
+        }
+
+        public function setActivated(bool $activated): self
+        {
+            $this->activated = false;
+
+            return $this;
+        }
+
+        public function getPayed(): ?bool
+        {
+            return $this->payed;
+        }
+
+        public function setPayed(?bool $payed): self
+        {
+            $this->payed = $payed;
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Likes[]
+         */
+        public function getUserlikes(): Collection
+        {
+            return $this->userlikes;
+        }
+
+        public function addUserlike(Likes $userlike): self
+        {
+            if (!$this->userlikes->contains($userlike)) {
+                $this->userlikes[] = $userlike;
+                $userlike->addUserid($this);
+            }
+
+            return $this;
+        }
+
+        public function removeUserlike(Likes $userlike): self
+        {
+            if ($this->userlikes->removeElement($userlike)) {
+                $userlike->removeUserid($this);
+            }
+
+            return $this;
+        }
+
+        /**
+         * @return Collection|Videodislike[]
+         */
+        public function getDislikes(): Collection
+        {
+            return $this->dislikes;
+        }
+
+        public function addDislike(Videodislike $dislike): self
+        {
+            if (!$this->dislikes->contains($dislike)) {
+                $this->dislikes[] = $dislike;
+                $dislike->setUser($this);
+            }
+
+            return $this;
+        }
+
+        public function removeDislike(Videodislike $dislike): self
+        {
+            if ($this->dislikes->removeElement($dislike)) {
+                // set the owning side to null (unless already changed)
+                if ($dislike->getUser() === $this) {
+                    $dislike->setUser(null);
+                }
+            }
+
+            return $this;
+        }
 }
-
-
-

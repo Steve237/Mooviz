@@ -34,25 +34,54 @@ class AuthController extends AbstractController
         if(!$user){
     
             // On génère un message
-            $this->addFlash('message', 'Lien invalide:echec activation du compte');
+            $this->addFlash('invalid_token', 'Lien invalide:echec activation du compte');
 
             // On retourne à l'accueil
-            return $this->redirectToRoute('accueil');
+            return $this->redirectToRoute('connexion');
         }
 
+
+        $stripe = new \Stripe\StripeClient('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
+        
+        if($user->getPlan() == "starter") {
+
+        $stripe->subscriptions->create([
+            
+            'customer' => $user->getCustomerid(),
+            'items' => [
+              ['price' => 'price_1IOhzqLfEkLbwHD13UZyIQLt']
+            ],
+            'trial_period_days' => 31,
+            'collection_method' => 'charge_automatically'
+
+
+        ]);
+
+        } elseif($user->getPlan() == "premium" ) {
+            
+            $stripe->subscriptions->create([
+            
+                'customer' => $user->getCustomerid(),
+                'items' => [
+                  ['price' => 'price_1Hrd49LfEkLbwHD1TCJkouof']
+                ],
+                'trial_period_days' => 31,
+                'collection_method' => 'charge_automatically'
+    
+    
+            ]);
+        }
+        
+        //On indique que l'abonnement est souscrit
         // On supprime le token
         $user->setActivationToken(null);
+        $user->setActivated(true);
+        $user->setRoles('ROLE_USER');
         $entity->persist($user);
-        
-        //On indique que le forfait est payé
-        $subscription = $session->get('subscription');
-        $subscription->setPaymentStatus('paid');
-        $entity->persist($subscription);
-        
         $entity->flush();
         
         // On génère un message
-        $this->addFlash('message', 'Utilisateur activé avec succès');
+        $this->addFlash('success', 'votre compte a été activé avec succès');
 
         // On retourne à l'accueil
         return $this->redirectToRoute('connexion');
@@ -83,7 +112,7 @@ class AuthController extends AbstractController
     }
 
     /**
-    * @Route("/recoveryPass", name="recoveryPass")
+    * @Route("/recoverypass", name="recoverypass")
     */
     public function recoveryPass(Request $request, UsersRepository $users, \Swift_Mailer $mailer, TokenGeneratorInterface $tokenGenerator): Response
     {
@@ -104,10 +133,10 @@ class AuthController extends AbstractController
             // Si l'utilisateur n'existe pas
             if ($user === null) {
                 // On envoie une alerte disant que l'adresse e-mail est inconnue
-                $this->addFlash('danger', 'Cette adresse e-mail est inconnue');
+                $this->addFlash('unknown_mail', 'Cette adresse e-mail est inconnue');
             
                 // On retourne sur la page de connexion
-                return $this->redirectToRoute('connexion');
+                return $this->redirectToRoute('recoverypass');
             }
 
             // On génère un token
@@ -137,36 +166,16 @@ class AuthController extends AbstractController
             // On envoie l'e-mail
             $mailer->send($message);
 
-            // On crée le message flash de confirmation
-            $this->addFlash('message', 'E-mail de réinitialisation du mot de passe envoyé !');
+            // On crée le message flash de confirmation d'envoi de mail
+            $this->addFlash('recoverypass', 'Un lien pour réinitialiser votre de mot de passe vient de vous être envoyé par mail, veuillez cliquer dessus.');
 
-            // On redirige vers la page de login
-            return $this->redirectToRoute('connexion');
+            // On redirige vers la page de récupération de mot de passe
+            return $this->redirectToRoute('recoverypass');
         }
 
         // On envoie le formulaire à la vue
         return $this->render('auth/recoveryPassword.html.twig',['form' => $form->createView()]);
     }
-
-
-
-    /**
-    * @Route("/test", name="test")
-    */
-    public function test(SessionInterface $session) {
-
-        //exemple utilisation token
-        $foo = $session->get('activationToken');   
-        
-        var_dump($foo);
-        die();
-
-
-    }
-
-
-
-
 
     /**
     * @Route("/reset_pass/{token}", name="app_reset_password")
@@ -179,12 +188,23 @@ class AuthController extends AbstractController
         // Si l'utilisateur n'existe pas
         if ($user === null) {
             // On affiche une erreur
-            $this->addFlash('danger', 'Token Inconnu');
+            $this->addFlash('unknown_token', 'Lien de récupération de mot de passe invalide.');
             return $this->redirectToRoute('connexion');
         }
 
         // Si le formulaire est envoyé en méthode post
         if ($request->isMethod('POST')) {
+            
+            $password = $request->request->get('password');
+            $confirmPassword = $request->request->get('confirmPassword');
+
+            if($password != $confirmPassword) {
+
+                $this->addFlash('wrong_password', 'Veuillez entrer deux mots de passe identiques.');
+                return $this->render('auth/newPass.html.twig', ['token' => $token]);
+            
+            }
+
             // On supprime le token
             $user->setResetToken(null);
 
@@ -198,7 +218,7 @@ class AuthController extends AbstractController
             $entityManager->flush();
 
             // On crée le message flash
-            $this->addFlash('message', 'Mot de passe mis à jour');
+            $this->addFlash('success_updatepass', 'Votre mot de passe a été mis à jour avec succès.');
 
             // On redirige vers la page de connexion
             return $this->redirectToRoute('connexion');

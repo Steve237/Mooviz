@@ -10,14 +10,14 @@
 		<link rel="stylesheet" href="{{asset('icons/fontawesome/css/fontawesome-all.min.css')}}"><!-- FontAwesome Icons -->
 		<link rel="stylesheet" href="{{asset('icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css')}}"><!-- iconsmind.com Icons -->
 		
-		<title>SKRN - Media Streaming App</title>
+		<title>Mylion</title>
 	</head>
 	<body>
 		
 		<header id="masthead-pro">
 			<div class="container">
 				
-				<h1><a href="{{path('home')}}"><span class="homepage_title">Essama</span></a></h1>
+				<h1><a href="{{path('home')}}"><span class="homepage_title">Mylion</span></a></h1>
 				
 				<nav id="site-navigation-pro">
 					<ul class="sf-menu">
@@ -43,7 +43,7 @@
 							<a href="{{path('tarif')}}">Tarifs</a>
 						</li>
 						<li class="normal-item-pro">
-							<a href="faqs.html">FAQs</a>
+							<a href="{{path('faqs')}}">FAQs</a>
 						</li>
 						<li>
 							<a href="{{path('contact')}}">Contact</a>
@@ -51,7 +51,7 @@
 					</ul>
 				</nav>
 				
-				<a href="{{path('inscription', {'plan' : 'plan'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
+				<a href="{{path('inscription', {'plan' : 'starter'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
 				
 				<a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
 				
@@ -64,10 +64,10 @@
 			
 				<ul id="mobile-menu-pro">
 					<li>
-						<a href="index.html">Home</a>
+						<a href="{{path('home')}}">Accueil</a>
 					</li>
 					<li>
-						<a href="dashboard-home.html">New Releases</a>
+						<a href="{{path('tarif')}}">Tarifs</a>
 						<!-- Mobile Sub-Menu Example >
 						<ul>
 							<li class="normal-item-pro">
@@ -83,16 +83,13 @@
 						< End Mobile Sub-Menu Example -->
 					</li>
 					<li>
-						<a href="{{path('tarif')}}">Tarifs</a>
+						<a href="{{path('faqs')}}">Faqs</a>
 					</li>
 					<li>
-						<a href="faqs.html">FAQs</a>
+						<a href="{{path('contact')}}">Contact</a>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
-			
-				<button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
-			
 			</nav>
         </header>
         
@@ -102,7 +99,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md">
-						<div class="copyright-text-pro">&copy; Copyright 2018 SKRN. All Rights Reserved</div>
+						<div class="copyright-text-pro">&copy; Copyright 2021 Mylion. All Rights Reserved</div>
 					</div><!-- close .col -->
 					<div class="col-md">
 						<ul class="social-icons-pro">

@@ -4,140 +4,76 @@
 
 {% block body %}
 	<main id="col-main">
-			
-			<div class="flexslider progression-studios-dashboard-slider">
-		      <ul class="slides">
-					<li class="progression_studios_animate_left">
-						<div class="progression-studios-slider-dashboard-image-background video-header-content">
-                            <div class="video-header-container">
-                            <video autoplay loop muted id="video-header">
-                                <source src="{{asset("videos/films/action/johnwick3.mp4")}}">
-                            </video>
-                            </div>
-                            
-                            <div class="progression-studios-slider-display-table overlay">
-								<div class="progression-studios-slider-vertical-align">
-								
-									<div class="container">
-																				
-										<video id="VideoLightbox-1" src="{{asset("videos/films/action/johnwick3.mp4")}}"  width="960" height="540"></video>
-
-										<div class="progression-studios-slider-dashboard-caption-width">
-											<div class="progression-studios-slider-caption-align">
-												<h6 style="color:white">Films</h6>
-												<ul class="progression-studios-slider-rating">
-													<li>PG-13</li><li>HD</li>
-												</ul>
-												<h2><a href="dashboard-movie-profile.html" style="color:white">John Wick 3</a></h2>
-												<ul class="progression-studios-slider-meta">
-													<li style="color:white">9 Mai 2019 (USA)</li>
-													<li style="color:white">163 min.</li>
-													<li style="color:white">Action</li>
-												</ul>
-												<p class="progression-studios-slider-description" style="color:white;font-size:large">
-													John Wick a transgressé une règle fondamentale : 
-													il a tué à l'intérieur même de l'Hôtel Continental. Excommunié, tous les services liés au Continental 
-													lui sont fermés et sa tête mise à prix. John se retrouve sans soutien, traqué par tous les plus dangereux 
-													tueurs du monde.
-												</p>
-												
-                                                <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1" onclick="stopVideo()"><i class="fas fa-play"></i> Voir la vidéo </a>
-
-
-												<div class="progression-studios-slider-more-options">
-													<i class="fas fa-ellipsis-h"></i>
-													<ul>
-														<li><a href="#!">Ajouter aux favoris</a></li>
-														<li><a href="#!">Ajouter à la playlist</a></li>
-														<li><a href="#!">Partager</a></li>
-														<li><a href="#!">Ecrire un commentaire</a></li>
-													</ul>
-												</div>
-												<div class="clearfix"></div>      
-												
-											</div><!-- close .progression-studios-slider-caption-align -->
-										</div><!-- close .progression-studios-slider-caption-width -->
-									
-									</div><!-- close .container -->
-								
-								</div><!-- close .progression-studios-slider-vertical-align -->
-							</div><!-- close .progression-studios-slider-display-table -->
-						
-							<div class="progression-studios-slider-mobile-background-cover"></div>
-						</div><!-- close .progression-studios-slider-image-background -->
-					</li>
-					<li class="progression_studios_animate_in">
-						<div class="progression-studios-slider-dashboard-image-background">
-                            
-                            <div class="video-header-container">
-                                <video autoplay loop muted class="video-header" id="video-background">
-                                    <source src="{{asset("videos/films/action/bloodshot.mp4")}}">
-                                </video>
-                            </div>
-                            
-                            <div class="progression-studios-slider-display-table overlay">
-								<div class="progression-studios-slider-vertical-align">
-								
-									<div class="container">
-																				
-							         	<video id="VideoLightbox-2" src="{{asset("videos/films/action/bloodshot.mp4")}}" poster="{{asset("images/action/bloodshot.jpg")}}" width="960" height="540"></video>
-										
-									<div class="progression-studios-slider-dashboard-caption-width">
-											<div class="progression-studios-slider-caption-align">
-												<h6 class="light-fonts-pro">Films</h6>
-												<ul class="progression-studios-slider-rating">
-													<li>PG-13</li><li>HD</li>
-												</ul>
-												<h2 class="light-fonts-pro"><a href="dashboard-movie-profile.html" style="color:white">Bloodshot</a></h2>
-												<ul class="progression-studios-slider-meta">
-													<li style="color:white">25 Mars, 2020 (USA)</li>
-													<li style="color:white">149 min.</li>
-													<li style="color:white">Action</li>
-												</ul>
-												<p class="progression-studios-slider-description light-fonts-pro" style="color:white;font-size:large">
-													Bloodshot est un ancien soldat doté de pouvoirs de régénération et de meta-morphing suite à l'injection de nanites dans son sang. 
-													Après avoir vu sa mémoire effacée à plusieurs reprises, il finit par découvrir qui il est et 
-													décide de se venger de ceux qui lui ont infligé cette expérience.
-												</p>
-												
-												<a class="btn btn-green-pro btn-slider-pro afterglow" href="#VideoLightbox-2" onclick="videoStop()"><i class="fas fa-play"></i> Voir la vidéo</a>
-												<div class="progression-studios-slider-more-options">
-													<i class="fas fa-ellipsis-h"></i>
-													<ul>
-														<li><a href="#!">Ajouter aux favoris</a></li>
-														<li><a href="#!">Ajouter au Playlist</a></li>
-														<li><a href="#!">Partager</a></li>
-														<li><a href="#!">Ecrire un commentaire</a></li>
-													</ul>
-												</div>
-												<div class="clearfix"></div>
-												
-											</div><!-- close .progression-studios-slider-caption-align -->
-										</div><!-- close .progression-studios-slider-caption-width -->
-									
-									</div><!-- close .container -->
-								
-								</div><!-- close .progression-studios-slider-vertical-align -->
-							</div><!-- close .progression-studios-slider-display-table -->
-						
-							<div class="progression-studios-slider-mobile-background-cover-dark"></div>
-						</div><!-- close .progression-studios-slider-image-background -->
-					</li>				
-				</ul>
-			</div><!-- close .progression-studios-slider - See /js/script.js file for options -->
-
-			<ul class="dashboard-genres-pro" id="listvideo">
+		<div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
+			<ol class="carousel-indicators">
+			  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			</ol>
+			<div class="carousel-inner" style="background-color: black;">
+			  <div class="carousel-item active">
+				<div class="carousel-caption">
+					<h2 style="color:red">{{firstBackgroundVideo[0].videotitle}}</h2>
+					<p style="text-align:center;font-size:large;padding:5px" class="d-none d-sm-block">
+						{{firstBackgroundVideo[0].videodescription}}
+					</p>
+					<ul class="progression-studios-slider-meta">
+						<li>Date de sortie : {{firstBackgroundVideo[0].parutiondate | date('d/m/Y')}}</li>
+						<li>Durée: {{firstBackgroundVideo[0].videoduration}}</li>
+						<li>{{firstBackgroundVideo[0].category.categoryname}}</li>
+					</ul>
+					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i>Voir la vidéo</a>
+					<video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}" width="960" height="540"></video>
+				</div>
+					<video autoplay loop muted id="video-header" class="video-background">
+						<source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
+					</video>
+			  </div>
+			  <div class="carousel-item">
+				<video autoplay loop muted id="video-header">
+					<source src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}">
+				</video>
+				<div class="carousel-caption">
+					<h2 style="color:red">{{secondBackgroundVideo[0].videotitle}}</h2>
+					<p style="text-align:center;font-size:large;padding:5px" class="d-none d-sm-block">
+						{{secondBackgroundVideo[0].videodescription}}
+					</p>
+					<ul class="progression-studios-slider-meta">
+						<li>Date de sortie : {{secondBackgroundVideo[0].parutiondate | date('d/m/Y')}}</li>
+						<li>Durée: {{secondBackgroundVideo[0].videoduration}}</li>
+						<li>{{secondBackgroundVideo[0].category.categoryname}}</li>
+					</ul>
+					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2"><i class="fas fa-play"></i>Voir la vidéo</a>
+					<video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}" width="960" height="540"></video>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		  
+		  	<div class="d-none d-sm-block">
+			<ul class="dashboard-genres-pro" id="listvideo" >
 
 				{% for category in categories %}
 				<li class="imagecategory">
 					<a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
-						<img src="{{asset('images/' ~ category.imagecategory)}}" alt="image">
+						<img src="{{category.imagecategory}}" alt="image">
 						<h6>{{category.categoryname}}</h6>
 					</a>
 				</li>
 				{% endfor %}
 			</ul>
+			</div>
 			
+			<ul class="list-group d-sm-none" style="margin-bottom:20px">
+
+				{% for category in categories %}
+			  	<li class="list-group-item"><a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
+					<img src="{{category.imagecategory}}" alt="image">
+					<h6>{{category.categoryname}}</h6>
+				</a>
+				</li>
+				{% endfor %}
+			</ul>
+
 			<div class="clearfix"></div>
 			
 			<div class="dashboard-container">
@@ -150,23 +86,16 @@
 				<h4 class="heading-extra-margin-bottom hello">Liste des videos</h4>
 				<div class="row">
 					{% for video in videos %}
-					<div class="col-12 col-md-6 col-lg-4 col-xl-3">
-						<div class="item-listing-container-skrn">
+					<div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+						<div class="item-listing-container-skrn" style="text-overflow: ellipsis;overflow:hidden">
 							<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
 							<div class="item-listing-text-skrn">
-								<div class="item-listing-text-skrn-vertical-align"><h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
-							      <div
-							        class="circle-rating-pro"
-							        data-value="0.86"
-							        data-animation-start-value="0.86"
-							        data-size="32"
-							        data-thickness="3"
-							        data-fill="{
-							          &quot;color&quot;: &quot;#42b740&quot;
-							        }"
-							        data-empty-fill="#def6de"
-							        data-reverse="true"
-							      ><span style="color:#42b740;">8.6</span></div>
+								<div class="item-listing-text-skrn-vertical-align">
+									<h6 style="width:300px;text-overflow:ellipsis;white-space: nowrap;overflow:hidden;margin-left:-20px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
+									<div style="float:left;margin-left:-20px">
+										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
+										<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+									</div>
 								</div><!-- close .item-listing-text-skrn-vertical-align -->
 							</div><!-- close .item-listing-text-skrn -->
 						</div><!-- close .item-listing-container-skrn -->

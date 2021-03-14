@@ -15,13 +15,12 @@
             {% for followed in user.following %}
             {% for avatar in avatars %}
             <a href="{{path('channel', {'id': followed.id})}}">
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-                <div class="item-playlist-container-skrn">
-                    <a href="{{path('channel', {'id': followed.id})}}"><img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="Listing" class="img-responsive"></a>
+            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+                <div class="item-playlist-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
+                    <a href="{{path('channel', {'id': followed.id})}}"><img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive"></a>
                     <div class="item-playlist-text-skrn">
-                        <img src="{{asset('images/avatar/' ~ avatar.avatar)}}" alt="User Profile" class="img-responsive">
-                        <h5><a href="{{path('channel', {'id': followed.id})}}">By: {{followed.username}}</a></h5>
-                        <h6>8 Movies, 18 hrs 24 mins</h6>
+                        <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
+                        <h5><a href="{{path('channel', {'id': followed.id})}}">Chaine de: {{followed.username}}</a></h5>
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-playlist-container-skrn -->
             </div><!-- close .col -->

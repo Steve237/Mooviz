@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Gestion des Films {% endblock %}
+{% block title %} Modifier image {% endblock %}
 
 {% block body %}
 
-<a href="{{path('user_videos')}}"><div class="close_admin_video_page"><i class="fas fa-window-close fa-3x"></i></div></a>
+<p class="title_admin_video"> Modifier image de la vidéo </p>
+<p style="text-align:center"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="videoimage" style="width:200px;height:200px"></p>
 
-<h3 class="title_admin_video"> Modifier une vidéo </h3>
+<div class="container">
+<div class="row">
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
 <div class="form_upload_video">
     <div class="progress invisible" id="progress-bar">
         <div class="progress-bar"></div>
@@ -14,16 +18,18 @@
     <div id="uploadStatus"></div>
     {% form_theme updateform 'bootstrap_4_layout.html.twig' %}
     {{form_start(updateform,  {"attr" : {'id':'video_update'}}, {'action': path('update_video', {'id': video.id}), 'method': 'POST'})}}
-
-    <div class="form-group">{{form_row(updateform.videotitle, {"attr" : {'class':'form-control'}})}}</div>
-    <div class="form-group">{{form_row(updateform.videodescription, {"attr" : {'class':'form-control'}})}}</div>
-    <div class="form-group">{{form_row(updateform.videoimage, {"attr" : {'class':'form-control', 'placeholder': video.videoimage}})}}</div>
-    <div class="form-group">{{form_row(updateform.category, {"attr" : {'class':'form-control'}})}}</div>
+    <div class="form-group">{{form_row(updateform.videoimage, {"attr" : {'class':'form-control'}})}}</div>
     <div class="form-group">{{form_widget(updateform)}}</div>
-    <button type="submit" class="btn btn_video" onclick="hideBar()">Ajouter video</button>
+    <button type="submit" class="btn btn_video" onclick="hideBar()">Modifier image</button>
+    {{form_end(updateform)}}
+    </div>
 </div>
-{{form_end(updateform)}}
+</div>
+</div>
 {% endblock %}
+
+
+
 {% block javascript %}
 {{parent()}}
 
@@ -33,8 +39,6 @@
 function hideBar() {
 
     document.getElementById("progress-bar").className = "visible";
-
-
 }
 
 //permet d'afficher le progrès de l'upload via la barre de progrès
@@ -65,31 +69,18 @@ $(document).ready(function(){
             processData:false,
             beforeSend: function(){
                 $(".progress-bar").width('0%');
-                $('#uploadStatus').html('<img src="{{asset("images/loader.gif")}}"/>');
             },
             error:function(){
-                $('#uploadStatus').html('<p style="color:#EA4335;">File upload failed, please try again.</p>');
+                $('#uploadStatus').html('<p style="color:#EA4335;">Le téléchargement a échoué, merci de recommencer.</p>');
             },
             success: function(resp){
                 if(resp == 'ok'){
-                    window.document.location = '/042491f448463ffa79e596a3333d0943';
+                    window.document.location = '/update_video_successfull';
                 }else if(resp == 'err'){
-                    $('#uploadStatus').html('<p style="color:#EA4335;">Please select a valid file to upload.</p>');
+                    $('#uploadStatus').html('<p style="color:#EA4335;">Nous acceptons uniquement image au format jpg, jpeg, ou png.</p>');
                 }
             }
         });
-    });
-	
-    // File type validation
-    $("#fileInput").change(function(){
-        var allowedTypes = ['video/mp4'];
-        var file = this.files[0];
-        var fileType = file.type;
-        if(!allowedTypes.includes(fileType)){
-            alert('Please select a valid file (PDF/DOC/DOCX/JPEG/JPG/PNG/GIF).');
-            $("#fileInput").val('');
-            return false;
-        }
     });
 });
 </script>

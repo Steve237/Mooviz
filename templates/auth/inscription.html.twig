@@ -7,46 +7,46 @@
 
 <div id="content-pro">
 
-    <div class="container">
-        <div class="centered-headings-pro pricing-plans-headings">
-            <h6>For one low monthly price</h6>
-            <h1>Instantly watch TV shows &amp; Movies</h1>
-        </div>
-    </div><!-- close .container -->
-    
-    <div class="container">
-    <ul id="registration-steps-pro">
-        <li>
-            <a href="{{path('tarif')}}">
-                <div class="registration-step-circle-icon">01</div>
-                <div class="registration-step-number">Etape 1</div>
-                <h5 class="registration-step-title">Choisissez votre plan</h5>
-            </a>
-        </li>
-        <li class="current-menu-item">
-            <a href="#">
-                <div class="registration-step-circle-icon">02</div>
-                <div class="registration-step-number">Etape 2</div>
-                <h5 class="registration-step-title">Créez votre compte</h5>
-            </a>
-        </li>
-        <li>
-            <a href="signup-step3.html">
-                <div class="registration-step-circle-icon">03</div>
-                <div class="registration-step-number">Etape 3</div>
-                <h5 class="registration-step-title">Information de facturation</h5>
-            </a>
-        </li>
-        <li>
-            <a href="signup-step4.html">
-                <div class="registration-step-circle-icon">04</div>
-                <div class="registration-step-number">Etape 4</div>
-                <h5 class="registration-step-title">Welcome to Streamtek</h5>
-            </a>
-        </li>
-    </ul>
-    <div class="clearfix"></div>
-    </div>
+	<div class="container">
+		<div class="centered-headings-pro pricing-plans-headings">
+			<h5 class="free_title">Essai gratuit pendant 1 mois.</h5>
+			<h3>Regardez et partagez vos vidéos favoris.</h3>
+		</div>
+	</div><!-- close .container -->
+
+	<div class="container">
+		<ul id="registration-steps-pro">
+			<li>
+				<a href="{{path('tarif')}}">
+					<div class="registration-step-circle-icon">01</div>
+					<div class="registration-step-number">Etape 1</div>
+					<h5 class="registration-step-title">Choisissez votre plan</h5>
+				</a>
+			</li>
+			<li class="current-menu-item">
+				<a href="#">
+					<div class="registration-step-circle-icon">02</div>
+					<div class="registration-step-number">Etape 2</div>
+					<h5 class="registration-step-title">Créez votre compte</h5>
+				</a>
+			</li>
+			<li>
+				<a href="signup-step3.html">
+					<div class="registration-step-circle-icon">03</div>
+					<div class="registration-step-number">Etape 3</div>
+					<h5 class="registration-step-title">Information de facturation</h5>
+				</a>
+			</li>
+			<li>
+				<a href="signup-step4.html">
+					<div class="registration-step-circle-icon">04</div>
+					<div class="registration-step-number">Etape 4</div>
+					<h5 class="registration-step-title">Activation du compte</h5>
+				</a>
+			</li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
 
 	<div id="pricing-plans-background-image">
 
@@ -59,72 +59,55 @@
 					<div class="registration-social-login-container">
 
 						<div class="form-group">
-							{{form_row(form.username,{
-											"attr" : {
-												"placeholder":"Entrez votre pseudo",
-												"class":"form-label form-control"
-											},
-											"label" : "Votre pseudo"
-										})}}
+							{{form_row(form.username,{"attr" : {"placeholder":"Entrez votre pseudo",
+							"class":"form-label form-control"}, "label" : "Votre pseudo"})}}
 						</div>
 						<div class="form-group">
-							{{form_row(form.email,{
-											"attr" : {
-												"placeholder":"Entrez votre adresse email",
-												"class":"form-label form-control"
-											},
-											"label" : "Votre Email"
-										})}}
+							{{form_row(form.email, {"attr" : {"placeholder":"Entrez votre adresse email", 
+							"class":"form-label form-control"}, "label" : "Votre Email"})}}
 						</div>
 
 						<div class="form-group">
-							{{form_row(form.password,{
-											"attr" : {
-											"placeholder":"Entrez votre mot de passe",
-											"class":"form-label form-control"
-										},
-										"label" : "Votre Mot de passe"
-										})}}
+							{{form_row(form.password,{"attr" : {"placeholder":"Entrez votre mot de passe",
+							"class":"form-label form-control"}, "label" : "Votre Mot de passe"})}}
 						</div>
 						<div class="form-group">
-							{{form_row(form.confirmPassword, {
-											"attr" : {
-												   "placeholder":"Confirmez votre mot de passe",
-												   "class":"form-label form-control"
-											   },
-											   "label" : "Confirmation du mot de passe"
-										   })}}
+							{{form_row(form.confirmPassword, {"attr" : {"placeholder" : "Confirmez votre mot de passe", 
+							"class":"form-label form-control"}, "label" : "Confirmation du mot de passe"})}}
 						</div>
 
-						<div class="registration-social-login-or">Selection</div>
+						<div class="registration-social-login-or"></div>
 
 					</div><!-- close .registration-social-login-container -->
 
 					<div class="registration-social-login-options">
 						<h6>Récapitulatif</h6>
-						<div>Plan choisi : {{app.session.get('planName')|capitalize}}</div>
-						<div>Prix du plan : {{app.session.get('planPrice')|capitalize}} €</div>
+						<div>Plan choisi : {{plan|capitalize}}.</div>
+						{% if plan == "starter" %}
+						<div>Prix : 5€/mois. </div>
+						{% else %}
+						<div>Prix : 30€/an. </div>
+						{% endif %}
+						<div>Inclus période essai gratuit pendant 1 mois.</div>
 					</div><!-- close .registration-social-login-options -->
 
 					<div class="clearfix"></div>
 					<div class="form-group last-form-group-continue">
-						<input type="submit" class="btn btn-primary" value="continue">
-						<span class="checkbox-remember-pro"><input type="checkbox" id="checkbox-terms"><label
-								for="checkbox-terms" class="col-form-label">By clicking "Continue", you agree to our <a
-									href="#!">Terms of Use</a> and
-								<a href="#!">Privacy Policy</a> including the use of cookies.</label></span>
+						<input type="submit" class="btn btn-primary" value="Continuez">
+						<span class="checkbox-remember-pro">
+							<label for="checkbox-terms" class="col-form-label">
+								By clicking "Continue", you agree to our
+								<a href="#!">Terms of Use</a> and <a href="#!">Privacy Policy</a>
+								including the use of cookies.
+							</label>
+						</span>
 						<div class="clearfix"></div>
 					</div>
 					{{form_widget(form)}}
-
 				</form>
 				{{form_end(form)}}
-
 			</div><!-- close .registration-steps-page-container -->
-
 		</div><!-- close .container -->
-
 	</div><!-- close #pricing-plans-background-image -->
-
 </div><!-- close #content-pro -->
 {% endblock %}

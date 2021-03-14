@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Users;
+use Doctrine\ORM\Query;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
@@ -19,7 +20,7 @@ class UsersRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Users::class);
     }
-
+  
 
     public function findUser($user)
     {
@@ -30,7 +31,67 @@ class UsersRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    
+    public function findEmail($email)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.email = :val')
+            ->setParameter('val', $email)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function getCustomer($customer)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.username')
+            ->andWhere('u.customerid = :val')
+            ->setParameter('val', $customer)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+
+    public function findCustomer($customer)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.customerid = :val')
+            ->setParameter('val', $customer)
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+    public function verifSubscriber($value)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.verifsubscription = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+     //permet de réaliser la pagination
+     public function findAllWithPagination() : Query
+     {
+
+        return $this->createQueryBuilder('u')
+            ->getQuery();
+        
+    }
   
+     // assure la recherche des utilisateurs par nom
+     public function userSearch($username) {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username LIKE :username')
+            ->setParameter('username', '%'.$username.'%')
+            ->getQuery()
+            ->execute();
+    }
 
     /*
     public function findOneBySomeField($value): ?Users

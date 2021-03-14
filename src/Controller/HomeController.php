@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Controller;
-
-use App\Entity\Subscription;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -13,19 +10,17 @@ class HomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('home/index.html.twig', [
-            
-            'name' => Subscription::getPlanDataNames(),
-            'price' => Subscription::getPlanDataPrices()
-        ]);
+        return $this->render('home/index.html.twig', []);
     }
 
-    /**
-     * @Route("/pricing", name="pricing")
+     /**
+     * @Route("/tarif", name="tarif")
      */
-    public function pricing()
-    {
-        return $this->render('home/pricing.html.twig');
+    public function tarifs()
+    {   
+        
+        //renvoie à la liste des tarifs
+        return $this->render('subscription/tarif.html.twig');
     }
 
 }

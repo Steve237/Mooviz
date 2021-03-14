@@ -11,7 +11,6 @@ use Stripe\PaymentIntent;
 use App\Entity\Subscription;
 use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\SubscriptionRepository;
 use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,223 +32,179 @@ class SubscriptionController extends AbstractController
     {   
         
         //renvoie à la liste des tarifs
-        return $this->render('subscription/tarif.html.twig', [
-
-            'name' => Subscription::getPlanDataNames(),
-            'price' => Subscription::getPlanDataPrices(),
-
-
-
-        ]);
+        return $this->render('subscription/tarif.html.twig');
     }
-    
-    
-    
     
     /**
      * //page inscription
      * @Route("/inscription/{plan}", name="inscription")
      */
-    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan, SubscriptionRepository $repo)
+    public function index(Request $request, EntityManagerInterface $entity, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, SessionInterface $session, $plan)
     {   
-        
-        
         if( $request->isMethod('GET')  ) 
         {
-            $session->set('planName', $plan);    
-            $session->set('planPrice', Subscription::getPlanDataPriceByName($plan));    
+            if($plan != 'starter' && $plan != 'premium') {
+
+
+                return $this->redirectToRoute('tarif');
+
+
+            }
         }
         
-        $users = new Users();
-        $form = $this->createForm(InscriptionType::class, $users);
+        $user = new Users();
+        
+        $form = $this->createForm(InscriptionType::class, $user);
 
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            $passwordCrypte = $encoder->encodePassword($users, $users->getPassword());
-            $users->setPassword($passwordCrypte);
-            $users->setConfirmPassword($passwordCrypte);
+            $passwordCrypte = $encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($passwordCrypte);
+            $user->setConfirmPassword($passwordCrypte);
         
-            $users->setActivationToken(md5(uniqid()));
-            $users->setRoles('ROLE_USER');
+            $user->setActivationToken(md5(uniqid()));
+            $user->setRoles('ROLE_AWAITING');
 
             $date = new \Datetime();
-            $date->modify('+1 year');
-            $subscription = new Subscription();
-            $subscription->setValidTo($date);
-            $subscription->setPlan($session->get('planName'));
-            $subscription->setFreePlanUsed(false);
-            
-            if($plan == Subscription::getPlanDataNameByIndex(0)) // free plan
-            {   
-                $date_free_user = new \Datetime();
-                $date_free_user->modify('+1 month');
-                $subscription->setFreePlanUsed(true);
-                $subscription->setPaymentStatus('paid');
+            $user->setCreatedAt($date);
+            $user->setPlan($plan);
+            $user->setActivated(false);
 
-                $users->setSubscription($subscription);
-
-                $entity->persist($users);
-                $entity->flush();  
-
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-            }
-
-
-            $users->setSubscription($subscription);
-
-            $entity->persist($users);
+            $entity->persist($user);
             $entity->flush();   
 
-            $userToken = $session->set('activationToken', $users->getActivationToken());
-            $userMail = $session->set('email', $users->getEmail());   
-            $userSubscription =  $session->set('subscription', $subscription);      
 
-            if($plan == Subscription::getPlanDataNameByIndex(1)) // starter plan
-            {   
-
-                
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-
-            }
-
-            if($plan == Subscription::getPlanDataNameByIndex(2)) // premium plan
-            {   
-                
-                return $this->redirectToRoute('payment_later', ['id' => $users->getId()]);
-
-            }
+            $userToken = $session->set('activationToken', $user->getActivationToken());
+            $userMail = $session->set('email', $user->getEmail()); 
+            
+            return $this->redirectToRoute('payment', ['id' => $user->getId()]);
         
         }
         
         return $this->render('auth/inscription.html.twig', [
             "form" => $form->createView(),
-            'clientSecret' => null
+            'clientSecret' => null,
+            'plan' => $plan
         ]);
     }
 
 
     /**
      * //page de paiement
-     * @Route("/payment/{id}", name="payment_later")
+     * @Route("/payment/{id}", name="payment")
      */
-    public function paymentLater(Users $users, SessionInterface $session, SubscriptionRepository $repo, UsersRepository $repoUser, EntityManagerInterface $entity)
+    public function paymentLater(Users $user, SessionInterface $session, UsersRepository $repoUser, EntityManagerInterface $entity)
     {  
-
-        $name = $users->getUserName(); 
-        $email = $users->getEmail();
-
-        //verifie si le paiement a déjà réussi
-        $successPayment = $repo->verifToken($email);
-
-        if($successPayment) {
-
+        $name = $user->getUserName(); 
+        $email = $user->getEmail();
+        $userId = $user->getId();
+        $plan = $user->getPlan();
+            
+        if($user->getVerifsubscription() != null) {
+            
             return $this->redirectToRoute('tarif');
-        }  
+        }
 
         Stripe::setApiKey('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
 
+        //On crée un nouveau client
         $customer = Customer::create(["name" => $name, "email" => $email]);
 
+        //On créé un nouveau setupintent pour ce client afin de pouvoir le débiter plus tard.
         $intent = SetupIntent::create([
             'customer' => $customer->id
           ]);
 
-        $users->setCustomerid($customer->id);
-        $entity->persist($users);
+        //On enregistre en base de données l'id du client afin de pouvoir l'utiliser plus tard
+        $user->setCustomerid($customer->id);
+        $entity->persist($user);
         $entity->flush();
 
         return $this->render('subscription/payment.html.twig' , [
-
+            
+            //On envoie le secret client à la vue afin de pouvoir collecter les détails de sa carte bleu
             'clientSecret' => $intent->client_secret,
-            'payment_method_types' => ['card']
+            
+            //indique que la méthode de paiement est carte bleu.
+            'payment_method_types' => ['card'],
+
+            'userId' => $userId,
+
+            'plan' => $plan
 
         ]);
 
     }
 
     /**
-     * //redirection vers la page de paiement réussi avec token pour sécuriser la route cryptée.
-    * @Route("/7b9efxfre5856973e9b66ye57cac32ce0", name="success_payment")
+    * //redirection vers la page de paiement réussi avec token pour sécuriser la route cryptée.
+    * @Route("/7b9efxfre5856973e9b66ye57cac32ce0/{id}", name="success_payment")
     */
-    public function redirectIfSuccessPayment(SessionInterface $session, EntityManagerInterface $entity) {
+    public function redirectIfSuccessPayment(Users $user, SessionInterface $session, EntityManagerInterface $entity) {
+
+        //On créé un token et on l'enregistre en session pour être sur que le client est bien passé ici
 
         $random = random_bytes(10);
         $token = md5($random);
         $new_token = $token;
 
+        $user->setVerifSubscription($new_token);
+        $entity->persist($user);
+        $entity->flush();
+
         $verif_token = $session->set('new_token', $new_token);
 
         return $this->redirectToRoute('success_page');
-
-
+    
     }
 
-    
     /**
      * //page affichant paiement réussi
      * @Route("/success", name="success_page")
      *
      */
-    public function successPage(SessionInterface $session, EntityManagerInterface $entity, \Swift_Mailer $mailer, SubscriptionRepository $repo)
+    public function successPage(SessionInterface $session, UsersRepository $repo, EntityManagerInterface $entity, \Swift_Mailer $mailer  )
     {   
         
-        //Vérifie si paiement déjà réussie
-        $userMail = $session->get('email');        
+        //Vérifie si client a été enregistré et si il est bien passé par la redirection
+        $verif_token = $session->get('new_token');        
+        $successPayment = $repo->verifSubscriber($verif_token);
 
-        $successPayment = $repo->verifToken($userMail);
-
-        //si user n'est pas passé par la redirection suite paiement réussi retour vers tarif
-        if(!$session->get('new_token')) {
-
-
-            return $this->redirectToRoute('tarif');
-
-        }
-
-
-        //si token généré lors inscription absent, retour à tarif
+       //si token généré lors inscription absent, retour à tarif
         if(!$session->get('activationToken')) {
 
             return $this->redirectToRoute('tarif');
 
         }
 
+        //si token succès en mémoire dans la table user, envoi mail activation du compte
+        if ($successPayment) {
 
-        //envoie mail activation compte avec token et email user obtenue lors de l'inscription
-        $activationtoken = $session->get('activationToken');   
-        $email = $session->get('email'); 
+            //envoie mail activation compte avec token et email user obtenue lors de l'inscription
+            $activationtoken = $session->get('activationToken');   
+            $email = $session->get('email'); 
 
 
-        $message = (new \Swift_Message('Nouveau compte'))
-            // On attribue l'expéditeur
-            ->setFrom('essonoadou@gmail.com')
-            // On attribue le destinataire
-            ->setTo($email)
-            // On crée le texte avec la vue
-            ->setBody($this->renderView('email/activation.html.twig', ['token' => $activationtoken]),
-            'text/html'
-            )
-            ;
-            $mailer->send($message);
+            $message = (new \Swift_Message('Nouveau compte'))
+                // On attribue l'expéditeur
+                ->setFrom('essonoadou@gmail.com')
+                // On attribue le destinataire
+                ->setTo($email)
+                // On crée le texte avec la vue
+                ->setBody($this->renderView('email/activation.html.twig', ['token' => $activationtoken]),
+                'text/html'
+                );
+                $mailer->send($message);
+        }
 
-            $this->addFlash('message', 'Votre message a été transmis, nous vous répondrons dans les meilleurs délais.');       
+        else {
+            
+            return $this->redirectToRoute('tarif');
+        }
 
-            //confirme que le paiement a déjà été fait
-            if(!$successPayment) {
-
-            //ajoute email du user dans table subscription si paiement réussi
-            $subscription = $session->get('subscription'); 
-            $subscription->setVerifpayment($email);
-            $entity->persist($subscription);
-            $entity->flush();
-
-            }
-
-           return $this->render('subscription/success.html.twig');  
-
+        return $this->render('subscription/success.html.twig');  
     }
-
 }

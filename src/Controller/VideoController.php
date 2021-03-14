@@ -20,6 +20,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\AvatarRepository;
+use App\Repository\VideobackgroundRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +34,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videolist", name="homepage")
      */
-    public function homePage(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function homePage(VideosRepository $repository, VideobackgroundRepository $repoBackground, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
     {   
 
 
@@ -42,11 +43,17 @@ class VideoController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             20 /*limit per page*/
         );
+
+        $firstBackgroundVideo = $repoBackground->findById(1);
+        $secondBackgroundVideo = $repoBackground->findById(2);
     
         $categories = $repo->findAll();
-        return $this->render('video/index.html.twig', [
+        return $this->render('video/videolist.html.twig', [
+            
             "videos" => $videos,
-            "categories" => $categories
+            "categories" => $categories,
+            "firstBackgroundVideo" => $firstBackgroundVideo,
+            "secondBackgroundVideo" => $secondBackgroundVideo
         ]);
     
     }
@@ -55,7 +62,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videos/{category}", name="videobycategory")
      */
-    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request, VideobackgroundRepository $repoBackground)
     {   
         
         $videos = $paginator->paginate(
@@ -64,11 +71,15 @@ class VideoController extends AbstractController
                 20 /*limit per page*/
             );
         
+        $firstBackgroundVideo = $repoBackground->findById(1);
+        $secondBackgroundVideo = $repoBackground->findById(2);
         
         $categories = $repo->findAll();
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
-            "categories" => $categories
+            "categories" => $categories,
+            "firstBackgroundVideo" => $firstBackgroundVideo,
+            "secondBackgroundVideo" => $secondBackgroundVideo
            
         ]);
     }
@@ -108,8 +119,11 @@ class VideoController extends AbstractController
         $entity->flush();
         
         $user = $this->getUser();
+        $userId = $user->getId();
 
         $videos = $repository->showVideoByCategory($category, $id);
+        
+        $user_videos = $repository->showVideoByUserId($userId);
 
         $newvideos = $repository->getVideos();
 
@@ -126,11 +140,56 @@ class VideoController extends AbstractController
             "category" => $category,
             "newvideos" => $newvideos,
             "commentform" => $commentform->createView(),
-            "comments" => $comments
+            "comments" => $comments,
+            "user_videos" => $user_videos
 
         ]);
     }
 
+    /**
+    * @Route("/share/movie/{id}", name="partage")
+    * //Permet de partager une vidéo.
+    */
+    public function shareMovie(Videos $video, EntityManagerInterface $entity)
+    {   
+        $nbreview = $video->getViews();
+        $nbreview++;
+        $video->setViews($nbreview);
+        $entity->persist($video);
+        $entity->flush();
+
+        return $this->render('video/sharemovie.html.twig', [
+            "video" => $video,
+
+        ]);
+    }
+
+    /**
+    * @Route("main/switched_player/movie/{id}", name="second_player")
+    * //Permet d'afficher contenu de la vidéo sur une autre page.
+    */
+    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, VideosRepository $repository)
+    {   
+        $nbreview = $video->getViews();
+        $nbreview++;
+        $video->setViews($nbreview);
+        $entity->persist($video);
+        $entity->flush();
+
+        $user = $this->getUser();
+        $userId = $user->getId();
+        
+        $user_videos = $repository->showVideoByUserId($userId);
+
+        $newvideos = $repository->getVideos();
+
+        return $this->render('video/second_player.html.twig', [
+            "video" => $video,
+            "newvideos" => $newvideos,
+            "user_videos" => $user_videos
+
+        ]);
+    }
 
     /**
     * @Route("/main/addcomment/{id}/category/{idcategory}", name="addcomment")
@@ -174,33 +233,7 @@ class VideoController extends AbstractController
 
         }
 
-        if ($request->isMethod('POST')) {
-
-            $parentid = $request->request->get("parentid");
-            
-            $em = $this->getDoctrine()->getManager();
-            
-            if($parentid != null) {
-                
-                $parent =  $em->getRepository(Comments::class)->find($parentid);
-            }
-            
-            $comments->setUsername($user);
-            $date_time = new \DateTime();
-            $comments->setDate($date_time);
-            $comments->setVideo($video);
-            $comments->setParent($parent ?? null);
-            $entity->persist($comments);
-            $entity->flush();
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
-            
-        }
-
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
+       return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
     }
 
 
@@ -332,7 +365,7 @@ class VideoController extends AbstractController
 
     /**
      * //traite la requête envoyé dans le formulaire de recherche
-     * @Route("/handleSearch", name="handleSearch")
+     * @Route("/main/handleSearch", name="handleSearch")
      *
      */
     public function handleSearch(Request $request, VideosRepository $repository, PaginatorInterface $paginator) {
