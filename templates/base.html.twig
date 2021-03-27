@@ -7,14 +7,12 @@
         {% block stylesheet %} 
         <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
         <link rel="stylesheet" href="{{asset("css/main.css")}}">
-        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
-        <script type="text/javascript" src="{{asset('js/java/FWDUVPlayer.js')}}"></script>
-        {% endblock %} 
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
         <link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}"><!-- FontAwesome Icons -->
         <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}"><!-- iconsmind.com Icons -->
         <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        {% endblock %} 
   </head>
 <body>
 <div id="sidebar-bg">
@@ -157,7 +155,9 @@
     <div class="clearfix"></div>
 </nav>
 
+<main id="swup">
 {% block body %}{% endblock %}
+</main>
 
 </div>
     {% block javascript %}
@@ -170,18 +170,17 @@
 		<!-- All JavaScript in Footer -->
 		
 		<!-- Additional Plugins and JavaScript -->
-		<script src="{{asset("js/navigation.js")}}" defer></script><!-- Header Navigation JS Plugin -->
+    <script type="text/javascript" src="{{asset('js/java/FWDUVPlayer.js')}}"></script>
+    <script src="{{asset("js/navigation.js")}}" defer></script><!-- Header Navigation JS Plugin -->
 		<script src="{{asset("js/jquery.flexslider-min.js")}}" defer></script><!-- FlexSlider JS Plugin -->
 		<script src="{{asset("js/jquery-asRange.min.js")}}" defer></script><!-- Range Slider JS Plugin -->
 		<script src="{{asset("js/circle-progress.min.js")}}" defer></script><!-- Circle Progress JS Plugin -->
 		<script src="{{asset("js/afterglow.min.js")}}" defer></script><!-- Video Player JS Plugin -->
     <script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
     <script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
-    <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
-    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="{{asset("js/videolike.js")}}"></script>
     <script src="{{asset("js/playlist.js")}}"></script>
@@ -190,6 +189,12 @@
     <script src="{{asset("js/contactform.js")}}"></script>
     <script src="{{asset("js/videosingle.js")}}"></script>
     <script src="{{asset("js/video-header.js")}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script>
+    barba.init({
+    // ...
+    })
+  </script>
   {% endblock %}
 </body>
 </html>

@@ -1,4 +1,8 @@
+
+
 function onClickBtnLike(event) {
+
+    console.log("hello world");
 
     event.preventDefault();
 

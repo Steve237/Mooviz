@@ -3,17 +3,17 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-	<main id="col-main">
-		<div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
-			<ol class="carousel-indicators">
-			  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-			  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-			</ol>
-			<div class="carousel-inner" style="background-color: black;">
-			  <div class="carousel-item active">
+<main id="col-main">
+	<div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
+		<ol class="carousel-indicators">
+			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+		</ol>
+		<div class="carousel-inner videobackground-color">
+			<div class="carousel-item active">
 				<div class="carousel-caption">
-					<h2 style="color:red">{{firstBackgroundVideo[0].videotitle}}</h2>
-					<p style="text-align:center;font-size:large;padding:5px" class="d-none d-sm-block">
+					<h2 class="video-background-title">{{firstBackgroundVideo[0].videotitle}}</h2>
+					<p class="d-none d-sm-block video-background-description">
 						{{firstBackgroundVideo[0].videodescription}}
 					</p>
 					<ul class="progression-studios-slider-meta">
@@ -21,20 +21,23 @@
 						<li>Durée: {{firstBackgroundVideo[0].videoduration}}</li>
 						<li>{{firstBackgroundVideo[0].category.categoryname}}</li>
 					</ul>
-					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1"><i class="fas fa-play"></i>Voir la vidéo</a>
-					<video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}" width="960" height="540"></video>
-				</div>
-					<video autoplay loop muted id="video-header" class="video-background">
-						<source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
+					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1">
+						<i class="fas fa-play"></i>Voir la vidéo
+					</a>
+					<video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}" width="960" height="540">
 					</video>
-			  </div>
-			  <div class="carousel-item">
+				</div>
+				<video autoplay loop muted id="video-header" class="video-background">
+					<source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
+				</video>
+			</div>
+			<div class="carousel-item">
 				<video autoplay loop muted id="video-header">
 					<source src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}">
 				</video>
 				<div class="carousel-caption">
-					<h2 style="color:red">{{secondBackgroundVideo[0].videotitle}}</h2>
-					<p style="text-align:center;font-size:large;padding:5px" class="d-none d-sm-block">
+					<h2 class="video-background-title">{{secondBackgroundVideo[0].videotitle}}</h2>
+					<p class="d-none d-sm-block video-background-description">
 						{{secondBackgroundVideo[0].videodescription}}
 					</p>
 					<ul class="progression-studios-slider-meta">
@@ -42,72 +45,79 @@
 						<li>Durée: {{secondBackgroundVideo[0].videoduration}}</li>
 						<li>{{secondBackgroundVideo[0].category.categoryname}}</li>
 					</ul>
-					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2"><i class="fas fa-play"></i>Voir la vidéo</a>
-					<video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}" width="960" height="540"></video>
-				</div>
-			  </div>
-			</div>
-		  </div>
-		  
-		  	<div class="d-none d-sm-block">
-			<ul class="dashboard-genres-pro" id="listvideo" >
-
-				{% for category in categories %}
-				<li class="imagecategory">
-					<a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
-						<img src="{{category.imagecategory}}" alt="image">
-						<h6>{{category.categoryname}}</h6>
+					<a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2">
+						<i class="fas fa-play"></i>Voir la vidéo
 					</a>
-				</li>
-				{% endfor %}
-			</ul>
+					<video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}"
+						width="960" height="540">
+					</video>
+				</div>
 			</div>
-			
-			<ul class="list-group d-sm-none" style="margin-bottom:20px">
+		</div>
+	</div>
 
-				{% for category in categories %}
-			  	<li class="list-group-item"><a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
+	<div class="d-none d-sm-block">
+		<ul class="dashboard-genres-pro" id="listvideo">
+			{% for category in categories %}
+			<li class="imagecategory">
+				<a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
 					<img src="{{category.imagecategory}}" alt="image">
 					<h6>{{category.categoryname}}</h6>
 				</a>
-				</li>
-				{% endfor %}
-			</ul>
-
-			<div class="clearfix"></div>
-			
-			<div class="dashboard-container">
-				
-				{% for message in app.flashes('no_following') %}
-				<div class="alert alert-danger" id="no_following">
-					{{ message }}
-				</div>
-				{% endfor %}
-				<h4 class="heading-extra-margin-bottom hello">Liste des videos</h4>
-				<div class="row">
-					{% for video in videos %}
-					<div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
-						<div class="item-listing-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
-							<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
-							<div class="item-listing-text-skrn">
-								<div class="item-listing-text-skrn-vertical-align">
-									<h6 style="width:300px;text-overflow:ellipsis;white-space: nowrap;overflow:hidden;margin-left:-20px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
-									<div style="float:left;margin-left:-20px">
-										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-										<a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
-									</div>
-								</div><!-- close .item-listing-text-skrn-vertical-align -->
-							</div><!-- close .item-listing-text-skrn -->
-						</div><!-- close .item-listing-container-skrn -->
-					</div><!-- close .col -->
-					{% endfor %}
-				</div><!-- close .row STOP-->
-				
-				<div class="pagination">
-				<div class="navigation">
-					{{ knp_pagination_render(videos) }}
-				</div>
-				</div>
-			</div><!-- close .dashboard-container -->
-		</main>	
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<ul class="list-group category-list d-sm-none">
+		{% for category in categories %}
+		<li class="list-group-item">
+			<a href="{{path("videobycategory", {"category":category.id})}}#listvideo">
+				<img src="{{category.imagecategory}}" alt="image">
+				<h6>{{category.categoryname}}</h6>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+	<div class="clearfix"></div>
+	<div class="dashboard-container">
+		{% for message in app.flashes('no_following') %}
+		<div class="alert alert-danger" id="no_following">
+			{{ message }}
+		</div>
+		{% endfor %}
+		<h4 class="heading-extra-margin-bottom">Liste des videos</h4>
+		<div class="row">
+			{% for video in videos %}
+			<div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+				<div class="item-listing-container-skrn video-card video-card-text">
+					<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+						<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+					</a>
+					<div class="item-listing-text-skrn">
+						<div class="item-listing-text-skrn-vertical-align">
+							<h6 class="videolist-title">
+								<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a>
+							</h6>
+							<div class="avatar-position">
+								<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
+								<a href="{{path('channel', {'id': video.username.id})}}" class="link-color">{{video.username.username}}</a> |
+								{% if video.views is not null %}
+								Vues : {{video.views}}
+								{% else %}
+								Aucune vue
+								{% endif %}
+							</div>
+						</div><!-- close .item-listing-text-skrn-vertical-align -->
+					</div><!-- close .item-listing-text-skrn -->
+				</div><!-- close .item-listing-container-skrn -->
+			</div><!-- close .col -->
+			{% endfor %}
+		</div><!-- close .row STOP-->
+		<div class="pagination">
+			<div class="navigation">
+				{{ knp_pagination_render(videos) }}
+			</div>
+		</div>
+	</div><!-- close .dashboard-container -->
+</main>
 {% endblock %}

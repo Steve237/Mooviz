@@ -1,5 +1,5 @@
 <!--  Playlists -->
-<ul id="playlists" style="display:none;">
+<ul id="playlists" class="playlist_display">
     <li data-source="playlist{{video.id}}" data-playlist-name="MY HTML PLAYLIST 1" data-thumbnail-path="content/thumbnails/p-html.jpg">
         <p class="fwduvp-categories-title"><span class="fwduvp-header">Title: </span><span class="fwduvp-title">My HTML playlist 1</span></p>
         <p class="fwduvp-categories-type"><span class="fwduvp-header">Type: </span>HTML</p>
@@ -8,16 +8,16 @@
 </ul>
 
 <!--  HTML playlist -->
-<ul id="playlist{{video.id}}" style="display:none;">
+<ul id="playlist{{video.id}}" class="playlist_display">
     
     <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
-        <div data-video-short-description="">
+        <div data-video-short-description="{{video.videodescription}}">
             <div>
                 <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
                 <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
             </div>
         </div>
-        <div data-video-long-description="">
+        <div data-video-long-description="{{video.videodescription}}">
             <div>
                 <p class="fwduvp-video-title">{{video.videotitle}}</p>
                 <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
@@ -28,13 +28,13 @@
 
 	{% for video in videos %}
     <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
-        <div data-video-short-description="">
+        <div data-video-short-description="{{video.videodescription}}">
             <div>
                 <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
                 <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
             </div>
         </div>
-        <div data-video-long-description="">
+        <div data-video-long-description="{{video.videodescription}}">
             <div>
                 <p class="fwduvp-video-title">{{video.videotitle}}</p>
                 <p class="fwduvp-video-main-description">{{video.videodescription}}</p>

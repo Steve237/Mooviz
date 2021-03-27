@@ -6004,8 +6004,163 @@ margin-bottom:15px;
 	}
 
 
+.playlist_display {
+
+	display:none;
+}
+
+.avatar-height {
+
+	height:35px;
+}
+
+#width-avatar {
+	width:35px;
 
 
+}
 
+.videolist-title {
 
-  
+	width:300px;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+	overflow:hidden;
+	margin-left:-20px;
+}
+
+.avatar-position {
+	
+	float:left;
+	margin-left:-20px;
+}
+
+.category-list {
+	margin-bottom:20px;
+}
+
+.video-background-description {
+	text-align:center;
+	font-size:large;
+	padding:5px;
+}
+
+.video-background-title {
+	
+	color:red;
+}
+
+.videobackground-color {
+
+	background-color: black;
+}
+
+.video-card-text {
+
+	text-overflow: ellipsis;
+	overflow:hidden;
+}
+
+.video-suggestions {
+	position:absolute;
+	left:3px;
+}
+
+.video-description-block {
+
+	display:flex;
+	flex-direction:row;
+	justify-content:space-between;
+}
+
+.section-buttons-videos {
+
+	margin-top:30px;
+}
+
+.switch-video {
+
+	margin-left:35px;
+
+}
+
+.section-video-description {
+
+	margin-top:20px;
+
+}
+
+.search-title {
+	margin-top:50px;
+}
+
+.search-result {
+	margin-top:80px;
+}
+
+.delete-video-button {
+	padding:5px;
+	text-align:right;
+}
+
+.shared-video-section {
+
+	margin:auto;
+}
+
+.share-video-button-switch {
+	
+	font-size:small;
+	color:white
+}
+
+.share-video-description {
+	
+	margin:auto;
+	width:80%;
+}
+
+.link-color {
+	
+	color:blue;
+}
+
+#main-second-player {
+
+	margin:auto;
+
+}
+
+.secondplayer-detail-rating {
+
+	margin:auto;
+	width:80%;
+	margin-bottom:-50px;
+
+}
+
+.share-buttons-section {
+
+	margin-bottom:40px;
+	margin-top:40px;
+
+}
+
+.video-buttons-section {
+ 	
+	margin-bottom:35px;
+
+}
+
+.button-video-position {
+
+	margin-right:5px;
+
+}
+
+.list-category {
+
+	margin-bottom:20px;
+	width:100%;
+
+}
