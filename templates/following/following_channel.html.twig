@@ -8,25 +8,31 @@
     <div class="dashboard-container">
 
         <ul class="dashboard-sub-menu">
-            <li class="current">Vos chaines</li>    
+            <li class="current">Vos chaines</li>
         </ul><!-- close .dashboard-sub-menu -->
 
         <div class="row">
             {% for followed in user.following %}
             {% for avatar in avatars %}
             <a href="{{path('channel', {'id': followed.id})}}">
-            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
-                <div class="item-playlist-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
-                    <a href="{{path('channel', {'id': followed.id})}}"><img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive"></a>
-                    <div class="item-playlist-text-skrn">
-                        <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
-                        <h5><a href="{{path('channel', {'id': followed.id})}}">Chaine de: {{followed.username}}</a></h5>
-                    </div><!-- close .item-listing-text-skrn -->
-                </div><!-- close .item-playlist-container-skrn -->
-            </div><!-- close .col -->
+                <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+                    <div class="item-playlist-container-skrn video-card video-card-text">
+                        <a href="{{path('channel', {'id': followed.id})}}">
+                            <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
+                        </a>
+                        <div class="item-playlist-text-skrn">
+                            <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
+                            <h5>
+                                <a href="{{path('channel', {'id': followed.id})}}">
+                                    Chaine de: {{followed.username}}
+                                </a>
+                            </h5>
+                        </div><!-- close .item-listing-text-skrn -->
+                    </div><!-- close .item-playlist-container-skrn -->
+                </div><!-- close .col -->
 
-            {% endfor %}
-            {% endfor %}
+                {% endfor %}
+                {% endfor %}
         </div><!-- close .row -->
         <div class="pagination">
             <div class="navigation">

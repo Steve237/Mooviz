@@ -5,41 +5,51 @@
 {% block body %}
 
 <main id="col-main">
-			
-	<div class="dashboard-container">
-        
-        <h3 style="margin-bottom:50px;margin-top:50px;text-align:center;text-decoration:underline">Votre playlist </h3>
+
+    <div class="dashboard-container">
+
+        <h3 class="playlist-title">Votre playlist </h3>
         <div class="row">
 
             {% if playlists %}
-            
+
             {% for playlist in playlists %}
-            
             <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
-                <div class="item-playlist-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
-                    <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}"><img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+                <div class="item-playlist-container-skrn video-card video-card-text">
+                    <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
+                        <img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie">
+                    </a>
                     <div class="item-playlist-text-skrn">
-                        <h5 style="width:300px;text-overflow:ellipsis;padding: 2px 5px;white-space: nowrap;overflow: hidden"><a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a></h5>
-                        <img src="{{asset('images/avatar/' ~ playlist.video.username.imageuser.avatar)}}" style="width:45px;height:45px">
-                        <h5><a href="{{path('channel', {'id': playlist.video.username.id})}}" style="color:blue">{{playlist.video.username.username}}</a> | {% if playlist.video.views is not null %} Vues : {{playlist.video.views}} {% else %} Aucune vue {% endif %}</h5>
+                        <h5 class="videolist-title">
+                            <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
+                                {{playlist.video.videotitle}}
+                            </a>
+                        </h5>
+                        <img src="{{asset('images/avatar/' ~ playlist.video.username.imageuser.avatar)}}"
+                        class="logo-avatar">
+                        <h5>
+                            <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color">
+                                {{playlist.video.username.username}}
+                            </a> |
+                            {% if playlist.video.views is not null %}
+                                Vues : {{playlist.video.views}}
+                            {% else %}
+                                Aucune vue
+                            {% endif %}
+                        </h5>
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-playlist-container-skrn -->
             </div><!-- close .col -->
-            
             {% endfor %}
-
             {%   else   %}
-
-            <div class style="height:100%;width:100%">
-
-                <h4 style="text-align:center;margin-top:200px">Votre playlist ne contient aucune vidéo</h4>
-
+            <div class="no-video-in-playlist">
+                <h4 class="no-playlist-message">
+                    Votre playlist ne contient aucune vidéo
+                </h4>
             </div>
-            
             {%  endif %}
-            
         </div><!-- close .row -->
-        
+
         <div class="pagination">
             <div class="navigation">
                 {{ knp_pagination_render(playlists) }}
@@ -47,5 +57,4 @@
         </div>
     </div><!-- close .dashboard-container -->
 </main>
-
 {% endblock %}

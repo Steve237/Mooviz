@@ -6,79 +6,79 @@
 
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
 <h6>Récapitulatif</h6>
-<ul class="list-group" style="margin-bottom:50px;">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Nombre de vidéos en ligne
-      {% if app.user.videos == null %} 
-        Aucune vidéo en ligne
-      {% else %}
-        <span class="badge badge-primary badge-pill">{{videoCount}}</span>
-      {% endif %}
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Nombre total de followers
-        {% if app.user.followers == null %} 
-          Vous n'avez aucun follower
-        {% else %}
-          <span class="badge badge-primary badge-pill">{{followerCount}}</span>
-        {% endif %}
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Nombre total de membres que vous suivez
-      {% if app.user.following == null %}
-        Vous ne suivez aucun membre 
-      {% else %}
-        <span class="badge badge-primary badge-pill">{{followingCount}}</span>
-      {% endif %}
-    </li>
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-        Nombre total de vues
-        {% if app.user.videos == null %}
-          Aucune vue
-        {% else %}
-        <span class="badge badge-primary badge-pill">{{viewCount}}</span>
-        {% endif %}
-    </li>
-  </ul>
+<ul class="list-group tab-position">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Nombre de vidéos en ligne
+    {% if app.user.videos == null %}
+    Aucune vidéo en ligne
+    {% else %}
+    <span class="badge badge-primary badge-pill">{{videoCount}}</span>
+    {% endif %}
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Nombre total de followers
+    {% if app.user.followers == null %}
+    Vous n'avez aucun follower
+    {% else %}
+    <span class="badge badge-primary badge-pill">{{followerCount}}</span>
+    {% endif %}
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Nombre total de membres que vous suivez
+    {% if app.user.following == null %}
+    Vous ne suivez aucun membre
+    {% else %}
+    <span class="badge badge-primary badge-pill">{{followingCount}}</span>
+    {% endif %}
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Nombre total de vues
+    {% if app.user.videos == null %}
+    Aucune vue
+    {% else %}
+    <span class="badge badge-primary badge-pill">{{viewCount}}</span>
+    {% endif %}
+  </li>
+</ul>
 
-  {% if app.user.videos == null %} 
-    Aucune vidéo
-  {% else %}
-  <h6>Classement des vidéos les plus populaires</h6>
-  <table class="table" style="margin-bottom:50px;">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Titre de la vidéo</th>
-        <th scope="col">Nombre de vues</th>
-        <th scope="col">Nombre de likes</th>
-      </tr>
-    </thead>
-    <tbody>
+{% if app.user.videos == null %}
+Aucune vidéo
+{% else %}
+<h6>Classement des vidéos les plus populaires</h6>
+<table class="table tab-position">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Titre de la vidéo</th>
+      <th scope="col">Nombre de vues</th>
+      <th scope="col">Nombre de likes</th>
+    </tr>
+  </thead>
+  <tbody>
     {% for bestVideo in maxVideoViews %}
     {% set counter = ( counter | default(0) ) + 1 %}
-      <tr>
-        <th scope="row">{{ counter }}</th>
-        <td>{{bestVideo.videotitle}}</td>
-        <td>{{bestVideo.views}}</td>
-        <td>{{bestVideo.likes | length }}</td>
-      </tr>
+    <tr>
+      <th scope="row">{{ counter }}</th>
+      <td>{{bestVideo.videotitle}}</td>
+      <td>{{bestVideo.views}}</td>
+      <td>{{bestVideo.likes | length }}</td>
+    </tr>
     {% endfor %}
-    </tbody>
-  </table>
+  </tbody>
+</table>
 
-  {% for bestVideo in maxVideoViews %}
-  <ul class="list-group admin-list d-md-none" style="margin-bottom:50px;">
+{% for bestVideo in maxVideoViews %}
+<ul class="list-group admin-list d-md-none tab-position">
   {% set counter = ( counter | default(0) ) + 1 %}
-  <div style='margin-bottom:30px'>
-      <li class="list-group-item">Position : {{counter}}</li>
-      <li class="list-group-item">Titre : {{bestVideo.videotitle}}</li>
-      <li class="list-group-item">Nombre de vues : {{bestVideo.views}} </li>
-      <li class="list-group-item">Nombre de likes: {{bestVideo.likes | length }}</li>
+  <div class="videos-tab-list">
+    <li class="list-group-item">Position : {{counter}}</li>
+    <li class="list-group-item">Titre : {{bestVideo.videotitle}}</li>
+    <li class="list-group-item">Nombre de vues : {{bestVideo.views}} </li>
+    <li class="list-group-item">Nombre de likes: {{bestVideo.likes | length }}</li>
   </div>
   {% endfor %}
-  </ul>
-  {% endif %}
+</ul>
+{% endif %}
 </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

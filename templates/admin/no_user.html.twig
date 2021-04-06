@@ -5,14 +5,14 @@
 {% block body %}
 
 <div class="container admin-section">
-   <ul class="dashboard-sub-menu">
-          <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
-          <li><a href="{{path('notifications_list')}}">Notifications</a></li>
-          <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
-          <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
-      </ul><!-- close .dashboard-sub-menu -->
-      
-      {{render(controller('App\\Controller\\AdminController::searchUser'))}}
+    <ul class="dashboard-sub-menu">
+        <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
+        <li><a href="{{path('notifications_list')}}">Notifications</a></li>
+        <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+        <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
+    </ul><!-- close .dashboard-sub-menu -->
+
+    {{render(controller('App\\Controller\\AdminController::searchUser'))}}
 </div>
 
 <main id="col-main">

@@ -11,7 +11,7 @@
         
         <ul class="dashboard-sub-menu">
             <li><a href="{{path('user_account', {'id' : app.user.id })}}"><button type="submit" class="btn btn-primary">Paramètres du compte</button></a></li>
-            <form method="POST" action="/create-customer-portal-session" style="position:absolute;left:450px;top:125px;">
+            <form method="POST" action="/create-customer-portal-session" class="user-portal-form">
                 <button type="submit" class="btn btn-primary">Gestion de la facturation</button>
             </form>
         </ul><!-- close .dashboard-sub-menu -->
@@ -29,7 +29,7 @@
                         {% else  %}
                             <div><img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account"></div>
                         {% endif %}
-                        <a href="{{path('account_delete', {'id': app.user.id})}}" class="btn btn-primary" style="margin-top:15px;color:white;background-color:red">Supprimer votre compte</a>
+                        <a href="{{path('account_delete', {'id': app.user.id})}}" class="btn btn-primary delete-account-button">Supprimer votre compte</a>
                     </div>
                 </div><!-- close .col -->
                 <div class="col">

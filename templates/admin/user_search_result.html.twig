@@ -3,62 +3,62 @@
 {% block title %}Espace administrateur{% endblock %}
 
 {% block body %}
-    
-    <div class="container admin-section">
-        <ul class="dashboard-sub-menu">
-            <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
-            <li><a href="{{path('notifications_list')}}">Notifications</a></li>
-            <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
-            <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
-        </ul><!-- close .dashboard-sub-menu -->
-        
-        {{render(controller('App\\Controller\\AdminController::searchUser'))}}
-        
-        <ul class="list-group admin-list" style="margin-top:20px;">
-          {% for user in users %}
-          <div style='margin-bottom:30px'>
-              <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
-              <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
-              <li class="list-group-item">
-                Etat abonnement : 
-                {% if user.activated == 1 %}
-                Abonnement actif
-                {% else %}
-                Abonnement inactif
-                {% endif %}
-              </li>
-              <li class="list-group-item">
-                Etat paiement :  
-                {% if user.activated == 1 %}
-                Paiement à jour
-                {% else %}
-                Paiement en attente
-                {% endif %}
-              </li>
-              <li class="list-group-item">
-                <a href="{{path('update_user', {'id' : user.id})}}">
-                  <button class="btn btn-sm btn-primary">Modifier</button>
-              </a>
-              {% if user.roles == ["ROLE_BLOCKED"] %}
-              <a href="{{path('deblock_user', {'id' : user.id})}}">
-                <button class="btn btn-sm btn-primary">Débloquer</button>
-              </a>
-              {% else %}
-              <a href="{{path('block_user', {'id' : user.id})}}">
-                <button class="btn btn-sm btn-primary">Bloquer</button>
-              </a>
-              {% endif %}
-              <a href="{{path('delete_user', {'id' : user.id})}}">
-                  <button class="btn btn-sm btn-primary">Supprimer</button>
-              </a>
-            </li>
-          </div>
-          {% endfor %}
-      </ul>
-          <div class="pagination">
-            <div class="navigation">
-              {{ knp_pagination_render(users) }}
-            </div>
-          </div>
-      </div>
+
+<div class="container admin-section">
+  <ul class="dashboard-sub-menu">
+    <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
+    <li><a href="{{path('notifications_list')}}">Notifications</a></li>
+    <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+    <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
+  </ul><!-- close .dashboard-sub-menu -->
+
+  {{render(controller('App\\Controller\\AdminController::searchUser'))}}
+
+  <ul class="list-group admin-list" style="margin-top:20px;">
+    {% for user in users %}
+    <div style='margin-bottom:30px'>
+      <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
+      <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
+      <li class="list-group-item">
+        Etat abonnement :
+        {% if user.activated == 1 %}
+        Abonnement actif
+        {% else %}
+        Abonnement inactif
+        {% endif %}
+      </li>
+      <li class="list-group-item">
+        Etat paiement :
+        {% if user.activated == 1 %}
+        Paiement à jour
+        {% else %}
+        Paiement en attente
+        {% endif %}
+      </li>
+      <li class="list-group-item">
+        <a href="{{path('update_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Modifier</button>
+        </a>
+        {% if user.roles == ["ROLE_BLOCKED"] %}
+        <a href="{{path('deblock_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Débloquer</button>
+        </a>
+        {% else %}
+        <a href="{{path('block_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Bloquer</button>
+        </a>
+        {% endif %}
+        <a href="{{path('delete_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Supprimer</button>
+        </a>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  <div class="pagination">
+    <div class="navigation">
+      {{ knp_pagination_render(users) }}
+    </div>
+  </div>
+</div>
 {% endblock %}
