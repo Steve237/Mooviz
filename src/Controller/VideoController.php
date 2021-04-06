@@ -38,49 +38,69 @@ class VideoController extends AbstractController
     {   
 
 
-        $videos = $paginator->paginate(
-            $repository->findAllWithPagination(Category::class), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
+        $videos = $repository->findAll();
+           
 
         $firstBackgroundVideo = $repoBackground->findById(1);
         $secondBackgroundVideo = $repoBackground->findById(2);
     
         $categories = $repo->findAll();
+        
+
+        $returnVideoByCategory = false;
+
         return $this->render('video/videolist.html.twig', [
             
             "videos" => $videos,
             "categories" => $categories,
             "firstBackgroundVideo" => $firstBackgroundVideo,
-            "secondBackgroundVideo" => $secondBackgroundVideo
+            "secondBackgroundVideo" => $secondBackgroundVideo,
+            "returnVideoByCategory" => $returnVideoByCategory,
+           
+            
         ]);
     
     }
 
-    
     /**
      * @Route("/main/videos/{category}", name="videobycategory")
      */
-    public function videobyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request, VideobackgroundRepository $repoBackground)
+    public function videobyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request, VideobackgroundRepository $repoBackground)
     {   
         
-        $videos = $paginator->paginate(
-            $repository->getVideoByCategory($category),
-            $request->query->getInt('page', 1), /*page number*/
-                20 /*limit per page*/
-            );
+        $videos = $repository->getVideoByCategory($category);
         
         $firstBackgroundVideo = $repoBackground->findById(1);
         $secondBackgroundVideo = $repoBackground->findById(2);
         
         $categories = $repo->findAll();
+
+
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
             "categories" => $categories,
             "firstBackgroundVideo" => $firstBackgroundVideo,
-            "secondBackgroundVideo" => $secondBackgroundVideo
+            "secondBackgroundVideo" => $secondBackgroundVideo,
+            "category" => $category
            
+        ]);
+    }
+
+
+    /**
+    * @Route("/main/listvideo", name="allvideos")
+    */
+    public function listVideo(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    {   
+        
+        $videos = $repository->findAll();
+        
+        
+        $categories = $repo->findAll();
+
+        return $this->render('video/listmovie.html.twig', [
+            "categories" => $categories,
+            "videos" => $videos,
         ]);
     }
 
@@ -88,21 +108,57 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/listmovies/{category}", name="moviebycategory")
      */
-    public function moviebyCategory(VideosRepository $repository, $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function moviebyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo)
     {   
  
-        $videos = $paginator->paginate(
-        $repository->getVideoByCategory($category),
-        $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
+        $videos = $repository->getVideoByCategory($category);
+        
         $categories = $repo->findAll();
-        return $this->render('video/listmovie.html.twig', [
+        
+        return $this->render('video/listmoviebycategory.html.twig', [
             "videos" => $videos,
-            "categories" => $categories
+            "categories" => $categories,
+            "category" => $category
            
         ]);
     }
+
+
+    /**
+     * Permet de charger plus de vidéos
+     * @Route("/loadMoreVideos/{start}", name="loadMoreVideos", requirements={"start": "\d+"})
+     */
+    public function loadMoreVideos(VideosRepository $repo, $start = 50)
+    {   
+        // on récupère les 10 prochaines vidéos
+        $videos = $repo->findAll();
+
+        return $this->render('video/loadMoreVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
+
+    /**
+     * Permet de charger plus de vidéos de la categorie en cours
+     * @Route("/loadMoreVideosByCategory/{category}/{start}", name="loadMoreVideosByCategory", requirements={"start": "\d+"})
+     */
+    public function loadMoreVideosByCategory(VideosRepository $repo, Category $category, $start = 50)
+    {   
+        // on récupère les 10 prochaines vidéos
+        $videos = $repo->getVideoByCategory($category);
+
+
+        return $this->render('video/loadMoreVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
+
+
+    
 
     /**
     * @Route("/main/movie/{id}/category/{idcategory}", name="movie")
@@ -197,109 +253,6 @@ class VideoController extends AbstractController
         ]);
     }
 
-    /**
-    * @Route("/main/addcomment/{id}/category/{idcategory}", name="addcomment")
-    * @ParamConverter("video", options={"mapping": {"id" : "id"}})
-    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
-    */
-    public function AddComment(Videos $video, Request $request, EntityManagerInterface $entity, Category $category) {
-
-        $comments = new Comments();
-        $user = $this->getUser();
-        $username = $user->getUsername();
-
-        $notification = new Notifications();
-        
-        $videoAuthor = $video->getUsername();
-        $videoTitle = $video->getVideoTitle();
-
-        $commentform = $this->createForm(CommentsType::class, $comments);
-        $commentform->handleRequest($request);
-
-        if($commentform->isSubmitted() && $commentform->isValid()) {
-
-            $comments->setUsername($user);
-            $date_time = new \DateTime();
-            $comments->setDate($date_time);
-            $comments->setVideo($video);
-
-            $notification->setOrigin($user);
-            $notification->setDestination($video->getUsername());
-            $notification->setContent($username . " a ajouté un commentaire à votre vidéo: " .$videoTitle);
-            $notification->setDate($date_time);
-            $notification->setType("newcomment");
-
-            $entity->persist($notification);
-            $entity->flush();
-
-            $this->addflash('success', 'votre commentaire a bien été ajouté');
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
-
-        }
-
-       return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-    }
-
-
-    /**
-    * Permet de modifer un commentaire
-    * @Route("/update_comment/{id}/video/{idvideo}/category/{idcategory}", name="update_comment")
-    * @ParamConverter("video", options={"mapping": {"idvideo" : "id"}})
-    * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
-    */
-    public function updateComment(Comments $comment, Videos $video, Category $category, EntityManagerInterface $entity, Request $request)
-    {       
-        if($request->isXmlHttpRequest()) {
-
-            $usercomment = $request->request->get('commentaire');
-            $comment->setContent($usercomment);
-            $entity->persist($comment);
-            $entity->flush();
-
-            return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
-
-        }
-
-        return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-    }
-
-    /**
-     * Permet de supprimer commentaire
-     * @Route("/delete_comment/{id}/video/{idvideo}/category/{idcategory}", name="delete_comment")
-     * @ParamConverter("video", options={"mapping": {"idvideo" : "id"}})
-     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
-     */
-    public function deleteComment(Comments $comment, Videos $video, Category $category, EntityManagerInterface $entity)
-    {
-        $entity->remove($comment);
-        $entity->flush();
-        
-        return $this->redirectToRoute('movie', ['id' => $video->getId(), 'idcategory' => $category->getId()]);
-
-    }
-    
-    /**
-    * @Route("/main/listvideo", name="allvideos")
-    */
-    public function listVideo(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
-    {   
-        
-        $videos = $paginator->paginate(
-            $repository->findAllWithPagination(Category::class), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
-        
-        $categories = $repo->findAll();
-
-        return $this->render('video/listmovie.html.twig', [
-            "categories" => $categories,
-            "videos" => $videos,
-        ]);
-    }
 
     /**
      * @Route("/main/video/{id}/like", name="video_like")

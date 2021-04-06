@@ -160,7 +160,7 @@
 </main>
 
 </div>
-    {% block javascript %}
+    {% block javascripts %}
     <!-- Required Framework JavaScript -->
 		<script src="{{asset("js/libs/jquery-3.3.1.min.js")}}"></script><!-- jQuery -->
 		<script src="{{asset("js/libs/popper.min.js")}}" defer></script><!-- Bootstrap Popper/Extras JS -->
@@ -189,11 +189,7 @@
     <script src="{{asset("js/contactform.js")}}"></script>
     <script src="{{asset("js/videosingle.js")}}"></script>
     <script src="{{asset("js/video-header.js")}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
     <script>
-    barba.init({
-    // ...
-    })
   </script>
   {% endblock %}
 </body>

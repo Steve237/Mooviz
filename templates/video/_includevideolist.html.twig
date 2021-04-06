@@ -1,0 +1,65 @@
+ 
+  {% for message in app.flashes('no_channels') %}
+  <div class="alert alert-danger">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
+  <div class="dashboard-container">
+
+    <div class="d-none d-sm-block">
+      <ul class="dashboard-genres-pro" id="listvideo">
+        {% for category in categories %}
+        <li class="imagecategory">
+          <a href="{{path("moviebycategory", {"category":category.id})}}">
+            <img src="{{category.imagecategory}}" alt="image">
+            <h6>{{category.categoryname}}</h6>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <ul class="list-group d-sm-none list-category">
+      {% for category in categories %}
+      <li class="imagecategory list-group-item">
+        <a href="{{path("moviebycategory", {"category":category.id})}}">
+          <img src="{{category.imagecategory}}" alt="image">
+          <h6>{{category.categoryname}}</h6>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    
+    <div class="row" id="video">
+      {% for video in videos | slice(0, 50) %}
+      <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+        <div class="item-listing-container-skrn video-card video-card-text">
+          <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+            <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+          </a>
+          <div class="item-listing-text-skrn">
+            <div class="item-listing-text-skrn-vertical-align">
+              <h6 class="videolist-title">
+                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                  {{video.videotitle}}
+                </a>
+              </h6>
+              <div class="avatar-position">
+                <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+                class="rounded-circle avatar-height" id="width-avatar">
+                <a href="{{path('channel', {'id': video.username.id})}}" class="color-link">
+                  {{video.username.username}}
+                </a> |
+                {% if video.views is not null %}
+                  Vues : {{video.views}}
+                {% else %}
+                  Aucune vue
+                {% endif %}
+              </div>
+            </div><!-- close .item-listing-text-skrn-vertical-align -->
+          </div><!-- close .item-listing-text-skrn -->
+        </div><!-- close .item-listing-container-skrn -->
+      </div><!-- close .col -->
+      {% endfor %}
+    </div><!-- close .row STOP-->
