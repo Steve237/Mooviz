@@ -24,18 +24,12 @@ class PlaylistController extends AbstractController
      */
     public function userPlaylist(PlaylistRepository $repository, PaginatorInterface $paginator, Request $request) {   
     
-        $user = new Users();
+        
         $user = $this->getUser();
 
-        $playlists = $paginator->paginate(
-        $repository->showVideoByUser($user),
-        $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
-        
-        $have_playlist = $repository->showVideoByUser($user);
+        $playlists = $repository->showVideoByUser($user);
 
-            if(empty($have_playlist)){
+            if(empty($playlists)){
 
                 $this->addFlash('no_channels', 'Vous n\'avez ajouté aucune vidéo à votre playlist.');
                 return $this->redirectToRoute('allvideos'); 
@@ -94,4 +88,28 @@ class PlaylistController extends AbstractController
     
     
     }
+
+     /**
+     * Permet de charger plus de vidéos dans la playlist
+     * @Route("/loadMoreVideosInPlaylist/{start}", name="loadMoreVideosInPlaylist", requirements={"start": "\d+"})
+     */
+    public function loadMoreVideosInPlaylist(PlaylistRepository $repository, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on récupère les 10 prochaines vidéos
+        $playlists = $repository->showVideoByUser($user);
+
+        return $this->render('playlist/loadMoreInPlaylist.html.twig', [
+            
+            'playlists' => $playlists,
+            'start' => $start
+        ]);
+    }
+
+
+
+
+
+
 }

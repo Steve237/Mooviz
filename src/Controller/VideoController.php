@@ -156,8 +156,6 @@ class VideoController extends AbstractController
             'start' => $start
         ]);
     }
-
-
     
 
     /**

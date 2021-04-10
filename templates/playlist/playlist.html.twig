@@ -9,11 +9,11 @@
     <div class="dashboard-container">
 
         <h3 class="playlist-title">Votre playlist </h3>
-        <div class="row">
+        <div class="row" id="playlist">
 
             {% if playlists %}
 
-            {% for playlist in playlists %}
+            {% for playlist in playlists | slice(0, 20) %}
             <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
                 <div class="item-playlist-container-skrn video-card video-card-text">
                     <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
@@ -25,8 +25,9 @@
                                 {{playlist.video.videotitle}}
                             </a>
                         </h5>
-                        <img src="{{asset('images/avatar/' ~ playlist.video.username.imageuser.avatar)}}"
-                        class="logo-avatar">
+                        
+                        <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}" class="logo-avatar">
+                        
                         <h5>
                             <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color">
                                 {{playlist.video.username.username}}
@@ -41,20 +42,50 @@
                 </div><!-- close .item-playlist-container-skrn -->
             </div><!-- close .col -->
             {% endfor %}
+            
             {%   else   %}
+            
             <div class="no-video-in-playlist">
                 <h4 class="no-playlist-message">
                     Votre playlist ne contient aucune vidéo
                 </h4>
             </div>
+            
             {%  endif %}
         </div><!-- close .row -->
-
+        {% if playlists %}
         <div class="pagination">
             <div class="navigation">
-                {{ knp_pagination_render(playlists) }}
+                <button class="btn btn-primary" id="loadMoreVideos">Load more</button>
             </div>
         </div>
+        {% endif %}
     </div><!-- close .dashboard-container -->
 </main>
+
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	click = 0;
+	function loadMoreVideosInPlaylist(event) {
+		event.preventDefault();
+		click++;
+		var start = 20 * click;
+		const url = "{{path('loadMoreVideosInPlaylist')}}/" + start;
+		axios.get(url).then(function (response) {
+			$("#playlist").append(response.data);
+		}).catch(function (error) {
+			if (response.status === 403) {
+				window.alert("You are not authorized to perform this action!");
+			} else if (response.status === 404) {
+				window.alert("This page does not exist");
+			} else {
+				window.alert("An error has occurred !");
+			}
+		});
+	}
+	document.getElementById("loadMoreVideos").addEventListener("click", loadMoreVideosInPlaylist);
+</script>
 {% endblock %}
