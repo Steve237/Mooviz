@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Notifications;
 use App\Entity\Users;
 use App\Entity\Videos;
-use App\Repository\AvatarRepository;
+use App\Entity\Notifications;
 use App\Repository\UsersRepository;
+use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
+use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,8 +50,6 @@ class FollowingController extends AbstractController
                 'message' => 'user ajouté'
             ], 200);
         
-
-
         }
 
         return $this->redirectToRoute('home');
@@ -88,12 +87,8 @@ class FollowingController extends AbstractController
             
             //recupère liste des vidéos des utilisateurs auxquels il est abonné
             
-            $videos = $paginator->paginate(
-                $videorepo->findAllByUsers($currentUser->getFollowing()),
-                $request->query->getInt('page', 1), /*page number*/
-                20 /*limit per page*/
+            $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
 
-            );
         
         } else {
 
@@ -178,4 +173,23 @@ class FollowingController extends AbstractController
         ]);
     }
 
+
+     /**
+     * Permet de charger plus de vidéos dans la playlist
+     * @Route("/loadMoreFollowingVideos/{start}", name="loadMoreFollowingVideos", requirements={"start": "\d+"})
+     */
+    public function loadMoreFollowingVideos(VideosRepository $videorepo, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on récupère les 20 prochaines vidéos
+        $videos = $videorepo->findAllByUsers($user->getFollowing());
+
+
+        return $this->render('following/loadMoreFollowingVideos.html.twig', [
+            
+            "videos" => $videos,
+            'start' => $start
+        ]);
+    }
 }
