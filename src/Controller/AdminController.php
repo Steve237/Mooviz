@@ -159,19 +159,31 @@ class AdminController extends AbstractController
     /**
     * @Route("/admin/notifications_list", name="notifications_list")
     */
-    public function AdminNotificationList(EntityManagerInterface $entity, WebhookRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function AdminNotificationList(WebhookRepository $repo)
     {   
 
-        $notifications = $paginator->paginate(
-            $repo->findAllWithPagination(), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
+        $notifications = $repo->findAll();
+       
 
         return $this->render('admin/admin_notifications.html.twig', ['notifications' => $notifications]);
         
     }
 
+    /**
+     * Permet de charger plus de notifications dans l'espace admin notifications
+     * @Route("/loadMoreNotifications/{start}", name="loadMoreNotifications", requirements={"start": "\d+"})
+     */
+    public function loadMoreNotifications(WebhookRepository $repo, $start = 20)
+    {   
+        // On récupère les prochaines notifications
+        $notifications = $repo->findAll();
+
+        return $this->render('admin/loadMoreNotifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'start' => $start
+        ]);
+    }
 
     /**
     * @Route("/admin/delete_notification/{id}", name="delete_notification")
@@ -189,7 +201,7 @@ class AdminController extends AbstractController
      /**
     * @Route("/admin/delete_notifications", name="delete_notifications")
     */
-    public function deleteNotifications(EntityManagerInterface $entity, WebhookRepository $repo)
+    public function deleteNotifications(WebhookRepository $repo)
     {   
         $repo->deleteAllWebhook();
 
@@ -314,7 +326,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * //Envoi notification pour indiquer paiement réussie
+     * //Envoi notification pour indiquer paiement échoué
     * @Route("/admin/payment_intent_failed", name="payment_intent_failed")
     */
     public function invoicePaymentFailed($paymentIntent) {
@@ -419,16 +431,14 @@ class AdminController extends AbstractController
 
 
     /**
+     * // retourne la liste des vidéos dans l'espace admin
     * @Route("/admin/adminspace_videos", name="adminspace_videos")
     */
-    public function adminspaceVideos(VideosRepository $videoRepo, PaginatorInterface $paginator, Request $request) 
+    public function adminspaceVideos(VideosRepository $videoRepo) 
     {       
         
-            $videos = $paginator->paginate(
-            $videoRepo->findAllWithPagination(), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            21 /*limit per page*/
-        );
+        $videos = $videoRepo->findAll();
+      
         
         return $this->render('admin/admin_videos.html.twig', 
         [
@@ -436,6 +446,22 @@ class AdminController extends AbstractController
 
         ]);
 
+    }
+
+    /**
+     * Permet de charger plus de videos dans l'espace admin vidéos
+     * @Route("/loadMoreAdminVideos/{start}", name="loadMoreAdminVideos", requirements={"start": "\d+"})
+     */
+    public function loadMoreAdminVideos(VideosRepository $videoRepo, $start = 21)
+    {   
+        // On récupère les prochaines vidéos
+        $videos = $videoRepo->findAll();
+
+        return $this->render('admin/loadMoreAdminVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
     }
 
     /**
