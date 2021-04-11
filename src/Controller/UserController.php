@@ -110,9 +110,8 @@ class UserController extends AbstractController
      * @Route("/main/user_channels", name="user_channels")
      * //permet de voir la liste des chaines dans l'espace profil
      */
-    public function showChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, Request $request, PaginatorInterface $paginator)
+    public function showChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser)
     {    
-        $username = new Users();
         
         $user = $this->getUser();
 
@@ -122,13 +121,7 @@ class UserController extends AbstractController
 
         $avatars = $repoAvatar->findByUser($follow);
 
-        $userChannel = $paginator->paginate(
-            $repoUser->findUser($follow),
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-
-        );
-
+        $userChannel = $repoUser->findUser($follow);
 
         //Si user n'a aucune chaine renvoie message flash pour l'informer
         if(empty($avatars)) {
@@ -147,12 +140,38 @@ class UserController extends AbstractController
         
     }
 
+    /**
+     * Permet de charger plus de chaines dans la liste des chaines de l'espace user
+     * @Route("/loadMoreUserChannels/{start}", name="loadMoreUserChannels", requirements={"start": "\d+"})
+     */
+    public function loadMoreUserChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        $follow = $user->getFollowing();
+        
+        $videos = new Videos();
+
+        $avatars = $repoAvatar->findByUser($follow);
+
+        $userChannel = $repoUser->findUser($follow);
+
+        return $this->render('user/loadMoreUserChannels.html.twig', [
+            
+            "userChannel" => $userChannel,
+            "user" => $user,
+            "videos" => $videos,
+            "avatars" => $avatars,
+            "start" => $start
+        ]);
+    }
+
 
     /**
      * @Route("/user_videos_channels", name="user_video_channels")
      * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
      */
-    public function showAllChannelVideos(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
+    public function showAllChannelVideos(TokenStorageInterface $tokenStorage, VideosRepository $videorepo) {
 
         $currentUser = $tokenStorage->getToken()->getUser();
 
@@ -160,12 +179,7 @@ class UserController extends AbstractController
             
             //recupère liste des vidéos des utilisateurs auxquels il est abonné
             
-            $videos = $paginator->paginate(
-                $videorepo->findAllByUsers($currentUser->getFollowing()),
-                $request->query->getInt('page', 1), /*page number*/
-                20 /*limit per page*/
-
-            );
+            $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
         
         } else {
 
@@ -190,6 +204,29 @@ class UserController extends AbstractController
     }
 
 
+    /**
+     * Permet de charger plus de vidéos dans la liste des vidéos des membres suivis
+     * @Route("/loadMoreVideosChannels/{start}", name="loadMoreVideosChannels", requirements={"start": "\d+"})
+     */
+    public function loadMoreVideosChannels(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, $start = 20)
+    {   
+        $currentUser = $tokenStorage->getToken()->getUser();
+
+        if($currentUser instanceof Users) {
+
+        // on récupère les 20 prochaines vidéos
+        $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
+        
+        }
+        
+        return $this->render('user/loadMoreChannelsVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
+
+    
     /**
      * @Route("/main/update_avatar", name="avatar_update")
      * //permet d'ajouter un avatar

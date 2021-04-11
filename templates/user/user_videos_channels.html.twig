@@ -7,9 +7,9 @@
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
 
 <h6>Vidéos des chaines suivis.</h6>
-<div class="row">
-  {% for video in videos %}
-  <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+<div class="row" id="allchannelsvideos">
+  {% for video in videos | slice(0, 20) %}
+  <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card video-card-text">
       <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
           src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie"></a>
@@ -30,9 +30,35 @@
 </div><!-- close .row -->
 <div class="pagination">
   <div class="navigation">
-    {{ knp_pagination_render(videos)}}
+      <button class="btn btn-primary" id="loadMoreChannelsVideos">Load more</button>
   </div>
 </div>
 </div><!-- close .dashboard-container -->
 </main>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	click = 0;
+	function loadMoreChannelsVideos(event) {
+		event.preventDefault();
+		click++;
+		var start = 20 * click;
+		const url = "{{path('loadMoreVideosChannels')}}/" + start;
+		axios.get(url).then(function (response) {
+			$("#allchannelsvideos").append(response.data);
+		}).catch(function (error) {
+			if (response.status === 403) {
+				window.alert("You are not authorized to perform this action!");
+			} else if (response.status === 404) {
+				window.alert("This page does not exist");
+			} else {
+				window.alert("An error has occurred !");
+			}
+		});
+	}
+	document.getElementById("loadMoreChannelsVideos").addEventListener("click", loadMoreChannelsVideos);
+</script>
 {% endblock %}
