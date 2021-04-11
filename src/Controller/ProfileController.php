@@ -173,16 +173,12 @@ class ProfileController extends AbstractController
      * @Route("/user_videos", name="user_videos")
      * //permet à l'user de voir les vidéos qu'il a ajouté
      */
-    public function userVideo(VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
+    public function userVideo(VideosRepository $videorepo) {
 
         $user = new Users();
         $userName = $this->getUser();
 
-        $videos = $paginator->paginate(
-            $videorepo->getVideoByUser($userName),
-            $request->query->getInt('page', 1), /*page number*/
-                20 /*limit per page*/
-            );
+        $videos = $videorepo->getVideoByUser($userName);
         
         $user_videos =  $videorepo->getVideoByUser($userName);
 
@@ -201,6 +197,27 @@ class ProfileController extends AbstractController
         ]);
 
     }
+
+
+     /**
+     * Permet à l'user de charger plus de vidéos dans sa liste
+     * @Route("/loadMoreUserVideos/{start}", name="loadMoreUserVideos", requirements={"start": "\d+"})
+     */
+    public function loadMoreUserVideos(VideosRepository $videorepo, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on récupère les 20 prochaines vidéos
+        $videos = $videorepo->getVideoByUser($user);
+
+        return $this->render('admin/loadMoreUserVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
+
+
 
      /**
      * @Route("/delete_video/{id}", name="delete_video")
