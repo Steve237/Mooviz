@@ -118,7 +118,6 @@ class FollowingController extends AbstractController
      */
     public function listChannel(AvatarRepository $repoAvatar, UsersRepository $repoUser, Request $request, PaginatorInterface $paginator){
 
-        $username = new Users();
         
         $user = $this->getUser();
 
@@ -128,12 +127,7 @@ class FollowingController extends AbstractController
 
         $avatars = $repoAvatar->findByUser($follow);
 
-        $userChannel = $paginator->paginate(
-            $repoUser->findUser($follow),
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-
-        );
+        $userChannel = $repoUser->findUser($follow);
         
         //Si user n'a aucune chaine renvoie message flash pour l'informer
         if(empty($avatars)) {
@@ -157,14 +151,9 @@ class FollowingController extends AbstractController
      * @Route("/channel/{id}", name="channel")
      * //permet d'accéder à la liste des vidéos par chaine
      */
-    public function Channel(Users $user, VideosRepository $repoVideo, Request $request, PaginatorInterface $paginator){
+    public function Channel(Users $user, VideosRepository $repoVideo){
 
-        $videos = $paginator->paginate(
-            $repoVideo->getVideoByUser($user),
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-
-        );
+        $videos = $repoVideo->getVideoByUser($user);
 
         return $this->render('following/videos_by_channel.html.twig', [
             
@@ -175,7 +164,7 @@ class FollowingController extends AbstractController
 
 
      /**
-     * Permet de charger plus de vidéos dans la playlist
+     * Permet de charger plus de vidéos dans la liste des vidéos des membres suivis
      * @Route("/loadMoreFollowingVideos/{start}", name="loadMoreFollowingVideos", requirements={"start": "\d+"})
      */
     public function loadMoreFollowingVideos(VideosRepository $videorepo, $start = 20)
@@ -192,4 +181,50 @@ class FollowingController extends AbstractController
             'start' => $start
         ]);
     }
+
+
+    /**
+     * Permet de charger plus de chaines dans la liste des chaines
+     * @Route("/loadMoreChannels/{start}", name="loadMoreChannels", requirements={"start": "\d+"})
+     */
+    public function loadMoreChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        $follow = $user->getFollowing();
+        
+        $videos = new Videos();
+
+        $avatars = $repoAvatar->findByUser($follow);
+
+        $userChannel = $repoUser->findUser($follow);
+
+        return $this->render('following/loadMoreChannels.html.twig', [
+            
+            "userChannel" => $userChannel,
+            "user" => $user,
+            "videos" => $videos,
+            "avatars" => $avatars,
+            'start' => $start
+        ]);
+    }
+
+
+    /**
+     * Permet de charger plus de vidéos dans la liste des vidéos par chaine
+     * @Route("/loadMoreVideosByChannel/{id}/{start}", name="loadMoreVideosByChannel", requirements={"start": "\d+"})
+     */
+    public function loadMoreVideoByChannel(Users $user, VideosRepository $repoVideo, $start = 20)
+    {   
+        $videos = $repoVideo->getVideoByUser($user);
+
+
+        return $this->render('following/loadMoreVideosByChannel.html.twig', [
+            
+            "user" => $user,
+            "videos" => $videos,
+            'start' => $start
+        ]);
+    }
+
 }

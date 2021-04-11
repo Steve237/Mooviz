@@ -11,8 +11,8 @@
             <li class="current">Vos chaines</li>
         </ul><!-- close .dashboard-sub-menu -->
 
-        <div class="row">
-            {% for followed in user.following %}
+        <div class="row" id="channels">
+            {% for followed in user.following | slice(0, 20) %}
             {% for avatar in avatars %}
             <a href="{{path('channel', {'id': followed.id})}}">
                 <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
@@ -36,9 +36,34 @@
         </div><!-- close .row -->
         <div class="pagination">
             <div class="navigation">
-                {{ knp_pagination_render(userChannel)}}
+                <button class="btn btn-primary" id="loadMoreChannels">Load more</button>
             </div>
         </div>
     </div><!-- close .dashboard-container -->
 </main>
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    click = 0;
+    function loadMoreChannels(event) {
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreChannels')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#channels").append(response.data);
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreChannels").addEventListener("click", loadMoreChannels);
+</script>
 {% endblock %}
