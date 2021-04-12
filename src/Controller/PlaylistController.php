@@ -97,7 +97,7 @@ class PlaylistController extends AbstractController
     {   
         $user = $this->getUser();
 
-        // on récupère les 10 prochaines vidéos
+        // on récupère les 20 prochaines vidéos
         $playlists = $repository->showVideoByUser($user);
 
         return $this->render('playlist/loadMoreInPlaylist.html.twig', [

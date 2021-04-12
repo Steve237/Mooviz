@@ -257,6 +257,24 @@ class ProfileController extends AbstractController
     }
 
     /**
+    * Permet de charger plus de notifications
+    * @Route("/loadMoreUserNotifications/{start}", name="loadMoreUserNotifications", requirements={"start": "\d+"})
+    */
+    public function loadMoreUserNotifications(NotificationsRepository $repo, $start = 10)
+    {   
+        $currentUser = $this->getUser(); 
+
+        // On récupère les prochaines notifications
+        $notifications = $repo->findAllNotification($currentUser);
+
+        return $this->render('notifications/loadMoreUserNotifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'start' => $start
+        ]);
+    }
+
+    /**
      * //permet d'afficher nombre notifications sur mobile
      */
     public function showNotificationsOnMobile(NotificationsRepository $repo) {
@@ -293,8 +311,7 @@ class ProfileController extends AbstractController
 
     }
 
-
-     /**
+    /**
      * @Route("/notification_delete/{id}", name="notif_delete")
      * //permet de supprimer les notifications marqué comme vu
      */
@@ -312,6 +329,7 @@ class ProfileController extends AbstractController
 
     }
 
+    
     /**
      * @Route("/notifications_delete", name="notif_delete_all")
      * //permet de supprimer toutes les notifications de l'user
