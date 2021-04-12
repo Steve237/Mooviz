@@ -6,7 +6,7 @@
 
 <div class="container admin-section">
     {% for message in app.flashes('success') %}
-    <div class="alert alert-success" style="margin-top:20px">
+    <div class="alert alert-success success-admin-notifications">
         {{message}}
     </div>
     {% endfor %}
@@ -18,16 +18,19 @@
     </ul><!-- close .dashboard-sub-menu -->
 
     {% if notifications | length %}
-    <a href="{{path('delete_notifications')}}"><button class="btn btn-primary" style="margin-top:20px">Marquer tout
-            comme vu.</button></a>
-    <ul class="list-group admin-list" style="margin-top:10px;" id="notificationslist">
+    <a href="{{path('delete_notifications')}}">
+        <button class="btn btn-primary btn-delete-admin-notifs">
+            Marquer tout comme vu.
+        </button>
+    </a>
+    <ul class="list-group admin-list admin-list-position" id="notificationslist">
         {% for notification in notifications | slice(0, 20) %}
-        <div style='margin-bottom:30px'>
+        <div class="admin-item">
             <li class="list-group-item">Type : {{notification.type}}</li>
             <li class="list-group-item">Message : {{notification.content}}</li>
             <li class="list-group-item">Concerné : {{notification.username}}</li>
             <li class="list-group-item"><a href={{path('delete_notification', {'id' : notification.id})}}>
-            <button class="btn btn-primary">Marquer comme vu</button></a></li>
+                    <button class="btn btn-primary">Marquer comme vu</button></a></li>
         </div>
         {% endfor %}
 
@@ -38,7 +41,7 @@
 
     {% if notifications | length %}
     <div class="pagination">
-        <div class="navigation">
+        <div class="navigation" id="loadbutton">
             <button class="btn btn-primary" id="loadMoreNotifications">Load more</button>
         </div>
     </div>
@@ -50,24 +53,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreNotifications(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreNotifications')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#notificationslist").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreNotifications").addEventListener("click", loadMoreNotifications);
+    click = 0;
+
+    function loadMoreNotifications(event) {
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreNotifications')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#notificationslist").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune notifications à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreNotifications").addEventListener("click", loadMoreNotifications);
 </script>
 {% endblock %}

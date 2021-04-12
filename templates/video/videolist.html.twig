@@ -8,7 +8,7 @@
 		{% include 'video/_mainvideolist.html.twig' %}
 		
 		<div class="pagination">
-			<div class="navigation">
+			<div class="navigation" id="loadbutton">
 				<button class="btn btn-primary" id="loadMoreVideos">Load more</button>
 			</div>
 		</div>
@@ -28,6 +28,12 @@
 		const url = "{{path('loadMoreVideos')}}/" + start;
 		axios.get(url).then(function (response) {
 			$("#videos").append(response.data);
+			if(!response.data) {
+
+				let loadButton = document.getElementById("loadbutton");
+				loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+			}
 		}).catch(function (error) {
 			if (response.status === 403) {
 				window.alert("You are not authorized to perform this action!");

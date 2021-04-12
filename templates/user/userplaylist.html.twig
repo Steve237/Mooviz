@@ -33,8 +33,8 @@
 </div><!-- close .row -->
 
 <div class="pagination">
-  <div class="navigation">
-      <button class="btn btn-primary" id="loadMoreUserPlaylist">Load more</button>
+  <div class="navigation" id="loadbutton">
+    <button class="btn btn-primary" id="loadMoreUserPlaylist">Load more</button>
   </div>
 </div>
 </div><!-- close .dashboard-container -->
@@ -46,24 +46,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreUserPlaylist(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreUserPlaylist')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#userplaylist").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreUserPlaylist").addEventListener("click", loadMoreUserPlaylist);
+  click = 0;
+
+  function loadMoreUserPlaylist(event) {
+    event.preventDefault();
+    click++;
+    var start = 20 * click;
+    const url = "{{path('loadMoreUserPlaylist')}}/" + start;
+    axios.get(url).then(function (response) {
+      $("#userplaylist").append(response.data);
+      if (!response.data) {
+
+        let loadButton = document.getElementById("loadbutton");
+        loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+      }
+    }).catch(function (error) {
+      if (response.status === 403) {
+        window.alert("You are not authorized to perform this action!");
+      } else if (response.status === 404) {
+        window.alert("This page does not exist");
+      } else {
+        window.alert("An error has occurred !");
+      }
+    });
+  }
+  document.getElementById("loadMoreUserPlaylist").addEventListener("click", loadMoreUserPlaylist);
 </script>
 {% endblock %}

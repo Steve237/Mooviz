@@ -14,9 +14,9 @@
 
   {{render(controller('App\\Controller\\AdminController::searchUser'))}}
 
-  <ul class="list-group admin-list" style="margin-top:20px;">
+  <ul class="list-group admin-list admin-list-position">
     {% for user in users %}
-    <div style='margin-bottom:30px'>
+    <div class="admin-item">
       <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
       <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
       <li class="list-group-item">

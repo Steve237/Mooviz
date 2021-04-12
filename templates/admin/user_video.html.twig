@@ -44,7 +44,7 @@
 </div><!-- close .row -->
 
 <div class="pagination">
-    <div class="navigation">
+    <div class="navigation" id="loadbutton">
         <button class="btn btn-primary" id="loadMoreUserVideos">Load more</button>
     </div>
 </div>
@@ -57,24 +57,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreUserVideos(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreUserVideos')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#uservideos").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreUserVideos").addEventListener("click", loadMoreUserVideos);
+    click = 0;
+
+    function loadMoreUserVideos(event) {
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreUserVideos')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#uservideos").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreUserVideos").addEventListener("click", loadMoreUserVideos);
 </script>
 {% endblock %}

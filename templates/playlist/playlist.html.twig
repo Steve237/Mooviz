@@ -17,45 +17,48 @@
             <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
                 <div class="item-playlist-container-skrn video-card video-card-text">
                     <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
-                        <img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie">
+                        <img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing"
+                            class="imagemovie">
                     </a>
                     <div class="item-playlist-text-skrn">
                         <h5 class="videolist-title">
-                            <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
+                            <a
+                                href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
                                 {{playlist.video.videotitle}}
                             </a>
                         </h5>
-                        
-                        <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}" class="logo-avatar">
-                        
+
+                        <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}"
+                            class="logo-avatar">
+
                         <h5>
                             <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color">
                                 {{playlist.video.username.username}}
                             </a> |
                             {% if playlist.video.views is not null %}
-                                Vues : {{playlist.video.views}}
+                            Vues : {{playlist.video.views}}
                             {% else %}
-                                Aucune vue
+                            Aucune vue
                             {% endif %}
                         </h5>
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-playlist-container-skrn -->
             </div><!-- close .col -->
             {% endfor %}
-            
+
             {%   else   %}
-            
+
             <div class="no-video-in-playlist">
                 <h4 class="no-playlist-message">
                     Votre playlist ne contient aucune vidéo
                 </h4>
             </div>
-            
+
             {%  endif %}
         </div><!-- close .row -->
         {% if playlists %}
         <div class="pagination">
-            <div class="navigation">
+            <div class="navigation" id="loadbutton">
                 <button class="btn btn-primary" id="loadMoreVideos">Load more</button>
             </div>
         </div>
@@ -69,24 +72,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreVideosInPlaylist(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreVideosInPlaylist')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#playlist").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreVideos").addEventListener("click", loadMoreVideosInPlaylist);
+    click = 0;
+
+    function loadMoreVideosInPlaylist(event) {
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreVideosInPlaylist')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#playlist").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreVideos").addEventListener("click", loadMoreVideosInPlaylist);
 </script>
 {% endblock %}

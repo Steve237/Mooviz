@@ -1,5 +1,5 @@
 {% for notification in notifications | slice(start, 20) %}
-<div style='margin-bottom:30px'>
+<div class="admin-item">
     <li class="list-group-item">Type : {{notification.type}}</li>
     <li class="list-group-item">Message : {{notification.content}}</li>
     <li class="list-group-item">Concerné : {{notification.username}}</li>

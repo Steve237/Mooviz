@@ -19,7 +19,8 @@
                 <div class="item-listing-text-skrn-vertical-align">
                     <h6><a href="{{path('channel', {'id': followed.id})}}">{{followed.username}}</a></h6>
                     <div>
-                        <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
+                        <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}"
+                            class="rounded-circle avatar-height" id="width-avatar">
                     </div>
                 </div><!-- close .item-listing-text-skrn-vertical-align -->
             </div><!-- close .item-listing-text-skrn -->
@@ -30,7 +31,7 @@
 </div><!-- close .row -->
 
 <div class="pagination">
-    <div class="navigation">
+    <div class="navigation" id="loadbutton">
         <button class="btn btn-primary" id="loadMoreUserChannels">Load more</button>
     </div>
 </div>
@@ -43,24 +44,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreUserChannels(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreUserChannels')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#userchannels").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreUserChannels").addEventListener("click", loadMoreUserChannels);
+    click = 0;
+
+    function loadMoreUserChannels(event) {
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreUserChannels')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#userchannels").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune chaine à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreUserChannels").addEventListener("click", loadMoreUserChannels);
 </script>
 {% endblock %}

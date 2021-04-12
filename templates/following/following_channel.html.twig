@@ -35,7 +35,7 @@
                 {% endfor %}
         </div><!-- close .row -->
         <div class="pagination">
-            <div class="navigation">
+            <div class="navigation" id="loadbutton">
                 <button class="btn btn-primary" id="loadMoreChannels">Load more</button>
             </div>
         </div>
@@ -47,6 +47,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     click = 0;
+
     function loadMoreChannels(event) {
         event.preventDefault();
         click++;
@@ -54,6 +55,12 @@
         const url = "{{path('loadMoreChannels')}}/" + start;
         axios.get(url).then(function (response) {
             $("#channels").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune chaines à afficher';
+
+            }
         }).catch(function (error) {
             if (response.status === 403) {
                 window.alert("You are not authorized to perform this action!");

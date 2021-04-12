@@ -19,8 +19,10 @@
             <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a>
           </h6>
           <div class="avatar-position">
-            <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
-            <a href="{{path('channel', {'id': video.username.id})}}" class="link-color">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
+            <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+              class="rounded-circle avatar-height" id="width-avatar">
+            <a href="{{path('channel', {'id': video.username.id})}}" class="link-color">{{video.username.username}}</a>
+            | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
           </div>
         </div><!-- close .item-listing-text-skrn-vertical-align -->
       </div><!-- close .item-listing-text-skrn -->
@@ -29,8 +31,8 @@
   {% endfor %}
 </div><!-- close .row -->
 <div class="pagination">
-  <div class="navigation">
-      <button class="btn btn-primary" id="loadMoreChannelsVideos">Load more</button>
+  <div class="navigation" id="loadbutton">
+    <button class="btn btn-primary" id="loadMoreChannelsVideos">Load more</button>
   </div>
 </div>
 </div><!-- close .dashboard-container -->
@@ -41,24 +43,31 @@
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-	click = 0;
-	function loadMoreChannelsVideos(event) {
-		event.preventDefault();
-		click++;
-		var start = 20 * click;
-		const url = "{{path('loadMoreVideosChannels')}}/" + start;
-		axios.get(url).then(function (response) {
-			$("#allchannelsvideos").append(response.data);
-		}).catch(function (error) {
-			if (response.status === 403) {
-				window.alert("You are not authorized to perform this action!");
-			} else if (response.status === 404) {
-				window.alert("This page does not exist");
-			} else {
-				window.alert("An error has occurred !");
-			}
-		});
-	}
-	document.getElementById("loadMoreChannelsVideos").addEventListener("click", loadMoreChannelsVideos);
+  click = 0;
+
+  function loadMoreChannelsVideos(event) {
+    event.preventDefault();
+    click++;
+    var start = 20 * click;
+    const url = "{{path('loadMoreVideosChannels')}}/" + start;
+    axios.get(url).then(function (response) {
+      $("#allchannelsvideos").append(response.data);
+      if (!response.data) {
+
+        let loadButton = document.getElementById("loadbutton");
+        loadButton.textContent = 'Plus aucune chaine à afficher';
+
+      }
+    }).catch(function (error) {
+      if (response.status === 403) {
+        window.alert("You are not authorized to perform this action!");
+      } else if (response.status === 404) {
+        window.alert("This page does not exist");
+      } else {
+        window.alert("An error has occurred !");
+      }
+    });
+  }
+  document.getElementById("loadMoreChannelsVideos").addEventListener("click", loadMoreChannelsVideos);
 </script>
 {% endblock %}

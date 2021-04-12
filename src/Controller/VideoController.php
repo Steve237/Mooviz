@@ -112,13 +112,15 @@ class VideoController extends AbstractController
     {   
  
         $videos = $repository->getVideoByCategory($category);
+        $count = $repository->countVideos();
         
         $categories = $repo->findAll();
         
         return $this->render('video/listmoviebycategory.html.twig', [
             "videos" => $videos,
             "categories" => $categories,
-            "category" => $category
+            "category" => $category,
+            "count" => $count
            
         ]);
     }
@@ -130,7 +132,7 @@ class VideoController extends AbstractController
      */
     public function loadMoreVideos(VideosRepository $repo, $start = 50)
     {   
-        // on récupère les 10 prochaines vidéos
+        // on récupère les 50 prochaines vidéos
         $videos = $repo->findAll();
 
         return $this->render('video/loadMoreVideos.html.twig', [
