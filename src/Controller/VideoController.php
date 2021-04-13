@@ -39,6 +39,9 @@ class VideoController extends AbstractController
 
 
         $videos = $repository->findAll();
+        
+        $totalVideos = $repository->countVideos();
+        $loadMoreStart = 50;
            
 
         $firstBackgroundVideo = $repoBackground->findById(1);
@@ -56,6 +59,8 @@ class VideoController extends AbstractController
             "firstBackgroundVideo" => $firstBackgroundVideo,
             "secondBackgroundVideo" => $secondBackgroundVideo,
             "returnVideoByCategory" => $returnVideoByCategory,
+            "totalVideos" => $totalVideos,
+            "loadMoreStart" => $loadMoreStart
            
             
         ]);
@@ -65,7 +70,7 @@ class VideoController extends AbstractController
     /**
      * @Route("/main/videos/{category}", name="videobycategory")
      */
-    public function videobyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo, PaginatorInterface $paginator, Request $request, VideobackgroundRepository $repoBackground)
+    public function videobyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo, VideobackgroundRepository $repoBackground)
     {   
         
         $videos = $repository->getVideoByCategory($category);
@@ -327,18 +332,14 @@ class VideoController extends AbstractController
      * @Route("/main/handleSearch", name="handleSearch")
      *
      */
-    public function handleSearch(Request $request, VideosRepository $repository, PaginatorInterface $paginator) {
+    public function handleSearch(Request $request, VideosRepository $repository) {
 
         $query = $request->request->get('form')['query'];
         
         if ($query) {
 
-            $videos = $paginator->paginate(
-            $repository->search($query),
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
-
+            $videos = $repository->search($query);
+       
             if ($repository->search($query) == null) {
 
                 return $this->render('video/noresult.html.twig');
@@ -346,17 +347,30 @@ class VideoController extends AbstractController
 
             else {
 
-
                 return $this->render('video/showresult.html.twig', [
 
-                    'videos' => $videos
-        
-        
+                    'videos' => $videos,
+                    'query' => $query
         
                 ]);
 
             }
-
         }
+    }
+
+    /**
+     * Permet de charger plus de vidéos dans la page des résultats de recherche
+     * @Route("/loadMoreResult/{query}/{start}", name="loadMoreResult", requirements={"start": "\d+"})
+     */
+    public function loadMoreResult(VideosRepository $repository, $query, $start = 20)
+    {   
+        // on récupère les 20 prochaines vidéos
+        $videos = $repository->search($query);
+
+        return $this->render('video/loadMoreResult.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
     }
 }

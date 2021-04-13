@@ -32,8 +32,11 @@
                     <button class="btn btn-primary" id="loadMoreUserNotifications">Load more</button>
                 </div>
             </div>
-            <a href="{{path('notif_delete_all')}}"><button class="btn btn-primary delete-all-notifications">Marquez tout
-                    comme vu</button></a>
+            <a href="{{path('notif_delete_all')}}">
+                <button class="btn btn-primary delete-all-notifications">
+                    Marquez tout comme vu
+                </button>
+            </a>
             {% else %}
             <ul id="header-user-notification-list">
                 <p class="no-notifications">Aucune notification à afficher</p>

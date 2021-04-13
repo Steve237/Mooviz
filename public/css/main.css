@@ -6663,7 +6663,49 @@ a {
 	white-space: nowrap;
 	overflow: hidden;
 	margin-left: -20px;
+	margin-bottom:5px;
+	margin-top:5px;
+	font-weight: bold;
 }
+
+.text-position {
+
+	margin-top:10px;
+	color:red;
+
+}
+
+
+@media (max-width: 767px) {
+	.mobile-text {
+		
+		font-size:10px;
+	}
+
+	.avatar-height {
+
+		height: 20px;
+	}
+	
+	#width-avatar {
+		width: 20px;
+	
+	
+	}
+
+	.videolist-title {
+
+		width: 150px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		margin-left: -20px;
+		margin-bottom:5px;
+		margin-top:5px;
+		font-weight: bold;
+	}
+}
+
 
 .avatar-position {
 

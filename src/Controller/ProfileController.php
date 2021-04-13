@@ -275,7 +275,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * //permet d'afficher nombre notifications sur mobile
+     * //permet d'afficher nombre notifications sur mobile et lien vers la page mobile notifs
      */
     public function showNotificationsOnMobile(NotificationsRepository $repo) {
 
@@ -309,6 +309,24 @@ class ProfileController extends AbstractController
             "notifications" => $notifications
         ]);
 
+    }
+
+    /**
+    * Permet de charger plus de notifications pour les mobiles
+    * @Route("/loadMoreMobileNotifications/{start}", name="loadMoreMobileNotifications", requirements={"start": "\d+"})
+    */
+    public function loadMoreMobileNotifications(NotificationsRepository $repo, $start = 10)
+    {   
+        $currentUser = $this->getUser(); 
+
+        // On récupère les prochaines notifications
+        $notifications = $repo->findAllNotification($currentUser);
+
+        return $this->render('notifications/loadMoreMobileNotifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'start' => $start
+        ]);
     }
 
     /**

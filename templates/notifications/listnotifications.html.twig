@@ -12,7 +12,7 @@
         </button>
     </a>
     <ul class="list-group admin-list notifications-list">
-        {% for notification in notifications %}
+        {% for notification in notifications | slice(0, 10) %}
         <div class="notification-item">
             <li class="list-group-item">Date : {{notification.date | date("d/m/y")}}</li>
             <li class="list-group-item">Message : {{notification.content}}</li>
@@ -25,5 +25,42 @@
         <h5>Vous n'avez aucune notification pour le moment.</h5>
         {% endif %}
     </ul>
+    {% if notifications %}
+    <div class="pagination">
+        <div class="navigation" id="loadbutton">
+            <button class="btn btn-primary" id="loadMoreMobileNotifications">Load more</button>
+        </div>
+    </div>
+    {% endif %}
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    click = 0;
+
+    function loadMoreMobileNotifications(event) {
+        event.preventDefault();
+        click++;
+        var start = 10 * click;
+        const url = "{{path('loadMoreMobileNotifications')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#notifications-list").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune notifications à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreMobileNotifications").addEventListener("click", loadMoreMobileNotifications);
+</script>
 {% endblock %}
