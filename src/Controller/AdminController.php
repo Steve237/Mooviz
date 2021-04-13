@@ -32,14 +32,10 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/users_list", name="users_list")
      */
-    public function admin_space(UsersRepository $repoUser, Request $request, PaginatorInterface $paginator): Response
+    public function admin_space(UsersRepository $repoUser): Response
     {   
         
-        $users = $paginator->paginate(
-            $repoUser->findAllWithPagination(), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            20 /*limit per page*/
-        );
+        $users = $repoUser->findAll();
         
         return $this->render('admin/adminspace.html.twig', [
             
@@ -181,6 +177,22 @@ class AdminController extends AbstractController
         return $this->render('admin/loadMoreNotifications.html.twig', [
             
             'notifications' => $notifications,
+            'start' => $start
+        ]);
+    }
+
+     /**
+     * Permet de charger plus de user dans l'espace admin users
+     * @Route("/loadMoreUsers/{start}", name="loadMoreUsers", requirements={"start": "\d+"})
+     */
+    public function loadMoreUsers(UsersRepository $repo, $start = 20)
+    {   
+        // On récupère les prochains users
+        $users = $repo->findAll();
+
+        return $this->render('admin/loadMoreUsers.html.twig', [
+            
+            'users' => $users,
             'start' => $start
         ]);
     }
