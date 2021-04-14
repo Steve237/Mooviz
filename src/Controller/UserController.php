@@ -82,14 +82,18 @@ class UserController extends AbstractController
 
             }
             
+            $loadMoreStart = 20;
+            
+
             return $this->render('user/userplaylist.html.twig', [
-                "playlists" => $playlists
+                "playlists" => $playlists,
+                "loadMoreStart" => $loadMoreStart
             ]);
         
     }
 
     /**
-     * Permet de charger plus de vidéos dans la playlist
+     * Permet de charger plus de vidéos dans la playlist dans la section profile
      * @Route("/loadMoreUserPlaylist/{start}", name="loadMoreUserPlaylist", requirements={"start": "\d+"})
      */
     public function loadMoreUserPlaylist(PlaylistRepository $repository, $start = 20)
@@ -131,11 +135,14 @@ class UserController extends AbstractController
 
         }
 
+        $loadMoreStart = 20;
+
         return $this->render('user/profile_page_channels.html.twig', [
             "userChannel" => $userChannel,
             "user" => $user,
             "videos" => $videos,
-            "avatars" => $avatars
+            "avatars" => $avatars,
+            "loadMoreStart" => $loadMoreStart
         ]);
         
     }
@@ -195,9 +202,11 @@ class UserController extends AbstractController
 
         }
 
+        $loadMoreStart = 20;
 
         return $this->render('user/user_videos_channels.html.twig', [
             'videos' => $videos,
+            'loadMoreStart' => $loadMoreStart
      
             ]);
     

@@ -27,11 +27,15 @@
                 </a>
                 {% endfor %}
             </div>
+            
+            {% if notifications | length > loadMoreStart %}
             <div class="pagination">
                 <div class="navigation" id="loadbutton">
                     <button class="btn btn-primary" id="loadMoreUserNotifications">Load more</button>
                 </div>
             </div>
+            {% endif %}
+            
             <a href="{{path('notif_delete_all')}}">
                 <button class="btn btn-primary delete-all-notifications">
                     Marquez tout comme vu

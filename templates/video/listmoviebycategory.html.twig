@@ -7,12 +7,15 @@
 
     {% include 'video/_includevideolist.html.twig' %}
 
+	{% if totalVideos > loadMoreStart %}
     <div class="pagination" id="loadbutton">
       <div class="navigation">
         <button class="btn btn-primary" id="loadMoreVideosByCategory">Load more</button>
       </div>
     </div>
-  </div><!-- close .dashboard-container -->
+	{% endif %}
+  
+	</div><!-- close .dashboard-container -->
 </main>
 {% endblock %}
 {% block javascripts %}

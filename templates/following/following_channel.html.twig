@@ -34,11 +34,14 @@
                 {% endfor %}
                 {% endfor %}
         </div><!-- close .row -->
+        
+        {% if user.following | length > loadMoreStart %} 
         <div class="pagination">
             <div class="navigation" id="loadbutton">
                 <button class="btn btn-primary" id="loadMoreChannels">Load more</button>
             </div>
         </div>
+        {% endif %}
     </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

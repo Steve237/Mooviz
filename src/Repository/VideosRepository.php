@@ -148,7 +148,7 @@ class VideosRepository extends ServiceEntityRepository
         
     }
 
-     //affiche le total de vidéos postés par user 
+     //affiche le total de vidéos postés 
      public function countVideos() {
 
         return $this->createQueryBuilder('v')

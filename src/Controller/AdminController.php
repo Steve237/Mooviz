@@ -30,16 +30,21 @@ class AdminController extends AbstractController
 {
 
     /**
+     * // retourne la liste des users dans l'espace admin
      * @Route("/admin/users_list", name="users_list")
      */
     public function admin_space(UsersRepository $repoUser): Response
     {   
         
         $users = $repoUser->findAll();
+        $totalUsers = $repoUser->countUsers();
+        $loadMoreStart = 20;
         
         return $this->render('admin/adminspace.html.twig', [
             
             'users' => $users,
+            "totalUsers" => $totalUsers,
+            "loadMoreStart" => $loadMoreStart
         ]);
     }
 
@@ -159,9 +164,19 @@ class AdminController extends AbstractController
     {   
 
         $notifications = $repo->findAll();
+        
+        $countWebhooks = $repo->countWebhooks();
+        $loadMoreStart = 20;
        
 
-        return $this->render('admin/admin_notifications.html.twig', ['notifications' => $notifications]);
+        return $this->render('admin/admin_notifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'countWebhooks' => $countWebhooks,
+            'loadMoreStart' => $loadMoreStart
+            
+            
+            ]);
         
     }
 
@@ -450,11 +465,15 @@ class AdminController extends AbstractController
     {       
         
         $videos = $videoRepo->findAll();
+        $totalVideos = $videoRepo->countVideos();
+        $loadMoreStart = 21;
       
         
         return $this->render('admin/admin_videos.html.twig', 
         [
-            "videos" => $videos
+            "videos" => $videos,
+            "totalVideos" => $totalVideos,
+            "loadMoreStart" => $loadMoreStart
 
         ]);
 
@@ -538,11 +557,8 @@ class AdminController extends AbstractController
         
         if ($query) {
 
-            $users = $paginator->paginate(
-            $repository->userSearch($query),
-            $request->query->getInt('page', 1),
-            20 /*limit per page*/
-        );
+            $users = $repository->userSearch($query);
+        
 
             if ($repository->userSearch($query) == null) {
 
@@ -551,15 +567,34 @@ class AdminController extends AbstractController
 
             else {
 
+                $loadMoreStart = 20;
 
                 return $this->render('admin/user_search_result.html.twig', [
 
-                    'users' => $users
+                    'users' => $users,
+                    'query' => $query,
+                    'loadMoreStart' => $loadMoreStart
         
                 ]);
 
             }
 
         }
+    }
+
+    /**
+     * Permet de charger plus d'user quand admin recherche un user
+     * @Route("/loadMoreUserResult/{query}/{start}", name="loadMoreUserResult", requirements={"start": "\d+"})
+     */
+    public function loadMoreUserResult(UsersRepository $repository, $query, $start = 20)
+    {   
+        // On récupère les prochains users
+        $users = $repository->userSearch($query);
+
+        return $this->render('admin/loadMoreUserResult.html.twig', [
+            
+            'start' => $start,
+            'users' => $users
+        ]);
     }
 }

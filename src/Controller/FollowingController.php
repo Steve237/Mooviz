@@ -104,9 +104,11 @@ class FollowingController extends AbstractController
 
         }
 
+        $loadMoreStart = 20;
 
         return $this->render('following/following_videos.html.twig', [
             'videos' => $videos,
+            'loadMoreStart' => $loadMoreStart
      
             ]);
     
@@ -116,7 +118,7 @@ class FollowingController extends AbstractController
      * @Route("/channels", name="channels_list")
      * //permet d'accéder à la liste des chaînes auxquelles on s'est abonné
      */
-    public function listChannel(AvatarRepository $repoAvatar, UsersRepository $repoUser, Request $request, PaginatorInterface $paginator){
+    public function listChannel(AvatarRepository $repoAvatar, UsersRepository $repoUser){
 
         
         $user = $this->getUser();
@@ -137,11 +139,14 @@ class FollowingController extends AbstractController
 
         }
 
+        $loadMoreStart = 20;
+
         return $this->render('following/following_channel.html.twig', [
             "userChannel" => $userChannel,
             "user" => $user,
             "videos" => $videos,
-            "avatars" => $avatars
+            "avatars" => $avatars,
+            "loadMoreStart" => $loadMoreStart
         ]);
     }
 
@@ -154,11 +159,16 @@ class FollowingController extends AbstractController
     public function Channel(Users $user, VideosRepository $repoVideo){
 
         $videos = $repoVideo->getVideoByUser($user);
+        
+        $totalVideosByUser = $repoVideo->countUserVideos($user);
+        $loadMoreStart = 20;
 
         return $this->render('following/videos_by_channel.html.twig', [
             
             "videos" => $videos,
-            "user" => $user
+            "user" => $user,
+            "totalVideosByUser" => $totalVideosByUser,
+            "loadMoreStart" => $loadMoreStart
         ]);
     }
 

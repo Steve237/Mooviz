@@ -14,8 +14,8 @@
 
   {{render(controller('App\\Controller\\AdminController::searchUser'))}}
 
-  <ul class="list-group admin-list admin-list-position">
-    {% for user in users %}
+  <ul class="list-group admin-list admin-list-position" id="listresult">
+    {% for user in users | slice(0, 20) %}
     <div class="admin-item">
       <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
       <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
@@ -55,10 +55,45 @@
     </div>
     {% endfor %}
   </ul>
+
+  {% if users | length > loadMoreStart %}
   <div class="pagination">
-    <div class="navigation">
-      {{ knp_pagination_render(users) }}
+    <div class="navigation" id="loadbutton">
+      <button class="btn btn-primary" id="loadMoreUserResult">Load more</button>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  click = 0;
+
+  function loadMoreUserResult(event) {
+    event.preventDefault();
+    click++;
+    var start = 20 * click;
+    const url = "{{path('loadMoreUserResult', {'query':query})}}/" + start;
+    axios.get(url).then(function (response) {
+      $("#listresult").append(response.data);
+      if (!response.data) {
+
+        let loadButton = document.getElementById("loadbutton");
+        loadButton.textContent = 'Plus aucun utilisateur à afficher';
+
+      }
+    }).catch(function (error) {
+      if (response.status === 403) {
+        window.alert("You are not authorized to perform this action!");
+      } else if (response.status === 404) {
+        window.alert("This page does not exist");
+      } else {
+        window.alert("An error has occurred !");
+      }
+    });
+  }
+  document.getElementById("loadMoreUserResult").addEventListener("click", loadMoreUserResult);
+</script>
 {% endblock %}

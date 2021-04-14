@@ -65,6 +65,7 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
 
+    
     public function verifSubscriber($value)
     {
         return $this->createQueryBuilder('u')
@@ -91,6 +92,17 @@ class UsersRepository extends ServiceEntityRepository
             ->setParameter('username', '%'.$username.'%')
             ->getQuery()
             ->execute();
+    }
+
+
+    //affiche le total de users inscrits
+    public function countUsers() {
+
+        return $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
     }
 
     /*

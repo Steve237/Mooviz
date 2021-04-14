@@ -19,7 +19,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -175,24 +174,27 @@ class ProfileController extends AbstractController
      */
     public function userVideo(VideosRepository $videorepo) {
 
-        $user = new Users();
+        
         $userName = $this->getUser();
 
         $videos = $videorepo->getVideoByUser($userName);
         
         $user_videos =  $videorepo->getVideoByUser($userName);
 
+        $loadMoreStart = 20;
+        $totalUserVideos = $videorepo->countUserVideos($userName);
+
         if(empty($user_videos)) {
 
             $this->addFlash('no_videos', 'Vous n\'avez ajoutez aucune vidéo pour le moment, merci d\'en ajoutez.');
             return $this->redirectToRoute('userprofile');
-
-
         }
 
         return $this->render('admin/user_video.html.twig', [
             
-            'videos' => $videos
+            'videos' => $videos,
+            'loadMoreStart' => $loadMoreStart,
+            'totalUserVideos' => $totalUserVideos
             
         ]);
 
@@ -246,11 +248,14 @@ class ProfileController extends AbstractController
 
         $number = $repo->numberNotif($currentUser);
 
+        $loadMoreStart = 10;
+
 
         return $this->render('notifications/notifications.html.twig', [
 
             "notifications" => $notifications,
-            "number" => $number
+            "number" => $number,
+            "loadMoreStart" => $loadMoreStart
         ]);
 
 
@@ -304,9 +309,12 @@ class ProfileController extends AbstractController
 
         $notifications = $repo->findAllNotification($currentUser);
 
+        $loadMoreStart = 10;
+
         return $this->render('notifications/listnotifications.html.twig', [
 
-            "notifications" => $notifications
+            "notifications" => $notifications,
+            "loadMoreStart" => $loadMoreStart
         ]);
 
     }
@@ -397,11 +405,8 @@ class ProfileController extends AbstractController
         
         if ($query) {
 
-            $videos = $paginator->paginate(
-            $repository->userVideoSearch($query, $user),
-            $request->query->getInt('page', 1),
-            20 /*limit per page*/
-        );
+            $videos = $repository->userVideoSearch($query, $user);
+        
 
             if ($repository->userVideoSearch($query, $user) == null) {
 
@@ -410,29 +415,40 @@ class ProfileController extends AbstractController
 
             else {
 
+                $loadMoreStart = 20;
 
                 return $this->render('user/user_videos_result.html.twig', [
 
-                    'videos' => $videos
+                    'videos' => $videos,
+                    'query' => $query,
+                    'loadMoreStart' => $loadMoreStart
         
                 ]);
 
             }
 
         }
+    
     }
 
 
+    /**
+    * Permet de recharger résultat supplémentaire quand user cherche vidéo dans sa liste de vidéos
+    * @Route("/loadMoreVideosResult/{query}/{start}", name="loadMoreVideosResult", requirements={"start": "\d+"})
+    */
+    public function loadMoreVideosResult(VideosRepository $repository, $query, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        $videos = $repository->userVideoSearch($query, $user);
 
 
-
-
-
-
-
-
-
-
+        return $this->render('user/loadMoreVideosResult.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
 
 
 }

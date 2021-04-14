@@ -50,11 +50,14 @@
         </div><!-- close .col -->
         {% endfor %}
     </div><!-- close .row -->
+    
+    {% if totalVideos > loadMoreStart %}
     <div class="pagination">
         <div class="navigation" id="loadbutton">
             <button class="btn btn-primary" id="loadMoreAdminVideos">Load more</button>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 {% block javascripts %}

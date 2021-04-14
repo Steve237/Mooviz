@@ -25,7 +25,7 @@
         <h5>Vous n'avez aucune notification pour le moment.</h5>
         {% endif %}
     </ul>
-    {% if notifications %}
+    {% if notifications | length > loadMoreStart %}
     <div class="pagination">
         <div class="navigation" id="loadbutton">
             <button class="btn btn-primary" id="loadMoreMobileNotifications">Load more</button>

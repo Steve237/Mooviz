@@ -41,6 +41,18 @@ class WebhookRepository extends ServiceEntityRepository
         
     }
 
+    //affiche le total de webhooks enregistrés en bdd
+    public function countWebhooks() {
+
+        return $this->createQueryBuilder('w')
+            ->select('count(w.id)')
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
+
+
+
 
     // /**
     //  * @return Webhook[] Returns an array of Webhook objects

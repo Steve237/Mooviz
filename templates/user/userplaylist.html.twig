@@ -32,11 +32,14 @@
   {% endfor %}
 </div><!-- close .row -->
 
+{% if playlists | length > loadMoreStart %}
 <div class="pagination">
   <div class="navigation" id="loadbutton">
     <button class="btn btn-primary" id="loadMoreUserPlaylist">Load more</button>
   </div>
 </div>
+{% endif %}
+
 </div><!-- close .dashboard-container -->
 </main>
 

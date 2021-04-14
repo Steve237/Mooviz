@@ -80,13 +80,17 @@ class VideoController extends AbstractController
         
         $categories = $repo->findAll();
 
+        $totalVideos = $repository->countVideos();
+        $loadMoreStart = 50;
 
         return $this->render('video/index.html.twig', [
             "videos" => $videos,
             "categories" => $categories,
             "firstBackgroundVideo" => $firstBackgroundVideo,
             "secondBackgroundVideo" => $secondBackgroundVideo,
-            "category" => $category
+            "category" => $category,
+            "totalVideos" => $totalVideos,
+            "loadMoreStart" => $loadMoreStart
            
         ]);
     }
@@ -103,9 +107,14 @@ class VideoController extends AbstractController
         
         $categories = $repo->findAll();
 
+        $totalVideos = $repository->countVideos();
+        $loadMoreStart = 50;
+
         return $this->render('video/listmovie.html.twig', [
             "categories" => $categories,
             "videos" => $videos,
+            "totalVideos" => $totalVideos,
+            "loadMoreStart" => $loadMoreStart
         ]);
     }
 
@@ -120,12 +129,16 @@ class VideoController extends AbstractController
         $count = $repository->countVideos();
         
         $categories = $repo->findAll();
+        $totalVideos = $repository->countVideos();
+        $loadMoreStart = 50;
         
         return $this->render('video/listmoviebycategory.html.twig', [
             "videos" => $videos,
             "categories" => $categories,
             "category" => $category,
-            "count" => $count
+            "count" => $count,
+            "totalVideos" => $totalVideos,
+            "loadMoreStart" => $loadMoreStart
            
         ]);
     }
@@ -153,7 +166,7 @@ class VideoController extends AbstractController
      */
     public function loadMoreVideosByCategory(VideosRepository $repo, Category $category, $start = 50)
     {   
-        // on récupère les 10 prochaines vidéos
+        // on récupère les 50 prochaines vidéos
         $videos = $repo->getVideoByCategory($category);
 
 

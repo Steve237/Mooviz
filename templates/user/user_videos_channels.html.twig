@@ -30,11 +30,15 @@
   </div><!-- close .col -->
   {% endfor %}
 </div><!-- close .row -->
+
+{% if videos | length > loadMoreStart %}
 <div class="pagination">
   <div class="navigation" id="loadbutton">
     <button class="btn btn-primary" id="loadMoreChannelsVideos">Load more</button>
   </div>
 </div>
+{% endif %}
+
 </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

@@ -36,9 +36,12 @@ class PlaylistController extends AbstractController
 
             }
 
+            $loadMoreStart = 20;
 
         return $this->render('playlist/playlist.html.twig', [
-            "playlists" => $playlists
+            
+            "playlists" => $playlists,
+            "loadMoreStart" => $loadMoreStart
         ]);
     
     } 
@@ -53,7 +56,7 @@ class PlaylistController extends AbstractController
         
         $user = $this->getUser();
 
-        //Permet de supprimer le like d'un utilisateur
+        //Permet de retirer vidéo d'une playlist
         if ($video->isSelectedByUser($user)) {
 
             $selectedVideo = $playlistRepo->findOneBy([
@@ -73,7 +76,7 @@ class PlaylistController extends AbstractController
 
         }
         
-        
+        //permet d'ajouter une vidéo à une playlist;
         $selectedVideo = new Playlist();
         $selectedVideo->setVideo($video);
         $selectedVideo->setUser($user);
@@ -106,10 +109,4 @@ class PlaylistController extends AbstractController
             'start' => $start
         ]);
     }
-
-
-
-
-
-
 }

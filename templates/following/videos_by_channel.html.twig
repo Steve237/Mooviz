@@ -36,7 +36,8 @@
             </div><!-- close .col -->
             {% endfor %}
         </div><!-- close .row STOP-->
-        {% if videos %}
+        
+        {% if totalVideosByUser > loadMoreStart %}
         <div class="pagination">
             <div class="navigation" id="loadbutton">
                 <button class="btn btn-primary" id="loadMoreVideosByChannel">Load more</button>

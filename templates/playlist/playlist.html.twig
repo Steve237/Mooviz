@@ -56,7 +56,7 @@
 
             {%  endif %}
         </div><!-- close .row -->
-        {% if playlists %}
+        {% if playlists | length > loadMoreStart %}
         <div class="pagination">
             <div class="navigation" id="loadbutton">
                 <button class="btn btn-primary" id="loadMoreVideos">Load more</button>

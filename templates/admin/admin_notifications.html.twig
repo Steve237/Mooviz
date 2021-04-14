@@ -39,7 +39,7 @@
         {% endif %}
     </ul>
 
-    {% if notifications | length %}
+    {% if countWebhooks > loadMoreStart %}
     <div class="pagination">
         <div class="navigation" id="loadbutton">
             <button class="btn btn-primary" id="loadMoreNotifications">Load more</button>

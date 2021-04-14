@@ -110,11 +110,15 @@
     </div>
     {% endfor %}
   </ul>
+  
+  {% if totalUsers > loadMoreStart %}
   <div class="pagination">
     <div class="navigation" id="loadbutton">
       <button class="btn btn-primary" id="loadMoreUsers">Load more</button>
     </div>
   </div>
+  {% endif %}
+
 </div>
 {% endblock %}
 
