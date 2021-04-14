@@ -48,21 +48,6 @@ class UserController extends AbstractController
         ]);
     }
 
-   
-
-    /**
-     * @Route("/main/user", name="userprofile")
-     */
-    public function showNewVideo(VideosRepository $videorepo)
-    {
-        //permet d'obtenir les 10 nouvelles vidéos
-        $videos = $videorepo->getVideos();
-
-        return $this->render('user/userprofile.html.twig', [
-            
-            'videos' => $videos
-        ]);
-    }
 
 
     /**
