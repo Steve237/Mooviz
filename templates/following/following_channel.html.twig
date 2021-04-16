@@ -15,7 +15,7 @@
             {% for followed in user.following | slice(0, 20) %}
             {% for avatar in avatars %}
             <a href="{{path('channel', {'id': followed.id})}}">
-                <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+                <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
                     <div class="item-playlist-container-skrn video-card video-card-text">
                         <a href="{{path('channel', {'id': followed.id})}}">
                             <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">

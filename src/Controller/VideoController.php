@@ -7,22 +7,23 @@ use App\Entity\Videos;
 use DateTimeInterface;
 use App\Entity\Category;
 use App\Entity\Comments;
-use App\Entity\Notifications;
 use App\Entity\VideoLike;
 use App\Form\CommentsType;
+use App\Entity\Notifications;
 use App\Form\VideoSearchType;
+use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentsRepository;
 use App\Repository\VideoLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\VideobackgroundRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Repository\AvatarRepository;
-use App\Repository\VideobackgroundRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -32,12 +33,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class VideoController extends AbstractController
 {
     /**
-     * @Route("/main/videolist", name="homepage")
-     */
-    public function homePage(VideosRepository $repository, VideobackgroundRepository $repoBackground, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    * @Route("/main/videolist", name="homepage")
+    * Affiche liste des vidéos sur la page accueil
+    */
+    public function homePage(VideosRepository $repository, VideobackgroundRepository $repoBackground, CategoryRepository $repo)
     {   
-
-
         $videos = $repository->findAll();
         
         $totalVideos = $repository->countVideos();
@@ -68,6 +68,7 @@ class VideoController extends AbstractController
     }
 
     /**
+     * Affiche liste des vidéos par catégorie sur la page accueil
      * @Route("/main/videos/{category}", name="videobycategory")
      */
     public function videobyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo, VideobackgroundRepository $repoBackground)
@@ -83,7 +84,7 @@ class VideoController extends AbstractController
         $totalVideos = $repository->countVideos();
         $loadMoreStart = 50;
 
-        return $this->render('video/index.html.twig', [
+        return $this->render('video/videolistbycategory.html.twig', [
             "videos" => $videos,
             "categories" => $categories,
             "firstBackgroundVideo" => $firstBackgroundVideo,
@@ -97,14 +98,12 @@ class VideoController extends AbstractController
 
 
     /**
+    * Affiche la liste des vidéos sur la page vidéos
     * @Route("/main/listvideo", name="allvideos")
     */
-    public function listVideo(VideosRepository $repository, CategoryRepository $repo, PaginatorInterface $paginator, Request $request)
+    public function listVideo(VideosRepository $repository, CategoryRepository $repo)
     {   
-        
         $videos = $repository->findAll();
-        
-        
         $categories = $repo->findAll();
 
         $totalVideos = $repository->countVideos();
@@ -120,6 +119,7 @@ class VideoController extends AbstractController
 
 
     /**
+     * Affiche liste des vidéos par catégories sur la page vidéos
      * @Route("/main/listmovies/{category}", name="moviebycategory")
      */
     public function moviebyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo)
@@ -145,7 +145,7 @@ class VideoController extends AbstractController
 
 
     /**
-     * Permet de charger plus de vidéos
+     * Permet de charger plus de vidéos dans la page accueil
      * @Route("/loadMoreVideos/{start}", name="loadMoreVideos", requirements={"start": "\d+"})
      */
     public function loadMoreVideos(VideosRepository $repo, $start = 50)
@@ -161,7 +161,7 @@ class VideoController extends AbstractController
     }
 
     /**
-     * Permet de charger plus de vidéos de la categorie en cours
+     * Permet de charger plus de vidéos par catégorie
      * @Route("/loadMoreVideosByCategory/{category}/{start}", name="loadMoreVideosByCategory", requirements={"start": "\d+"})
      */
     public function loadMoreVideosByCategory(VideosRepository $repo, Category $category, $start = 50)
@@ -184,8 +184,9 @@ class VideoController extends AbstractController
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Affiche contenu d'une vidéo
     */
-    public function movie(VideosRepository $repository, AvatarRepository $repoAvatar, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity, Request $request)
+    public function movie(VideosRepository $repository, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity)
     {   
+        //ajoute une vue à chaque fois que la page de la vidéo est vu
         $nbreview = $video->getViews();
         $nbreview++;
         $video->setViews($nbreview);
@@ -195,32 +196,28 @@ class VideoController extends AbstractController
         $user = $this->getUser();
         $userId = $user->getId();
 
+        // affiche les vidéos de la catégorie en cours sauf la vidéo en cours
         $videos = $repository->showVideoByCategory($category, $id);
         
+        // récupère les vidéos de l'user
         $user_videos = $repository->showVideoByUserId($userId);
 
+        // récupère les nouvelles vidéos
         $newvideos = $repository->getVideos();
 
-        $comments = new Comments();
-
-
-        $commentform = $this->createForm(CommentsType::class, $comments);
-
-        $comments = $repoComment->findComment($video);
-
         return $this->render('video/singlemovie.html.twig', [
+            
             "videos" => $videos,
             "video" => $video,
             "category" => $category,
             "newvideos" => $newvideos,
-            "commentform" => $commentform->createView(),
-            "comments" => $comments,
             "user_videos" => $user_videos
 
         ]);
     }
 
     /**
+    * Permet de partager une vidéo
     * @Route("/share/movie/{id}", name="partage")
     * //Permet de partager une vidéo.
     */
@@ -239,6 +236,7 @@ class VideoController extends AbstractController
     }
 
     /**
+    * Permet de basculer sur un autre lecteur vidéo
     * @Route("main/switched_player/movie/{id}/category/{idcategory}", name="second_player")
     * @ParamConverter("video", options={"mapping": {"id" : "id"}})
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
@@ -386,4 +384,145 @@ class VideoController extends AbstractController
             'start' => $start
         ]);
     }
+
+
+     /**
+     * @Route("/main/upload", name="addvideo")
+     * Permet d'ajouter des vidéos
+     */
+    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager)
+    {
+
+        if (!$video) {
+
+            $video = new Videos();
+        }
+
+        $notification = new Notifications();
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(VideoType::class, $video);
+        $form->handleRequest($request);
+        
+        if($request->isXmlHttpRequest()) {
+        
+            if ($form->isSubmitted() && $form->isValid()) {
+
+
+            //upload de la vidéo
+            $videoFile = $video->getVideoLink();
+            $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
+            $videoFile->move($this->getParameter('video_directory'), $fileVideo);
+
+            $video->setVideoLink('/uploads/'.$fileVideo);
+            
+            $videoImage = $video->getVideoImage();
+            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
+            $videoImage->move($this->getParameter('image_directory'), $fileImage);
+
+            $video->setVideoImage($fileImage);
+            $video->setUsername($user);
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+
+            
+            return new JsonResponse('ok');
+        }
+            return new JsonResponse('err');
+    }
+
+        return $this->render('video/addvideo.html.twig', [
+
+            "form" => $form->createView(),
+        ]);
+    
+    }
+
+
+    /**
+     * @Route("/main/update_video_image/{id}", name="update_video_image")
+     * //Permet de modifier image de la vidéo.
+     */
+    public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    {
+        $updateform = $this->createForm(UploadType::class, $video);
+        $updateform->handleRequest($request);
+        
+        if($request->isXmlHttpRequest()) {
+        
+            if ($updateform->isSubmitted() && $updateform->isValid()) {
+            
+
+            $videoImage = $video->getVideoImage();
+            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
+            $videoImage->move($this->getParameter('image_directory'), $fileImage);
+            $video->setVideoImage($fileImage);
+
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+
+
+            return new JsonResponse('ok');
+        }
+            return new JsonResponse('err');
+    }
+
+        return $this->render('video/update_video.html.twig', [
+
+            "updateform" => $updateform->createView(),
+            "video" => $video
+        ]);
+    
+    }
+
+    /**
+     * @Route("/main/update_video_description/{id}", name="update_video_description")
+     * //Permet de modifier la description de la vidéo
+     */
+    public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    {
+        $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
+        $formvideodescription->handleRequest($request);
+        
+        if ($formvideodescription->isSubmitted() && $formvideodescription->isValid()) {
+            
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+            return $this->redirectToRoute('success_update');
+        }
+
+        return $this->render('video/update_video_description.html.twig', [
+
+            "formvideodescription" => $formvideodescription->createView(),
+            "video" => $video
+        ]);
+    
+    }
+
+    /**
+     *  @Route("/main/upload_video_successfull", name="success_upload")
+     * //cette fonction redirige vers la page des vidéos user avec message success
+     * //route cryptée afin que personne ne puisse la deviner
+     */
+    public function showMessageSuccessUpload() {
+
+        $this->addFlash('success', 'Votre vidéo a été ajouté avec succès.');
+        
+        return $this->redirectToRoute('user_videos');
+        
+    }
+
+
+     /**
+     * @Route("/main/update_video_successfull", name="success_update")
+     */
+    public function showMessageSuccessUpdateVideo() {
+
+        $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
+        
+        return $this->redirectToRoute('user_videos');
+        
+    }
+
 }

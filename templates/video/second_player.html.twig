@@ -194,7 +194,7 @@
 						{% endfor %}
 						{% else %}
 						{% for video in user_videos %}
-						<div class="col-12 col-md-6 col-sm-6 col-lg-6 col-xl-4">
+						<div class="col-6 col-md-6 col-sm-6 col-lg-6 col-xl-4">
 							<div class="item-listing-container-skrn video-card video-card-text">
 								<a href="{{path("second_player", {"id" : video.id, "idcategory" : video.category.id})}}">
 									<img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Movie Poster"
@@ -203,21 +203,21 @@
 								<div class="item-listing-text-skrn">
 									<div class="item-listing-text-skrn-vertical-align">
 										<p class="video_icone_title">
-											<a href="{{path("second_player", {"id" : video.id, "idcategory" : video.category.id})}}">
+											<a href="{{path("second_player", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
 												{{video.videotitle}}
 											</a>
 										</p>
 										<div class="avatar-position">
 											<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
 											class="rounded-circle avatar-height" id="width-avatar">
-											<a href="{{path('channel', {'id': video.username.id})}}">
+											<a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
 												{{video.username.username}}
-											</a> |
-											{% if video.views is not null %} 
-												Vues : {{video.views}} 
-												{% else %} 
-												Aucune vue 
-											{% endif %}
+											</a> 
+											{% if video.views is not null %}
+                            				<p class="mobile-text text-position">Vues : {{video.views}}</p>
+                            				{% else %}
+                            				<p class="mobile-text text-position">Aucune vue</p>
+                            				{% endif %}
 										</div>
 									</div><!-- close .item-listing-text-skrn-vertical-align -->
 								</div><!-- close .item-listing-text-skrn -->

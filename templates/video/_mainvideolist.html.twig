@@ -101,9 +101,13 @@
                             <a href="{{path('channel', {'id': video.username.id})}}"
                             class="link-color mobile-text">{{video.username.username}}</a> 
                             {% if video.views is not null %}
-                            <p class="mobile-text text-position">Vues : {{video.views}}</p>
+                            <p class="mobile-text text-position">
+                            Vues : {{video.views}}
+                            </p>
                             {% else %}
-                            <p class="mobile-text text-position">Aucune vue</p>
+                            <p class="mobile-text text-position">
+                            Aucune vue
+                            </p>
                             {% endif %}
                         </div>
                     </div><!-- close .item-listing-text-skrn-vertical-align -->

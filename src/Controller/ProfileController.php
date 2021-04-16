@@ -29,148 +29,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProfileController extends AbstractController
 {
-    /**
-     * @Route("/upload", name="addvideo")
-     * //Permet d'ajouter des vidéos
-     */
-    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager, ValidatorInterface $validator)
-    {
 
-        if (!$video) {
-
-            $video = new Videos();
-        }
-
-        $notification = new Notifications();
-
-        $user = $this->getUser();
-
-        $form = $this->createForm(VideoType::class, $video);
-        $form->handleRequest($request);
-        
-        if($request->isXmlHttpRequest()) {
-        
-            if ($form->isSubmitted() && $form->isValid()) {
-
-
-            //upload de la vidéo
-            $videoFile = $video->getVideoLink();
-            $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
-            $videoFile->move($this->getParameter('video_directory'), $fileVideo);
-
-            $video->setVideoLink('/uploads/'.$fileVideo);
-            
-            $videoImage = $video->getVideoImage();
-            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
-            $videoImage->move($this->getParameter('image_directory'), $fileImage);
-
-            $video->setVideoImage($fileImage);
-            $video->setUsername($user);
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-
-            
-            return new JsonResponse('ok');
-        }
-            return new JsonResponse('err');
-    }
-
-        return $this->render('admin/addvideo.html.twig', [
-
-            "form" => $form->createView(),
-        ]);
-    
-    }
-
-    /**
-     * @Route("/update_video_image/{id}", name="update_video_image")
-     * //Permet de modifier image de la vidéo.
-     */
-    public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
-    {
-        $updateform = $this->createForm(UploadType::class, $video);
-        $updateform->handleRequest($request);
-        
-        if($request->isXmlHttpRequest()) {
-        
-            if ($updateform->isSubmitted() && $updateform->isValid()) {
-            
-
-            $videoImage = $video->getVideoImage();
-            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
-            $videoImage->move($this->getParameter('image_directory'), $fileImage);
-            $video->setVideoImage($fileImage);
-
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-
-
-            return new JsonResponse('ok');
-        }
-            return new JsonResponse('err');
-    }
-
-        return $this->render('admin/update_video.html.twig', [
-
-            "updateform" => $updateform->createView(),
-            "video" => $video
-        ]);
-    
-    }
-
-    /**
-     * @Route("/update_video_description/{id}", name="update_video_description")
-     * //Permet de modifier la description de la vidéo
-     */
-    public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
-    {
-        $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
-        $formvideodescription->handleRequest($request);
-        
-        if ($formvideodescription->isSubmitted() && $formvideodescription->isValid()) {
-            
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-            return $this->redirectToRoute('success_update');
-        }
-
-        return $this->render('admin/update_video_description.html.twig', [
-
-            "formvideodescription" => $formvideodescription->createView(),
-            "video" => $video
-        ]);
-    
-    }
-
-
-    /**
-     *  @Route("/upload_video_successfull", name="success_upload")
-     * //cette fonction redirige vers la page des vidéos user avec message success
-     * //route cryptée afin que personne ne puisse la deviner
-     */
-    public function showMessageSuccessUpload() {
-
-        $this->addFlash('success', 'Votre vidéo a été ajouté avec succès.');
-        
-        return $this->redirectToRoute('user_videos');
-        
-    }
-
-
-     /**
-     * @Route("/update_video_successfull", name="success_update")
-     */
-    public function showMessageSuccessUpdateVideo() {
-
-        $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
-        
-        return $this->redirectToRoute('user_videos');
-        
-    }
 
     /**
      * @Route("/user_videos", name="user_videos")
-     * //permet à l'user de voir les vidéos qu'il a ajouté
+     * permet à l'user de voir les vidéos qu'il a ajouté
      */
     public function userVideo(VideosRepository $videorepo) {
 
@@ -190,7 +53,7 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('userprofile');
         }
 
-        return $this->render('admin/user_video.html.twig', [
+        return $this->render('user/user_video.html.twig', [
             
             'videos' => $videos,
             'loadMoreStart' => $loadMoreStart,
@@ -212,7 +75,7 @@ class ProfileController extends AbstractController
         // on récupère les 20 prochaines vidéos
         $videos = $videorepo->getVideoByUser($user);
 
-        return $this->render('admin/loadMoreUserVideos.html.twig', [
+        return $this->render('user/loadMoreUserVideos.html.twig', [
             
             'videos' => $videos,
             'start' => $start

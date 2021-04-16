@@ -89,12 +89,16 @@
               Ajoutez vidéo
             </a>
           </li>
+          
+          {% if is_granted('ROLE_ADMIN') %}
           <li>
             <a href="{{path('users_list')}}">
-        <span class="icon-Clock"></span>
+            <span class="icon-Clock"></span>
               Admin
             </a>
           </li>
+          {% endif %}
+          
           <li>
             {{ render(controller('App\\Controller\\ProfileController::showNotificationsOnMobile'))}}
           </li>
@@ -145,12 +149,14 @@
               Ajoutez vidéo
             </a>
           </li>
+          {% if is_granted('ROLE_ADMIN') %}
           <li class="normal-item-pro">
             <a href="{{path('users_list')}}">
           <span><img src="https://img.icons8.com/color/48/000000/admin-settings-male.png"/></i></span>
               Admin
             </a>
           </li>
+          {% endif %}
         </ul>
     <div class="clearfix"></div>
 </nav>
