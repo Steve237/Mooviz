@@ -12,9 +12,18 @@
         <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}"><!-- iconsmind.com Icons -->
         <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <script src="{{asset("js/loader.js")}}"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css" integrity="sha512-SagM1PHxt5mWDyWARVY6UOdhM5A8J+R1UqIWcGfiwOd+be7uHQagB+JQOmfVZF8jjJQqbyuWzw/KXfb4yqjBkQ==" crossorigin="anonymous"/>
         {% endblock %} 
   </head>
 <body>
+
+  <div id="preloader">
+    <center id="preloadIMG">
+      <img src="{{asset('images/loader1.gif')}}" alt=""/>
+    </center>
+  </div>
+
 <div id="sidebar-bg">
 
 <header id="videohead-pro" class="sticky-header">
@@ -161,12 +170,13 @@
     <div class="clearfix"></div>
 </nav>
 
-
+<main class="animsition">
 {% block body %}{% endblock %}
+</main>
+
 
 </div>
     {% block javascripts %}
-    {{ encore_entry_script_tags('app')}}
     <!-- Required Framework JavaScript -->
 		<script src="{{asset("js/libs/jquery-3.3.1.min.js")}}"></script><!-- jQuery -->
 		<script src="{{asset("js/libs/popper.min.js")}}" defer></script><!-- Bootstrap Popper/Extras JS -->
@@ -195,8 +205,8 @@
     <script src="{{asset("js/contactform.js")}}"></script>
     <script src="{{asset("js/videosingle.js")}}"></script>
     <script src="{{asset("js/video-header.js")}}"></script>
-    <script>
-  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js" integrity="sha512-pYd2QwnzV9JgtoARJf1Ui1q5+p1WHpeAz/M0sUJNprhDviO4zRo12GLlk4/sKBRUCtMHEmjgqo5zcrn8pkdhmQ==" crossorigin="anonymous"></script>
+    <script src="{{asset("js/transition.js")}}"></script>
   {% endblock %}
 </body>
 </html>
