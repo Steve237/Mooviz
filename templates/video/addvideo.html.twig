@@ -33,6 +33,9 @@
                 <div class="form-group">
                     {{form_row(form.category, {'label': 'Catégories', 'placeholder':'Sélectionnez une catégorie', "attr" : {'class':'form-control', 'required':'required'}})}}
                 </div>
+                <div class="form-group">
+                    {{form_row(form.privacy, {'label': 'Visibilité', 'placeholder':'Indiquez si votre vidéo est publique ou privé', "attr" : {'class':'form-control', 'required':'required'}})}}
+                </div>
                 <div class="form-group">{{form_widget(form)}}</div>
                 <button type="submit" class="btn btn_video" onclick="changeClass()">Ajouter video</button>
             </div>

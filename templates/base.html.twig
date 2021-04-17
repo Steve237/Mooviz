@@ -161,12 +161,12 @@
     <div class="clearfix"></div>
 </nav>
 
-<main id="swup">
+
 {% block body %}{% endblock %}
-</main>
 
 </div>
     {% block javascripts %}
+    {{ encore_entry_script_tags('app')}}
     <!-- Required Framework JavaScript -->
 		<script src="{{asset("js/libs/jquery-3.3.1.min.js")}}"></script><!-- jQuery -->
 		<script src="{{asset("js/libs/popper.min.js")}}" defer></script><!-- Bootstrap Popper/Extras JS -->

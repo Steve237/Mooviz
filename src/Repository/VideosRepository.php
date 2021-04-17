@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 /**
  * @method Videos|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,25 +22,41 @@ class VideosRepository extends ServiceEntityRepository
         parent::__construct($registry, Videos::class);
     }
     
-    //affiche vidéos par categories
+    //affiche vidéos publiques par categorie
     public function getVideoByCategory($category) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.category = :val')
+        ->andwhere('v.privacy != :privacy')
         ->setParameter('val', $category)
+        ->setParameter('privacy', 'private')
         ->getQuery()
         ->getResult();
     }
 
-    //Affiche 21 vidéos à la page de profil (nouveautés)
+    //affiche vidéos publiques sur la page accueil
+    public function findAllPublicVideos() {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.privacy != :val')
+        ->setParameter('val', 'private')
+        ->getQuery()
+        ->getResult();
+    }
+
+
+    //affiche vidéos publiques sur la page accueil
     public function getVideos() {
 
         return $this->createQueryBuilder('v')
-        ->setMaxResults(21)
+        ->andwhere('v.privacy != :val')
+        ->setParameter('val', 'private')
         ->orderBy('v.id', 'DESC')
+        ->setMaxResults(20)
         ->getQuery()
         ->getResult();
     }
+
 
         //recupère vidéo par id
       public function showVideo($id) {
@@ -57,7 +74,9 @@ class VideosRepository extends ServiceEntityRepository
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.username = :userid')
+        ->andwhere('v.privacy != :val')
         ->setParameter('userid', $userId)
+        ->setParameter('val', 'private')
         ->orderBy('v.id', 'DESC')
         ->setMaxResults(20)
         ->getQuery()
@@ -71,8 +90,10 @@ class VideosRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
         ->andwhere('v.category = :val')
         ->andwhere('v.id != :id')
+        ->andwhere('v.privacy != :privacy')
         ->setParameter('val', $category)
         ->setParameter('id', $id)
+        ->setParameter('privacy', 'private')
         ->setMaxResults(15)
         ->getQuery()
         ->getResult()

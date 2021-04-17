@@ -9,6 +9,7 @@
 <h6>Vidéos des chaines suivis.</h6>
 <div class="row" id="allchannelsvideos">
   {% for video in videos | slice(0, 20) %}
+  {% if video.privacy == "private" %}
   <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card video-card-text">
       <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
@@ -28,6 +29,7 @@
       </div><!-- close .item-listing-text-skrn -->
     </div><!-- close .item-listing-container-skrn -->
   </div><!-- close .col -->
+  {% endif %}
   {% endfor %}
 </div><!-- close .row -->
 

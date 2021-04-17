@@ -1,4 +1,5 @@
 {% for playlist in playlists | slice(start, 20) %}
+{% if playlist.video.privacy == "private" %}
 <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card video-card-text">
         <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}"><img
@@ -20,4 +21,5 @@
         </div><!-- close .item-listing-text-skrn -->
     </div><!-- close .item-listing-container-skrn -->
 </div><!-- close .col -->
+{% endif %}
 {% endfor %}

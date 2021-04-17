@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Entity\Videos;
 use DateTimeInterface;
+use App\Form\VideoType;
 use App\Entity\Category;
 use App\Entity\Comments;
+use App\Form\UploadType;
 use App\Entity\VideoLike;
 use App\Form\CommentsType;
 use App\Entity\Notifications;
 use App\Form\VideoSearchType;
+use App\Form\VideoDescriptionType;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
@@ -38,7 +41,7 @@ class VideoController extends AbstractController
     */
     public function homePage(VideosRepository $repository, VideobackgroundRepository $repoBackground, CategoryRepository $repo)
     {   
-        $videos = $repository->findAll();
+        $videos = $repository->findAllPublicVideos();
         
         $totalVideos = $repository->countVideos();
         $loadMoreStart = 50;
@@ -98,12 +101,12 @@ class VideoController extends AbstractController
 
 
     /**
-    * Affiche la liste des vidéos sur la page vidéos
+    * Affiche la liste des vidéos sur la page vidéo
     * @Route("/main/listvideo", name="allvideos")
     */
     public function listVideo(VideosRepository $repository, CategoryRepository $repo)
     {   
-        $videos = $repository->findAll();
+        $videos = $repository->findAllPublicVideos();
         $categories = $repo->findAll();
 
         $totalVideos = $repository->countVideos();
@@ -119,7 +122,7 @@ class VideoController extends AbstractController
 
 
     /**
-     * Affiche liste des vidéos par catégories sur la page vidéos
+     * Affiche liste des vidéos par catégorie sur la page vidéo
      * @Route("/main/listmovies/{category}", name="moviebycategory")
      */
     public function moviebyCategory(VideosRepository $repository, Category $category, CategoryRepository $repo)
@@ -151,7 +154,7 @@ class VideoController extends AbstractController
     public function loadMoreVideos(VideosRepository $repo, $start = 50)
     {   
         // on récupère les 50 prochaines vidéos
-        $videos = $repo->findAll();
+        $videos = $repo->findAllPublicVideos();;
 
         return $this->render('video/loadMoreVideos.html.twig', [
             
@@ -184,7 +187,7 @@ class VideoController extends AbstractController
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Affiche contenu d'une vidéo
     */
-    public function movie(VideosRepository $repository, CommentsRepository $repoComment, Videos $video, Category $category, $id, EntityManagerInterface $entity)
+    public function movie(VideosRepository $repository, Videos $video, Category $category, $id, EntityManagerInterface $entity)
     {   
         //ajoute une vue à chaque fois que la page de la vidéo est vu
         $nbreview = $video->getViews();
@@ -409,6 +412,7 @@ class VideoController extends AbstractController
         
             if ($form->isSubmitted() && $form->isValid()) {
 
+                
 
             //upload de la vidéo
             $videoFile = $video->getVideoLink();

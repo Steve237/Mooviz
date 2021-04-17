@@ -100,6 +100,11 @@ class Videos
      */
     private $dislikes;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $privacy;
+
     public function __construct()
     {
     
@@ -451,6 +456,18 @@ class Videos
                 $dislike->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrivacy(): ?bool
+    {
+        return $this->privacy;
+    }
+
+    public function setPrivacy(bool $privacy): self
+    {
+        $this->privacy = $privacy;
 
         return $this;
     }

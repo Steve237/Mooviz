@@ -1,5 +1,5 @@
 {% for video in videos | slice(start, 20) %}
-<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+<div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card">
         <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
                 src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing"
