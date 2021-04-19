@@ -7116,3 +7116,22 @@ a {
 
 }
 
+.website-title {
+
+
+	color:black;
+	margin-top:20px;
+
+}
+
+#uploadspan {
+    
+	display:none;
+}
+
+input[type=file] {
+    
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
