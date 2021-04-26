@@ -50,7 +50,7 @@ class ProfileController extends AbstractController
         if(empty($user_videos)) {
 
             $this->addFlash('no_videos', 'Vous n\'avez ajoutez aucune vidéo pour le moment, merci d\'en ajoutez.');
-            return $this->redirectToRoute('userprofile');
+            return $this->redirectToRoute('user_videos');
         }
 
         return $this->render('user/user_video.html.twig', [
@@ -83,22 +83,6 @@ class ProfileController extends AbstractController
     }
 
 
-
-     /**
-     * @Route("/delete_video/{id}", name="delete_video")
-     * //permet à l'user de supprimer les vidéos qu'il a ajouté
-     */
-    public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
-
-        $entityManager->remove($video);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'votre vidéo a été supprimé avec succès');
-        
-        return $this->redirectToRoute('user_videos');
-        
-        
-    }
     
     /**
      * permet d'afficher toutes les notifications sur écran classique

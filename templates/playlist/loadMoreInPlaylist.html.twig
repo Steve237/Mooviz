@@ -10,9 +10,12 @@
                     {{playlist.video.videotitle}}
                 </a>
             </h5>
-            <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}" class="logo-avatar">
-
-
+            
+            {% if playlist.video.username.imageuser.avatar %}
+                <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}"
+                class="logo-avatar">
+            {% endif %}
+            
             <h5>
                 <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color">
                     {{playlist.video.username.username}}

@@ -4,13 +4,9 @@
 
 <div class="avatar-section">
 
-    {% if avatar %}
+    {% if avatar.user == app.user %}
 
     <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
-
-    {% else %}
-
-    <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-size">
 
     {% endif %}
 
@@ -36,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <button class="btn btn-primary submit-avatar" type="submit">Envoyer</button>
-                            <a href="{{path('userprofile')}}">
+                            <a href="{{path('user_videos')}}">
                                 <div class="btn btn-primary submit-avatar">Annuler</button></div>
                             </a>
                         </div>

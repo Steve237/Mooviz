@@ -412,8 +412,6 @@ class VideoController extends AbstractController
         
             if ($form->isSubmitted() && $form->isValid()) {
 
-                
-
             //upload de la vidéo
             $videoFile = $video->getVideoLink();
             $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
@@ -524,6 +522,38 @@ class VideoController extends AbstractController
     public function showMessageSuccessUpdateVideo() {
 
         $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
+        
+        return $this->redirectToRoute('user_videos');
+        
+    }
+
+
+
+    /**
+     * @Route("/delete_video/{id}", name="delete_video")
+     * //permet à l'user de supprimer les vidéos qu'il a ajouté
+     */
+    public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
+
+        // nom des fichiers image et vidéo
+        $videoName = $video->getVideolink();
+        $videoImage = $video->getVideoimage();
+
+
+        // chemin vers les fichiers
+        $videoFile = 'videos'.$videoName;
+        $imageFile = 'images/upload/'.$videoImage;
+        
+        // suppression de la vidéo et de l'image des dossiers
+        unlink($videoFile);
+        unlink($imageFile);
+
+
+        // suppression de la vidéo de la base de données
+        $entityManager->remove($video);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'votre vidéo a été supprimé avec succès');
         
         return $this->redirectToRoute('user_videos');
         

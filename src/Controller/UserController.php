@@ -19,6 +19,8 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -230,7 +232,6 @@ class UserController extends AbstractController
 
         $avatar = new Avatar();
 
-        $user = new Users();
         $user = $this->getUser();
 
         $form = $this->createForm(AvatarType::class, $avatar);
@@ -240,24 +241,20 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $avatarExist = $repoAvatar->findByUser($user);
-            
-            $file = $avatar->getAvatar();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-            $file->move($this->getParameter('upload_directory'), $fileName);
 
             $date = new \DateTime();
-            $avatar->setAvatar($fileName);
             $avatar->setUser($user);
             $avatar->setUpdatedAt($date);
             $entity->persist($avatar);
             $entity->flush();
-            return $this->redirectToRoute("userprofile");
+            return $this->redirectToRoute("user_videos");
 
         }
 
         return $this->render('user/updateavatar.html.twig', [
             
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'avatar' => $avatar
         ]);
     }
 
@@ -280,7 +277,7 @@ class UserController extends AbstractController
             $entity->persist($avatar);
             $entity->flush();
             
-            return $this->redirectToRoute("userprofile");
+            return $this->redirectToRoute("user_videos");
 
         }
 
@@ -421,7 +418,7 @@ class UserController extends AbstractController
     /**
     * @Route("/main/account_delete/{id}", name="account_delete")
     */
-    public function deleteUser(Users $user, EntityManagerInterface $entity)
+    public function deleteUser(Users $user, EntityManagerInterface $entity, SessionInterface $session)
     {   
         $date = new \Datetime();
 
@@ -451,10 +448,14 @@ class UserController extends AbstractController
             
             $user->getCustomerid(),
             []
-          );
+          
+        );
 
         $entity->remove($user);
         $entity->flush();
+
+        $session = new Session();
+        $session->invalidate();
 
         return $this->redirectToRoute('home');
         

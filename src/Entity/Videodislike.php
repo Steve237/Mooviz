@@ -18,13 +18,13 @@ class Videodislike
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Videos::class, inversedBy="dislikes")
+     * @ORM\ManyToOne(targetEntity=Videos::class, inversedBy="videodislikes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $video;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="dislikes")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videodislikes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

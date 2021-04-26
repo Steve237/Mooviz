@@ -501,6 +501,19 @@ class AdminController extends AbstractController
      */
     public function deleteVideoInAdminspace(Videos $video, EntityManagerInterface $entityManager, \Swift_Mailer $mailer) {
 
+        // nom des fichiers image et vidéo
+        $videoName = $video->getVideolink();
+        $videoImage = $video->getVideoimage();
+
+
+        // chemin vers les fichiers
+        $videoFile = 'videos/'.$videoName;
+        $imageFile = 'images/upload/'.$videoImage;
+        
+        // suppression de la vidéo et de l'image des dossiers
+        unlink($videoFile);
+        unlink($imageFile);
+
         $videotitle = $video->getVideotitle();
         $username = $video->getusername();
         $email = $username->getEmail();

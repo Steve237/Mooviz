@@ -5,18 +5,20 @@
                 src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
         <div class="item-listing-text-skrn">
             <div class="item-listing-text-skrn-vertical-align">
-                <h6 class="videolist-title">
+                <div class="videolist-title">
                     <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
                         {{video.videotitle}}
                     </a>
-                </h6>
+                </div>
                 <div class="avatar-position">
-                    <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
-                    class="rounded-circle avatar-height" id="width-avatar">
+                    {% if video.username.imageuser.avatar %}
+                        <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+                        class="rounded-circle avatar-height" id="width-avatar">
+                    {% endif %}
                     <a href="{{path('channel', {'id': video.username.id})}}"
                     class="link-color mobile-text">
-                        {{video.username.username}}
-                    </a> 
+                    {{video.username.username}}
+                    </a>
                     {% if video.views is not null %}
                     <p class="mobile-text text-position">
                         Vues : {{video.views}}

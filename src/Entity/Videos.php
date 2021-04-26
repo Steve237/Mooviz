@@ -70,51 +70,41 @@ class Videos
     private $views;
 
     /**
-     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="video")
-     */
-    private $likes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="video")
+     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="video", orphanRemoval=true)
      */
     private $playlists;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videos");
      * @ORM\JoinColumn(nullable=false)
      */
     private $username;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="video")
-     */
-    private $comments;
-
-    /**
-     * @ORM\ManyToMany(targetEntity=Likes::class, mappedBy="videoid")
-     */
-    private $videolikes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="video")
-     */
-    private $dislikes;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $privacy;
 
+    /**
+     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="video", orphanRemoval=true)
+     */
+    private $videoLikes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="video", orphanRemoval=true)
+     */
+    private $videodislikes;
+
     public function __construct()
     {
     
         $this->publicationdate = new \DateTime('now');
-        $this->likes = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->videolikes = new ArrayCollection();
-        $this->dislikes = new ArrayCollection();
+        $this->videoLikes = new ArrayCollection();
+        $this->videodislikes = new ArrayCollection();
+       
 
     }
 
@@ -239,74 +229,7 @@ class Videos
         return $this;
     }
 
-    /**
-     * @return Collection|VideoLike[]
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
 
-    public function addLike(VideoLike $like): self
-    {
-        if (!$this->likes->contains($like)) {
-            $this->likes[] = $like;
-            $like->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLike(VideoLike $like): self
-    {
-        if ($this->likes->contains($like)) {
-            $this->likes->removeElement($like);
-            // set the owning side to null (unless already changed)
-            if ($like->getVideo() === $this) {
-                $like->setVideo(null);
-            }
-        }
-
-        return $this;
-    }
-
-    
-    
-    /**
-     * Permet de savoir si un utilisateur a liké
-     * @param Users $user
-     * @return bool
-     */
-    public function isLikedByUser(Users $user) : bool {
-
-        foreach($this->likes as $like) {
-
-            if ($like->getUser() === $user) return true;
-
-        }
-
-        return false;
-    }
-
-    /**
-     * Permet de savoir si un utilisateur a disliké
-     * @param Users $user
-     * @return bool
-     */
-    public function isDislikedByUser(Users $user) : bool {
-
-        foreach($this->dislikes as $dislike) {
-
-            if ($dislike->getUser() === $user) return true;
-
-        }
-
-        return false;
-    }
-    
-    
-    
-    
     /**
      * @return Collection|Playlist[]
      */
@@ -358,8 +281,6 @@ class Videos
 
     }
 
-
-
     public function getUsername(): ?Users
     {
         return $this->username;
@@ -368,94 +289,6 @@ class Videos
     public function setUsername(?Users $username): self
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Comments[]
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
-    }
-
-    public function addComment(Comments $comment): self
-    {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeComment(Comments $comment): self
-    {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
-            // set the owning side to null (unless already changed)
-            if ($comment->getVideo() === $this) {
-                $comment->setVideo(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Likes[]
-     */
-    public function getVideolikes(): Collection
-    {
-        return $this->videolikes;
-    }
-
-    public function addVideolike(Likes $videolike): self
-    {
-        if (!$this->videolikes->contains($videolike)) {
-            $this->videolikes[] = $videolike;
-            $videolike->addVideoid($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideolike(Likes $videolike): self
-    {
-        if ($this->videolikes->removeElement($videolike)) {
-            $videolike->removeVideoid($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Videodislike[]
-     */
-    public function getDislikes(): Collection
-    {
-        return $this->dislikes;
-    }
-
-    public function addDislike(Videodislike $dislike): self
-    {
-        if (!$this->dislikes->contains($dislike)) {
-            $this->dislikes[] = $dislike;
-            $dislike->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDislike(Videodislike $dislike): self
-    {
-        if ($this->dislikes->removeElement($dislike)) {
-            // set the owning side to null (unless already changed)
-            if ($dislike->getVideo() === $this) {
-                $dislike->setVideo(null);
-            }
-        }
 
         return $this;
     }
@@ -470,6 +303,100 @@ class Videos
         $this->privacy = $privacy;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|VideoLike[]
+     */
+    public function getVideoLikes(): Collection
+    {
+        return $this->videoLikes;
+    }
+
+    public function addVideoLike(VideoLike $videoLike): self
+    {
+        if (!$this->videoLikes->contains($videoLike)) {
+            $this->videoLikes[] = $videoLike;
+            $videoLike->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideoLike(VideoLike $videoLike): self
+    {
+        if ($this->videoLikes->removeElement($videoLike)) {
+            // set the owning side to null (unless already changed)
+            if ($videoLike->getVideo() === $this) {
+                $videoLike->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Videodislike[]
+     */
+    public function getVideodislikes(): Collection
+    {
+        return $this->videodislikes;
+    }
+
+    public function addVideodislike(Videodislike $videodislike): self
+    {
+        if (!$this->videodislikes->contains($videodislike)) {
+            $this->videodislikes[] = $videodislike;
+            $videodislike->setVideo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideodislike(Videodislike $videodislike): self
+    {
+        if ($this->videodislikes->removeElement($videodislike)) {
+            // set the owning side to null (unless already changed)
+            if ($videodislike->getVideo() === $this) {
+                $videodislike->setVideo(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+     /**
+     * Permet de savoir si un utilisateur a liké
+     * @param Users $user
+     * @return bool
+     */
+    public function isLikedByUser(Users $user) : bool {
+
+        foreach($this->videoLikes as $videoLike) {
+
+            if ($videoLike->getUser() === $user) return true;
+
+        }
+
+        return false;
+    }
+
+    /**
+     * Permet de savoir si un utilisateur a disliké
+     * @param Users $user
+     * @return bool
+     */
+    public function isDislikedByUser(Users $user) : bool {
+
+        foreach($this->dislikes as $dislike) {
+
+            if ($dislike->getUser() === $user) return true;
+
+        }
+
+        return false;
     }
 
 }

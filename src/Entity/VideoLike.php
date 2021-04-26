@@ -11,19 +11,21 @@ use Doctrine\ORM\Mapping as ORM;
 class VideoLike
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Videos::class, inversedBy="likes")
+     * @ORM\ManyToOne(targetEntity=Videos::class, inversedBy="videoLikes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $video;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="likes")
+     * @ORM\ManyToOne(targetEntity=Users::class, inversedBy="videoLikes")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 

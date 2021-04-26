@@ -18,8 +18,8 @@
             <div id="header-user-notification-list notifications-section">
                 {% for notification in notifications | slice(0, 10) %}
                 <div>
-                    <img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}"
-                        class="rounded-circle avatar-notification-size">
+                    <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}"
+                    class="rounded-circle avatar-notification-size">
                     {{notification.content}} | {{notification.date | date("d/m/y") }}.
                 </div>
                 <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">

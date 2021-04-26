@@ -33,8 +33,10 @@
 				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 					<div class="video-description-block">
 						<div class="video-user-info">
-							<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+							{% if video.username.imageuser %}
+								<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
 								class="rounded-circle user-video-avatar">
+							{% endif %}
 							<a href="{{path('channel', {'id': video.username.id})}}" class="link-color"><span
 									class="text-size">{{video.username.username}}</span></a> |
 							<span class="text-size">followers</span> : {{video.username.followers | length}}
@@ -77,12 +79,12 @@
 								{% if app.user and video.isLikedByUser(app.user) %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="fas fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% else %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="far fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% endif %}
 							</a>
@@ -107,12 +109,12 @@
 								{% if app.user and video.isLikedByUser(app.user) %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="fas fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% else %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="far fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% endif %}
 							</a>
@@ -184,8 +186,10 @@
 									</a>
 								</p>
 								<div class="avatar-position">
-									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
-									class="rounded-circle avatar-height" id="width-avatar">
+									{% if video.username.imageuser %}
+										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+										class="rounded-circle avatar-height" id="width-avatar">
+									{% endif %}
 									<a href="{{path('channel', {'id': video.username.id})}}" class="link-color">
 										{{video.username.username}}
 									</a> |
@@ -216,8 +220,10 @@
 									</a>
 								</p>
 								<div class="avatar-position">
-									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
-									class="rounded-circle avatar-height" id="width-avatar">
+									{% if video.username.imageuser %}
+										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+										class="rounded-circle avatar-height" id="width-avatar">
+									{% endif %}
 									<a href="{{path('second_player', {'id': video.username.id, 'idcategory' : video.category.id})}}"
 									class="color-link">
 										{{video.username.username}}
