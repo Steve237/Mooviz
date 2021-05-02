@@ -32,7 +32,7 @@ class ProfileController extends AbstractController
 
 
     /**
-     * @Route("/user_videos", name="user_videos")
+     * @Route("/main/user_videos", name="user_videos")
      * permet à l'user de voir les vidéos qu'il a ajouté
      */
     public function userVideo(VideosRepository $videorepo) {
@@ -40,18 +40,14 @@ class ProfileController extends AbstractController
         
         $userName = $this->getUser();
 
+        // récupère toutes les vidéos de l'user
         $videos = $videorepo->getVideoByUser($userName);
-        
-        $user_videos =  $videorepo->getVideoByUser($userName);
 
+        // minimum de vidéos à partir duquel s'affiche bouton load more
         $loadMoreStart = 20;
+        
+        // nombre total videos de l'user
         $totalUserVideos = $videorepo->countUserVideos($userName);
-
-        if(empty($user_videos)) {
-
-            $this->addFlash('no_videos', 'Vous n\'avez ajoutez aucune vidéo pour le moment, merci d\'en ajoutez.');
-            return $this->redirectToRoute('user_videos');
-        }
 
         return $this->render('user/user_video.html.twig', [
             
@@ -66,7 +62,7 @@ class ProfileController extends AbstractController
 
      /**
      * Permet à l'user de charger plus de vidéos dans sa liste
-     * @Route("/loadMoreUserVideos/{start}", name="loadMoreUserVideos", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreUserVideos/{start}", name="loadMoreUserVideos", requirements={"start": "\d+"})
      */
     public function loadMoreUserVideos(VideosRepository $videorepo, $start = 20)
     {   
@@ -110,7 +106,7 @@ class ProfileController extends AbstractController
 
     /**
     * Permet de charger plus de notifications
-    * @Route("/loadMoreUserNotifications/{start}", name="loadMoreUserNotifications", requirements={"start": "\d+"})
+    * @Route("/main/loadMoreUserNotifications/{start}", name="loadMoreUserNotifications", requirements={"start": "\d+"})
     */
     public function loadMoreUserNotifications(NotificationsRepository $repo, $start = 10)
     {   
@@ -148,7 +144,7 @@ class ProfileController extends AbstractController
 
     /**
      * //permet d'afficher toutes les notifications sur mobile
-     * @Route("/mobile_notifications", name="mobile_notifications")
+     * @Route("/main/mobile_notifications", name="mobile_notifications")
      */
     public function showNotifOnMobile(NotificationsRepository $repo) {
 
@@ -168,7 +164,7 @@ class ProfileController extends AbstractController
 
     /**
     * Permet de charger plus de notifications pour les mobiles
-    * @Route("/loadMoreMobileNotifications/{start}", name="loadMoreMobileNotifications", requirements={"start": "\d+"})
+    * @Route("/main/loadMoreMobileNotifications/{start}", name="loadMoreMobileNotifications", requirements={"start": "\d+"})
     */
     public function loadMoreMobileNotifications(NotificationsRepository $repo, $start = 10)
     {   
@@ -185,7 +181,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/notification_delete/{id}", name="notif_delete")
+     * @Route("/main/notification_delete/{id}", name="notif_delete")
      * //permet de supprimer les notifications marqué comme vu
      */
     public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity, Request $request) {
@@ -204,8 +200,8 @@ class ProfileController extends AbstractController
 
     
     /**
-     * @Route("/notifications_delete", name="notif_delete_all")
-     * //permet de supprimer toutes les notifications de l'user
+     * @Route("/main/notifications_delete", name="notif_delete_all")
+     * //permet de supprimer toutes les notifications en un clic 
      */
     public function deleteAllNotifications(NotificationsRepository $repo, EntityManagerInterface $entity) {
 
@@ -281,12 +277,13 @@ class ProfileController extends AbstractController
 
     /**
     * Permet de recharger résultat supplémentaire quand user cherche vidéo dans sa liste de vidéos
-    * @Route("/loadMoreVideosResult/{query}/{start}", name="loadMoreVideosResult", requirements={"start": "\d+"})
+    * @Route("/main/loadMoreVideosResult/{query}/{start}", name="loadMoreVideosResult", requirements={"start": "\d+"})
     */
     public function loadMoreVideosResult(VideosRepository $repository, $query, $start = 20)
     {   
         $user = $this->getUser();
 
+        // on charge plus de vidéos de l'user correspondant à la requête formulé dans la searchbar
         $videos = $repository->userVideoSearch($query, $user);
 
 

@@ -29,6 +29,8 @@ class AvatarRepository extends ServiceEntityRepository
             ->getResult();
     }
    
+    
+    
     /*
     public function findOneBySomeField($value): ?Avatar
     {

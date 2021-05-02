@@ -6781,7 +6781,7 @@ a {
 	text-align: right;
 }
 
-.shared-video-section {
+#shared-video-section {
 
 	margin: auto;
 }
@@ -7134,4 +7134,14 @@ input[type=file] {
 	white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.number-followers {
+
+	margin-top:10px;
+}
+
+.description-block {
+
+	margin-top:-50px;
 }

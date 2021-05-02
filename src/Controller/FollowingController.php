@@ -9,6 +9,7 @@ use App\Repository\UsersRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\PlaylistRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,23 +20,28 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class FollowingController extends AbstractController
 {
     /**
-     * @Route("/following/{id}", name="following")
+     * @Route("/main/following/{id}", name="following")
      * //permet de s'abonner à un user
      */
     public function follow(Users $userToFollow, EntityManagerInterface $entity)
     {
+        // on récupère l'user connecté
         $currentUser = $this->getUser();
         $username = $currentUser->getUsername();
 
+        // on crée une nouvelle instance de notifications
         $notification = new Notifications();
 
+        // on vérifie si l'user à suivre est différent de celui qui veut le suivre
         if($userToFollow->getId() !== $currentUser) {
 
             $date_time = new \DateTime();
             
+            // On réalise la jointure entre les deux
             $currentUser->getFollowing()->add($userToFollow);
             $entity->flush();
             
+            // on envoie une notif à l'user suivi pour indiquer qu'il a un nouveau membre qui le suit
             $notification->setOrigin($currentUser);
             $notification->setDestination($userToFollow);
             $notification->setContent($username. " s'est abonné à votre chaine.");
@@ -57,8 +63,8 @@ class FollowingController extends AbstractController
 
 
     /**
-     * @Route("/unfollowing/{id}", name="unfollowing")
-     * //permet de se désabonner
+     * @Route("/main/unfollowing/{id}", name="unfollowing")
+     * //permet de se désabonner d'un user
      */
     public function unfollow(Users $userToUnFollow, EntityManagerInterface $entity)
     {
@@ -71,15 +77,15 @@ class FollowingController extends AbstractController
 
             return $this->json([
                 'code' => 200, 
-                'message' => 'user ajouté'
+                'message' => 'abonnement annulé'
             ], 200);
     }
 
      /**
-     * @Route("/followed_videos_list", name="followed_videos_list")
+     * @Route("/main/followed_videos_list", name="followed_videos_list")
      * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
      */
-    public function showFollowingVideo(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
+    public function showFollowingVideo(TokenStorageInterface $tokenStorage, VideosRepository $videorepo) {
 
         $currentUser = $tokenStorage->getToken()->getUser();
 
@@ -95,9 +101,8 @@ class FollowingController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $following_videos = $videorepo->findAllByUsers($currentUser->getFollowing());
 
-        if(empty($following_videos)) {
+        if(empty($videos)) {
 
             $this->addFlash('no_channels', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
             return $this->redirectToRoute('allvideos');
@@ -115,24 +120,25 @@ class FollowingController extends AbstractController
     }
 
     /**
-     * @Route("/channels", name="channels_list")
+     * @Route("/main/channels", name="channels_list")
      * //permet d'accéder à la liste des chaînes auxquelles on s'est abonné
      */
-    public function listChannel(AvatarRepository $repoAvatar, UsersRepository $repoUser){
+    public function listChannel(AvatarRepository $repoAvatar, VideosRepository $repo){
 
         
         $user = $this->getUser();
 
+        // récupère les utilisateurs auxquels il est abonné
         $follow = $user->getFollowing();
-        
-        $videos = new Videos();
 
+        // récupère avatar des users auxquels il est abonné
         $avatars = $repoAvatar->findByUser($follow);
 
-        $userChannel = $repoUser->findUser($follow);
+        // récupère les chaines auxquels il est abonné
+        $userChannels = $repo->findAllByUsers($follow);
         
-        //Si user n'a aucune chaine renvoie message flash pour l'informer
-        if(empty($avatars)) {
+        //Si user n'est abonné à aucune chaine renvoie message flash pour l'informer
+        if(empty($userChannels)) {
 
             $this->addFlash('no_channels', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
             return $this->redirectToRoute('allvideos');
@@ -142,9 +148,7 @@ class FollowingController extends AbstractController
         $loadMoreStart = 20;
 
         return $this->render('following/following_channel.html.twig', [
-            "userChannel" => $userChannel,
             "user" => $user,
-            "videos" => $videos,
             "avatars" => $avatars,
             "loadMoreStart" => $loadMoreStart
         ]);
@@ -153,14 +157,33 @@ class FollowingController extends AbstractController
 
 
      /**
-     * @Route("/channel/{id}", name="channel")
+     * @Route("/main/channel/{id}", name="channel")
      * //permet d'accéder à la liste des vidéos par chaine
      */
     public function Channel(Users $user, VideosRepository $repoVideo){
 
+        $user = $this->getUser();
+
+        // récupère les utilisateurs auxquels il est abonné
+        $follow = $user->getFollowing();
+
+        $userChannels = $repoVideo->findAllByUsers($follow);
+
+        //Si user n'est abonné à aucune chaine renvoie message flash pour l'informer
+        if(empty($userChannels)) {
+
+            $this->addFlash('no_channels', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
+            return $this->redirectToRoute('allvideos');
+
+        }
+
+        // récupère toutes les vidéos de l'user à qui appartient la chaine
         $videos = $repoVideo->getVideoByUser($user);
         
+        // récupère total de vidéos d'un user
         $totalVideosByUser = $repoVideo->countUserVideos($user);
+
+        // minimum de vidéos pour afficher button load more
         $loadMoreStart = 20;
 
         return $this->render('following/videos_by_channel.html.twig', [
@@ -175,7 +198,7 @@ class FollowingController extends AbstractController
 
      /**
      * Permet de charger plus de vidéos dans la liste des vidéos des membres suivis
-     * @Route("/loadMoreFollowingVideos/{start}", name="loadMoreFollowingVideos", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreFollowingVideos/{start}", name="loadMoreFollowingVideos", requirements={"start": "\d+"})
      */
     public function loadMoreFollowingVideos(VideosRepository $videorepo, $start = 20)
     {   
@@ -195,25 +218,20 @@ class FollowingController extends AbstractController
 
     /**
      * Permet de charger plus de chaines dans la liste des chaines
-     * @Route("/loadMoreChannels/{start}", name="loadMoreChannels", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreChannels/{start}", name="loadMoreChannels", requirements={"start": "\d+"})
      */
-    public function loadMoreChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, $start = 20)
+    public function loadMoreChannels(AvatarRepository $repoAvatar, $start = 20)
     {   
         $user = $this->getUser();
 
         $follow = $user->getFollowing();
         
-        $videos = new Videos();
-
         $avatars = $repoAvatar->findByUser($follow);
 
-        $userChannel = $repoUser->findUser($follow);
 
         return $this->render('following/loadMoreChannels.html.twig', [
             
-            "userChannel" => $userChannel,
             "user" => $user,
-            "videos" => $videos,
             "avatars" => $avatars,
             'start' => $start
         ]);
@@ -222,12 +240,11 @@ class FollowingController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos dans la liste des vidéos par chaine
-     * @Route("/loadMoreVideosByChannel/{id}/{start}", name="loadMoreVideosByChannel", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreVideosByChannel/{id}/{start}", name="loadMoreVideosByChannel", requirements={"start": "\d+"})
      */
     public function loadMoreVideoByChannel(Users $user, VideosRepository $repoVideo, $start = 20)
     {   
         $videos = $repoVideo->getVideoByUser($user);
-
 
         return $this->render('following/loadMoreVideosByChannel.html.twig', [
             

@@ -1,0 +1,64 @@
+Liste des taches
+
+Renvoi vers page erreur quand user cherche à accéder à rôle admin : ok.
+Code dans le controller admin : ok;
+Code dans le authcontroller: ok
+code dans le billingcontroller: ok;
+code dans le contactcontroller: ok;
+code dans le faqcontroller: ok;
+code dans le followincontroller : ok;
+code dans le homecontroller: ok;
+code dans le playlistcontroller: ok;
+code dans le profilcontroller: ok;
+code dans le subscriptioncontroller: ok;
+code dans le usercontroller : ok;
+code dans le videocontroller : ok;
+
+Test des fonctionnalités du site:
+Inscription : 
+test avec pseudo et mail déjà existant: ok;
+test avec mauvais mot de passe (pas identique) : ok
+paiement avec mauvais numéro : ok;
+paiement avec bon numéro ok;
+tentative de connexion sans activation du compte: ok (erreur 403 retourné);
+tentative de connexion suite activation compte: ok;
+processus activation compte: ok;
+déconnexion: ok;
+processus de récupération de mot de passe: ok
+envoi mail récup password : ok;
+si lien invalide récup password, affiche erreur : ok;
+mis à jour du mot de passe : ok;
+
+// inscription, connexion, déconnexion, paiement, activation du compte, récup mdp : ok;
+
+Page accueil :
+affichage Background vidéo: ok;
+affichage liste des vidéos: ok;
+affichage video par catégorie : ok;
+load more sur la liste principale des vidéos: ok;
+load more: vidéos par catégorie : ok;
+affichage vidéo en particulier: ok;
+download vidéo: ok;
+transfert sur deuxième lecteur vidéo ok;
+bouton like, playlist, switch, follow ok sur la page video principale et la page video secondaire;
+partage sur facebook: ok;
+Test likes différents users sur même vidéo: ok;
+lecteur vidéo de partage: ok;
+bouton back: lecteur vidéo de partage:ok;
+accès à la page vidéos: ok;
+load more sur la page liste vidéos ok;
+load sur la page vidéos par categories: ok;
+accès à la page abonnements: ok;
+accès à la page abonnement quand plus aucun follower: ok;
+accès à la page chaine quand plus aucune chaine suivi: follower: ok;
+accès page chaine avec vidéos suivis: ok;
+accès à la liste des vidéos par chaine: ok;
+accès à la liste des vidéos par chaine quand aucune page suivi:ok;
+bouton load more dans la liste des vidéos par chaine: ok;
+empêcher d'accéder à la page liste des vidéos par chaine si abonné à aucune chaine: ok;
+accès à la page playlist: ok;
+impossible d'accéder à la page playlist si aucune vidéo en playlist ok;
+fonction ajouter/retirer de la playlist:ok;
+ajouter vidéo: ok;
+suppression vidéo: ok;
+vidéo longue ne dépasse pas du formulaire upload:

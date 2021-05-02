@@ -34,10 +34,12 @@
 					<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 						<div class="video-description-block">
 							<div class="video-user-info">
-								<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+								{% if video.username.imageuser %}
+									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
 									class="rounded-circle user-video-avatar">
+								{% endif %}
 								<a href="{{path('channel', {'id': video.username.id})}}" class="link-color"><span
-										class="text-size">{{video.username.username}}</span></a>
+								class="text-size">{{video.username.username}}</span></a>
 								| <span class="text-size">followers</span> : {{video.username.followers | length}}
 								<span class="switch-video"><a
 										href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><button
@@ -86,12 +88,12 @@
 								{% if app.user and video.isLikedByUser(app.user) %}
 								<button type="button" class="btn btn-xs-small btn-secondary">
 									<i class="fas fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% else %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="far fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% endif %}
 							</a>
@@ -115,12 +117,12 @@
 								{% if app.user and video.isLikedByUser(app.user) %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="fas fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% else %}
 								<button type="button" class="btn btn-small btn-secondary">
 									<i class="far fa-thumbs-up"></i>
-									<span class="js-likes">{{video.likes | length}}</span>
+									<span class="js-likes">{{video.videoLikes | length}}</span>
 								</button>
 								{% endif %}
 							</a>
@@ -159,7 +161,11 @@
 				</div>
 
 				<div class="movie-details-section videos-section">
-					<h2>Voir aussi</h2>
+					{% if user_videos != null %}
+					{% if newvideos != null %}
+						<h2>Voir aussi</h2>
+					{% endif %}
+					{% endif %}
 					<div class="row">
 						{% if user_videos is null %}
 						{% for video in newvideos %}
@@ -208,7 +214,7 @@
 											</a>
 										</p>
 										<div class="avatar-position">
-											{% if video.username.imageuser.avatar %}
+											{% if video.username.imageuser %}
 												<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
 												class="rounded-circle avatar-height" id="width-avatar">
 											{% endif %}
@@ -290,7 +296,7 @@
 					preloaderFillColor: "#FFFFFF",
 					addKeyboardSupport: "yes",
 					autoScale: "yes",
-					showButtonsToolTip: "yes",
+					showButtonsToolTip: "no",
 					stopVideoWhenPlayComplete: "no",
 					playAfterVideoStop: "yes",
 					autoPlay: "no",
@@ -308,17 +314,17 @@
 					posterBackgroundColor: "#000000",
 					buttonsToolTipFontColor: "#FFFFFF",
 					//logo settings
-					showLogo: "yes",
+					showLogo: "no",
 					logoPath: "",
 					hideLogoWithController: "yes",
 					logoPosition: "topRight",
-					logoLink: "http://www.webdesign-flash.ro/",
+					logoLink: "",
 					logoPath: "",
 					logoMargins: 10,
 					//playlists/categories settings
 					showPlaylistsSearchInput: "no",
 					usePlaylistsSelectBox: "no",
-					showPlaylistsButtonAndPlaylists: "yes",
+					showPlaylistsButtonAndPlaylists: "no",
 					showPlaylistsByDefault: "no",
 					thumbnailSelectedType: "opacity",
 					startAtPlaylist: 0,
@@ -339,7 +345,7 @@
 					showShuffleButton: "yes",
 					showPlaylistOnFullScreen: "no",
 					showNextAndPrevButtons: "yes",
-					showThumbnail: "yes",
+					showThumbnail: "no",
 					showOnlyThumbnail: "no",
 					forceDisableDownloadButtonForFolder: "yes",
 					addMouseWheelSupport: "yes",
@@ -384,15 +390,15 @@
 					showPlaybackRateButton: "yes",
 					showVolumeButton: "yes",
 					showTime: "yes",
-					showInfoButton: "yes",
+					showInfoButton: "no",
 					showDownloadButton: "yes",
-					showShareButton: "yes",
-					showEmbedButton: "yes",
+					showShareButton: "no",
+					showEmbedButton: "no",
 					showChromecastButton: "yes",
 					showFullScreenButton: "yes",
 					disableVideoScrubber: "no",
 					showScrubberWhenControllerIsHidden: "yes",
-					showMainScrubberToolTipLabel: "yes",
+					showMainScrubberToolTipLabel: "no",
 					repeatBackground: "no",
 					controllerHeight: 42,
 					controllerHideDelay: 3,
@@ -439,7 +445,7 @@
 					lightBoxBackgroundOpacity: .6,
 					lightBoxBackgroundColor: "#000000",
 					//sticky on scroll
-					stickyOnScroll: "no",
+					stickyOnScroll: "yes",
 					stickyOnScrollShowOpener: "yes",
 					stickyOnScrollWidth: "700",
 					stickyOnScrollHeight: "394",
@@ -488,7 +494,7 @@
 					thumbnailsPreviewLabelBackgroundColor: "#666",
 					thumbnailsPreviewLabelFontColor: "#FFF",
 					// context menu
-					showContextmenu: 'yes',
+					showContextmenu: 'no',
 					showScriptDeveloper: "no",
 					contextMenuBackgroundColor: "#ebebeb",
 					contextMenuBorderColor: "#ebebeb",

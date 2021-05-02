@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}">
 	<!-- iconsmind.com Icons -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 	{% endblock %}
 </head>
 
@@ -27,7 +27,7 @@
 		<h3 class="share-page-site-title">Mylion</h3>
 	</a>
 	{% endif %}
-	<main id="col-main-with-sidebar" class="shared-video-section">
+	<main id="col-main-with-sidebar shared-video-section">
 		<section class="share-video-container">
 			<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
 				Sorry your browser can't support video tag.
@@ -87,18 +87,20 @@
 				</div>
 			</div>
 		</section>
-		<div id="movie-detail-rating share-video-description">
+		<div id="movie-detail-rating" class="share-video-description">
 			<div class="dashboard-container">
 				<div class="row">
 					<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 						<div class="video-description-block">
 							<div class="video-user-info">
-								<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
-								class="rounded-circle user-video-avatar">
+								{% if video.username.imageuser %}
+									<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+									class="rounded-circle user-video-avatar">
+								{% endif %}
 								<a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
 									{{video.username.username}}
 								</a> 
-								<div>
+								<div class="number-followers">
 									followers : {{video.username.followers | length}}
 								</div>
 							</div>
@@ -122,7 +124,7 @@
 			</div><!-- close .dashboard-container -->
 		</div><!-- close #movie-detail-rating -->
 
-		<div class="dashboard-container share-video-description">
+		<div class="dashboard-container share-video-description description-block">
 			<div class="movie-details-section">
 				<h2>Description</h2>
 				<p class="video-description">{{video.videodescription}}</p>

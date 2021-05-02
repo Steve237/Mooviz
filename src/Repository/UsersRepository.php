@@ -21,7 +21,7 @@ class UsersRepository extends ServiceEntityRepository
         parent::__construct($registry, Users::class);
     }
   
-
+    // permet de récupérer un user
     public function findUser($user)
     {
         return $this->createQueryBuilder('u')
@@ -76,14 +76,6 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
 
-     //permet de réaliser la pagination
-     public function findAllWithPagination() : Query
-     {
-
-        return $this->createQueryBuilder('u')
-            ->getQuery();
-        
-    }
   
      // assure la recherche des utilisateurs par nom
      public function userSearch($username) {

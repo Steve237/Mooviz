@@ -30,7 +30,7 @@
 					<li class="normal-item-pro">
 					</li>
 					<li class="normal-item-pro current-menu-item">
-						<a href="{{path('tarif')}}">Tarifs</a>
+						<a href="{{path('tarifs')}}">Tarifs</a>
 					</li>
 					<li class="normal-item-pro">
 						<a href="{{path('faqs')}}">FAQs</a>
@@ -41,8 +41,10 @@
 				</ul>
 			</nav>
 
-			<a href="{{path('inscription', {'plan' : 'starter'})}}"
-				class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
+			<a href="{{path('tarifs')}}"
+				class="btn btn-header-pro btn-green-pro noselect">
+				Essai gratuit
+			</a>
 
 			<a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
 
@@ -58,7 +60,7 @@
 					<a href="{{path('home')}}">Accueil</a>
 				</li>
 				<li>
-					<a href="{{path('tarif')}}">Tarifs</a>
+					<a href="{{path('tarifs')}}">Tarifs</a>
 				</li>
 				<li>
 					<a href="{{path('faqs')}}">Faqs</a>

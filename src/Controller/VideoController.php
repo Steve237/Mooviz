@@ -2,34 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
+
 use App\Entity\Videos;
 use DateTimeInterface;
 use App\Form\VideoType;
 use App\Entity\Category;
-use App\Entity\Comments;
 use App\Form\UploadType;
 use App\Entity\VideoLike;
-use App\Form\CommentsType;
 use App\Entity\Notifications;
-use App\Form\VideoSearchType;
 use App\Form\VideoDescriptionType;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use App\Repository\CategoryRepository;
-use App\Repository\CommentsRepository;
 use App\Repository\VideoLikeRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\VideobackgroundRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
@@ -47,13 +39,12 @@ class VideoController extends AbstractController
         $loadMoreStart = 50;
            
 
+        // retourne les vidéos à la une sur la page accueil
         $firstBackgroundVideo = $repoBackground->findById(1);
         $secondBackgroundVideo = $repoBackground->findById(2);
     
         $categories = $repo->findAll();
-        
-
-        $returnVideoByCategory = false;
+    
 
         return $this->render('video/videolist.html.twig', [
             
@@ -61,7 +52,6 @@ class VideoController extends AbstractController
             "categories" => $categories,
             "firstBackgroundVideo" => $firstBackgroundVideo,
             "secondBackgroundVideo" => $secondBackgroundVideo,
-            "returnVideoByCategory" => $returnVideoByCategory,
             "totalVideos" => $totalVideos,
             "loadMoreStart" => $loadMoreStart
            
@@ -149,7 +139,7 @@ class VideoController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos dans la page accueil
-     * @Route("/loadMoreVideos/{start}", name="loadMoreVideos", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreVideos/{start}", name="loadMoreVideos", requirements={"start": "\d+"})
      */
     public function loadMoreVideos(VideosRepository $repo, $start = 50)
     {   
@@ -165,7 +155,7 @@ class VideoController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos par catégorie
-     * @Route("/loadMoreVideosByCategory/{category}/{start}", name="loadMoreVideosByCategory", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreVideosByCategory/{category}/{start}", name="loadMoreVideosByCategory", requirements={"start": "\d+"})
      */
     public function loadMoreVideosByCategory(VideosRepository $repo, Category $category, $start = 50)
     {   
@@ -221,7 +211,7 @@ class VideoController extends AbstractController
 
     /**
     * Permet de partager une vidéo
-    * @Route("/share/movie/{id}", name="partage")
+    * @Route("/main/share/movie/{id}", name="partage")
     * //Permet de partager une vidéo.
     */
     public function shareMovie(Videos $video, EntityManagerInterface $entity)
@@ -240,12 +230,12 @@ class VideoController extends AbstractController
 
     /**
     * Permet de basculer sur un autre lecteur vidéo
-    * @Route("main/switched_player/movie/{id}/category/{idcategory}", name="second_player")
+    * @Route("/main/switched_player/movie/{id}/category/{idcategory}", name="second_player")
     * @ParamConverter("video", options={"mapping": {"id" : "id"}})
     * @ParamConverter("category", options={"mapping": {"idcategory" : "id"}})
     * //Permet d'afficher contenu de la vidéo sur une autre page.
     */
-    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, Category $category, VideosRepository $repository)
+    public function SwitchToSecondVideoPlayer(Videos $video, EntityManagerInterface $entity, Category $category, VideosRepository $repository, AvatarRepository $repoAvatar)
     {   
         $nbreview = $video->getViews();
         $nbreview++;
@@ -254,20 +244,21 @@ class VideoController extends AbstractController
         $entity->flush();
 
         $user = $this->getUser();
-        $userId = $user->getId();
+
+        // retourne video de l'user à qui appartiennt la vidéo en cours
+        $user_videos = $repository->showVideoByUserId($user);
+        
+        
+        // retourne 10 dernières vidéos
+        $newvideos = $repository->getVideos();
 
         $videos = $repository->showVideoByCategory($category, $video);
 
-        
-        $user_videos = $repository->showVideoByUserId($userId);
-
-        $newvideos = $repository->getVideos();
-
         return $this->render('video/second_player.html.twig', [
             "video" => $video,
-            "videos" => $videos,
             "newvideos" => $newvideos,
-            "user_videos" => $user_videos
+            "user_videos" => $user_videos,
+            "videos" => $videos
 
         ]);
     }
@@ -374,7 +365,7 @@ class VideoController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos dans la page des résultats de recherche
-     * @Route("/loadMoreResult/{query}/{start}", name="loadMoreResult", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreResult/{query}/{start}", name="loadMoreResult", requirements={"start": "\d+"})
      */
     public function loadMoreResult(VideosRepository $repository, $query, $start = 20)
     {   
@@ -400,8 +391,6 @@ class VideoController extends AbstractController
 
             $video = new Videos();
         }
-
-        $notification = new Notifications();
 
         $user = $this->getUser();
 
@@ -505,7 +494,7 @@ class VideoController extends AbstractController
     /**
      *  @Route("/main/upload_video_successfull", name="success_upload")
      * //cette fonction redirige vers la page des vidéos user avec message success
-     * //route cryptée afin que personne ne puisse la deviner
+     * //
      */
     public function showMessageSuccessUpload() {
 
@@ -530,7 +519,7 @@ class VideoController extends AbstractController
 
 
     /**
-     * @Route("/delete_video/{id}", name="delete_video")
+     * @Route("/main/delete_video/{id}", name="delete_video")
      * //permet à l'user de supprimer les vidéos qu'il a ajouté
      */
     public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {

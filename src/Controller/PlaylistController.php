@@ -7,9 +7,6 @@ use App\Entity\Videos;
 use App\Entity\Playlist;
 use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,13 +19,15 @@ class PlaylistController extends AbstractController
     /**
      * @Route("/main/playlist", name="playlistuser")
      */
-    public function userPlaylist(PlaylistRepository $repository, PaginatorInterface $paginator, Request $request) {   
+    public function userPlaylist(PlaylistRepository $repository) {   
     
         
         $user = $this->getUser();
 
+        // on récupère les vidéos de la playlist
         $playlists = $repository->showVideoByUser($user);
 
+            // si aucune vidéo on affiche ce message
             if(empty($playlists)){
 
                 $this->addFlash('no_channels', 'Vous n\'avez ajouté aucune vidéo à votre playlist.');
@@ -36,6 +35,7 @@ class PlaylistController extends AbstractController
 
             }
 
+            // minimum de vidéos pour afficher button load more
             $loadMoreStart = 20;
 
         return $this->render('playlist/playlist.html.twig', [
@@ -47,11 +47,11 @@ class PlaylistController extends AbstractController
     } 
     
     /**
-     * @Route("/main/addplaylist/user/{id}/video/{idvideo}", name="playlist")
+     * @Route("/main/updateplaylist/user/{id}/video/{idvideo}", name="playlist")
      * @ParamConverter("user", options={"mapping": {"id" : "id"}})
     *  @ParamConverter("video", options={"mapping": {"idvideo" : "id"}})
      */
-    public function index(Users $user, Videos $video, EntityManagerInterface $entity, PlaylistRepository $playlistRepo) {
+    public function removeToPlaylist(Users $user, Videos $video, EntityManagerInterface $entity, PlaylistRepository $playlistRepo) {
 
         
         $user = $this->getUser();
@@ -94,7 +94,7 @@ class PlaylistController extends AbstractController
 
      /**
      * Permet de charger plus de vidéos dans la playlist
-     * @Route("/loadMoreVideosInPlaylist/{start}", name="loadMoreVideosInPlaylist", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreVideosInPlaylist/{start}", name="loadMoreVideosInPlaylist", requirements={"start": "\d+"})
      */
     public function loadMoreVideosInPlaylist(PlaylistRepository $repository, $start = 20)
     {   

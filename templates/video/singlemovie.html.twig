@@ -168,7 +168,11 @@
 		</div>
 
 		<div class="movie-details-section videos-section">
-			<h2>Voir aussi</h2>
+			{% if user_videos != null %}
+			{% if newvideos != null %}
+				<h2>Voir aussi</h2>
+			{% endif %}
+			{% endif %}
 			<div class="row">
 				{% if user_videos is null %}
 				{% for video in newvideos %}
@@ -276,7 +280,7 @@
 			preloaderFillColor: "#FFFFFF",
 			addKeyboardSupport: "yes",
 			autoScale: "yes",
-			showButtonsToolTip: "yes",
+			showButtonsToolTip: "no",
 			stopVideoWhenPlayComplete: "no",
 			playAfterVideoStop: "yes",
 			autoPlay: "no",
@@ -292,19 +296,19 @@
 			backgroundColor: "#eeeeee",
 			videoBackgroundColor: "#000000",
 			posterBackgroundColor: "#000000",
-			buttonsToolTipFontColor: "#FFFFFF",
+			buttonsToolTipFontColor: "black",
 			//logo settings
-			showLogo: "yes",
+			showLogo: "no",
 			logoPath: "",
-			hideLogoWithController: "yes",
+			hideLogoWithController: "no",
 			logoPosition: "topRight",
-			logoLink: "http://www.webdesign-flash.ro/",
+			logoLink: "",
 			logoPath: "",
 			logoMargins: 10,
 			//playlists/categories settings
 			showPlaylistsSearchInput: "no",
 			usePlaylistsSelectBox: "no",
-			showPlaylistsButtonAndPlaylists: "yes",
+			showPlaylistsButtonAndPlaylists: "no",
 			showPlaylistsByDefault: "no",
 			thumbnailSelectedType: "opacity",
 			startAtPlaylist: 0,
@@ -370,7 +374,7 @@
 			showPlaybackRateButton: "yes",
 			showVolumeButton: "yes",
 			showTime: "yes",
-			showInfoButton: "yes",
+			showInfoButton: "no",
 			showDownloadButton: "yes",
 			showShareButton: "no",
 			showEmbedButton: "no",
@@ -378,7 +382,7 @@
 			showFullScreenButton: "yes",
 			disableVideoScrubber: "no",
 			showScrubberWhenControllerIsHidden: "yes",
-			showMainScrubberToolTipLabel: "yes",
+			showMainScrubberToolTipLabel: "no",
 			repeatBackground: "no",
 			controllerHeight: 42,
 			controllerHideDelay: 3,
@@ -395,7 +399,7 @@
 			youtubeQualityButtonNormalColor: "#494949",
 			youtubeQualityButtonSelectedColor: "#FFFFFF",
 			scrubbersToolTipLabelBackgroundColor: "#494949",
-			scrubbersToolTipLabelFontColor: "#FFFFFF",
+			scrubbersToolTipLabelFontColor: "black",
 			//advertisement on pause window
 			aopwTitle: "Advertisement",
 			aopwWidth: 400,
@@ -416,7 +420,7 @@
 			inputColor: "#333333",
 			//login
 			playIfLoggedIn: "no",
-			playIfLoggedInMessage: "Please <a href='https://google.com' target='_blank'>login</a> to play this video.",
+			playIfLoggedInMessage: "",
 			//audio visualizer
 			audioVisualizerLinesColor: "#0099FF",
 			audioVisualizerCircleColor: "#FFFFFF",
@@ -425,7 +429,7 @@
 			lightBoxBackgroundOpacity: .6,
 			lightBoxBackgroundColor: "#000000",
 			//sticky on scroll
-			stickyOnScroll: "no",
+			stickyOnScroll: "yes",
 			stickyOnScrollShowOpener: "yes",
 			stickyOnScrollWidth: "700",
 			stickyOnScrollHeight: "394",
@@ -451,7 +455,7 @@
 			//ads
 			openNewPageAtTheEndOfTheAds: "no",
 			adsButtonsPosition: "left",
-			skipToVideoText: "You can skip to video in: ",
+			skipToVideoText: "",
 			skipToVideoButtonText: "Skip Ad",
 			adsTextNormalColor: "#FFFFFF",
 			adsTextSelectedColor: "#494949",
@@ -474,7 +478,7 @@
 			thumbnailsPreviewLabelBackgroundColor: "#666",
 			thumbnailsPreviewLabelFontColor: "#FFF",
 			// context menu
-			showContextmenu: 'yes',
+			showContextmenu: 'no',
 			showScriptDeveloper: "no",
 			contextMenuBackgroundColor: "#ebebeb",
 			contextMenuBorderColor: "#ebebeb",

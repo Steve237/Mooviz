@@ -26,26 +26,16 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class UserController extends AbstractController
 {
-    public function userProfile(UsersRepository $repo, PlaylistRepository $repository, VideosRepository $videorepo, AvatarRepository $repoAvatar)
+    public function userProfile(AvatarRepository $repoAvatar)
     {
         //Permet d'afficher l'avatar et username dans espace perso
-
-        $username = new Users();
         $username = $this->getUser();
-
-        $avatar = new Avatar();
 
         $avatars = $repoAvatar->findByUser($username);
 
-        $playlists = $repository->showVideoByUser($username);
-        $videos = $videorepo->getVideos();
-        $current_user_videos = $videorepo->getVideoByUser($username);
-
         return $this->render('user/mainprofile.html.twig', [
-            'avatars' => $avatars,
-            'playlists' => $playlists,
-            'videos' => $videos,
-            'current_user_videos' => $current_user_videos
+            
+            'avatars' => $avatars
 
         ]);
     }
@@ -65,7 +55,7 @@ class UserController extends AbstractController
             if(empty($playlists)){
 
                 $this->addFlash('no_videos', 'Vous n\'avez ajouté aucune vidéo à votre playlist');
-                return $this->redirectToRoute('userprofile'); 
+                return $this->redirectToRoute('user_videos'); 
 
             }
             
@@ -81,7 +71,7 @@ class UserController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos dans la playlist dans la section profile
-     * @Route("/loadMoreUserPlaylist/{start}", name="loadMoreUserPlaylist", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreUserPlaylist/{start}", name="loadMoreUserPlaylist", requirements={"start": "\d+"})
      */
     public function loadMoreUserPlaylist(PlaylistRepository $repository, $start = 20)
     {   
@@ -101,21 +91,19 @@ class UserController extends AbstractController
      * @Route("/main/user_channels", name="user_channels")
      * //permet de voir la liste des chaines dans l'espace profil
      */
-    public function showChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser)
+    public function showChannels(AvatarRepository $repoAvatar, VideosRepository $repo)
     {    
-        
         $user = $this->getUser();
 
         $follow = $user->getFollowing();
-        
-        $videos = new Videos();
 
         $avatars = $repoAvatar->findByUser($follow);
 
-        $userChannel = $repoUser->findUser($follow);
+        // récupère les chaines auxquels il est abonné
+        $userChannels = $repo->findAllByUsers($follow);
 
         //Si user n'a aucune chaine renvoie message flash pour l'informer
-        if(empty($avatars)) {
+        if(empty($userChannels)) {
 
             $this->addFlash('no_videos', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
             return $this->redirectToRoute('userprofile');
@@ -125,9 +113,7 @@ class UserController extends AbstractController
         $loadMoreStart = 20;
 
         return $this->render('user/profile_page_channels.html.twig', [
-            "userChannel" => $userChannel,
             "user" => $user,
-            "videos" => $videos,
             "avatars" => $avatars,
             "loadMoreStart" => $loadMoreStart
         ]);
@@ -136,25 +122,19 @@ class UserController extends AbstractController
 
     /**
      * Permet de charger plus de chaines dans la liste des chaines de l'espace user
-     * @Route("/loadMoreUserChannels/{start}", name="loadMoreUserChannels", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreUserChannels/{start}", name="loadMoreUserChannels", requirements={"start": "\d+"})
      */
-    public function loadMoreUserChannels(AvatarRepository $repoAvatar, UsersRepository $repoUser, $start = 20)
+    public function loadMoreUserChannels(AvatarRepository $repoAvatar, $start = 20)
     {   
         $user = $this->getUser();
 
         $follow = $user->getFollowing();
         
-        $videos = new Videos();
-
         $avatars = $repoAvatar->findByUser($follow);
-
-        $userChannel = $repoUser->findUser($follow);
 
         return $this->render('user/loadMoreUserChannels.html.twig', [
             
-            "userChannel" => $userChannel,
             "user" => $user,
-            "videos" => $videos,
             "avatars" => $avatars,
             "start" => $start
         ]);
@@ -162,7 +142,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/user_videos_channels", name="user_video_channels")
+     * @Route("/main/user_videos_channels", name="user_video_channels")
      * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
      */
     public function showAllChannelVideos(TokenStorageInterface $tokenStorage, VideosRepository $videorepo) {
@@ -180,12 +160,10 @@ class UserController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $following_videos = $videorepo->findAllByUsers($currentUser->getFollowing());
-
-        if(empty($following_videos)) {
+        if(empty($videos)) {
 
             $this->addFlash('no_videos', 'Vous n\'etes abonné à aucune chaine pour le moment, veuillez vous abonnez afin de suivre vos contenus préférés.');
-            return $this->redirectToRoute('userprofile');
+            return $this->redirectToRoute('user_videos');
 
         }
 
@@ -202,7 +180,7 @@ class UserController extends AbstractController
 
     /**
      * Permet de charger plus de vidéos dans la liste des vidéos des membres suivis
-     * @Route("/loadMoreVideosChannels/{start}", name="loadMoreVideosChannels", requirements={"start": "\d+"})
+     * @Route("/main/loadMoreVideosChannels/{start}", name="loadMoreVideosChannels", requirements={"start": "\d+"})
      */
     public function loadMoreVideosChannels(TokenStorageInterface $tokenStorage, VideosRepository $videorepo, $start = 20)
     {   
@@ -210,8 +188,8 @@ class UserController extends AbstractController
 
         if($currentUser instanceof Users) {
 
-        // on récupère les 20 prochaines vidéos
-        $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
+            // on récupère les 20 prochaines vidéos
+            $videos = $videorepo->findAllByUsers($currentUser->getFollowing());
         
         }
         
@@ -224,7 +202,7 @@ class UserController extends AbstractController
 
     
     /**
-     * @Route("/main/update_avatar", name="avatar_update")
+     * @Route("/main/add_avatar", name="avatar_update")
      * //permet d'ajouter un avatar
      */
     public function userAvatar(Request $request, EntityManagerInterface $entity, AvatarRepository $repoAvatar) { 
@@ -240,7 +218,6 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $avatarExist = $repoAvatar->findByUser($user);
 
             $date = new \DateTime();
             $avatar->setUser($user);
@@ -307,6 +284,7 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             
+            // on enregistre le contenu du formulaire en bdd
             $username = $user->getUsername();
             $email = $user->getEmail();
 
@@ -316,6 +294,8 @@ class UserController extends AbstractController
             $entity->persist($user);
             $entity->flush();
 
+
+            // On applique les modifications sur stripe
             $stripe = new \Stripe\StripeClient(
                 'sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe'
               );
@@ -326,6 +306,7 @@ class UserController extends AbstractController
     
                 $date = new \Datetime();
     
+                // on envoie notif à l'admin pour indiquer qu'un user a modifié son compte
                 $notification = new Webhook();
                 $notification->setType('modification');
                 $notification->setContent('modification des identifiants');  
@@ -334,8 +315,9 @@ class UserController extends AbstractController
                 $entity->persist($notification);
                 $entity->flush();  
 
+                // message flash pour indiquer que les modifs ont bien été réalisés
                 $this->addflash('update_user_infos', 'Vos identifiants ont été modifiés avec succès.');
-                return $this->redirectToRoute("userprofile");
+                return $this->redirectToRoute("user_videos");
 
         }
 
@@ -349,29 +331,11 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/main/payment_info/{id}", name="user_payment
-     * ")
-     * //permet d'accéder et de modifier les infos du compte user
+    * permet d'afficher avatar sur la barre de navigation
     */
-    public function userPayment(Users $user) {
-
-
-        return $this->render('user/userpayment.html.twig', [
-
-            
-        ]);
-
-
-
-    }
-
-    /**
-     *permet d'afficher avatar
-     */
     public function showAvatar(AvatarRepository $repoAvatar)
     {
 
-        $username = new Users();
         $username = $this->getUser();
 
         $avatars = $repoAvatar->findByUser($username);
@@ -386,21 +350,27 @@ class UserController extends AbstractController
 
     
     /**
-     * @Route("/user_dashboard/{id}", name="user_dashboard")
+     * @Route("/main/user_dashboard/{id}", name="user_dashboard")
      * //permet d'accéder au tableau de bord de l'user
     */
     public function userDashboard(Users $user, VideosRepository $videoRepo) { 
 
+        // nombre total de vidéos de l'user
         $videoCount = $videoRepo->countUserVideos($user);
 
+        // nombre total de followers
         $followerCount = $videoRepo->countFollower($user->getFollowers());
 
+        // nombre total de chaines auxquels il est abonné
         $followingCount = $videoRepo->countFollowing($user->getFollowing());
 
+        // nombre total de vues
         $viewCount = $videoRepo->CountViews($user);
 
+        // vidéos la plus vue
         $maxVideoViews = $videoRepo->getMaxVideoByUser($user);
 
+        // vidéos la moins vue 
         $minVideoViews = $videoRepo->getMinVideoByUser($user);
 
         return $this->render('user/dashboard.html.twig', [
@@ -417,21 +387,24 @@ class UserController extends AbstractController
 
     /**
     * @Route("/main/account_delete/{id}", name="account_delete")
+    * // Permet de supprimer le compte de l'user
     */
     public function deleteUser(Users $user, EntityManagerInterface $entity, SessionInterface $session)
     {   
         $date = new \Datetime();
 
         $userConnected = $this->getUser();
-        $userId = $userConnected->getId();
         
         $username = $user->getUsername();
 
-        if($user->getId() != $userId) {
+        // si utilisateur qui réalise action différent de l'user connecté
+        if($user != $userConnected) {
 
-            return $this->redirectToRoute('connexion');
+            // on redirige vers la page accueil
+            return $this->redirectToRoute('home');
         }
 
+        // si tout est ok on envoie notif admin pour indiquer suppression de compte
         $notification = new Webhook();
         $notification->setType('suppression');
         $notification->setContent('suppression de compte');  
@@ -440,6 +413,7 @@ class UserController extends AbstractController
         $entity->persist($notification);
         $entity->flush();  
         
+        // On réalise la suppression du client sur Stripe
         $stripe = new \Stripe\StripeClient(
             'sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe'
           );
@@ -451,9 +425,11 @@ class UserController extends AbstractController
           
         );
 
+        // On le supprime aussi de la bdd
         $entity->remove($user);
         $entity->flush();
 
+        // On redirige vers la page accueil
         $session = new Session();
         $session->invalidate();
 

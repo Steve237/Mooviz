@@ -15,7 +15,7 @@ class ContactController extends AbstractController
      */
     public function index(Request $request,\Swift_Mailer $mailer): Response
     {
-
+        // permet d'envoyer message à l'admin depuis formulaire de contact
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 

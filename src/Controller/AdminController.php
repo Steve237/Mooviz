@@ -35,9 +35,13 @@ class AdminController extends AbstractController
      */
     public function admin_space(UsersRepository $repoUser): Response
     {   
-        
+        // récupère tous les users
         $users = $repoUser->findAll();
+
+        // retourne nombre total users le nombre total de user
         $totalUsers = $repoUser->countUsers();
+        
+        // définit le nombre minimum users à partir duquel afficher le bouton load more
         $loadMoreStart = 20;
         
         return $this->render('admin/adminspace.html.twig', [
@@ -50,20 +54,24 @@ class AdminController extends AbstractController
 
     /**
     * @Route("/admin/update_user/{id}", name="update_user")
+    * Permet de mettre à jour les identifiants d'un user
     */
     public function updateUser(Users $user, Request $request, EntityManagerInterface $entity, UsersRepository $repoUser): Response
     {   
 
         if ($request->isMethod('POST')) {
 
+            // On récupère nouveau email, username, ou roles
            $email = $request->request->get('email');
            $username = $request->request->get('username');
            $roles = $request->request->get('roles');
 
+           // on vérifie si nouveau email ou username existe déjà
            $userExist = $repoUser->findUser($username);
            $emailExist = $repoUser->findEmail($email);
 
-            if($userExist){
+           // Le cas échéant on renvoie une erreur
+            if($userExist) {
 
                 $this->addFlash('user_exist', 'Ce nom est déjà utilisé.');
                 return $this->redirectToRoute('update_user', ['id' => $user->getId()]);
@@ -78,7 +86,7 @@ class AdminController extends AbstractController
             }
 
 
-
+            // On enregistre les nouveaux identifiants dans la bdd puis sur Stripe
            $user->setEmail($email);
            $user->setUsername($username);
            $user->setRoles($roles);
@@ -93,6 +101,7 @@ class AdminController extends AbstractController
             ["name" => $username, "email" => $email]
           );
 
+            // On envoie une notif dans l'espace admin pour indiquer qu'une modif d'un user a été faite
             $date = new \Datetime();
 
             $notification = new Webhook();
@@ -103,6 +112,7 @@ class AdminController extends AbstractController
             $entity->persist($notification);
             $entity->flush();  
 
+            // On redirige sur la page des users
             return $this->redirectToRoute('users_list');
         }
 
@@ -114,22 +124,15 @@ class AdminController extends AbstractController
 
     /**
     * @Route("/admin/delete_user/{id}", name="delete_user")
+    * Permet à l'admin de supprimer un user
     */
     public function deleteUser(Users $user, EntityManagerInterface $entity)
     {   
         $date = new \Datetime();
-       
-        
-        $userConnected = $this->getUser();
-        $userId = $userConnected->getId();
         
         $username = $user->getUsername();
-
-        if($user->getId() != $userId) {
-
-            return $this->redirectToRoute('connexion');
-        }
         
+        // On envoie notif dans l'espace admin pour indiquer suppression user 
         $notification = new Webhook();
         $notification->setType('suppression');
         $notification->setContent('suppression de compte');  
@@ -138,6 +141,7 @@ class AdminController extends AbstractController
         $entity->persist($notification);
         $entity->flush();  
         
+        // On supprime l'user du registre Stripe
         $stripe = new \Stripe\StripeClient(
             'sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe'
           );
@@ -148,6 +152,7 @@ class AdminController extends AbstractController
             []
           );
 
+        // On supprime l'user de la bdd
         $entity->remove($user);
         $entity->flush();
 
@@ -162,9 +167,11 @@ class AdminController extends AbstractController
     */
     public function AdminNotificationList(WebhookRepository $repo)
     {   
+        // Permet de récupérer toutes les notifs dans l'espace admin
 
         $notifications = $repo->findAll();
         
+        // nombre minimum de notifs pour afficher button load more
         $countWebhooks = $repo->countWebhooks();
         $loadMoreStart = 20;
        
@@ -182,7 +189,7 @@ class AdminController extends AbstractController
 
     /**
      * Permet de charger plus de notifications dans l'espace admin notifications
-     * @Route("/loadMoreNotifications/{start}", name="loadMoreNotifications", requirements={"start": "\d+"})
+     * @Route("/admin/loadMoreNotifications/{start}", name="loadMoreNotifications", requirements={"start": "\d+"})
      */
     public function loadMoreNotifications(WebhookRepository $repo, $start = 20)
     {   
@@ -198,7 +205,7 @@ class AdminController extends AbstractController
 
      /**
      * Permet de charger plus de user dans l'espace admin users
-     * @Route("/loadMoreUsers/{start}", name="loadMoreUsers", requirements={"start": "\d+"})
+     * @Route("/admin/loadMoreUsers/{start}", name="loadMoreUsers", requirements={"start": "\d+"})
      */
     public function loadMoreUsers(UsersRepository $repo, $start = 20)
     {   
@@ -215,8 +222,9 @@ class AdminController extends AbstractController
     /**
     * @Route("/admin/delete_notification/{id}", name="delete_notification")
     */
-    public function deleteNotification(Webhook $webhook, EntityManagerInterface $entity, WebhookRepository $repo)
+    public function deleteNotification(Webhook $webhook, EntityManagerInterface $entity)
     {   
+        // permet de supprimer une notif dans l'espace admin
         $entity->remove($webhook);
         $entity->flush();
 
@@ -230,6 +238,7 @@ class AdminController extends AbstractController
     */
     public function deleteNotifications(WebhookRepository $repo)
     {   
+        // permet de supprimer toutes les notifs de l'espace admin
         $repo->deleteAllWebhook();
 
         $this->addflash('success', 'Toutes les notifications ont été supprimées');
@@ -243,6 +252,7 @@ class AdminController extends AbstractController
     */
     public function blockUser(Users $user, EntityManagerInterface $entity)
     {   
+        // permet de bloquer accès du site un user 
         $user->setRoles('ROLE_BLOCKED');
         $entity->persist($user);
         $entity->flush();
@@ -258,6 +268,7 @@ class AdminController extends AbstractController
     */
     public function deblockUser(Users $user, EntityManagerInterface $entity)
     {   
+        // permet de débloquer l'accès à un user
         $user->setRoles('ROLE_USER');
         $entity->persist($user);
         $entity->flush();
@@ -273,6 +284,7 @@ class AdminController extends AbstractController
     */
     public function Webhook() {
 
+        // assure envoi webhook de stripe à l'espace admin en fonction des évènements
 
         Stripe::setApiKey('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
 
@@ -288,6 +300,7 @@ class AdminController extends AbstractController
         return new Response(Response::HTTP_OK);
         exit();
         }
+        
         // Handle the event
         switch ($event->type) {
             case 'payment_intent.succeeded':
@@ -311,10 +324,12 @@ class AdminController extends AbstractController
 
 
     /**
-     * //Envoi notification pour indiquer paiement réussie
+    * //Envoi notification pour indiquer paiement réussie
     * @Route("/admin/payment_intent_success", name="payment_intent_success")
     */
     public function handlePaymentIntentSucceeded($paymentIntent) {
+
+        // se déclenche en cas de réussite de paiement sur stripe
 
         $customer = $paymentIntent->customer;
         $user = $this->getDoctrine()->getRepository(Users::class)
@@ -337,7 +352,7 @@ class AdminController extends AbstractController
 
     }
 
-     /**
+    /**
     * Met à jour le statut de paiement de l'utilisateur pour indiquer que son abonnement est à jour
     * @Route("/admin/update_payment_status/{customer}", name="update_payment_status")
     */
@@ -358,6 +373,8 @@ class AdminController extends AbstractController
     */
     public function invoicePaymentFailed($paymentIntent) {
 
+        // se déclenche en cas d'échec de paiement sur stripe 
+        
         $customer = $paymentIntent->customer;
         $user = $this->getDoctrine()->getRepository(Users::class)
         ->getCustomer($customer);
@@ -386,7 +403,8 @@ class AdminController extends AbstractController
     public function paymentFailed($customer, UsersRepository $repoUser, EntityManagerInterface $entity) 
     {
         $user = $repoUser->findCustomer($customer);
-        
+
+            // On indique que le paiement est pas à jour et on bloque le compte
             $user->setPayed(false);
             $user->setRoles('ROLE_BLOCKED');
             $entity->persist($user);
@@ -402,6 +420,7 @@ class AdminController extends AbstractController
     */
     public function videoBackgroundList(VideobackgroundRepository $videoRepo) 
     {
+        // récupère toutes les backgrounds vidéos
         $videos = $videoRepo->findAll();
 
         return $this->render('admin/videos_background.html.twig', 
@@ -481,7 +500,7 @@ class AdminController extends AbstractController
 
     /**
      * Permet de charger plus de videos dans l'espace admin vidéos
-     * @Route("/loadMoreAdminVideos/{start}", name="loadMoreAdminVideos", requirements={"start": "\d+"})
+     * @Route("/admin/loadMoreAdminVideos/{start}", name="loadMoreAdminVideos", requirements={"start": "\d+"})
      */
     public function loadMoreAdminVideos(VideosRepository $videoRepo, $start = 21)
     {   
@@ -597,7 +616,7 @@ class AdminController extends AbstractController
 
     /**
      * Permet de charger plus d'user quand admin recherche un user
-     * @Route("/loadMoreUserResult/{query}/{start}", name="loadMoreUserResult", requirements={"start": "\d+"})
+     * @Route("/admin/loadMoreUserResult/{query}/{start}", name="loadMoreUserResult", requirements={"start": "\d+"})
      */
     public function loadMoreUserResult(UsersRepository $repository, $query, $start = 20)
     {   

@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
 
-    <link rel="stylesheet" href="icons/fontawesome/css/fontawesome-all.min.css"><!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css">
+    <link rel="stylesheet" href="{{asset('icons/fontawesome/css/fontawesome-all.min.css')}}"><!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="{{asset('icons/Iconsmind__Ultimate_Pack/Line/icons/styles.min.css')}}">
     <!-- iconsmind.com Icons -->
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
     <title>Mylion</title>
 </head>
-
 <body>
     <header id="masthead-pro">
         <div class="container">
@@ -29,7 +28,7 @@
                         <a href="{{path('home')}}">Accueil</a>
                     </li>
                     <li class="normal-item-pro current-menu-item">
-                        <a href="{{path('tarif')}}">Tarifs</a>
+                        <a href="{{path('tarifs')}}">Tarifs</a>
                     </li>
                     <li class="normal-item-pro">
                         <a href="{{path('faqs')}}">FAQs</a>
@@ -57,7 +56,7 @@
                     <a href="index.html">Home</a>
                 </li>
                 <li>
-                    <a href="{{path('tarif')}}">Tarifs</a>
+                    <a href="{{path('tarifs')}}">Tarifs</a>
                 </li>
                 <li>
                     <a href="faqs.html">FAQs</a>
