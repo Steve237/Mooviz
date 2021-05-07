@@ -47,11 +47,13 @@
       </div><!-- close .col -->
       {% endfor %}
     </div><!-- close .row STOP-->
+    {% if videos | length > 20 %}
     <div class="pagination">
       <div class="navigation" id="loadbutton">
           <button class="btn btn-primary" id="loadMoreResult">Load more</button>
       </div>
-  </div>
+    </div>
+    {% endif %}
   </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}

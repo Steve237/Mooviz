@@ -63,8 +63,20 @@ ajouter vidéo: ok;
 suppression vidéo: ok;
 modifier vidéo: ok;
 modification description vidéo: ok;
-modif image de la vidéo ok;
+modif image de la vidéo: ok;
+Recherche vidéo dans l'espace user: ok;
+
 verifier que seul le membre concerné puisse modifier ou supprimer vidéo: ok;
 formulaire de contact ok;
 Ajout avatar: ok;
 modif avatar: ok;
+modification des identifiants du compte: ok;
+Suppression du compte: ok;
+Affichage message par défaut quand la page ne contient aucun contenu: ok;
+pagination sur les pages de la section profile:ok;
+Formulaire de recherche des vidéos: ok;
+pagination sur la page résultat recherche vidéo:ok;
+Correct affichage des notifications sur écran mobile:ok;
+Correct affichage des notifications sur écran classique:ok;
+Suppression des notifications: ok;
+

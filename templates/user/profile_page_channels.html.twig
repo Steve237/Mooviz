@@ -8,7 +8,9 @@
 
 <h6>Vos chaines.</h6>
 
+{% set numberFollowing = user.following | length %}
 <div class="row" id="userchannels">
+    {% if numberFollowing != 0 %}
     {% for followed in user.following | slice(0, 20) %}
     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
         <div class="item-listing-container-skrn video-card video-card-text">
@@ -36,9 +38,12 @@
         </div><!-- close .item-listing-container-skrn -->
     </div><!-- close .col -->
     {% endfor %}
+    {% else %}
+    <h5>Vous n'êtes abonné à aucune chaine pour le moment.</h5>
+    {% endif %}
 </div><!-- close .row -->
 
-{% set numberFollowing = user.following | length %}
+
 {% if numberFollowing > loadMoreStart %}
 <div class="pagination">
     <div class="navigation" id="loadbutton">

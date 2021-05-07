@@ -317,7 +317,7 @@ class VideoController extends AbstractController
     
         $form = $this->createFormBuilder(null)
             
-        ->setAction($this->generateUrl("handleSearch"))
+        ->setAction($this->generateUrl("handlesearch"))
             ->add('query', TextType::class)
 
             ->getForm();
@@ -334,7 +334,7 @@ class VideoController extends AbstractController
 
     /**
      * //traite la requête envoyé dans le formulaire de recherche
-     * @Route("/main/handleSearch", name="handleSearch")
+     * @Route("/main/handlesearch", name="handlesearch")
      *
      */
     public function handleSearch(Request $request, VideosRepository $repository) {

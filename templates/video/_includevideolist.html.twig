@@ -5,6 +5,18 @@
   </div>
   {% endfor %}
   
+  {% for message in app.flashes('delete-notif') %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
+  {% for message in app.flashes('delete-all-notifs') %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
   <div class="dashboard-container">
 
     <div class="d-none d-sm-block">

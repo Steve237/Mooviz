@@ -11,20 +11,23 @@
             Marquer tout comme vu.
         </button>
     </a>
-    <ul class="list-group admin-list notifications-list">
+    <ul class="list-group admin-list" id="notifications-list">
         {% for notification in notifications | slice(0, 10) %}
         <div class="notification-item">
             <li class="list-group-item">Date : {{notification.date | date("d/m/y")}}</li>
             <li class="list-group-item">Message : {{notification.content}}</li>
-            <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
-                <button class="btn btn-primary">Marquer comme vu</button>
-            </a>
+            <li class="list-group-item">
+                <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
+                    <button class="btn btn-primary">Marquer comme vu</button>
+                </a>
+            </li>
         </div>
         {% endfor %}
-        {% else %}
-        <h5>Vous n'avez aucune notification pour le moment.</h5>
-        {% endif %}
     </ul>
+    {% else %}
+        <h5>Vous n'avez aucune notification pour le moment.</h5>
+    {% endif %}
+    
     {% if notifications | length > loadMoreStart %}
     <div class="pagination">
         <div class="navigation" id="loadbutton">
@@ -34,7 +37,11 @@
     {% endif %}
 </div>
 {% endblock %}
+
 {% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
     click = 0;
 

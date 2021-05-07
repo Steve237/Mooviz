@@ -17,14 +17,18 @@
             {% if notifications %}
             <div id="header-user-notification-list notifications-section">
                 {% for notification in notifications | slice(0, 10) %}
-                <div>
-                    <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}"
-                    class="rounded-circle avatar-notification-size">
+                <div class="user-notifs">
+                    {% if notification.origin.imageuser %}
+                        <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}"
+                        class="rounded-circle avatar-notification-size">
+                    {% endif %}
                     {{notification.content}} | {{notification.date | date("d/m/y") }}.
+                    <a href="{{path('notif_delete', {'id' : notification.id })}}">
+                        <button class="btn btn-primary btn-sm delete_notif">
+                            Vu<i class="fas fa-check"></i>
+                        </button>
+                    </a>
                 </div>
-                <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
-                    <button class="btn btn-primary">Vu<i class="fas fa-check"></i></button>
-                </a>
                 {% endfor %}
             </div>
             
@@ -37,7 +41,7 @@
             {% endif %}
             
             <a href="{{path('notif_delete_all')}}">
-                <button class="btn btn-primary delete-all-notifications">
+                <button class="btn btn-secondary btn-sm btn-block delete-all-notifications">
                     Marquez tout comme vu
                 </button>
             </a>

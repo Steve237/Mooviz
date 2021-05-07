@@ -7007,6 +7007,7 @@ a {
 .notifications-read-button {
 
 	margin-top:20px;
+	margin-bottom:10px;
 }
 
 .notifications-list {
@@ -7148,9 +7149,19 @@ a {
 
 }
 
+.delete_notif {
+
+	margin-left:8px;
+
+}
+
+.user-notifs {
 
 
+margin-left:3px;
+margin-bottom:5px;
 
+}
 
 
 

@@ -109,4 +109,47 @@ class PlaylistController extends AbstractController
             'start' => $start
         ]);
     }
+
+
+    /**
+     * @Route("/main/userplaylist", name="user_playlist")
+     * //permet de voir la playlist dans l'espace user
+     */
+    public function showPlaylist(PlaylistRepository $repository)
+    {    
+           $user = $this->getUser();
+    
+            $playlists = $repository->showVideoByUser($user);
+
+            
+            $loadMoreStart = 20;
+            
+
+            return $this->render('user/userplaylist.html.twig', [
+                "playlists" => $playlists,
+                "loadMoreStart" => $loadMoreStart
+            ]);
+        
+    }
+
+    /**
+     * Permet de charger plus de vidéos dans la playlist dans la section profile
+     * @Route("/main/loadMoreUserPlaylist/{start}", name="loadMoreUserPlaylist", requirements={"start": "\d+"})
+     */
+    public function loadMoreUserPlaylist(PlaylistRepository $repository, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on récupère les 10 prochaines vidéos
+        $playlists = $repository->showVideoByUser($user);
+
+        return $this->render('user/loadMoreUserPlaylist.html.twig', [
+            
+            'playlists' => $playlists,
+            'start' => $start
+        ]);
+    }
+
+
+
 }

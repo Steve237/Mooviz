@@ -8,6 +8,7 @@
 
 <h6>Vidéos des chaines suivis.</h6>
 <div class="row" id="allchannelsvideos">
+  {% if videos %}
   {% for video in videos | slice(0, 20) %}
   {% if video.privacy != "private" %}
   <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
@@ -41,6 +42,9 @@
   </div><!-- close .col -->
   {% endif %}
   {% endfor %}
+  {% else %}
+  <h5>Vous n'êtes abonné à aucune chaine pour le moment.</h5>
+  {% endif %}
 </div><!-- close .row -->
 
 {% if videos | length > loadMoreStart %}

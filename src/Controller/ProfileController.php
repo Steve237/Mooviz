@@ -151,6 +151,13 @@ class ProfileController extends AbstractController
         $currentUser = $this->getUser(); 
 
         $notifications = $repo->findAllNotification($currentUser);
+        
+        
+        if(empty($notifications)) {
+
+            return $this->redirectToRoute('homepage');
+
+        }
 
         $loadMoreStart = 10;
 
@@ -182,7 +189,7 @@ class ProfileController extends AbstractController
 
     /**
      * @Route("/main/notification_delete/{id}", name="notif_delete")
-     * //permet de supprimer les notifications marqué comme vu
+     * //permet de supprimer la notification marqué comme vu
      */
     public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity, Request $request) {
 
@@ -190,10 +197,8 @@ class ProfileController extends AbstractController
             $entity->remove($notification);
             $entity->flush();
 
-            return $this->json([
-                'code' => 200, 
-                'message' => 'user ajouté'
-            ], 200);
+            $this->addFlash('delete-notif', 'La notification a été supprimé avec succès');
+            return $this->redirectToRoute('allvideos');
 
 
     }
@@ -209,7 +214,9 @@ class ProfileController extends AbstractController
 
         $repo->deleteAllNotif($currentUser);
 
-        return $this->redirectToRoute('homepage');
+        $this->addFlash('delete-all-notifs', 'Suppression de toutes les notifications réussie.');
+            
+        return $this->redirectToRoute('allvideos');
 
     }
 
