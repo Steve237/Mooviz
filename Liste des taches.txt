@@ -65,3 +65,6 @@ modifier vidéo: ok;
 modification description vidéo: ok;
 modif image de la vidéo ok;
 verifier que seul le membre concerné puisse modifier ou supprimer vidéo: ok;
+formulaire de contact ok;
+Ajout avatar: ok;
+modif avatar: ok;
