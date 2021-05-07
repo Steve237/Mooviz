@@ -10,6 +10,20 @@
     {{message}}
   </div>
   {% endfor %}
+
+  {% for message in app.flashes('user-block') %}
+  <div class="alert alert-success admin-update-video-success">
+    {{message}}
+  </div>
+  {% endfor %}
+
+  {% for message in app.flashes('user-deblock') %}
+  <div class="alert alert-success admin-update-video-success">
+    {{message}}
+  </div>
+  {% endfor %}
+
+
   <ul class="dashboard-sub-menu">
     <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
     <li><a href="{{path('notifications_list')}}">Notifications</a></li>

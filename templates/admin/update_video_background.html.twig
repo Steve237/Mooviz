@@ -16,8 +16,7 @@
                 </div>
                 <div id="uploadStatus"></div>
                 {% form_theme videoBackgroundForm 'bootstrap_4_layout.html.twig' %}
-                {{form_start(videoBackgroundForm,  {"attr" : {'id':'background_video_update'}}, {'action':
-                path('update_video_background', {'id': video.id}), 'method': 'POST'})}}
+                {{form_start(videoBackgroundForm,  {"attr" : {'id':'background_video_update'}}, {'action': path('update_video_background', {'id': video.id}), 'method': 'POST'})}}
 
                 <div class="form-group">
                     {{form_row(videoBackgroundForm.videotitle, {"label":"Titre", "attr" : {'class':'form-control'}})}}
@@ -38,7 +37,7 @@
 </div>
 {{form_end(videoBackgroundForm)}}
 {% endblock %}
-{% block javascript %}
+{% block javascripts %}
 {{parent()}}
 
 <script>
@@ -80,31 +79,19 @@
                 error: function () {
                     $('#uploadStatus').html(
                         '<p class="upload-video-failed">Le téléchargement a échoué, merci de recommencer</p>'
-                        );
+                    );
                 },
                 success: function (resp) {
                     if (resp == 'ok') {
-                        window.document.location = '/success_update_video_background';
+                        window.document.location = '/admin/success_update_video_background';
                     } else if (resp == 'err') {
-                        $('#uploadStatus').html(
-                            '<p class="upload-video-failed">Nous autorisons uniquement les vidéos au format mp4.</p>'
-                            );
+                        $('#uploadStatus').html('<p class="upload-video-failed">Nous autorisons uniquement les vidéos au format mp4.</p>');
                     }
                 }
             });
         });
 
-        // File type validation
-        $("#fileInput").change(function () {
-            var allowedTypes = ['video/mp4'];
-            var file = this.files[0];
-            var fileType = file.type;
-            if (!allowedTypes.includes(fileType)) {
-                alert('Please select a valid file (PDF/DOC/DOCX/JPEG/JPG/PNG/GIF).');
-                $("#fileInput").val('');
-                return false;
-            }
-        });
+       
     });
 </script>
 {% endblock %}

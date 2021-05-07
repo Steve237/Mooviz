@@ -165,7 +165,7 @@
             vos factures et de connaître l'état de votre abonnement.
             Cliquez sur le bouton suivant pour y accéder.
             </p>
-            <form method="POST" action="/create-customer-portal-session">
+            <form method="post" action="{{path('billing')}}">
                 <button type="submit" class="btn btn-primary">Gestion de la facturation</button>
             </form>
         </div>
@@ -175,24 +175,4 @@
       </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock %}

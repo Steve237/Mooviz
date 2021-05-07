@@ -257,7 +257,7 @@ class AdminController extends AbstractController
         $entity->persist($user);
         $entity->flush();
 
-        $this->addflash('success', 'Le blocage a été réalisé avec succès.');
+        $this->addflash('user-block', 'Le blocage a été réalisé avec succès.');
         return $this->redirectToRoute('users_list');
         
     }
@@ -273,7 +273,7 @@ class AdminController extends AbstractController
         $entity->persist($user);
         $entity->flush();
 
-        $this->addflash('success', 'Le déblocage a été réalisé avec succès.');
+        $this->addflash('user-deblock', 'Le déblocage a été réalisé avec succès.');
         return $this->redirectToRoute('users_list');
         
     }
