@@ -92,3 +92,5 @@ Accès à la page admin notifications: ok;
 Suppression des notifications de l'admin: ok;
 Accès à la gestion des vidéos à la une: ok;
 Modification des vidéos à la une: ok;
+Suppression vidéo depuis l'espace admin: ok;
+pagination vidéos depuis l'espace admin:ok;
