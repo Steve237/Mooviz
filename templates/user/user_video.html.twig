@@ -31,19 +31,28 @@
                     </h6>
                 </div><!-- close .item-listing-text-skrn-vertical-align -->
             </div><!-- close .item-listing-text-skrn -->
-            <div>
-                <a href="{{path('update_video_image', {'id': video.id})}}"><button
-                        class="btn btn-primary btn-sm btn_update"><i class="fas fa-image fa-2x"></i></button></a>
-                <a href="{{path('delete_video', {'id': video.id})}}"><button
-                        class="btn btn-primary btn-sm btn_delete"><i class="fas fa-trash-alt fa-2x"></i></button></a>
-                <a href="{{path('update_video_description', {'id': video.id})}}"><button
-                        class="btn btn-primary btn-sm btn_delete"><i class="far fa-edit fa-2x"></i></button></a>
+            <div class="buttons-update-video">
+                <a href="{{path('update_video_image', {'id': video.id})}}">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-image fa-2x"></i>
+                    </button>
+                </a>
+                <a href="{{path('update_video_description', {'id': video.id})}}">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="far fa-edit fa-2x"></i>
+                    </button>
+                </a>
+                <a href="{{path('delete_video', {'id': video.id})}}">
+                    <button class="btn btn-primary btn-sm">
+                        <i class="fas fa-trash-alt fa-2x"></i>
+                    </button>
+                </a>
             </div>
         </div><!-- close .item-listing-container-skrn -->
     </div><!-- close .col -->
     {% endfor %}
     {% else %}
-    <h4 style="text-align:center;margin-top:20px">Vous n'avez pas encore ajouté de vidéo</h4>
+    <h4 class="no-users-video">Vous n'avez pas encore ajouté de vidéos</h4>
     {% endif %}
 </div><!-- close .row -->
 

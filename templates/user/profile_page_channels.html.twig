@@ -38,7 +38,8 @@
     {% endfor %}
 </div><!-- close .row -->
 
-{% if user.following > loadMoreStart %}
+{% set numberFollowing = user.following | length %}
+{% if numberFollowing > loadMoreStart %}
 <div class="pagination">
     <div class="navigation" id="loadbutton">
         <button class="btn btn-primary" id="loadMoreUserChannels">Load more</button>

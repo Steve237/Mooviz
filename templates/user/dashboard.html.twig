@@ -61,7 +61,7 @@ Aucune vidéo
       <th scope="row">{{ counter }}</th>
       <td>{{bestVideo.videotitle}}</td>
       <td>{{bestVideo.views}}</td>
-      <td>{{bestVideo.likes | length }}</td>
+      <td>{{bestVideo.videoLikes | length }}</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -74,7 +74,7 @@ Aucune vidéo
     <li class="list-group-item">Position : {{counter}}</li>
     <li class="list-group-item">Titre : {{bestVideo.videotitle}}</li>
     <li class="list-group-item">Nombre de vues : {{bestVideo.views}} </li>
-    <li class="list-group-item">Nombre de likes: {{bestVideo.likes | length }}</li>
+    <li class="list-group-item">Nombre de likes: {{bestVideo.videoLikes | length }}</li>
   </div>
   {% endfor %}
 </ul>

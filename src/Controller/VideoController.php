@@ -437,12 +437,20 @@ class VideoController extends AbstractController
      */
     public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
     {
+        $user = $this->getUser();
+
+        if ($video->getUsername() != $user) {
+
+            return $this->redirectToRoute('homepage');
+
+
+        }
+        
+        
         $updateform = $this->createForm(UploadType::class, $video);
         $updateform->handleRequest($request);
         
-        if($request->isXmlHttpRequest()) {
-        
-            if ($updateform->isSubmitted() && $updateform->isValid()) {
+        if ($updateform->isSubmitted() && $updateform->isValid()) {
             
 
             $videoImage = $video->getVideoImage();
@@ -453,11 +461,9 @@ class VideoController extends AbstractController
             $entitymanager->persist($video);
             $entitymanager->flush();
 
-
-            return new JsonResponse('ok');
+            return $this->redirectToRoute('user_videos');
+        
         }
-            return new JsonResponse('err');
-    }
 
         return $this->render('video/update_video.html.twig', [
 
@@ -473,6 +479,16 @@ class VideoController extends AbstractController
      */
     public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
     {
+        
+        $user = $this->getUser();
+
+        if ($video->getUsername() != $user) {
+
+            return $this->redirectToRoute('homepage');
+
+
+        }
+        
         $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
         $formvideodescription->handleRequest($request);
         
@@ -524,6 +540,16 @@ class VideoController extends AbstractController
      */
     public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
 
+        $user = $this->getUser();
+
+        if ($video->getUsername() != $user) {
+
+            return $this->redirectToRoute('homepage');
+
+
+        }
+        
+        
         // nom des fichiers image et vidéo
         $videoName = $video->getVideolink();
         $videoImage = $video->getVideoimage();

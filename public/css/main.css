@@ -7124,18 +7124,6 @@ a {
 
 }
 
-#uploadspan {
-    
-	display:none;
-}
-
-input[type=file] {
-    
-	white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .number-followers {
 
 	margin-top:10px;
@@ -7145,3 +7133,24 @@ input[type=file] {
 
 	margin-top:-50px;
 }
+
+.no-users-video {
+
+	text-align:center;
+	margin-top:20px;
+}
+
+
+.buttons-update-video {
+
+	margin-bottom:2px;
+
+
+}
+
+
+
+
+
+
+

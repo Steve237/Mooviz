@@ -61,4 +61,7 @@ impossible d'accéder à la page playlist si aucune vidéo en playlist ok;
 fonction ajouter/retirer de la playlist:ok;
 ajouter vidéo: ok;
 suppression vidéo: ok;
-vidéo longue ne dépasse pas du formulaire upload:
+modifier vidéo: ok;
+modification description vidéo: ok;
+modif image de la vidéo ok;
+verifier que seul le membre concerné puisse modifier ou supprimer vidéo: ok;
