@@ -7163,5 +7163,21 @@ margin-bottom:5px;
 
 }
 
+.logo-mylion {
+
+	width:300px;
+	height:300px;
+	margin-bottom:5px;
+}
 
 
+.link-inscription  {
+	
+	margin-top:5px;
+}
+
+.login-form {
+
+	background-color:steelblue;
+	color:white;
+}

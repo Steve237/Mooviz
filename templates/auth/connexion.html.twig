@@ -48,11 +48,9 @@
 									Les identifiants de connexion sont invalides
 								</div>
 							{% endif %}
-							<form class="registration-steps-form size-form" action="{{path('connexion')}}" method="post">
+							<form class="registration-steps-form size-form login-form" action="{{path('connexion')}}" method="post">
 							 
-							<div class="registration-social-login-container">
-
-                                <div class="form-group">
+							<div class="form-group">
                                     <label>Pseudo : </label>
                                     <input type="text" required name="_username" class="form-control" placeholder="Entrez votre pseudo" value="{{lastUserName}}">
                                 </div>
@@ -64,22 +62,12 @@
                                 <div class="form-group last-form-group-continue">
                                     <input type="submit" class="btn btn-primary" value="continue">
 								</div>
-
-                                
-                                <div class="registration-social-login-or">or</div>
-								 
-							 </div><!-- close .registration-social-login-container -->
-							 
-							 <div class="registration-social-login-options">
-							 	<h6>Sign up with one of your social accounts</h6>
-								<div class="social-icon-login facebook-color"><i class="fab fa-facebook-f"></i> Facebook</div>
-								<div class="social-icon-login twitter-color"><i class="fab fa-twitter"></i> Twitter</div>
-								<div class="social-icon-login google-color"><i class="fab fa-google-plus-g"></i> Google</div>
-							 </div><!-- close .registration-social-login-options -->
-							 
-							 <div class="clearfix"></div>
+								
+								<div class="clearfix"></div>
 							
-							 <a class="not-a-member-pro" href="{{path('tarifs')}}">Pas encore membre? <span>Inscrivez vous!</span></a>
+							 <a class="not-a-member-pro link-inscription" href="{{path('tarifs')}}">
+								 Pas encore membre? <span>Inscrivez vous!</span>
+							 </a>
 								
 							<p class="newpass"><a href="{{path('recoverypass')}}">Mot de passe oublié?</a></p>
 							

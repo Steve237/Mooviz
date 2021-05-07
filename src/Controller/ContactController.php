@@ -52,8 +52,8 @@ class ContactController extends AbstractController
 
 
     /**
-     * // formulaire de contact accessible uniquement aux membres connectés
-     * @Route("/main/contact", name="contact")
+     * //formulaire de contact accessible uniquement aux membres connectés
+     * @Route("/main/contact", name="admin-contact")
      */
     public function mainContact(Request $request,\Swift_Mailer $mailer): Response
     {

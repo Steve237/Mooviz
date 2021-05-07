@@ -94,3 +94,7 @@ Accès à la gestion des vidéos à la une: ok;
 Modification des vidéos à la une: ok;
 Suppression vidéo depuis l'espace admin: ok;
 pagination vidéos depuis l'espace admin:ok;
+mise en place formulaire de contact interne:ok;
+Empêcher à l'user qui a pas le rôle admin d'accèder aux parties admin:ok;
+Validation des contraintes lors de l'upload avatar:ok;
+Envoi Email lors de la suppression d'une vidéo par l'admin: ok;
