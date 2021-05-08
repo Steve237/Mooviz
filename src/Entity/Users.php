@@ -155,11 +155,6 @@ class Users implements UserInterface, \Serializable
      */
     private $videoLikes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $videodislikes; 
-
 
     public function __construct()
     {
@@ -171,7 +166,6 @@ class Users implements UserInterface, \Serializable
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->videoLikes = new ArrayCollection();
-        $this->videodislikes = new ArrayCollection();
        
 
        
@@ -604,35 +598,4 @@ class Users implements UserInterface, \Serializable
             return $this;
         }
 
-        /**
-         * @return Collection|Videodislike[]
-         */
-        public function getVideodislikes(): Collection
-        {
-            return $this->videodislikes;
-        }
-
-        public function addVideodislike(Videodislike $videodislike): self
-        {
-            if (!$this->videodislikes->contains($videodislike)) {
-                $this->videodislikes[] = $videodislike;
-                $videodislike->setUser($this);
-            }
-
-            return $this;
-        }
-
-        public function removeVideodislike(Videodislike $videodislike): self
-        {
-            if ($this->videodislikes->removeElement($videodislike)) {
-                // set the owning side to null (unless already changed)
-                if ($videodislike->getUser() === $this) {
-                    $videodislike->setUser(null);
-                }
-            }
-
-            return $this;
-        }
-
-      
-}
+    }

@@ -30,27 +30,31 @@ class VideosRepository extends ServiceEntityRepository
         ->andwhere('v.privacy != :privacy')
         ->setParameter('val', $category)
         ->setParameter('privacy', 'private')
+        ->orderBy('v.id', 'DESC')
         ->getQuery()
         ->getResult();
     }
 
-    //affiche vidéos publiques sur la page accueil
+    //affiche les vidéos publics sur la page accueil
     public function findAllPublicVideos() {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.privacy != :val')
         ->setParameter('val', 'private')
+        ->orderBy('v.id', 'DESC')
         ->getQuery()
         ->getResult();
     }
 
 
-    //affiche vidéos publiques sur la page accueil
-    public function getVideos() {
+    //affiche les nouvelles vidéos publics du site
+    public function getVideos($video) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.privacy != :val')
+        ->andwhere('v.id != :video')
         ->setParameter('val', 'private')
+        ->setParameter('video', $video)
         ->orderBy('v.id', 'DESC')
         ->setMaxResults(20)
         ->getQuery()
@@ -70,13 +74,15 @@ class VideosRepository extends ServiceEntityRepository
     }
 
       //recupère vidéo par id de celui qui l'a posté
-      public function showVideoByUserId($userId) {
+      public function showVideoByUserId($userId, $video) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.username = :userid')
         ->andwhere('v.privacy != :val')
+        ->andwhere('v.id != :video')
         ->setParameter('userid', $userId)
         ->setParameter('val', 'private')
+        ->setParameter('video', $video)
         ->orderBy('v.id', 'DESC')
         ->setMaxResults(20)
         ->getQuery()
@@ -105,12 +111,14 @@ class VideosRepository extends ServiceEntityRepository
     public function search($videoTitle) {
         return $this->createQueryBuilder('v')
             ->andWhere('v.videotitle LIKE :videotitle')
+            ->andwhere('v.privacy != :privacy')
             ->setParameter('videotitle', '%'.$videoTitle.'%')
+            ->setParameter('privacy', 'private')
             ->getQuery()
             ->execute();
     }
 
-    // assure la recherche des vidéos par titre
+    // assure la recherche des vidéos d'un user par titre
     public function userVideoSearch($videoTitle, $username) {
         return $this->createQueryBuilder('v')
             ->andWhere('v.videotitle LIKE :videotitle')
@@ -119,15 +127,6 @@ class VideosRepository extends ServiceEntityRepository
             ->setParameter('val', $username)
             ->getQuery()
             ->execute();
-    }
-
-    //permet de réaliser la pagination
-    public function findAllWithPagination() : Query{
-
-        return $this->createQueryBuilder('v')
-            ->orderBy('v.id', 'DESC')
-            ->getQuery();
-        
     }
 
     //affiche les vidéos de l'user
@@ -150,14 +149,16 @@ class VideosRepository extends ServiceEntityRepository
         
         return $qb->select('v')
             ->andwhere('v.username IN (:following)')
+            ->andwhere('v.privacy != :privacy')
             ->setParameter('following', $users)
+            ->setParameter('privacy', 'private')
             ->orderBy('v.id', 'DESC')
             ->getQuery()
             ->getResult();
 
     }
 
-    //affiche le total de vidéos postés par user 
+    //affiche le nombre total de vidéos postés par user 
     public function countUserVideos($user) {
 
         return $this->createQueryBuilder('v')
@@ -169,7 +170,7 @@ class VideosRepository extends ServiceEntityRepository
         
     }
 
-     //affiche le total de vidéos postés 
+     //affiche le nombre total de vidéos postés 
      public function countVideos() {
 
         return $this->createQueryBuilder('v')
@@ -180,8 +181,21 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
+     //affiche le nombre total de vidéos postés par catégorie
+     public function countVideosByCategory($category) {
 
-    //affiche le total de membres qui vous suivent
+        return $this->createQueryBuilder('v')
+            ->select('count(v.id)')
+            ->andWhere('v.category = :val')
+            ->setParameter('val', $category)
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
+
+
+
+    //affiche le nombre total de membres qui vous suivent
     public function countFollower(Collection $users) {
 
         return $this->createQueryBuilder('v')

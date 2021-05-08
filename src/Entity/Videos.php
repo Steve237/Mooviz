@@ -90,10 +90,6 @@ class Videos
      */
     private $videoLikes;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="video", orphanRemoval=true)
-     */
-    private $videodislikes;
 
     public function __construct()
     {
@@ -103,7 +99,6 @@ class Videos
         $this->notifications = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->videoLikes = new ArrayCollection();
-        $this->videodislikes = new ArrayCollection();
        
 
     }
@@ -335,39 +330,8 @@ class Videos
         return $this;
     }
 
+    
     /**
-     * @return Collection|Videodislike[]
-     */
-    public function getVideodislikes(): Collection
-    {
-        return $this->videodislikes;
-    }
-
-    public function addVideodislike(Videodislike $videodislike): self
-    {
-        if (!$this->videodislikes->contains($videodislike)) {
-            $this->videodislikes[] = $videodislike;
-            $videodislike->setVideo($this);
-        }
-
-        return $this;
-    }
-
-    public function removeVideodislike(Videodislike $videodislike): self
-    {
-        if ($this->videodislikes->removeElement($videodislike)) {
-            // set the owning side to null (unless already changed)
-            if ($videodislike->getVideo() === $this) {
-                $videodislike->setVideo(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-
-     /**
      * Permet de savoir si un utilisateur a liké
      * @param Users $user
      * @return bool
@@ -383,20 +347,5 @@ class Videos
         return false;
     }
 
-    /**
-     * Permet de savoir si un utilisateur a disliké
-     * @param Users $user
-     * @return bool
-     */
-    public function isDislikedByUser(Users $user) : bool {
-
-        foreach($this->dislikes as $dislike) {
-
-            if ($dislike->getUser() === $user) return true;
-
-        }
-
-        return false;
-    }
 
 }

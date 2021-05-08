@@ -74,7 +74,7 @@ class VideoController extends AbstractController
         
         $categories = $repo->findAll();
 
-        $totalVideos = $repository->countVideos();
+        $totalVideos = $repository->countVideosByCategory($category);
         $loadMoreStart = 50;
 
         return $this->render('video/videolistbycategory.html.twig', [
@@ -193,10 +193,10 @@ class VideoController extends AbstractController
         $videos = $repository->showVideoByCategory($category, $id);
         
         // récupère les vidéos de l'user
-        $user_videos = $repository->showVideoByUserId($userId);
+        $user_videos = $repository->showVideoByUserId($userId, $video);
 
         // récupère les nouvelles vidéos
-        $newvideos = $repository->getVideos();
+        $newvideos = $repository->getVideos($video);
 
         return $this->render('video/singlemovie.html.twig', [
             
