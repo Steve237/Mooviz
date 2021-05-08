@@ -18,6 +18,13 @@ class UploadType extends AbstractType
         $builder
             ->add('videoimage', FileType::class, [
                 "data_class" => null,
+                
+                "attr" => [
+
+                    "accept" => ".png, .jpg, .jpeg",
+                
+                ],
+                
                 "label" => "Ajoutez une image.",
                 "constraints" => [
                     new File([

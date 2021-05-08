@@ -18,12 +18,11 @@
                     <div class="progress-bar"></div>
                 </div>
                 <div id="uploadStatus"></div>
-                {% form_theme updateform 'bootstrap_4_layout.html.twig' %}
                 {{form_start(updateform,  {"attr" : {'id':'video_update'}}, {'action': path('update_video', {'id':
                 video.id}), 'method': 'POST'})}}
-                <div class="form-group">{{form_row(updateform.videoimage, {"attr" : {'class':'form-control'}})}}</div>
+                <div class="form-group">{{form_row(updateform.videoimage, {"label": "Image de couverture (formats autorisés: jpg, jpeg, png)", "attr" : {'class':'form-control-file'}})}}</div>
                 <div class="form-group">{{form_widget(updateform)}}</div>
-                <button type="submit" class="btn btn_video" onclick="hideBar()">Modifier image</button>
+                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video" onclick="hideBar()">Modifier image</button>
                 {{form_end(updateform)}}
             </div>
         </div>

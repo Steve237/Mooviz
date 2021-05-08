@@ -15,7 +15,6 @@
                     <div class="progress-bar"></div>
                 </div>
                 <div id="uploadStatus"></div>
-                {% form_theme form 'bootstrap_4_layout.html.twig' %}
                 {{form_start(form,  {"attr" : {'id':'uploadForm'}})}}
 
                 <div class="form-group">
@@ -25,10 +24,10 @@
                     {{form_row(form.videodescription, {"label":"Description", "attr" : {'class':'form-control contact-form','rows':'5'}})}}
                 </div>
                 <div class="form-group">
-                    {{form_row(form.videoimage, {"label":"Image (formats autorisés: jpeg, jpg, png)", "attr" : {'class':'form-control'}})}}
+                    {{form_row(form.videoimage, {"label":"Image de couverture (formats autorisés: jpeg, jpg, png)", "attr" : {'class':'form-control-file text-truncate'}})}}
                 </div>
                 <div class="form-group">
-                    {{form_row(form.videolink, {"label":"Video (format autorisé:mp4)", "attr" : {'class':'form-control'}})}}
+                    {{form_row(form.videolink, {"label":"Video (format autorisé:mp4)", "attr" : {'class':'form-control-file text-truncate'}})}}
                 </div>
                 <div class="form-group">
                     {{form_row(form.category, {'label': 'Catégories', 'placeholder':'Sélectionnez une catégorie', "attr" : {'class':'form-control', 'required':'required'}})}}
@@ -37,7 +36,11 @@
                     {{form_row(form.privacy, {'label': 'Visibilité', 'placeholder':'Indiquez si votre vidéo est publique ou privé', "attr" : {'class':'form-control', 'required':'required'}})}}
                 </div>
                 <div class="form-group">{{form_widget(form)}}</div>
-                <button type="submit" class="btn btn_video" onclick="changeClass()">Ajouter video</button>
+                <div class="form-group">
+                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video" onclick="changeClass()">
+                    Ajouter video
+                </button>
+                </div>
             </div>
         </div>
     </div>

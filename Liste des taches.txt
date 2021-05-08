@@ -98,3 +98,4 @@ mise en place formulaire de contact interne:ok;
 Empêcher à l'user qui a pas le rôle admin d'accèder aux parties admin:ok;
 Validation des contraintes lors de l'upload avatar:ok;
 Envoi Email lors de la suppression d'une vidéo par l'admin: ok;
+Mise à jour du loginform pour enlever les boutons de connexion par les réseaux sociaux:ok;
