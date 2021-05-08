@@ -100,3 +100,5 @@ Validation des contraintes lors de l'upload avatar:ok;
 Envoi Email lors de la suppression d'une vidéo par l'admin: ok;
 Mise à jour du loginform pour enlever les boutons de connexion par les réseaux sociaux:ok;
 Accès à la page faq: ok;
+Afficher les vidéos de la plus ancienne à la plus récente: ok;
+Empêcher au texte de déborder du formulaire upload input: ok;

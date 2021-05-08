@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 
 
 class VideoBackgroundType extends AbstractType
@@ -20,7 +21,11 @@ class VideoBackgroundType extends AbstractType
             ->add('videotitle', TextType::class)
             ->add('videodescription', TextareaType::class)
             ->add('parutiondate')
-            ->add('videoduration')
+            ->add('videoduration', TimeType::class, [
+                'placeholder' => ['hour' => 'Hour', 'minute' => 'Minute', 'second' => 'Second']
+                
+                ])
+            
             ->add('videolink', FileType::class, [
                 'data_class' => null,
                 

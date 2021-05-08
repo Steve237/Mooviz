@@ -100,6 +100,7 @@ class VideosRepository extends ServiceEntityRepository
         ->setParameter('val', $category)
         ->setParameter('id', $id)
         ->setParameter('privacy', 'private')
+        ->orderBy('v.id', 'DESC')
         ->setMaxResults(15)
         ->getQuery()
         ->getResult()
@@ -243,18 +244,6 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult(); 
     }
 
-
-    //affiche la vidéo la moins vue
-    public function getMinVideoByUser($user) {
-
-        return $this->createQueryBuilder('v')
-        ->andwhere('v.username = :val')
-        ->setParameter('val', $user)
-        ->orderBy('v.views', 'ASC') 
-        ->setMaxResults(10) 
-        ->getQuery() 
-        ->getResult(); 
-    }
 
 
     /*

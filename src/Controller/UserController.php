@@ -310,9 +310,6 @@ class UserController extends AbstractController
         // vidéos la plus vue
         $maxVideoViews = $videoRepo->getMaxVideoByUser($user);
 
-        // vidéos la moins vue 
-        $minVideoViews = $videoRepo->getMinVideoByUser($user);
-
         return $this->render('user/dashboard.html.twig', [
 
             "videoCount" => $videoCount,
@@ -320,7 +317,6 @@ class UserController extends AbstractController
             "followingCount" => $followingCount,
             "viewCount" => $viewCount,
             "maxVideoViews" => $maxVideoViews,
-            "minVideoViews" => $minVideoViews
 
         ]);
     }

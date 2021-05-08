@@ -15,7 +15,6 @@
                     <div class="progress-bar"></div>
                 </div>
                 <div id="uploadStatus"></div>
-                {% form_theme videoBackgroundForm 'bootstrap_4_layout.html.twig' %}
                 {{form_start(videoBackgroundForm,  {"attr" : {'id':'background_video_update'}}, {'action': path('update_video_background', {'id': video.id}), 'method': 'POST'})}}
 
                 <div class="form-group">
@@ -25,12 +24,15 @@
                     {{form_row(videoBackgroundForm.videodescription, {"label":"Description", "attr" : {'class':'form-control', 'rows':'5'}})}}
                 </div>
                 <div class="form-group">
-                    {{form_row(videoBackgroundForm.videolink, {"label" : "Vidéo (format autorisé: mp4)", "attr" : {'class':'form-control', 'placeholder': video.videolink}})}}
+                    {{form_row(videoBackgroundForm.videolink, {"label" : "Vidéo (format autorisé: mp4)", "attr" : {'class':'form-control-file', 'placeholder': video.videolink}})}}
                 </div>
                 <div class="form-group">{{form_row(videoBackgroundForm.category, {"attr" : {'class':'form-control'}})}}
                 </div>
-                <div class="form-group">{{form_widget(videoBackgroundForm)}}</div>
-                <button type="submit" class="btn btn_video" onclick="hideBar()">Ajouter video</button>
+                <div class="form-group">{{form_row(videoBackgroundForm.parutiondate, {"label" : "Date de sortie"})}}
+                </div>
+                <div class="form-group">{{form_row(videoBackgroundForm.videoduration, {"label" : "Durée de la vidéo"})}}
+                </div>
+                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video" onclick="hideBar()">Ajouter video</button>
             </div>
         </div>
     </div>
