@@ -12,7 +12,7 @@
                 </p>
                 <ul class="progression-studios-slider-meta">
                     <li>Date de sortie : {{firstBackgroundVideo[0].parutiondate | date('d/m/Y')}}</li>
-                    <li>Durée: {{firstBackgroundVideo[0].videoduration}}</li>
+                    <li>Durée: {{firstBackgroundVideo[0].videoduration | date('H:i')}}</li>
                     <li>{{firstBackgroundVideo[0].category.categoryname}}</li>
                 </ul>
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1">
@@ -37,7 +37,7 @@
                 </p>
                 <ul class="progression-studios-slider-meta">
                     <li>Date de sortie : {{secondBackgroundVideo[0].parutiondate | date('d/m/Y')}}</li>
-                    <li>Durée: {{secondBackgroundVideo[0].videoduration}}</li>
+                    <li>Durée: {{secondBackgroundVideo[0].videoduration | date('H:i')}}</li>
                     <li>{{secondBackgroundVideo[0].category.categoryname}}</li>
                 </ul>
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2">
