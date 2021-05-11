@@ -17,19 +17,19 @@
                 <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
                     <div class="item-playlist-container-skrn video-card video-card-text">
                         <a href="{{path('channel', {'id': followed.id})}}">
-                            {% for avatar in avatars %}
-                                {% if avatar %}
-                                    <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
-                                {% endif %}
-                            {% endfor %}
+                            {% if followed.imageuser %}
+                                <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" alt="avatar" class="img-responsive">
+                            {% else %}
+                                <img src="{{asset('images/avatar/mylion.jpg')}}" alt="avatar" class="img-responsive">
+                            {% endif %}
                         </a>
                         <div class="item-playlist-text-skrn">
-                            {% for avatar in avatars %}
-                            {% if avatar %}
-                                <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="img-responsive">
+                            {% if followed.imageuser %}
+                                <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" alt="avatar" class="img-responsive">
+                            {% else %}
+                                <img src="{{asset('images/avatar/mylion.jpg')}}" alt="avatar" class="img-responsive">
                             {% endif %}
-                            {% endfor %}
-                            <h5>
+                            <h5 class="channel-username">
                                 <a href="{{path('channel', {'id': followed.id})}}">
                                     Chaine de: {{followed.username}}
                                 </a>

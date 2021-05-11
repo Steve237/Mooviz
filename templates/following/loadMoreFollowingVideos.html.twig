@@ -1,4 +1,5 @@
 {% for video in videos | slice(start, 20) %}
+{% if video.privacy == "public" %}
 <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
     <div class="item-listing-container-skrn video-card video-card-text">
         <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
@@ -33,4 +34,6 @@
         </div><!-- close .item-listing-text-skrn -->
     </div><!-- close .item-listing-container-skrn -->
 </div><!-- close .col -->
+{% else %}
+<h5>Aucune vidéo</h5>
 {% endfor %}

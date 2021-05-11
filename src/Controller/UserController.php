@@ -5,17 +5,13 @@ namespace App\Controller;
 use Stripe\Stripe;
 use App\Entity\Users;
 use App\Entity\Avatar;
-use App\Entity\Videos;
 use App\Entity\Webhook;
 use App\Form\UsersType;
 use App\Form\AvatarType;
 use App\Repository\UsersRepository;
-use App\Repository\VideoRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
-use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,22 +42,14 @@ class UserController extends AbstractController
      * @Route("/main/user_channels", name="user_channels")
      * //permet de voir la liste des chaines dans l'espace profil
      */
-    public function showChannels(AvatarRepository $repoAvatar, VideosRepository $repo)
+    public function showChannels()
     {    
         $user = $this->getUser();
-
-        $follow = $user->getFollowing();
-
-        $avatars = $repoAvatar->findByUser($follow);
-
-        // récupère les chaines auxquels il est abonné
-        $userChannels = $repo->findAllByUsers($follow);
 
         $loadMoreStart = 20;
 
         return $this->render('user/profile_page_channels.html.twig', [
             "user" => $user,
-            "avatars" => $avatars,
             "loadMoreStart" => $loadMoreStart
         ]);
         
@@ -71,18 +59,13 @@ class UserController extends AbstractController
      * Permet de charger plus de chaines dans la liste des chaines de l'espace user
      * @Route("/main/loadMoreUserChannels/{start}", name="loadMoreUserChannels", requirements={"start": "\d+"})
      */
-    public function loadMoreUserChannels(AvatarRepository $repoAvatar, $start = 20)
+    public function loadMoreUserChannels($start = 20)
     {   
         $user = $this->getUser();
-
-        $follow = $user->getFollowing();
-        
-        $avatars = $repoAvatar->findByUser($follow);
 
         return $this->render('user/loadMoreUserChannels.html.twig', [
             
             "user" => $user,
-            "avatars" => $avatars,
             "start" => $start
         ]);
     }
@@ -205,10 +188,7 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
-
-
+    
     /**
      * @Route("/main/user_account/{id}", name="user_account")
      * //permet d'accéder et de modifier les infos du compte user

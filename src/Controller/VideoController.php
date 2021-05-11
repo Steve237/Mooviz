@@ -246,11 +246,11 @@ class VideoController extends AbstractController
         $user = $this->getUser();
 
         // retourne video de l'user à qui appartiennt la vidéo en cours
-        $user_videos = $repository->showVideoByUserId($user);
+        $user_videos = $repository->showVideoByUserId($user, $video);
         
         
         // retourne 10 dernières vidéos
-        $newvideos = $repository->getVideos();
+        $newvideos = $repository->getVideos($video);
 
         $videos = $repository->showVideoByCategory($category, $video);
 
@@ -510,7 +510,7 @@ class VideoController extends AbstractController
     /**
      *  @Route("/main/upload_video_successfull", name="success_upload")
      * //cette fonction redirige vers la page des vidéos user avec message success
-     * //
+     * 
      */
     public function showMessageSuccessUpload() {
 
@@ -531,8 +531,6 @@ class VideoController extends AbstractController
         return $this->redirectToRoute('user_videos');
         
     }
-
-
 
     /**
      * @Route("/main/delete_video/{id}", name="delete_video")

@@ -288,12 +288,12 @@ class Videos
         return $this;
     }
 
-    public function getPrivacy(): ?bool
+    public function getPrivacy(): ?string
     {
         return $this->privacy;
     }
 
-    public function setPrivacy(bool $privacy): self
+    public function setPrivacy(?string $privacy): self
     {
         $this->privacy = $privacy;
 

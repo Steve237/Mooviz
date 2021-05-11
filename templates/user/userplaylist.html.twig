@@ -20,7 +20,7 @@
               href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a>
           </h6>
           <div class="avatar-position">
-            {% if playlist.video.username.imageuser.avatar %}
+            {% if playlist.video.username.imageuser %}
               <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}"
               class="rounded-circle avatar-height" id="width-avatar">
             {% endif %}

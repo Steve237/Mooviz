@@ -7,13 +7,17 @@
 
     <h5 class="videobychannel-header-title">Vidéos de {{user.username}} </h5>
     
+    {% if user.imageuser %}
     <p class="center-image">
         <img src="{{asset('images/upload/' ~ user.imageuser.avatar)}}" class="channel-image">
     </p>
+    {% endif %}
 
     <div class="dashboard-container">
         <div class="row" id="videosbychannel">
+            
             {% for video in videos | slice(0, 20) %}
+            {% if video.privacy == "public" %}
             <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
                 <div class="item-listing-container-skrn video-card video-card-text">
                     <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
@@ -26,7 +30,7 @@
                                 </a>
                             </div>
                             <div class="avatar-position">
-                                {% if video.username.imageuser.avatar %}
+                                {% if video.username.imageuser %}
                                     <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
                                     class="rounded-circle avatar-height" id="width-avatar">
                                 {% endif %}
@@ -46,6 +50,9 @@
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-listing-container-skrn -->
             </div><!-- close .col -->
+            {% else %}
+            <h5>Cette chaine ne contient aucune vidéo</h5>
+            {% endif %}
             {% endfor %}
         </div><!-- close .row STOP-->
         
@@ -59,7 +66,6 @@
     </div><!-- close .dashboard-container -->
 </main>
 {% endblock %}
-
 {% block javascripts %}
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

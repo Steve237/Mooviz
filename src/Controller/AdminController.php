@@ -629,4 +629,17 @@ class AdminController extends AbstractController
             'users' => $users
         ]);
     }
+
+
+    /**
+     * Permet de supprimer toutes les vidéos du site
+     * @Route("/admin/delete-all-videos", name="delete-all-videos")
+     */
+    public function deleteAllVideos(VideosRepository $repo)
+    {   
+        $deleteVideo = $repo->deleteAllVideos();
+
+        return $this->redirectToRoute('home');
+    }
+
 }

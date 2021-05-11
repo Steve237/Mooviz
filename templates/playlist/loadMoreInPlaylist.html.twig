@@ -11,7 +11,7 @@
                 </a>
             </h5>
             
-            {% if playlist.video.username.imageuser.avatar %}
+            {% if playlist.video.username.imageuser %}
                 <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}"
                 class="logo-avatar">
             {% endif %}

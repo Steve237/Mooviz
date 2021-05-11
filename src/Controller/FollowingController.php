@@ -123,16 +123,13 @@ class FollowingController extends AbstractController
      * @Route("/main/channels", name="channels_list")
      * //permet d'accéder à la liste des chaînes auxquelles on s'est abonné
      */
-    public function listChannel(AvatarRepository $repoAvatar, VideosRepository $repo){
+    public function listChannel(VideosRepository $repo) {
 
         
         $user = $this->getUser();
 
         // récupère les utilisateurs auxquels il est abonné
         $follow = $user->getFollowing();
-
-        // récupère avatar des users auxquels il est abonné
-        $avatars = $repoAvatar->findByUser($follow);
 
         // récupère les chaines auxquels il est abonné
         $userChannels = $repo->findAllByUsers($follow);
@@ -149,7 +146,6 @@ class FollowingController extends AbstractController
 
         return $this->render('following/following_channel.html.twig', [
             "user" => $user,
-            "avatars" => $avatars,
             "loadMoreStart" => $loadMoreStart
         ]);
     }
@@ -160,12 +156,12 @@ class FollowingController extends AbstractController
      * @Route("/main/channel/{id}", name="channel")
      * //permet d'accéder à la liste des vidéos par chaine
      */
-    public function Channel(Users $user, VideosRepository $repoVideo){
+    public function Channel(Users $user, VideosRepository $repoVideo) {
 
-        $user = $this->getUser();
+        $userName = $this->getUser();
 
         // récupère les utilisateurs auxquels il est abonné
-        $follow = $user->getFollowing();
+        $follow = $userName->getFollowing();
 
         $userChannels = $repoVideo->findAllByUsers($follow);
 
@@ -224,15 +220,9 @@ class FollowingController extends AbstractController
     {   
         $user = $this->getUser();
 
-        $follow = $user->getFollowing();
-        
-        $avatars = $repoAvatar->findByUser($follow);
-
-
         return $this->render('following/loadMoreChannels.html.twig', [
             
             "user" => $user,
-            "avatars" => $avatars,
             'start' => $start
         ]);
     }

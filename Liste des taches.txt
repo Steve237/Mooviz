@@ -102,3 +102,7 @@ Mise à jour du loginform pour enlever les boutons de connexion par les réseaux
 Accès à la page faq: ok;
 Afficher les vidéos de la plus ancienne à la plus récente: ok;
 Empêcher au texte de déborder du formulaire upload input: ok;
+Amélioration du formulaire video background pour saisir durée vidéo au format time:ok;
+Nettoyer la base de données et les dossiers pour centraliser vidéos et images: ok;
+Suppression vidéo entraîne suppression de tous les éléments liés (playlist, follows, likes, images) : ok;
+Afficher avatar uniquement quand c'est possible:ok;

@@ -4,13 +4,18 @@
 
 {% block body %}
 
-{{ render(controller('App\\Controller\\UserController::userProfile'))}}
+{{render(controller('App\\Controller\\UserController::userProfile'))}}
 
 <h6>Vidéos des chaines suivis.</h6>
 <div class="row" id="allchannelsvideos">
+  
   {% if videos %}
+  {% else %}
+  <h4>Vous n'êtes abonné à aucune chaine pour le moment.</h4>
+  {% endif %}
+
   {% for video in videos | slice(0, 20) %}
-  {% if video.privacy != "private" %}
+  {% if video.privacy == "public" %}
   <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card video-card-text">
       <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
@@ -21,7 +26,7 @@
             <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a>
           </h6>
           <div class="avatar-position">
-            {% if video.username.imageuser.avatar %}
+            {% if video.username.imageuser %}
               <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
               class="rounded-circle avatar-height" id="width-avatar">
             {% endif %}
@@ -40,11 +45,10 @@
       </div><!-- close .item-listing-text-skrn -->
     </div><!-- close .item-listing-container-skrn -->
   </div><!-- close .col -->
+  {% else %}
+  <h5>Cette chaine ne contient aucune vidéo</h5>
   {% endif %}
   {% endfor %}
-  {% else %}
-  <h5>Vous n'êtes abonné à aucune chaine pour le moment.</h5>
-  {% endif %}
 </div><!-- close .row -->
 
 {% if videos | length > loadMoreStart %}
@@ -60,7 +64,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{{ parent()}}
+{{parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   click = 0;
