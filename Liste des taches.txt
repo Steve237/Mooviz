@@ -129,6 +129,9 @@ Page des vidéos suivis:ok;
 Page liste des chaines: ok;
 page playlist:ok;
 page upload video: ok;
+page du lecteur video principale:ok;
+page du lecteur vidéo secondaire:
+
 
 
 
