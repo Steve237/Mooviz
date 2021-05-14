@@ -106,3 +106,33 @@ Amélioration du formulaire video background pour saisir durée vidéo au format
 Nettoyer la base de données et les dossiers pour centraliser vidéos et images: ok;
 Suppression vidéo entraîne suppression de tous les éléments liés (playlist, follows, likes, images) : ok;
 Afficher avatar uniquement quand c'est possible:ok;
+Afficher message par défaut quand aucune vidéo:ok;
+
+
+// Vérifier que toutes les pages sont responsives;
+
+Responsive :
+
+responsive page accueil : ok;
+page des tarifs : ok;
+page d'inscription:ok;
+page de paiement:ok;
+page paiement réussi:ok;
+page de connexion:ok;
+Liens page accueil:responsive:ok;
+Vidéos page accueil: ok;
+Vidéos accueil par catégorie:ok;
+background-video : ok;
+Page liste des vidéos ok;
+Page liste des vidéos par catégorie:ok;
+Page des vidéos suivis:ok;
+Page liste des chaines: ok;
+page playlist:ok;
+page upload video: ok;
+
+
+
+
+
+
+

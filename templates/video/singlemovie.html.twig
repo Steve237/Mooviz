@@ -29,104 +29,72 @@
 	</section>
 	<div id="movie-detail-rating">
 		<div class="dashboard-container">
-			<div class="row">
-				<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 					<div class="video-description-block">
 						<div class="video-user-info">
 							{% if video.username.imageuser %}
 								<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
 								class="rounded-circle user-video-avatar">
 							{% endif %}
-							<a href="{{path('channel', {'id': video.username.id})}}" class="link-color"><span
-									class="text-size">{{video.username.username}}</span></a> |
-							<span class="text-size">followers</span> : {{video.username.followers | length}}
-							<span class="switch-video">
-								<a
-									href="{{path("second_player", {"id" : video.id, "idcategory" : video.category.id})}}">
-									<button class="btn btn-primary btn-xs-small">Switch</button>
-								</a>
+							<span class="text-size">
+								<a href="{{path('channel', {'id': video.username.id})}}" class="link-color">{{video.username.username}}</a>
+								| Followers: {{video.username.followers | length}}
 							</span>
-						</div>
-						{% if is_granted('ROLE_USER') and video.username != app.user %}
-						<div>
+							<ul class="list-inline">
+							
+							{% if is_granted('ROLE_USER') and video.username != app.user %}
+							<li class="list-inline-item">
+								<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
+									{% if app.user and video.isSelectedByUser(app.user) %}
+									<button type="button" class="btn btn-small btn-secondary btn-width">
+										<i class="fas fa-star"></i>
+									</button>
+									{% else %}
+									<button type="button" class="btn btn-small btn-secondary btn-width">
+										<i class="far fa-star"></i>
+									</button>
+									{% endif %}
+								</a>
+								</li>
+	
+								<li class="list-inline-item">
+								<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
+									{% if app.user and video.isLikedByUser(app.user) %}
+									<button type="button" class="btn btn-small btn-secondary">
+										<i class="fas fa-thumbs-up"></i>
+										<span class="js-likes">{{video.videoLikes | length}}</span>
+									</button>
+									{% else %}
+									<button type="button" class="btn btn-small btn-secondary">
+										<i class="far fa-thumbs-up"></i>
+										<span class="js-likes">{{video.videoLikes | length}}</span>
+									</button>
+									{% endif %}
+								</a>
+								</li>
+							<li class="list-inline-item">
 							{% set isFollowed = video.username.followers.contains(app.user) %}
 							<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
 								class="btn btn-sm btn-primary button_follow" id="follow">
-								Follow
+								<i class="fas fa-link"></i>
 							</button>
 							<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
 								class="btn btn-sm btn-primary button_follow" id="unfollow">
-								UnFollow
+								<i class="fas fa-unlink"></i>
 							</button>
+							</li>
+							{% endif %}
+							<li class="list-inline-item">
+								<a href="{{path("second_player", {"id" : video.id, "idcategory" : video.category.id})}}">
+									<button class="btn btn-primary btn-xs-small">S</button>
+								</a>
+							</li>
+							</ul>
 						</div>
 					</div>
-
-					<div class="section-buttons-videos d-none d-md-block">
-						<div class="btn-group" role="group" aria-label="Basic example">
-							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
-								{% if app.user and video.isSelectedByUser(app.user) %}
-								<button type="button" class="btn btn-small btn-secondary button-video-position">
-									<i class="fas fa-2x fa-star"></i>
-								</button>
-								{% else %}
-								<button type="button" class="btn btn-small btn-secondary button-video-position">
-									<i class="far fa-2x fa-star"></i>
-								</button>
-								{% endif %}
-							</a>
-
-							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
-								{% if app.user and video.isLikedByUser(app.user) %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="fas fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.videoLikes | length}}</span>
-								</button>
-								{% else %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="far fa-2x fa-thumbs-up"></i>
-									<span class="js-likes">{{video.videoLikes | length}}</span>
-								</button>
-								{% endif %}
-							</a>
-						</div>
-					</div>
-
-					<div class="section-buttons-videos d-sm-none">
-						<div class="btn-group" role="group" aria-label="Basic example">
-							<a href="{{path('playlist', {'idvideo': video.id, 'id': app.user.id})}}" class="js-play">
-								{% if app.user and video.isSelectedByUser(app.user) %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="fas fa-star"></i>
-								</button>
-								{% else %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="far fa-star"></i>
-								</button>
-								{% endif %}
-							</a>
-
-							<a href="{{path('video_like', {'id': video.id})}}" class="js-like">
-								{% if app.user and video.isLikedByUser(app.user) %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="fas fa-thumbs-up"></i>
-									<span class="js-likes">{{video.videoLikes | length}}</span>
-								</button>
-								{% else %}
-								<button type="button" class="btn btn-small btn-secondary">
-									<i class="far fa-thumbs-up"></i>
-									<span class="js-likes">{{video.videoLikes | length}}</span>
-								</button>
-								{% endif %}
-							</a>
-						</div>
-					</div>
-					{% endif %}
 				</div>
 			</div><!-- close .row -->
-		</div><!-- close .dashboard-container -->
-	</div><!-- close #movie-detail-rating -->
 
-	<div class="dashboard-container section-video-description">
+		<div class="dashboard-container section-video-description">
 		<div class="movie-details-section">
 			<p class="videoname">{{video.videotitle}}</p>
 			<strong>

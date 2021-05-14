@@ -2964,7 +2964,6 @@ h6.light-weight-heading {
 }
 
 #pricing-plans-background-image {
-	background-image: url("images/demo/signup-background.jpg");
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: contain;
@@ -6764,7 +6763,7 @@ a {
 
 .section-video-description {
 
-	margin-top: 20px;
+	margin-top: -15px;
 
 }
 
@@ -7157,8 +7156,7 @@ a {
 
 .user-notifs {
 
-
-margin: left 6px;
+margin-left: 6px;
 margin-bottom:5px;
 
 }
@@ -7185,5 +7183,16 @@ margin-bottom:5px;
 .channel-username {
 
 	margin-top:3px;
+
+} 
+
+@media (max-width: 320px) {
+
+.btn-width {
+
+ 
+ max-width:50px;
+
+}
 
 }
