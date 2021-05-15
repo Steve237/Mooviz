@@ -33,17 +33,15 @@
   </li>
   <li class="list-group-item d-flex justify-content-between align-items-center">
     Nombre total de vues
-    {% if app.user.videos == null %}
-    Aucune vue
-    {% else %}
+    {% if maxVideoViews %}
     <span class="badge badge-primary badge-pill">{{viewCount}}</span>
+    {% else %}
+    <span class="badge badge-primary badge-pill">0</span>
     {% endif %}
   </li>
 </ul>
 
-{% if app.user.videos == null %}
-Aucune vidéo
-{% else %}
+{% if maxVideoViews %}
 <h6>Classement des vidéos les plus populaires</h6>
 <table class="table tab-position">
   <thead>
@@ -78,6 +76,8 @@ Aucune vidéo
   </div>
   {% endfor %}
 </ul>
+{% else %}
+<h5>Vous n'avez encore publié aucune vidéo pour le moment, veuillez publier une vidéo.</h5>
 {% endif %}
 </div><!-- close .dashboard-container -->
 </main>

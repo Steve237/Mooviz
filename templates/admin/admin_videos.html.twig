@@ -4,78 +4,72 @@
 
 {% block body %}
 
-<div class="container admin-section">
-    <ul class="dashboard-sub-menu">
-        <li><a href="{{path('users_list')}}">Liste des membres</a></li>
-        <li><a href="{{path('notifications_list')}}">Notifications</a></li>
-        <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
-        <li class="current"><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
-    </ul><!-- close .dashboard-sub-menu -->
 
-    {% for message in app.flashes('admin_delete_video') %}
-    <div class="alert alert-success admin-delete-video-message">
-        {{message}}
-    </div>
-    {% endfor %}
-    <div class="row" id="adminvideos">
-        {% if videos %}
-        {% for video in videos | slice(0, 21) %}
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-            <div class="item-listing-container-skrn video-card videocard-text">
-                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
-                        src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing"
-                        class="imagemovie img-responsive"></a>
-                <div class="item-listing-text-skrn">
-                    <div class="item-listing-text-skrn-vertical-align">
-                        <div class="videolist-title">
-                            <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
-                                {{video.videotitle}}
-                            </a>
-                        </div>
-                        <div class="avatar-position">
-                            {% if video.username.imageuser %}
-                                <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
-                                class="rounded-circle avatar-height" id="width-avatar">
-                            {% endif %}
-                            <a href="{{path('channel', {'id': video.username.id})}}"
-                            class="link-color mobile-text">
-                                {{video.username.username}}
-                            </a> 
-                            {% if video.views is not null %}
-                            <p class="mobile-text text-position">
-                                Vues : {{video.views}}
-                            </p>
-                            {% else %}
-                            <p class="mobile-text text-position">
-                                Aucune vue
-                            </p>
-                            {% endif %}
-                        </div>
-                    </div><!-- close .item-listing-text-skrn-vertical-align -->
-                </div><!-- close .item-listing-text-skrn -->
-                <div class="button-delete-video">
-                    <a href="{{path('admin_delete_video', {'id': video.id})}}">
-                        <button class="btn btn-primary btn-sm admin_delete_videos">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </a>
-                </div>
-            </div><!-- close .item-listing-container-skrn -->
-        </div><!-- close .col -->
-        {% endfor %}
-        {% else %}
-        <h5>Le site ne contient aucune vidéo pour le moment.</h5>
-        {% endif %}
-    </div><!-- close .row -->
+<main id="col-main">
+    <div class="dashboard-container">
+        <ul class="dashboard-sub-menu">
+            <li><a href="{{path('users_list')}}">Liste des membres</a></li>
+            <li><a href="{{path('notifications_list')}}">Notifications</a></li>
+            <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+            <li class="current"><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
+        </ul><!-- close .dashboard-sub-menu -->
     
-    {% if totalVideos > loadMoreStart %}
-    <div class="pagination">
-        <div class="navigation" id="loadbutton">
-            <button class="btn btn-primary" id="loadMoreAdminVideos">Load more</button>
+        {% for message in app.flashes('admin_delete_video') %}
+        <div class="alert alert-success admin-delete-video-message">
+            {{message}}
         </div>
+        {% endfor %}
+        <h4 class="heading-extra-margin-bottom">Liste des videos</h4>
+        <div class="row" id="adminvideos">
+            {% for video in videos | slice(0, 21) %}
+            {% if video.privacy == "public" %}
+            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
+                <div class="item-listing-container-skrn video-card video-card-text">
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                        <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+                    </a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align">
+                            <div class="videolist-title">
+                                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
+                                    {{video.videotitle}}
+                                </a>
+                            </div>
+                            <div class="avatar-position">
+                                {% if video.username.imageuser %}
+                                    <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+                                    class="rounded-circle avatar-height" id="width-avatar">
+                                {% endif %}
+                                <a href="{{path('channel', {'id': video.username.id})}}"
+                                class="link-color mobile-text">{{video.username.username}}</a> 
+                                {% if video.views is not null %}
+                                <p class="mobile-text text-position">
+                                Vues : {{video.views}}
+                                </p>
+                                {% else %}
+                                <p class="mobile-text text-position">
+                                Aucune vue
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div><!-- close .item-listing-text-skrn-vertical-align -->
+                    </div><!-- close .item-listing-text-skrn -->
+                </div><!-- close .item-listing-container-skrn -->
+            </div><!-- close .col -->
+            {% else %}
+            <h5>Aucune vidéo</h5>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% if totalVideos > loadMoreStart %}
+        <div class="pagination">
+            <div class="navigation" id="loadbutton">
+                <button class="btn btn-primary" id="loadMoreAdminVideos">Load more</button>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
-</div>
+</main>
 {% endblock %}
 {% block javascripts %}
 {{ parent()}}

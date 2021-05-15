@@ -10,23 +10,30 @@
 <div class="row" id="userplaylist">
   {% if playlists %}
   {% for playlist in playlists | slice(0, 20) %}
-  <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+  <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
     <div class="item-listing-container-skrn video-card video-card-text">
-      <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}"><img
-          src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie"></a>
+      <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">
+        <img src="{{asset('images/upload/' ~ playlist.video.videoimage)}}" alt="Listing" class="imagemovie">
+      </a>
       <div class="item-listing-text-skrn">
         <div class="item-listing-text-skrn-vertical-align">
-          <h6 class="videolist-title"><a
-              href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}">{{playlist.video.videotitle}}</a>
-          </h6>
+          <div class="videolist-title">
+            <a href="{{path("movie", {"id" : playlist.video.id, "idcategory" : playlist.video.category.id})}}" class="mobile-text">
+              {{playlist.video.videotitle}}
+            </a>
+          </div>
           <div class="avatar-position">
             {% if playlist.video.username.imageuser %}
-              <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}"
-              class="rounded-circle avatar-height" id="width-avatar">
+              <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
             {% endif %}
-            <a href="{{path('channel', {'id': playlist.video.username.id})}}"
-              class="link-color">{{playlist.video.username.username}}</a> | {% if playlist.video.views is not null %}
-            Vues : {{playlist.video.views}} {% else %} Aucune vue {% endif %}
+            <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color mobile-text">
+              {{playlist.video.username.username}}
+            </a> 
+            {% if playlist.video.views is not null %}
+              <p class="mobile-text text-position">Vues : {{playlist.video.views}}</p>
+            {% else %}
+              <p class="mobile-text text-position">Aucune vue</p>
+            {% endif %}
           </div>
         </div><!-- close .item-listing-text-skrn-vertical-align -->
       </div><!-- close .item-listing-text-skrn -->
