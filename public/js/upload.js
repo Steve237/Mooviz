@@ -45,15 +45,4 @@ $(document).ready(function(){
         });
     });
 	
-    // File type validation
-    $("#fileInput").change(function(){
-        var allowedTypes = ['video/mp4'];
-        var file = this.files[0];
-        var fileType = file.type;
-        if(!allowedTypes.includes(fileType)){
-            alert('Veuillez télécharger une vidéo au format mp4.');
-            $("#fileInput").val('');
-            return false;
-        }
-    });
 });

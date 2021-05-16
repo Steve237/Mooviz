@@ -44,6 +44,7 @@ class UserController extends AbstractController
      */
     public function showChannels()
     {    
+        
         $user = $this->getUser();
 
         $loadMoreStart = 20;

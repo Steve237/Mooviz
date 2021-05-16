@@ -442,17 +442,24 @@ class VideoController extends AbstractController
         if ($video->getUsername() != $user) {
 
             return $this->redirectToRoute('homepage');
-
-
         }
-        
-        
+
+        // On récupère le nom de l'image actuellement en bdd
+        $videoImage = $video->getVideoimage();
+           
         $updateform = $this->createForm(UploadType::class, $video);
         $updateform->handleRequest($request);
         
+        // remplacement par une autre
         if ($updateform->isSubmitted() && $updateform->isValid()) {
             
-
+            // chemin vers image actuellement en bdd
+            $imageFile = 'images/upload/'.$videoImage;
+         
+            // suppression de l'image actuelle du dossier
+            unlink($imageFile);
+            
+            // remplacement de l'image par une autre
             $videoImage = $video->getVideoImage();
             $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
             $videoImage->move($this->getParameter('image_directory'), $fileImage);
@@ -460,6 +467,8 @@ class VideoController extends AbstractController
 
             $entitymanager->persist($video);
             $entitymanager->flush();
+
+            $this->addFlash('success', 'Votre vidéo a été correctement modifié.');
 
             return $this->redirectToRoute('user_videos');
         
@@ -512,7 +521,7 @@ class VideoController extends AbstractController
      * //cette fonction redirige vers la page des vidéos user avec message success
      * 
      */
-    public function showMessageSuccessUpload() {
+        public function showMessageSuccessUpload() {
 
         $this->addFlash('success', 'Votre vidéo a été ajouté avec succès.');
         
@@ -520,17 +529,6 @@ class VideoController extends AbstractController
         
     }
 
-
-     /**
-     * @Route("/main/update_video_successfull", name="success_update")
-     */
-    public function showMessageSuccessUpdateVideo() {
-
-        $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
-        
-        return $this->redirectToRoute('user_videos');
-        
-    }
 
     /**
      * @Route("/main/delete_video/{id}", name="delete_video")
@@ -547,8 +545,7 @@ class VideoController extends AbstractController
 
         }
         
-        
-        // nom des fichiers image et vidéo
+       // nom des fichiers image et vidéo
         $videoName = $video->getVideolink();
         $videoImage = $video->getVideoimage();
 
@@ -579,6 +576,22 @@ class VideoController extends AbstractController
     public function deleteAllVideos(VideosRepository $repo)
     {   
         $user = $this->getUser();
+
+        // On récupère les vidéos de la bdd
+        $videos = $repo->getVideoImages($user);
+
+        // Pour chaque vidéo on supprime la vidéo et l'image de leurs vidéos respectifs
+        foreach($videos as $video) {
+         
+            $videoName = $video->getVideoLink();
+            $videoImage = $video->getVideoImage();
+            // chemin vers les fichiers
+            $videoFile = 'videos'.$videoName;
+            $imageFile = 'images/upload/'.$videoImage;
+
+            unlink($videoFile);
+            unlink($imageFile);
+        }
 
         $deleteVideo = $repo->deleteAllUserVideos($user);
 

@@ -40,6 +40,7 @@ class ProfileController extends AbstractController
         
         $userName = $this->getUser();
 
+
         // récupère toutes les vidéos de l'user
         $videos = $videorepo->getVideoByUser($userName);
 

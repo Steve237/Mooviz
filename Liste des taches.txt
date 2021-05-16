@@ -143,6 +143,12 @@ Tache supplémentaire à faire:
 Ajouter bouton pour supprimer toutes les vidéos dans la partie admin et user: ok;
 Ajout favicone:ok;
 Publications de Liens url ne fonctionnent pas:ok;
+Suppression de l'ancienne image lors de la modification:ok;
+Suppression de l'ancienne video background lors de la modif:ok ;
+Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par admin:ok;
+Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par user:ok;
+
+
 
 
 

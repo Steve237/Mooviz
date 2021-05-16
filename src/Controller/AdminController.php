@@ -433,17 +433,27 @@ class AdminController extends AbstractController
 
     /**
     * @Route("/admin/update_video_background/{id}", name="update_video_background")
+    * //Permet de remplacer la vidéo background
     */
     public function updateVideoBackground(Videobackground $video, EntityManagerInterface $entity, Request $request) 
     {   
         $videoBackgroundForm = $this->createForm(VideoBackgroundType::class, $video);
         $videoBackgroundForm->handleRequest($request);
 
+        // on récupère le nom de la vidéo actuellement en bdd
+        $videoLink = $video->getVideolink();
+
+        // chemin vers les fichiers
+        $videoPath = 'videos/uploads/'.$videoLink;
+
         if($request->isXmlHttpRequest()) {
         
             if($videoBackgroundForm->isSubmitted() && $videoBackgroundForm->isValid()) {
-                
-            //upload de la vidéo
+              
+                // On supprime l'ancienne vidéo
+             unlink($videoPath);   
+
+            //On ajoute la nouvelle vidéo
             $videoFile = $video->getVideoLink();
             $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
             $videoFile->move($this->getParameter('video_directory'), $fileVideo);
@@ -637,10 +647,16 @@ class AdminController extends AbstractController
      */
     public function deleteAllVideos(VideosRepository $repo)
     {   
+        // On supprime tous les vidéos de leur dossier
+        array_map('unlink', glob("videos/uploads/*"));
+
+        // On supprime toutes les images de leur dossier
+        array_map('unlink', glob("images/upload/*"));
+        
+        // On supprime toutes les vidéos de la bdd
         $deleteVideo = $repo->deleteAllVideos();
 
         $this->addFlash('delete-all-website-videos', 'Suppression de toutes les vidéos réussie');
         return $this->redirectToRoute('adminspace_videos');
     }
-
 }

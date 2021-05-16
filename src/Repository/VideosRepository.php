@@ -258,7 +258,7 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
-     //permet de supprimer toutes les vidéos
+     //permet de supprimer toutes les vidéos de l'user
      public function deleteAllUserVideos($user) {
 
         return $this->createQueryBuilder('v')
@@ -270,6 +270,18 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult();
 
     }
+
+
+    //retourne la vidéo la plus vue de l'user
+    public function getVideoImages($user) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->getQuery() 
+        ->getResult(); 
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Videos
