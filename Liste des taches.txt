@@ -137,6 +137,12 @@ page profil vidéos suivis:ok;
 page à propos: ok;
 Liste des users:ok;
 Recherche user:ok;
+Toutes les pages admin:ok;
+
+Tache supplémentaire à faire:
+Ajouter bouton pour supprimer toutes les vidéos dans la partie admin et user: ok;
+Ajout favicone:ok;
+Publications de Liens url ne fonctionnent pas:ok;
 
 
 

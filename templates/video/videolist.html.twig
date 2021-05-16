@@ -5,6 +5,8 @@
 {% block body %}
 <main id="col-main">
 
+		{% if videos %}
+
 		{% include 'video/_mainvideolist.html.twig' %}
 		
 		{% if totalVideos > loadMoreStart %}
@@ -13,6 +15,8 @@
 				<button class="btn btn-primary" id="loadMoreVideos">Load more</button>
 			</div>
 		</div>
+		{% endif %}
+
 		{% endif %}
 
 	</div><!-- close .dashboard-container -->

@@ -566,10 +566,24 @@ class VideoController extends AbstractController
         $entityManager->remove($video);
         $entityManager->flush();
 
-        $this->addFlash('success', 'votre vidéo a été supprimé avec succès');
+        $this->addFlash('success', 'Votre vidéo a été supprimé avec succès');
         
         return $this->redirectToRoute('user_videos');
         
+    }
+
+    /**
+     * Permet de supprimer toutes les vidéos de l'user
+     * @Route("/main/delete-all-user-videos", name="delete-all-user-videos")
+     */
+    public function deleteAllVideos(VideosRepository $repo)
+    {   
+        $user = $this->getUser();
+
+        $deleteVideo = $repo->deleteAllUserVideos($user);
+
+        $this->addFlash('delete-all-videos', 'Suppression de toutes les vidéos réussie');
+        return $this->redirectToRoute('user-videos');
     }
 
 }

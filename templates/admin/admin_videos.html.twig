@@ -19,10 +19,25 @@
             {{message}}
         </div>
         {% endfor %}
+        {% for message in app.flashes('delete-all-website-videos') %}
+        <div class="alert alert-success admin-delete-video-message">
+            {{message}}
+        </div>
+        {% endfor %}
+
+        
         <h4 class="heading-extra-margin-bottom">Liste des videos</h4>
+       
         <div class="row" id="adminvideos">
+            {% if videos %}
+            <div class="col-12" class="delete-all-button"> 
+                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteAll">
+                    Supprimer toutes les vidéos
+                </button>
+            </div>
+            {% endif %}
+            {% if videos %}
             {% for video in videos | slice(0, 21) %}
-            {% if video.privacy == "public" %}
             <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
                 <div class="item-listing-container-skrn video-card video-card-text">
                     <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
@@ -52,14 +67,21 @@
                                 </p>
                                 {% endif %}
                             </div>
+                            <div class="button-delete-video">
+                                <a href="{{path('admin_delete_video', {'id': video.id})}}">
+                                    <button class="btn btn-primary btn-sm admin_delete_videos">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </a>
+                            </div>
                         </div><!-- close .item-listing-text-skrn-vertical-align -->
                     </div><!-- close .item-listing-text-skrn -->
                 </div><!-- close .item-listing-container-skrn -->
             </div><!-- close .col -->
-            {% else %}
-            <h5>Aucune vidéo</h5>
-            {% endif %}
             {% endfor %}
+            {% else %}
+            <h5>Le site ne contient aucune vidéo actuellement, veuillez en ajouter.</h5>
+            {% endif %}
         </div>
         {% if totalVideos > loadMoreStart %}
         <div class="pagination">
@@ -68,6 +90,27 @@
             </div>
         </div>
         {% endif %}
+    </div>
+    <div class="modal fade" id="deleteAll" tabindex="-1" role="dialog" aria-labelledby="deleteAllVideos" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Suppression des vidéos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p>Souhaitez vous vraiment supprimer toutes les vidéos du site?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <a href="{{path('delete-all-videos')}}">
+                  <button type="button" class="btn btn-primary">Confirmer</button>
+              </a>
+            </div>
+          </div>
+        </div>
     </div>
 </main>
 {% endblock %}

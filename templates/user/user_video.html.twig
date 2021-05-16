@@ -11,8 +11,16 @@
     {{message}}
 </div>
 {% endfor %}
+{% for message in app.flashes('delete-all-videos') %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endfor %}
 
 <a href="{{path('addvideo')}}"><button class="btn btn-primary add_video">Ajouter vidéos</button></a>
+<button class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteAll">
+    Supprimer toutes les vidéos
+</button>
 
 {{render(controller('App\\Controller\\ProfileController::searchUserVideos'))}}
 
@@ -65,9 +73,32 @@
 {% endif %}
 
 </div><!-- close .dashboard-container -->
+<div class="modal fade" id="deleteAll" tabindex="-1" role="dialog" aria-labelledby="deleteAllVideos" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Suppression des vidéos</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>
+                Souhaitez vous vraiment supprimer toutes vos vidéos?
+                Il s'agit d'une action irréversible.
+            </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <a href="{{path('delete-all-user-videos')}}">
+              <button type="button" class="btn btn-primary">Confirmer</button>
+          </a>
+        </div>
+      </div>
+    </div>
+</div>
 </main>
 {% endblock %}
-
 {% block javascripts %}
 {{ parent()}}
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

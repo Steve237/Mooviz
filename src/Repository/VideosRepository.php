@@ -258,11 +258,18 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
+     //permet de supprimer toutes les vidéos
+     public function deleteAllUserVideos($user) {
 
+        return $this->createQueryBuilder('v')
+        ->delete()
+        ->where('v.id != 0')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->getQuery()
+        ->getResult();
 
-
-
-
+    }
 
     /*
     public function findOneBySomeField($value): ?Videos

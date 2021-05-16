@@ -7198,11 +7198,15 @@ margin-bottom:5px;
 
 .btn-star {
 
-
 	max-width:50px;
 	margin-bottom:4px;
 
 }
 
 
+}
+
+    .delete-all-buttons {
+
+	margin-bottom:5px;
 }

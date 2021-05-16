@@ -639,7 +639,8 @@ class AdminController extends AbstractController
     {   
         $deleteVideo = $repo->deleteAllVideos();
 
-        return $this->redirectToRoute('home');
+        $this->addFlash('delete-all-website-videos', 'Suppression de toutes les vidéos réussie');
+        return $this->redirectToRoute('adminspace_videos');
     }
 
 }
