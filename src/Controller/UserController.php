@@ -165,7 +165,13 @@ class UserController extends AbstractController
      * //permet de modifier un avatar
      */
     public function updateUser(Avatar $avatar, Request $request, EntityManagerInterface $entity) { 
+        
+        // On récupère nom de l'avatar en bdd
+        $image = $avatar->getAvatar();
 
+        // chemin vers le dossier qui contient l'avatar
+        $imageFile = 'images/upload/'.$image;
+        
 
         $form = $this->createForm(AvatarType::class, $avatar);
 
@@ -173,6 +179,14 @@ class UserController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             
+            if ($image) {
+                
+                // On supprime l'ancienne image du dossier
+                unlink($imageFile);
+
+            }
+
+            // On remplace par une autre
             $date = new \DateTime();
             $avatar->setUpdatedAt($date);
             $entity->persist($avatar);

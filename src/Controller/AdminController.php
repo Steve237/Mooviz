@@ -450,8 +450,11 @@ class AdminController extends AbstractController
         
             if($videoBackgroundForm->isSubmitted() && $videoBackgroundForm->isValid()) {
               
+            if($videoLink) {
                 // On supprime l'ancienne vidéo
              unlink($videoPath);   
+
+            }
 
             //On ajoute la nouvelle vidéo
             $videoFile = $video->getVideoLink();
