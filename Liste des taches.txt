@@ -147,7 +147,7 @@ Suppression de l'ancienne image lors de la modification:ok;
 Suppression de l'ancienne video background lors de la modif:ok ;
 Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par admin:ok;
 Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par user:ok;
-
+Suppression de l'ancien avatar dans le dossier en ajoutant le nouveau:ok;
 
 
 
