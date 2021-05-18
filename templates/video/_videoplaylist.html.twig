@@ -24,19 +24,19 @@
     </li>
 
 	{% for video in videos %}
-    <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
-        <div data-video-short-description="{{video.videodescription}}">
-            <div>
-                <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
-                <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+        <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+            <div data-video-short-description="{{video.videodescription}}">
+                <div>
+                    <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                    <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+                </div>
             </div>
-        </div>
-        <div data-video-long-description="{{video.videodescription}}">
-            <div>
-                <p class="fwduvp-video-title">{{video.videotitle}}</p>
-                <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+            <div data-video-long-description="{{video.videodescription}}">
+                <div>
+                    <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                    <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+                </div>
             </div>
-        </div>
-    </li>
+        </li>
     {% endfor %}
 </ul>

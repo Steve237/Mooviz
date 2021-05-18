@@ -3,64 +3,68 @@
 {% block title %}Résultat de recherche{% endblock %}
 
 {% block body %}
-<main id="col-main">
-  <div class="dashboard-container">
-    <h4 class="search-title">Résultat de votre recherche</h4>
-    <div class="row search-result" id="listvideo">
-      {% for video in videos | slice(0, 20) %}
-      <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
-        <div class="item-listing-container-skrn video-card video-card-text">
-          <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
-            <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
-          </a>
-          <div class="item-listing-text-skrn">
-            <div class="item-listing-text-skrn-vertical-align">
-              <div class="videolist-title">
-                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
-                  {{video.videotitle}}
-                </a>
-              </div>
-              <div class="avatar-position">
-                {% if video.username.imageuser %}
-                  <img src="{{asset('images/upload' ~ video.username.imageuser.avatar)}}"
-                  class="rounded-circle avatar-height" id="width-avatar">
-                {% else %}
-                  <img src="{{asset('images/avatar/mylion.jpg')}}"
-                  class="rounded-circle avatar-height" id="width-avatar">
-                {% endif %}
-                <a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
-                {{video.username.username}}
-                </a>
-                {% if video.views is not null %}
-                <p class="mobile-text text-position">Vues : {{video.views}}</p>
-                {% else %}
-                <p class="mobile-text text-position">Aucune vue</p>
-                {% endif %}
-              </div>
-            </div><!-- close .item-listing-text-skrn-vertical-align -->
-          </div><!-- close .item-listing-text-skrn -->
-          {% if is_granted('ROLE_ADMIN') %}
-          <div class="delete-video-button">
-            <a href="{{path('admin_delete_video', {'id': video.id})}}">
-              <button class="btn btn-primary btn-sm admin_delete_videos">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-            </a>
-          </div>
-          {% endif %}
-        </div><!-- close .item-listing-container-skrn -->
-      </div><!-- close .col -->
-      {% endfor %}
-    </div><!-- close .row STOP-->
-    {% if videos | length > 20 %}
-    <div class="pagination">
-      <div class="navigation" id="loadbutton">
-          <button class="btn btn-primary" id="loadMoreResult">Load more</button>
+  <main id="col-main">
+    <div class="dashboard-container">
+      <h4 class="search-title">
+        Résultat de votre recherche
+      </h4>
+      <div class="row search-result" id="listvideo">
+        {% for video in videos | slice(0, 20) %}
+          <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
+            <div class="item-listing-container-skrn video-card video-card-text">
+              <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+              </a>
+              <div class="item-listing-text-skrn">
+                <div class="item-listing-text-skrn-vertical-align">
+                  <div class="videolist-title">
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
+                      {{video.videotitle}}
+                    </a>
+                  </div>
+                  <div class="avatar-position">
+                    {% if video.username.imageuser %}
+                      <img src="{{asset('images/upload' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
+                    {% else %}
+                      <img src="{{asset('images/avatar/mylion.jpg')}}" class="rounded-circle avatar-height" id="width-avatar">
+                    {% endif %}
+                    <a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
+                      {{video.username.username}}
+                    </a>
+                    {% if video.views is not null %}
+                    <p class="mobile-text text-position">
+                      Vues : {{video.views}}
+                    </p>
+                    {% else %}
+                      <p class="mobile-text text-position">
+                        Aucune vue
+                      </p>
+                    {% endif %}
+                  </div>
+                </div><!-- close .item-listing-text-skrn-vertical-align -->
+              </div><!-- close .item-listing-text-skrn -->
+              {% if is_granted('ROLE_ADMIN') %}
+                <div class="delete-video-button">
+                  <a href="{{path('admin_delete_video', {'id': video.id})}}">
+                    <button class="btn btn-primary btn-sm admin_delete_videos">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </a>
+                </div>
+              {% endif %}
+            </div><!-- close .item-listing-container-skrn -->
+          </div><!-- close .col -->
+        {% endfor %}
+      </div><!-- close .row STOP-->
+      {% if videos | length > 20 %}
+      <div class="pagination">
+        <div class="navigation" id="loadbutton">
+            <button class="btn btn-primary" id="loadMoreResult">Load more</button>
+        </div>
       </div>
-    </div>
-    {% endif %}
-  </div><!-- close .dashboard-container -->
-</main>
+      {% endif %}
+    </div><!-- close .dashboard-container -->
+  </main>
 {% endblock %}
 
 {% block javascripts %}

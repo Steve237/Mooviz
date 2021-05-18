@@ -2,45 +2,42 @@
 
 {% block body %}
 
-<div class="avatar-section">
+    <div class="avatar-section">
 
-    {% if avatar.user == app.user %}
+        {% if avatar.user == app.user %}
 
-    <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
+            <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-size">
 
-    {% endif %}
+        {% endif %}
 
-</div>
+    </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-            <div class="form_upload_avatar">
+                <div class="form_upload_avatar">
 
-                {{form_start(form)}}
-                <div class="form-group">
+                    {{form_start(form)}}
+                        <div class="form-group">
 
-                    {{form_row(form.imageFile, {
-                "attr" : {
-                    "class":"form-label form-control avatar-form"
-                },
-                "label" : "Ajoutez votre avatar"
-            })}}
+                            {{form_row(form.imageFile, {"attr" : {"class":"form-label form-control avatar-form"}, "label" : "Ajoutez votre avatar"})}}
 
-                    {{form_widget(form)}}
-                    <div class="row">
-                        <div class="col-md-6 col-lg-6">
-                            <button class="btn btn-primary submit-avatar" type="submit">Envoyer</button>
-                            <a href="{{path('user_videos')}}">
-                                <div class="btn btn-primary submit-avatar">Annuler</button></div>
-                            </a>
+                            {{form_widget(form)}}
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <button class="btn btn-primary submit-avatar" type="submit">Envoyer</button>
+                                    <a href="{{path('user_videos')}}">
+                                        <div class="btn btn-primary submit-avatar">
+                                            <button>Annuler</button>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    {{form_end(form)}}
                 </div>
-                {{form_end(form)}}
             </div>
         </div>
     </div>
-</div>
 {% endblock %}

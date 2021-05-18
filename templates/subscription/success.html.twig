@@ -51,12 +51,17 @@
 
     <div class="card w-75 success_section">
       <div class="card-body">
-        <p class="card-text">Paiement réussi, veuillez cliquez sur le lien qu'on vient de vous envoyer par email afin
-          d'activer votre compte.</p>
-        <p class="card-text"><button class="btn btn-primary" onClick="history.go(0)">Renvoyer l'email</button></p>
+        <p class="card-text">
+          Paiement réussi, veuillez cliquez sur le lien qu'on vient de vous envoyer 
+          par email afin d'activer votre compte.
+        </p>
+        <p class="card-text">
+          <button class="btn btn-primary" onClick="history.go(0)">
+            Renvoyer l'email
+          </button>
+        </p>
       </div>
       <div id="error-message"></div>
     </div>
   </div>
-
-  {% endblock %}
+{% endblock %}

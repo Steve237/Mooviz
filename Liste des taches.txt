@@ -151,6 +151,16 @@ Suppression de l'ancien avatar dans le dossier en ajoutant le nouveau:ok;
 
 
 
+Indenter le code :
+page accueil ok;
+base.html ok;
+include.videolist.html.twig
+mainvideolist:ok;
+addvideo:ok;
+loadmore:ok;
+loadmoreResult:ok;
+loadMoreVideos:ok;
+
 
 
 

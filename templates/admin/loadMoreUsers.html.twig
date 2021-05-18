@@ -1,32 +1,52 @@
 {% for user in users | slice(start, 20) %}
 <tr>
-    <td data-label="username">{{user.username}}</td>
-    <td data-label="plan">{{user.plan}}</td>
+    <td data-label="username">
+        {{user.username}}
+    </td>
+    <td data-label="plan">
+        {{user.plan}}
+    </td>
     {% if user.activated == 1 %}
-    <td data-label="subscription">Abonnement actif</td>
+        <td data-label="subscription">
+            Abonnement actif
+        </td>
     {% else %}
-    <td data-label="subscription">Abonnement inactif</td>
+        <td data-label="subscription">
+            Abonnement inactif
+        </td>
     {% endif %}
     {% if user.activated == 1 %}
-    <td data-label="payment">Paiement à jour</td>
+        <td data-label="payment">
+            Paiement à jour
+        </td>
     {% else %}
-    <td data-label="payment">Paiement en attente</td>
+    <td data-label="payment">
+        Paiement en attente
+    </td>
     {% endif %}
     <td data-label="action">
         <a href="{{path('update_user', {'id' : user.id})}}">
-            <button class="btn btn-sm btn-primary">Modifier</button>
+            <button class="btn btn-sm btn-primary">
+                Modifier
+            </button>
         </a>
         {% if user.roles == ["ROLE_BLOCKED"] %}
         <a href="{{path('deblock_user', {'id' : user.id})}}">
-            <button class="btn btn-sm btn-primary">Débloquer</button>
+            <button class="btn btn-sm btn-primary">
+                Débloquer
+            </button>
         </a>
         {% else %}
         <a href="{{path('block_user', {'id' : user.id})}}">
-            <button class="btn btn-sm btn-primary">Bloquer</button>
+            <button class="btn btn-sm btn-primary">
+                Bloquer
+            </button>
         </a>
         {% endif %}
         <a href="{{path('delete_user', {'id' : user.id})}}">
-            <button class="btn btn-sm btn-primary">Supprimer</button>
+            <button class="btn btn-sm btn-primary">
+                Supprimer
+            </button>
         </a>
     </td>
 </tr>

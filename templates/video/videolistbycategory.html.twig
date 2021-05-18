@@ -5,14 +5,14 @@
 {% block body %}
 <main id="col-main">
 
-	{% include 'video/_mainvideolist.html.twig' %}
+		{% include 'video/_mainvideolist.html.twig' %}
 		
 		{% if totalVideos > loadMoreStart %}
-		<div class="pagination" id="loadbutton">
-			<div class="navigation">
-				<button class="btn btn-primary" id="loadMoreVideosByCategory">Load more</button>
+			<div class="pagination" id="loadbutton">
+				<div class="navigation">
+					<button class="btn btn-primary" id="loadMoreVideosByCategory">Load more</button>
+				</div>
 			</div>
-		</div>
 		{% endif %}
 		
 

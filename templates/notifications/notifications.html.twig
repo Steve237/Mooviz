@@ -15,40 +15,44 @@
         <h3>Notifications</h3>
         <div id="header-notification-menu-padding">
             {% if notifications %}
-            <div id="header-user-notification-list notifications-section">
-                {% for notification in notifications | slice(0, 10) %}
-                <div class="user-notifs">
-                    {% if notification.origin.imageuser %}
-                        <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}"
-                        class="rounded-circle avatar-notification-size">
-                    {% endif %}
-                    {{notification.content}} | {{notification.date | date("d/m/y") }}.
-                    <a href="{{path('notif_delete', {'id' : notification.id })}}">
-                        <button class="btn btn-primary btn-sm delete_notif">
-                            Vu<i class="fas fa-check"></i>
+                <div id="header-user-notification-list notifications-section">
+                    {% for notification in notifications | slice(0, 10) %}
+                        <div class="user-notifs">
+                            {% if notification.origin.imageuser %}
+                                <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}" 
+                                class="rounded-circle avatar-notification-size">
+                            {% endif %}
+                            {{notification.content}} | {{notification.date | date("d/m/y") }}.
+                            <a href="{{path('notif_delete', {'id' : notification.id })}}">
+                                <button class="btn btn-primary btn-sm delete_notif">
+                                    Vu <i class="fas fa-check"></i>
+                                </button>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            
+                {% if notifications | length > loadMoreStart %}
+                <div class="pagination">
+                    <div class="navigation" id="loadbutton">
+                        <button class="btn btn-primary" id="loadMoreUserNotifications">
+                            Load more
                         </button>
-                    </a>
+                    </div>
                 </div>
-                {% endfor %}
-            </div>
+                {% endif %}
             
-            {% if notifications | length > loadMoreStart %}
-            <div class="pagination">
-                <div class="navigation" id="loadbutton">
-                    <button class="btn btn-primary" id="loadMoreUserNotifications">Load more</button>
-                </div>
-            </div>
-            {% endif %}
-            
-            <a href="{{path('notif_delete_all')}}">
-                <button class="btn btn-secondary btn-sm btn-block delete-all-notifications">
-                    Marquez tout comme vu
-                </button>
-            </a>
+                <a href="{{path('notif_delete_all')}}">
+                    <button class="btn btn-secondary btn-sm btn-block delete-all-notifications">
+                        Marquez tout comme vu
+                    </button>
+                </a>
             {% else %}
-            <ul id="header-user-notification-list">
-                <p class="no-notifications">Aucune notification à afficher</p>
-            </ul>
+                <ul id="header-user-notification-list">
+                    <p class="no-notifications">
+                        Aucune notification à afficher
+                    </p>
+                </ul>
             {% endif %}
             <div class="clearfix"></div>
         </div><!-- close #header-user-profile-menu -->

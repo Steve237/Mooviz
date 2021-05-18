@@ -1,7 +1,7 @@
 {% if avatars %}
-{% for avatar in avatars %}
-<img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="logo-avatar">
-{% endfor %}
-{% else  %}
-<img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="logo-avatar">
+    {% for avatar in avatars %}
+        <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="logo-avatar">
+    {% endfor %}
+    {% else  %}
+        <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="logo-avatar">
 {% endif %}

@@ -33,12 +33,20 @@
                 <div class="col-12  col-lg-3">
                     <div id="account-edit-photo">
                         {% if avatars %}
-                        {% for avatar in avatars %}
-                            <div><img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account"></div>
-                            <p><a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">Modifiez votre avatar</a></p>
-                        {% endfor %}
+                            {% for avatar in avatars %}
+                                <div>
+                                    <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account">
+                                </div>
+                                <p>
+                                    <a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">
+                                        Modifiez votre avatar
+                                    </a>
+                                </p>
+                            {% endfor %}
                         {% else  %}
-                            <div><img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account"></div>
+                            <div>
+                                <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account">
+                            </div>
                         {% endif %}
                     </div>
                 </div><!-- close .col -->
@@ -52,30 +60,22 @@
                         <div class="col-sm">
                               <div class="form-group">
                                 <label for="first-name" class="col-form-label">Nom d'utilisateur:</label>
-                                {{form_row(form.username, {
-                                    "attr" : {
-                                        "class":"form-label form-control"
-                                    },
-                                    "label" : "Modifiez votre pseudo"
-                                })}}
+                                {{form_row(form.username, {"attr" : {"class":"form-label form-control"}, "label" : "Modifiez votre pseudo"})}}
                               </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
                     <hr>
                 
                     <h5>Adresse email</h5>
-                    <p class="small-paragraph-spacing">Vous pouvez mettre à jour votre adresse email ici.</p>
+                    <p class="small-paragraph-spacing">
+                        Vous pouvez mettre à jour votre adresse email ici.
+                    </p>
                     
                     <div class="row">
                         <div class="col-sm">
                             <div class="form-group">
                                 <label for="e-mail" class="col-form-label">E-mail</label>
-                                {{form_row(form.email, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Votre email"
-                                })}}
+                                {{form_row(form.email, {"attr" : {"class":"form-label form-control"}, "label" : "Votre email"})}}
                             </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
@@ -85,33 +85,23 @@
                     <p class="small-paragraph-spacing">Veuillez ajouter deux mots de passe identiques.</p>
                     <div class="row">
                         <div class="col-sm">
-                              <div class="form-group">
-                                {{form_row(form.password, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Modifiez votre mot de passe"
-                                })}}
-                              </div>
+                            <div class="form-group">
+                                {{form_row(form.password, {"attr" : {"class":"form-label form-control"}, "label" : "Modifiez votre mot de passe"})}}
+                            </div>
                         </div><!-- close .col -->
                         <div class="col-sm">
                             <div class="form-group">
-                                {{form_row(form.confirmPassword, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Confirmez le nouveau mot de passe"
-                                })}}
+                                {{form_row(form.confirmPassword, {"attr" : {"class":"form-label form-control"}, "label" : "Confirmez le nouveau mot de passe"})}}
                             </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
                     
                     {{form_widget(form)}}
-                    <center>
-                    <button type="submit" class="btn btn-secondary btn-lg btn-block">
-                        Mettre à jour
-                    </button>
-                    </center>
+                        <center>
+                            <button type="submit" class="btn btn-secondary btn-lg btn-block">
+                                Mettre à jour
+                            </button>
+                        </center>
                     {{form_end(form)}}
                 </div><!-- close .col -->
 

@@ -14,8 +14,12 @@
     <ul class="list-group admin-list" id="notifications-list">
         {% for notification in notifications | slice(0, 10) %}
         <div class="notification-item">
-            <li class="list-group-item">Date : {{notification.date | date("d/m/y")}}</li>
-            <li class="list-group-item">Message : {{notification.content}}</li>
+            <li class="list-group-item">
+                Date : {{notification.date | date("d/m/y")}}
+            </li>
+            <li class="list-group-item">
+                Message : {{notification.content}}
+            </li>
             <li class="list-group-item">
                 <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
                     <button class="btn btn-primary">Marquer comme vu</button>
@@ -31,7 +35,9 @@
     {% if notifications | length > loadMoreStart %}
     <div class="pagination">
         <div class="navigation" id="loadbutton">
-            <button class="btn btn-primary" id="loadMoreMobileNotifications">Load more</button>
+            <button class="btn btn-primary" id="loadMoreMobileNotifications">
+                Load more
+            </button>
         </div>
     </div>
     {% endif %}

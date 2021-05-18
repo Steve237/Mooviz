@@ -7,17 +7,21 @@
 {{ render(controller('App\\Controller\\UserController::userProfile'))}}
 
 {% for message in app.flashes('success') %}
-<div class="alert alert-success">
-    {{message}}
-</div>
+    <div class="alert alert-success">
+        {{message}}
+    </div>
 {% endfor %}
 {% for message in app.flashes('delete-all-videos') %}
-<div class="alert alert-success">
-    {{message}}
-</div>
+    <div class="alert alert-success">
+        {{message}}
+    </div>
 {% endfor %}
 
-<a href="{{path('addvideo')}}"><button class="btn btn-primary add_video">Ajouter vidéos</button></a>
+<a href="{{path('addvideo')}}">
+    <button class="btn btn-primary add_video">
+        Ajouter vidéos
+    </button>
+</a>
 <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteAll">
     Supprimer toutes les vidéos
 </button>
@@ -26,50 +30,54 @@
 
 <div class="row" id="uservideos">
     {% if videos %}
-    {% for video in videos | slice(0, 20) %}
-    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-        <div class="item-listing-container-skrn video-card">
-            <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img
-                    src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing"
-                    class="imagemovie img-responsive"></a>
-            <div class="item-listing-text-skrn">
-                <div class="item-listing-text-skrn-vertical-align">
-                    <h6><a
-                            href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a>
-                    </h6>
-                </div><!-- close .item-listing-text-skrn-vertical-align -->
-            </div><!-- close .item-listing-text-skrn -->
-            <div class="buttons-update-video">
-                <a href="{{path('update_video_image', {'id': video.id})}}">
-                    <button class="btn btn-primary btn-sm">
-                        <i class="fas fa-image fa-2x"></i>
-                    </button>
-                </a>
-                <a href="{{path('update_video_description', {'id': video.id})}}">
-                    <button class="btn btn-primary btn-sm">
-                        <i class="far fa-edit fa-2x"></i>
-                    </button>
-                </a>
-                <a href="{{path('delete_video', {'id': video.id})}}">
-                    <button class="btn btn-primary btn-sm">
-                        <i class="fas fa-trash-alt fa-2x"></i>
-                    </button>
-                </a>
-            </div>
-        </div><!-- close .item-listing-container-skrn -->
-    </div><!-- close .col -->
-    {% endfor %}
+        {% for video in videos | slice(0, 20) %}
+            <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                <div class="item-listing-container-skrn video-card">
+                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                        <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie img-responsive">
+                    </a>
+                    <div class="item-listing-text-skrn">
+                        <div class="item-listing-text-skrn-vertical-align">
+                            <h6>
+                                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                                    {{video.videotitle}}
+                                </a>
+                            </h6>
+                        </div><!-- close .item-listing-text-skrn-vertical-align -->
+                    </div><!-- close .item-listing-text-skrn -->
+                    <div class="buttons-update-video">
+                        <a href="{{path('update_video_image', {'id': video.id})}}">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-image fa-2x"></i>
+                            </button>
+                        </a>
+                        <a href="{{path('update_video_description', {'id': video.id})}}">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="far fa-edit fa-2x"></i>
+                            </button>
+                        </a>
+                        <a href="{{path('delete_video', {'id': video.id})}}">
+                            <button class="btn btn-primary btn-sm">
+                                <i class="fas fa-trash-alt fa-2x"></i>
+                            </button>
+                        </a>
+                    </div>
+                </div><!-- close .item-listing-container-skrn -->
+            </div><!-- close .col -->
+        {% endfor %}
     {% else %}
-    <h4 class="no-users-video">Vous n'avez pas encore ajouté de vidéos</h4>
+        <h4 class="no-users-video">
+            Vous n'avez pas encore ajouté de vidéos
+        </h4>
     {% endif %}
 </div><!-- close .row -->
 
 {% if totalUserVideos > loadMoreStart %}
-<div class="pagination">
-    <div class="navigation" id="loadbutton">
-        <button class="btn btn-primary" id="loadMoreUserVideos">Load more</button>
+    <div class="pagination">
+        <div class="navigation" id="loadbutton">
+            <button class="btn btn-primary" id="loadMoreUserVideos">Load more</button>
+        </div>
     </div>
-</div>
 {% endif %}
 
 </div><!-- close .dashboard-container -->
@@ -77,7 +85,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Suppression des vidéos</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">
+              Suppression des vidéos
+            </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

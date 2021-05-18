@@ -1,9 +1,13 @@
 {% for notification in notifications | slice(start, 10) %}
-<div class="notification-item">
-    <li class="list-group-item">Date : {{notification.date | date("d/m/y")}}</li>
-    <li class="list-group-item">Message : {{notification.content}}</li>
-    <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
-        <button class="btn btn-primary">Marquer comme vu</button>
-    </a>
-</div>
+    <div class="notification-item">
+        <li class="list-group-item">
+            Date : {{notification.date | date("d/m/y")}}
+        </li>
+        <li class="list-group-item">
+            Message : {{notification.content}}
+        </li>
+        <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
+            <button class="btn btn-primary">Marquer comme vu</button>
+        </a>
+    </div>
 {% endfor %}

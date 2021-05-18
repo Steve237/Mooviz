@@ -20,11 +20,16 @@
     <ul class="list-group admin-list admin-video-list">
         {% for video in videos %}
         <div class="admin-video-item">
-            <li class="list-group-item">Titre : {{video.videotitle}}</li>
-            <li class="list-group-item">Description : {{video.videodescription}}</li>
             <li class="list-group-item">
-                <a href="{{path('update_video_background', {'id' : video.id})}}"><button
-                        class="btn btn-primary">Modifier</button></a>
+                Titre : {{video.videotitle}}
+            </li>
+            <li class="list-group-item">
+                Description : {{video.videodescription}}
+            </li>
+            <li class="list-group-item">
+                <a href="{{path('update_video_background', {'id' : video.id})}}">
+                    <button class="btn btn-primary">Modifier</button>
+                </a>
             </li>
         </div>
         {% endfor %}

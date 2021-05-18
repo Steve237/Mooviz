@@ -15,9 +15,13 @@
 
             <div class="form_upload_video">
                 {{form_start(updateform)}}
-                <div class="form-group">{{form_row(updateform.videoimage, {"label": "Image de couverture (formats autorisés: jpg, jpeg, png)", "attr" : {'class':'form-control-file'}})}}</div>
-                <div class="form-group">{{form_widget(updateform)}}</div>
-                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video">Modifier image</button>
+                    <div class="form-group">
+                        {{form_row(updateform.videoimage, {"label": "Image de couverture (formats autorisés: jpg, jpeg, png)", "attr" : {'class':'form-control-file'}})}}
+                    </div>
+                    <div class="form-group">
+                        {{form_widget(updateform)}}
+                    </div>
+                    <button type="submit" class="btn btn-alert btn-sm btn-block btn_video">Modifier image</button>
                 {{form_end(updateform)}}
             </div>
         </div>
