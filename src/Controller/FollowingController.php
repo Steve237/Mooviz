@@ -3,16 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Users;
-use App\Entity\Videos;
 use App\Entity\Notifications;
-use App\Repository\UsersRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
-use App\Repository\PlaylistRepository;
-use App\Repository\VideoRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

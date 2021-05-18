@@ -2,30 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
-use App\Entity\Videos;
-use App\Form\VideoType;
-use App\Entity\Category;
-use App\Form\UploadType;
-use App\Form\CategoryType;
 use App\Entity\Notifications;
-use App\Form\VideoDescriptionType;
-use App\Repository\VideoRepository;
 use App\Repository\VideosRepository;
-use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotificationsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class ProfileController extends AbstractController
 {

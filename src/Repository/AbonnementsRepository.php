@@ -30,16 +30,4 @@ class AbonnementsRepository extends ServiceEntityRepository
         ;
     }
    
-
-    /*
-    public function findOneBySomeField($value): ?Abonnements
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

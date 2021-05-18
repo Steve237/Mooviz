@@ -282,16 +282,4 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult(); 
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?Videos
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

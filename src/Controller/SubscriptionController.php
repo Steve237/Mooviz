@@ -2,22 +2,16 @@
 
 namespace App\Controller;
 
-use Stripe\Charge;
 use Stripe\Stripe;
 use Stripe\Customer;
 use App\Entity\Users;
 use Stripe\SetupIntent;
-use Stripe\PaymentIntent;
-use App\Entity\Subscription;
 use App\Form\InscriptionType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
