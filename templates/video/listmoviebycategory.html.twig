@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des vidéos{% endblock %}
+
+{% block body %}
+<main id="col-main">
+
+    {% include 'video/_includevideolist.html.twig' %}
+
+	{% if totalVideos > loadMoreStart %}
+    <div class="pagination" id="loadbutton">
+      <div class="navigation">
+        <button class="btn btn-primary" id="loadMoreVideosByCategory">Load more</button>
+      </div>
+    </div>
+	{% endif %}
+  
+	</div><!-- close .dashboard-container -->
+</main>
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	click = 0;
+	function loadMoreVideosByCategory(event) {
+		event.preventDefault();
+		click++;
+		var start = 50 * click;
+		const url = "{{path('loadMoreVideosByCategory', {'category': category.id})}}/" + start;
+		axios.get(url).then(function (response) {
+			$("#video").append(response.data);
+			if(!response.data) {
+				let loadButton = document.getElementById("loadbutton");
+				loadButton.textContent = 'Plus aucune vidéo à afficher';
+			}
+		}).catch(function (error) {
+			if (response.status === 403) {
+				window.alert("You are not authorized to perform this action!");
+			} else if (response.status === 404) {
+				window.alert("This page does not exist");
+			} else {
+				window.alert("An error has occurred !");
+			}
+		});
+	}
+	document.getElementById("loadMoreVideosByCategory").addEventListener("click", loadMoreVideosByCategory);
+</script>
+{% endblock %}

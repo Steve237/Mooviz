@@ -1,0 +1,42 @@
+<!--  Playlists -->
+<ul id="playlists" class="playlist_display">
+    <li data-source="playlist{{video.id}}" data-playlist-name="MY HTML PLAYLIST 1" data-thumbnail-path="{{ absolute_url(asset('images/mylion.png'))}}">
+        <p class="fwduvp-categories-description"><span class="fwduvp-header">Mooviz video player</p>
+    </li>
+</ul>
+
+<!--  HTML playlist -->
+<ul id="playlist{{video.id}}" class="playlist_display">
+    
+    <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+        <div data-video-short-description="{{video.videodescription}}">
+            <div>
+                <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+            </div>
+        </div>
+        <div data-video-long-description="{{video.videodescription}}">
+            <div>
+                <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+            </div>
+        </div>
+    </li>
+
+	{% for video in videos %}
+        <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+            <div data-video-short-description="{{video.videodescription}}">
+                <div>
+                    <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
+                    <p class="fwduvp-thumbnail-description">Publié par: {{video.username.username}}</p>
+                </div>
+            </div>
+            <div data-video-long-description="{{video.videodescription}}">
+                <div>
+                    <p class="fwduvp-video-title">{{video.videotitle}}</p>
+                    <p class="fwduvp-video-main-description">{{video.videodescription}}</p>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+</ul>

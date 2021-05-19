@@ -1,0 +1,133 @@
+{% extends 'homebase.html.twig' %}
+
+{% block title %}Foire aux questions{% endblock %}
+
+{% block body %}
+<div id="page-title-pro">
+    <div class="container">
+        <div class="row">
+            <h1>Foire aux questions.</h1>
+            <h6>Vous ne trouvez pas de réponse? 
+                <a href="{{path('contact')}}">
+                    Contactez nous
+                </a>
+            </h6>
+        </div><!-- close .row -->
+    </div><!-- close .container -->
+</div><!-- close #page-title-pro -->
+
+<div id="content-pro">
+
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-md">
+                <h6 class="light-weight-heading faq-title">Qu'est ce que Mylion?</h6>
+                <p>
+                    Mylion est un site de vidéos en ligne, permettant à chacun de ses membres, non seulement de voir,
+                    mais aussi d'ajouter leurs propres vidéos afin de les partager aux autres membres du site. Il offre
+                    la possibilité de s'abonner au flux d'autres utilisateurs afin de pouvoir visionner leurs vidéos, et
+                    vice versa.
+                    Mais aussi de constituer une playlist de vidéos que vous préférez, ou souhaiterez voir plus tard.
+                    Chaque membre dispose d'un espace personnel où il peut gérer ses propres vidéos, sa playlist, ainsi
+                    que les vidéos
+                    des utilisateurs auxquels il est abonné. Vous pourrez voir et partager des films, des clips, des
+                    documentaires, etc...
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Quels sont les différents abonnements?</h6>
+                <p>
+                    Nous proposons principalement deux types d'abonnements, un abonnement starter de 5 euros/mois, et un
+                    abonnement premium de 30 euros/an.
+                    Chacun de ces abonnements permet de profiter de l'ensemble des fonctionnalités du site. Il est
+                    possible de résilier son abonnement à tout moment.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">
+                    Pourrais je avoir accès à mes factures et gérer mes abonnements?
+                </h6>
+                <p>
+                    Oui. Chaque membre inscrit dispose d'un espace personnel, au sein de l'application, 
+                    lui permettant de changer de forfait, d'accéder à ses factures,
+                    ou même de supprimer son compte et mettre fin à son abonnement.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Vais je pouvoir voir mes vidéos partout?</h6>
+                <p>
+                    Oui, l'application a été conçu afin que vous puissiez visionner vos contenus préférés
+                    sur tous les écrans, smartphone, tablette tactile, ordinateur, et même télévision.
+                    Et vous pourrez également télécharger les vidéos de votre choix afin de pouvoir les regarder hors
+                    ligne.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Comment s'inscrire?</h6>
+                <p>
+                    Pour vous inscrire, il vous suffira d'abord de <a href="{{path('tarifs')}}">choisir un forfait</a>,
+                    puis de remplir le formulaire d'inscription.
+                    Vous serez ensuite redirigé vers un formulaire de paiement. Dès que vous aurez rempli et validé ce
+                    dernier,
+                    vous recevrez un email sur l'adresse email que vous aurez renseigné, cet email contient un lien pour
+                    activer votre compte,
+                    il suffira de cliquer sur ce dernier afin que votre compte soit activé, vous pourrez alors vous
+                    connecter à l'application.
+                    Il est impératif de renseigner une adresse email à laquelle vous avez accès, sinon vous ne pourrez
+                    pas activer votre compte
+                    à l'issue de l'inscription.
+                </p>
+            </div><!-- close .col-md -->
+
+            <div class="col-md">
+                <h6 class="light-weight-heading faq-title">Est ce que vous offrez une période d'essai gratuit?</h6>
+                <p>
+                    Nous offrons une période d'essai de 1 mois gratuit, à compter de l'activation de votre compte,
+                    pour chaque plan souscrit. Au cours de cette période votre compte ne sera pas débité.
+                    La première échéance débutera à l'issue de cette période d'essai et vous recevrez une facture par
+                    email.
+                </p>
+                <hr>
+
+                <h6 class="light-weight-heading faq-title">Est ce que je peux publier tout ce que je veux?</h6>
+                <p>
+                    Vous pouvez publier tous types de vidéos, correspondant aux différentes catégories du site,
+                    à condition que cela ne porte pas atteinte à autrui, ou aux droits d'auteurs d'un tiers. 
+                    Toute vidéo à caractère pornographique ou raciste sera bannie.
+                    Nous nous accordons le droit de supprimer toute vidéo et image qui seraient contraires aux valeurs
+                    de notre société. Chaque vidéo pourra faire l'objet d'un signalement par le biais du formulaire de contact,
+                    présent au sein de l'application, le cas échéant la vidéo sera analysée par nos
+                    soins, et si il s'avère effectivement qu'elle comporte du contenu que nous désapprouvons, elle sera
+                    supprimée, et l'utilisateur qui l'a ajouté sera informé par email des raisons pour laquelle nous l'avons supprimé.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Est ce que le paiement est sécurisé?</h6>
+                <p>
+                    Absolument, le paiement est sécurisé. Il est réalisé par l'intermédiaire de Stripe, plateforme
+                    de paiement en ligne reconnu dans le monde entier, et utilisé par de nombreuses applications en
+                    ligne.
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Quel est votre politique de remboursement?</h6>
+                <p>
+                    Chaque membre inscrit dispose d'un délai de 14 jours à compter de son inscription pour se rétracter.
+                    Pour cela il lui suffira de supprimer son compte via son espace personnel. En revanche, si il
+                    supprime son compte suite à la fin de la période d'essai, et qu'il a déjà été débité, il ne sera pas remboursé.
+                    Cela est valide dans le cadre du plan starter, ou du plan premium. Son abonnement prendra fin
+                    aussitôt qu'il aura supprimé son compte et il ne fera plus l'objet d'aucun prélèvement.
+                </p>
+                </p>
+                <hr>
+                <h6 class="light-weight-heading faq-title">Vous avez d'autres questions?</h6>
+                <p>
+                    Si vous avez d'autres questions, ou si vous souhaitez plus de précisions concernant notre
+                    application,
+                    vous pouvez nous les adresser via le <a href="{{path('contact')}}">formulaire de contact</a>.
+                    Nous vous répondrons dans les meilleurs délais.
+                </p>
+            </div><!-- close .col-md -->
+        </div><!-- close .row -->
+
+
+        <div class="clearfix"></div>
+    </div><!-- close .container -->
+</div><!-- close #content-pro -->
+{% endblock %}

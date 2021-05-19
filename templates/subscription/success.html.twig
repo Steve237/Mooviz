@@ -1,0 +1,67 @@
+{% extends 'homebase.html.twig' %}
+
+{% block title %}Subscription{% endblock %}
+
+{% block body %}
+
+<div id="content-pro" class="payment-section-container">
+      
+  <div id="content-pro">
+
+    <div class="container">
+      <div class="centered-headings-pro pricing-plans-headings">
+        <h5 class="free_title">Essai gratuit pendant 1 mois.</h5>
+        <h3>Regardez et partagez vos vidéos favoris.</h3>
+      </div>
+    </div><!-- close .container -->
+
+    <div class="container">
+      <ul id="registration-steps-pro">
+        <li>
+          <a href="">
+            <div class="registration-step-circle-icon">01.</div>
+            <div class="registration-step-number">Etape 1.</div>
+            <h5 class="registration-step-title">Choisissez votre plan.</h5>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <div class="registration-step-circle-icon">02.</div>
+            <div class="registration-step-number">Etape 2.</div>
+            <h5 class="registration-step-title">Créez votre compte.</h5>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <div class="registration-step-circle-icon">03.</div>
+            <div class="registration-step-number">Etape 3.</div>
+            <h5 class="registration-step-title">Informations de facturation.</h5>
+          </a>
+        </li>
+        <li class="current-menu-item">
+          <a href="">
+            <div class="registration-step-circle-icon">04.</div>
+            <div class="registration-step-number">Etape 4.</div>
+            <h5 class="registration-step-title">Activation du compte.</h5>
+          </a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="card w-75 success_section">
+      <div class="card-body">
+        <p class="card-text">
+          Paiement réussi, veuillez cliquez sur le lien qu'on vient de vous envoyer 
+          par email afin d'activer votre compte.
+        </p>
+        <p class="card-text">
+          <button class="btn btn-primary" onClick="history.go(0)">
+            Renvoyer l'email
+          </button>
+        </p>
+      </div>
+      <div id="error-message"></div>
+    </div>
+  </div>
+{% endblock %}

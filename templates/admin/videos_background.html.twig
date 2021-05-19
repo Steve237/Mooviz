@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace administrateur{% endblock %}
+
+{% block body %}
+
+<div class="container admin-section">
+    {% for message in app.flashes('success_upload') %}
+    <div class="alert alert-success flashmessage-admin-video">
+        {{message}}
+    </div>
+    {% endfor %}
+    <ul class="dashboard-sub-menu">
+        <li><a href="{{path('users_list')}}">Liste des membres</a></li>
+        <li><a href="{{path('notifications_list')}}">Notifications</a></li>
+        <li class="current"><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+        <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
+    </ul><!-- close .dashboard-sub-menu -->
+
+    <ul class="list-group admin-list admin-video-list">
+        {% for video in videos %}
+        <div class="admin-video-item">
+            <li class="list-group-item">
+                Titre : {{video.videotitle}}
+            </li>
+            <li class="list-group-item">
+                Description : {{video.videodescription}}
+            </li>
+            <li class="list-group-item">
+                <a href="{{path('update_video_background', {'id' : video.id})}}">
+                    <button class="btn btn-primary">Modifier</button>
+                </a>
+            </li>
+        </div>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

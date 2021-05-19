@@ -1,0 +1,169 @@
+Liste des taches
+
+Renvoi vers page erreur quand user cherche à accéder à rôle admin : ok.
+Code dans le controller admin : ok;
+Code dans le authcontroller: ok
+code dans le billingcontroller: ok;
+code dans le contactcontroller: ok;
+code dans le faqcontroller: ok;
+code dans le followincontroller : ok;
+code dans le homecontroller: ok;
+code dans le playlistcontroller: ok;
+code dans le profilcontroller: ok;
+code dans le subscriptioncontroller: ok;
+code dans le usercontroller : ok;
+code dans le videocontroller : ok;
+
+Test des fonctionnalités du site:
+Inscription : 
+test avec pseudo et mail déjà existant: ok;
+test avec mauvais mot de passe (pas identique) : ok
+paiement avec mauvais numéro : ok;
+paiement avec bon numéro ok;
+tentative de connexion sans activation du compte: ok (erreur 403 retourné);
+tentative de connexion suite activation compte: ok;
+processus activation compte: ok;
+déconnexion: ok;
+processus de récupération de mot de passe: ok
+envoi mail récup password : ok;
+si lien invalide récup password, affiche erreur : ok;
+mis à jour du mot de passe : ok;
+
+// inscription, connexion, déconnexion, paiement, activation du compte, récup mdp : ok;
+
+Page accueil :
+affichage Background vidéo: ok;
+affichage liste des vidéos: ok;
+affichage video par catégorie : ok;
+load more sur la liste principale des vidéos: ok;
+load more: vidéos par catégorie : ok;
+affichage vidéo en particulier: ok;
+download vidéo: ok;
+transfert sur deuxième lecteur vidéo ok;
+bouton like, playlist, switch, follow ok sur la page video principale et la page video secondaire;
+partage sur facebook: ok;
+Test likes différents users sur même vidéo: ok;
+lecteur vidéo de partage: ok;
+bouton back: lecteur vidéo de partage:ok;
+accès à la page vidéos: ok;
+load more sur la page liste vidéos ok;
+load sur la page vidéos par categories: ok;
+accès à la page abonnements: ok;
+accès à la page abonnement quand plus aucun follower: ok;
+accès à la page chaine quand plus aucune chaine suivi: follower: ok;
+accès page chaine avec vidéos suivis: ok;
+accès à la liste des vidéos par chaine: ok;
+accès à la liste des vidéos par chaine quand aucune page suivi:ok;
+bouton load more dans la liste des vidéos par chaine: ok;
+empêcher d'accéder à la page liste des vidéos par chaine si abonné à aucune chaine: ok;
+accès à la page playlist: ok;
+impossible d'accéder à la page playlist si aucune vidéo en playlist ok;
+fonction ajouter/retirer de la playlist:ok;
+ajouter vidéo: ok;
+suppression vidéo: ok;
+modifier vidéo: ok;
+modification description vidéo: ok;
+modif image de la vidéo: ok;
+Recherche vidéo dans l'espace user: ok;
+
+verifier que seul le membre concerné puisse modifier ou supprimer vidéo: ok;
+formulaire de contact ok;
+Ajout avatar: ok;
+modif avatar: ok;
+modification des identifiants du compte: ok;
+Suppression du compte: ok;
+Affichage message par défaut quand la page ne contient aucun contenu: ok;
+pagination sur les pages de la section profile:ok;
+Formulaire de recherche des vidéos: ok;
+pagination sur la page résultat recherche vidéo:ok;
+Correct affichage des notifications sur écran mobile:ok;
+Correct affichage des notifications sur écran classique:ok;
+Suppression des notifications de l'user sur écran classique et mobile: ok;
+Accès à la page compte:ok;
+Accès au portail de facturation: ok;
+Icone Admin visible seulement à l'admin:ok;
+Accès à la page admin: ok;
+Modification d'un membre par l'admin:ok;
+Recherche d'un membre par l'admin: ok;
+Blocage d'un membre par l'admin: ok;
+Déblocage d'un membre: ok;
+Vérifier qu'un user bloqué ne peut pas accéder au site: ok;
+Accès à la page admin notifications: ok;
+Suppression des notifications de l'admin: ok;
+Accès à la gestion des vidéos à la une: ok;
+Modification des vidéos à la une: ok;
+Suppression vidéo depuis l'espace admin: ok;
+pagination vidéos depuis l'espace admin:ok;
+mise en place formulaire de contact interne:ok;
+Empêcher à l'user qui a pas le rôle admin d'accèder aux parties admin:ok;
+Validation des contraintes lors de l'upload avatar:ok;
+Envoi Email lors de la suppression d'une vidéo par l'admin: ok;
+Mise à jour du loginform pour enlever les boutons de connexion par les réseaux sociaux:ok;
+Accès à la page faq: ok;
+Afficher les vidéos de la plus ancienne à la plus récente: ok;
+Empêcher au texte de déborder du formulaire upload input: ok;
+Amélioration du formulaire video background pour saisir durée vidéo au format time:ok;
+Nettoyer la base de données et les dossiers pour centraliser vidéos et images: ok;
+Suppression vidéo entraîne suppression de tous les éléments liés (playlist, follows, likes, images) : ok;
+Afficher avatar uniquement quand c'est possible:ok;
+Afficher message par défaut quand aucune vidéo:ok;
+
+
+// Vérifier que toutes les pages sont responsives;
+
+Responsive :
+
+responsive page accueil : ok;
+page des tarifs : ok;
+page d'inscription:ok;
+page de paiement:ok;
+page paiement réussi:ok;
+page de connexion:ok;
+Liens page accueil:responsive:ok;
+Vidéos page accueil: ok;
+Vidéos accueil par catégorie:ok;
+background-video : ok;
+Page liste des vidéos ok;
+Page liste des vidéos par catégorie:ok;
+Page des vidéos suivis:ok;
+Page liste des chaines: ok;
+page playlist:ok;
+page upload video: ok;
+page du lecteur video principale:ok;
+page du lecteur vidéo secondaire:ok;
+page du troisième lecteur vidéo: ok;
+page profil playlist:ok;
+page profil vidéos suivis:ok;
+page à propos: ok;
+Liste des users:ok;
+Recherche user:ok;
+Toutes les pages admin:ok;
+
+Tache supplémentaire à faire:
+Ajouter bouton pour supprimer toutes les vidéos dans la partie admin et user: ok;
+Ajout favicone:ok;
+Publications de Liens url ne fonctionnent pas:ok;
+Suppression de l'ancienne image lors de la modification:ok;
+Suppression de l'ancienne video background lors de la modif:ok ;
+Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par admin:ok;
+Suppression de toutes images et vidéos des dossiers lors de la suppression de toutes vidéos par user:ok;
+Suppression de l'ancien avatar dans le dossier en ajoutant le nouveau:ok;
+
+
+
+Indenter le code :
+page accueil ok;
+base.html ok;
+include.videolist.html.twig
+mainvideolist:ok;
+addvideo:ok;
+loadmore:ok;
+loadmoreResult:ok;
+loadMoreVideos:ok;
+
+
+
+
+
+
+

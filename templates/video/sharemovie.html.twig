@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+	<head>
+		<title>{% block title %}Mylion{% endblock %}</title>
+		<meta charset="utf-8">
+		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		{% block stylesheet %}
+		<link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
+		<link rel="stylesheet" href="{{asset("css/main.css")}}">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+		<link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}"><!-- FontAwesome Icons -->
+		<link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}">
+		<!-- iconsmind.com Icons -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+		integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		{% endblock %}
+	</head>
+
+	<body>
+		{% if app.user %}
+		<a href="{{path('homepage')}}">
+			<h3 class="share-page-site-title">Mylion</h3>
+		</a>
+		{% else %}
+		<a href="{{path('home')}}">
+			<h3 class="share-page-site-title">Mylion</h3>
+		</a>
+		{% endif %}
+		<main id="col-main-with-sidebar shared-video-section">
+			<section class="share-video-container">
+				<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
+					Sorry your browser can't support video tag.
+				</video>
+				<div class="video-controls">
+					<!-- timebar -->
+					<div class="video-timebar">
+						<div class="video-timebar-buffered"></div>
+						<div class="video-timebar-current"></div>
+						<div class="video-timebar-duration"></div>
+						<div class="video-timebar-circle"></div>
+						<div class="video-timebar-toolkit"></div>
+					</div>
+					<div class="video-controls-box">
+						<!-- suound control -->
+						<div class="video-sound-control">
+							<div class="video-sound-control-icon">
+								<i class="fa fa-volume-up volume-btn"></i>
+							</div>
+							<div class="video-sound-control-meter">
+								<div class="video-sound-control-meter-current"></div>
+								<div class="video-sound-control-meter-full"></div>
+							</div>
+						</div>
+						<!-- play and pause btn -->
+						<div class="video-control-play-pause">
+							<!-- current time -->
+							<div class="video-current-time-box"></div>
+							<div class="video-control-btns">
+								<i class="fa fa-backward back-btn"></i>
+								<i class="fa fa-play-circle-o play-btn"></i>
+								<i class="fa fa-forward next-btn"></i>
+							</div>
+							<!-- video duration time -->
+							<div class="video-duration-time-box"></div>
+						</div>
+						<!-- subtitle , quality , fullsceen -->
+						<div class="video-control-subtitle">
+						<!-- <span class="video-language">Hindi</span>
+						<span class="video-quality">HD</span>
+						-->
+							{% if is_granted('ROLE_USER') %}
+								<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+									<span class="share-video-button-switch">Switch</span>
+								</a>
+							{% endif %}
+							<span class="video-full-screen-icon">
+									<i class="fa fa-expand"></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</section>
+			<div id="movie-detail-rating" class="share-video-description">
+				<div class="dashboard-container">
+					<div class="row">
+						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+							<div class="video-description-block">
+								<div class="video-user-info">
+									{% if video.username.imageuser %}
+										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
+									{% endif %}
+									<a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
+										{{video.username.username}}
+									</a> 
+									<div class="number-followers">
+										followers : {{video.username.followers | length}}
+									</div>
+								</div>
+								{% if is_granted('ROLE_USER') %}
+									<div>
+										<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+											<button class="btn btn-primary btn-sm">Back</button>
+										</a>
+									</div>
+								{% endif %}
+							</div>
+							<p class="videoname mobile-text">
+								{{video.videotitle}}
+							</p>
+							<strong>
+								<p class="video-data">
+									Categorie : {{video.category.categoryName}} - Date de publication :
+									{{video.publicationdate|date("d/m/y")}} - Nombre de vues : {{video.views}}
+								</p>
+							</strong>
+						</div>
+					</div><!-- close .row -->
+				</div><!-- close .dashboard-container -->
+			</div><!-- close #movie-detail-rating -->
+
+			<div class="dashboard-container share-video-description description-block">
+				<div class="movie-details-section">
+					<h2>Description</h2>
+					<p class="video-description">
+						{{video.videodescription}}
+					</p>
+				</div>
+			</div><!-- close .dashboard-container -->
+		</main>
+		<footer id="footer-pro">
+			<div class="container">
+				<div class="row">
+					<div class="col-md">
+						<div class="copyright-text-pro">
+							&copy; Copyright 2021 Mylion. All Rights Reserved
+						</div>
+					</div><!-- close .col -->
+					<div class="col-md">
+						<ul class="social-icons-pro">
+							<li class="facebook-color">
+								<a href="http://facebook.com/progressionstudios" target="_blank">
+									<i class="fab fa-facebook-f"></i>
+								</a>
+							</li>
+							<li class="twitter-color">
+								<a href="http://twitter.com/Progression_S" target="_blank">
+									<i class="fab fa-twitter"></i>
+								</a>
+							</li>
+							<li class="youtube-color">
+								<a href="http://youtube.com" target="_blank">
+									<i class="fab fa-youtube"></i>
+								</a>
+							</li>
+							<li class="vimeo-color">
+								<a href="http://vimeo.com" target="_blank">
+									<i class="fab fa-vimeo-v"></i>
+								</a>
+							</li>
+						</ul>
+					</div><!-- close .col -->
+				</div><!-- close .row -->
+			</div><!-- close .container -->
+		</footer>
+		<script src="{{asset("js/videosingle.js")}}"></script>
+	</body>
+</html>

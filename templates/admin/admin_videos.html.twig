@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des vidéos{% endblock %}
+
+{% block body %}
+
+
+<main id="col-main">
+    <div class="dashboard-container">
+        <ul class="dashboard-sub-menu">
+            <li>
+                <a href="{{path('users_list')}}">
+                    Liste des membres
+                </a>
+            </li>
+            <li>
+                <a href="{{path('notifications_list')}}">
+                    Notifications
+                </a>
+            </li>
+            <li>
+                <a href="{{path('videos_background')}}">
+                    Vidéos à la une
+                </a>
+                </li>
+            <li class="current">
+                <a href="{{path('adminspace_videos')}}">
+                    Gestion des vidéos
+                </a>
+            </li>
+        </ul><!-- close .dashboard-sub-menu -->
+    
+        {% for message in app.flashes('admin_delete_video') %}
+            <div class="alert alert-success admin-delete-video-message">
+                {{message}}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('delete-all-website-videos') %}
+            <div class="alert alert-success admin-delete-video-message">
+                {{message}}
+            </div>
+        {% endfor %}
+
+        
+        <h4 class="heading-extra-margin-bottom">Liste des videos</h4>
+       
+        <div class="row" id="adminvideos">
+            {% if videos %}
+            <div class="col-12" class="delete-all-button"> 
+                <button class="btn btn-primary pull-right" data-toggle="modal" data-target="#deleteAll">
+                    Supprimer toutes les vidéos
+                </button>
+            </div>
+            {% endif %}
+            {% if videos %}
+            {% for video in videos | slice(0, 21) %}
+                <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
+                    <div class="item-listing-container-skrn video-card video-card-text">
+                        <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                            <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+                        </a>
+                        <div class="item-listing-text-skrn">
+                            <div class="item-listing-text-skrn-vertical-align">
+                                <div class="videolist-title">
+                                    <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
+                                        {{video.videotitle}}
+                                    </a>
+                                </div>
+                                <div class="avatar-position">
+                                    {% if video.username.imageuser %}
+                                        <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}"
+                                        class="rounded-circle avatar-height" id="width-avatar">
+                                    {% endif %}
+                                    <a href="{{path('channel', {'id': video.username.id})}}"
+                                    class="link-color mobile-text">{{video.username.username}}</a> 
+                                    {% if video.views is not null %}
+                                        <p class="mobile-text text-position">
+                                            Vues : {{video.views}}
+                                        </p>
+                                    {% else %}
+                                        <p class="mobile-text text-position">
+                                            Aucune vue
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div class="button-delete-video">
+                                    <a href="{{path('admin_delete_video', {'id': video.id})}}">
+                                        <button class="btn btn-primary btn-sm admin_delete_videos">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                            </div><!-- close .item-listing-text-skrn-vertical-align -->
+                        </div><!-- close .item-listing-text-skrn -->
+                    </div><!-- close .item-listing-container-skrn -->
+                </div><!-- close .col -->
+            {% endfor %}
+            {% else %}
+                <h5>
+                    Le site ne contient aucune vidéo actuellement, veuillez en ajouter.
+                </h5>
+            {% endif %}
+        </div>
+        {% if totalVideos > loadMoreStart %}
+        <div class="pagination">
+            <div class="navigation" id="loadbutton">
+                <button class="btn btn-primary" id="loadMoreAdminVideos">Load more</button>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="modal fade" id="deleteAll" tabindex="-1" role="dialog" aria-labelledby="deleteAllVideos" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Suppression des vidéos</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <p>Souhaitez vous vraiment supprimer toutes les vidéos du site?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <a href="{{path('delete-all-videos')}}">
+                  <button type="button" class="btn btn-primary">Confirmer</button>
+              </a>
+            </div>
+          </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    click = 0;
+
+    function loadMoreAdminVideos(event) {
+        event.preventDefault();
+        click++;
+        var start = 21 * click;
+        const url = "{{path('loadMoreAdminVideos')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#adminvideos").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreAdminVideos").addEventListener("click", loadMoreAdminVideos);
+</script>
+{% endblock %}

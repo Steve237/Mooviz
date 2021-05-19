@@ -1,0 +1,149 @@
+{% extends 'homebase.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+	<div class="flexslider progression-studios-slider">
+	    <ul class="slides">
+			<li class="progression_studios_animate_in">
+				<div class="progression-studios-slider-image-background" style="background-image:url('{{asset("images/movielist.jpg")}}');">
+					<div class="progression-studios-slider-mobile-background-cover"></div>
+			    </div><!-- close .progression-studios-slider-image-background -->
+			</li>
+		</ul>
+    </div><!-- close .progression-studios-slider - See /js/script.js file for options -->
+		
+	<div id="content-pro">
+			
+  	    <div class="container">
+                
+            <div class="row">
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
+						<img src="{{asset("images/devices.jpg")}}" class="img-fluid" alt="Watch in Any Devices">
+					</div>
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents --> 
+						<h2 class="short-border-bottom">Compatible sur tous les écrans.</h2>
+						<p>Tv, ordinateur, tablette, ou bien smartphone, notre site est conçu afin de vous permettre de visionner les vidéos qu'il contient sur tous vos écrans.</p>
+						<p><a class="btn btn-green-pro" href="{{path('faqs')}}" role="button">En savoir plus.</a></p>
+					</div>
+				</div><!-- close .row -->
+				
+				
+				<div class="row">
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
+	  					<h2 class="short-border-bottom">Créez votre propre playlist.</h2>
+						<p>Nous vous offrons la possibilité de concevoir votre propre playlist avec toutes les vidéos que vous souhaitez, afin de les regarder lorsque vous voudrez.</p>
+						<p><a class="btn btn-green-pro" href="{{path('inscription', {'plan' : 'starter'})}}" role="button">Commencez à visionner.</a></p>
+					</div>
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
+						<img src="{{asset('images/player.png')}}" class="img-fluid" alt="Make Your Own Playlist">
+					</div>
+				</div><!-- close .row -->
+				
+				
+				<div class="row">
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
+						<img src="{{asset('images/playok.png')}}" class="img-fluid" alt="Watch in Ultra HD">
+					</div>
+					<div class="col-md my-auto"><!-- .my-auto vertically centers contents -->
+	  					<h2 class="short-border-bottom">Videos en Hd.</h2>
+						<p>Les vidéos diffusées au sein du site sont en haute définition.</p>
+						<p><a class="btn btn-green-pro" href="{{path('inscription', {'plan' : 'starter'})}}" role="button">Commencez votre essai gratuit.</a></p>
+					</div>
+				</div><!-- close .row -->
+				
+				<div class="height_section"></div>
+				
+				<div class="clearfix"></div>
+		</div><!-- close .container -->
+			
+			
+		<hr>
+			
+		<div class="progression-pricing-section-background">
+		    <div class="container">
+				
+				<div class="row">
+					<div class="mx-auto">
+						<h2 class="short-border-bottom">Nos plans et tarifs.</h2>
+					</div>
+				</div><!-- close .row -->
+				
+				<div class="height_between"></div>
+				
+				<div class="row">
+					<div class="col-md">
+						<ul class="checkmark-list-pro">
+							<li>Essai Gratuit pendant 1 mois.</li>
+							<li>Accès libre à toutes les videos du site.</li>
+						</ul>
+					</div>
+					<div class="col-md">
+						<ul class="checkmark-list-pro">
+							<li>Regardez les vidéos du site sur votre smartphone, tablette, pc, ou télévision.</li>
+							<li>Vous pourrez aussi télécharger des vidéos afin de les voir hors ligne.</li>
+						</ul>
+					</div>
+					<div class="col-md">
+						<ul class="checkmark-list-pro">
+							<li>Vidéos en haute définition.</li>
+							<li>Abonnement résiliable à tout moment.</li>
+						</ul>
+					</div>
+					<div class="col-md">
+						<ul class="checkmark-list-pro">
+							<li>Constituez votre playlist.</li>
+							<li>Abonnez vous à vos chaines favorites.</li>
+						</ul>
+					</div>
+				</div><!-- close .row -->
+				
+				
+				<div class="pricing-table-pro">
+					<div class="row">
+						<div class="col-md">
+							<div class="pricing-table-col">
+								<h6>Pack Starter.</h6>
+								<h6>Abonnement mensuel.</h6>
+								<h2><sup>€</sup>5<span>/mois.</span></h2>
+								<ul>
+									<li>Vidéos en HD.</li>
+									<li>Accessible sur tous types d'écrans.</li>
+									<li>Accès à tous le catalogue.</li>
+									<li>Téléchargement de vidéos.</li>
+									<li>Possibilité d'ajouter des vidéos.</li>
+									<li>Créer votre playlist.</li>
+									<li>Abonnez vous à vos chaines préférées.</li>
+								</ul>
+								<p><a class="btn" href="{{path('inscription', {'plan':'starter'})}}" role="button">Choisir ce plan</a></p>
+							</div><!-- close .pricing-table-col -->
+						</div><!-- close .col-md-12 -->
+						<div class="col-md">
+							<div class="pricing-table-col">
+								<h6>Pack Premium.</h6>
+								<h6>Abonnement annuel.</h6>
+								<h2><sup>€</sup>30<span>/an.</span></h2>
+								<ul>
+									<li>Vidéos en HD.</li>
+									<li>Accessible sur tous les écrans.</li>
+									<li>Accès à tous le catalogue.</li>
+									<li>Téléchargement de vidéos.</li>
+									<li>Possibilité d'ajouter des vidéos.</li>
+									<li>Créer votre playlist.</li>
+									<li>Abonnez vous à vos chaines préférées.</li>
+								</ul>
+								<p><a class="btn" href="{{path('inscription', {'plan':'premium'})}}" role="button">Choisir ce plan</a></p>
+							</div><!-- close .pricing-table-col -->
+						</div><!-- close .col-md-12 -->
+					</div><!-- close .row -->
+				</div><!-- close .pricing-table-pro -->
+					
+				
+				<div class="clearfix"></div>
+			</div><!-- close .container -->
+			
+		</div><!-- close .progression-pricing-section-background -->
+			
+	</div><!-- close #content-pro -->
+{% endblock %}

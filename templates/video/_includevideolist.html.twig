@@ -1,0 +1,90 @@
+ 
+  {% for message in app.flashes('no_channels') %}
+  <div class="alert alert-danger">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
+  {% for message in app.flashes('delete-notif') %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
+  {% for message in app.flashes('delete-all-notifs') %}
+  <div class="alert alert-success">
+    {{ message }}
+  </div>
+  {% endfor %}
+  
+  <div class="dashboard-container">
+
+    <div class="d-none d-sm-block">
+      <ul class="dashboard-genres-pro" id="listvideo">
+        {% for category in categories %}
+        <li class="imagecategory">
+          <a href="{{path("moviebycategory", {"category":category.id})}}">
+            <img src="{{category.imagecategory}}" alt="category-icone">
+            <h6>{{category.categoryname}}</h6>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <ul class="list-group d-sm-none list-category">
+      {% for category in categories %}
+      <li class="imagecategory list-group-item">
+        <a href="{{path("moviebycategory", {"category":category.id})}}">
+          <img src="{{category.imagecategory}}" alt="image">
+          <h6>{{category.categoryname}}</h6>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    
+    <div class="row" id="video">
+      {% if videos %}
+        {% for video in videos | slice(0, 50) %}
+          {% if video.privacy == "public" %}
+            <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-4">
+              <div class="item-listing-container-skrn video-card video-card-text">
+                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                  <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie">
+                </a>
+                <div class="item-listing-text-skrn">
+                  <div class="item-listing-text-skrn-vertical-align">
+                    <div class="videolist-title">
+                      <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" class="mobile-text">
+                        {{video.videotitle}}
+                      </a>
+                    </div>
+                    <div class="avatar-position">
+                      {% if video.username.imageuser %}
+                        <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
+                      {% endif %}
+                      <a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
+                        {{video.username.username}}
+                      </a> 
+                      {% if video.views is not null %}
+                        <p class="mobile-text text-position">
+                          Vues : {{video.views}}
+                        </p>
+                      {% else %}
+                        <p class="mobile-text text-position">
+                          Aucune vue
+                        </p>
+                      {% endif %}
+                    </div>
+                  </div><!-- close .item-listing-text-skrn-vertical-align -->
+                </div><!-- close .item-listing-text-skrn -->
+              </div><!-- close .item-listing-container-skrn -->
+            </div><!-- close .col -->
+          {% else %}
+            <h5>Aucune vidéo</h5>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <h4>Le site ne contient aucune vidéo</h4>
+      {% endif %}
+    </div><!-- close .row STOP-->

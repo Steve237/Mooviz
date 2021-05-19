@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aucun résultat{% endblock %}
+
+{% block body %}
+    <main id="col-main">
+        <div class="dashboard-container">
+            <div class="errormessage">
+                <h4 class="errortext">Aucune vidéo n'a été trouvée avec ce titre</h4>
+                <h4 class="back_home">Retour à <a href="{{path('homepage')}}">l'accueil</a></h4>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier image {% endblock %}
+
+{% block body %}
+
+<p class="title_admin_video"> Modifier image de la vidéo </p>
+<p class="update-video-image-zone">
+    <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="videoimage" class="update-video-image">
+</p>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="form_upload_video">
+                {{form_start(updateform)}}
+                    <div class="form-group">
+                        {{form_row(updateform.videoimage, {"label": "Image de couverture (formats autorisés: jpg, jpeg, png)", "attr" : {'class':'form-control-file'}})}}
+                    </div>
+                    <div class="form-group">
+                        {{form_widget(updateform)}}
+                    </div>
+                    <button type="submit" class="btn btn-alert btn-sm btn-block btn_video">Modifier image</button>
+                {{form_end(updateform)}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

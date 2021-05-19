@@ -1,0 +1,9 @@
+{% for notification in notifications | slice(start, 10) %}
+    <div>
+        <img src="{{asset('images/avatar/' ~ notification.origin.imageuser.avatar)}}" class="rounded-circle avatar-notification-size">
+        {{notification.content}} | {{notification.date | date("d/m/y") }}.
+    </div>
+    <a href="{{path('notif_delete', {'id' : notification.id })}}" class="delete_notif">
+        <button class="btn btn-primary">Vu<i class="fas fa-check"></i></button>
+    </a>
+{% endfor %}

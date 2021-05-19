@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace administrateur{% endblock %}
+
+{% block body %}
+
+<div class="container admin-section">
+  {% for message in app.flashes('success_update') %}
+  <div class="alert alert-success admin-update-video-success">
+    {{message}}
+  </div>
+  {% endfor %}
+
+  {% for message in app.flashes('user-block') %}
+  <div class="alert alert-success admin-update-video-success">
+    {{message}}
+  </div>
+  {% endfor %}
+
+  {% for message in app.flashes('user-deblock') %}
+  <div class="alert alert-success admin-update-video-success">
+    {{message}}
+  </div>
+  {% endfor %}
+
+
+  <ul class="dashboard-sub-menu">
+    <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
+    <li><a href="{{path('notifications_list')}}">Notifications</a></li>
+    <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
+    <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
+  </ul><!-- close .dashboard-sub-menu -->
+
+  {{render(controller('App\\Controller\\AdminController::searchUser'))}}
+
+
+  <div class="table-responsive-md table-responsive-lg table-responsive-xl d-none d-md-block">
+    <table class="table admin-users-table">
+      <thead>
+        <tr>
+          <th scope="col">Nom de l'utilisateur</th>
+          <th scope="col">Plan souscrit</th>
+          <th scope="col">Etat Abonnement</th>
+          <th scope="col">Etat paiement</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="userslist">
+        {% for user in users | slice(0, 20) %}
+        <tr>
+          <td data-label="username">{{user.username}}</td>
+          <td data-label="plan">{{user.plan}}</td>
+          {% if user.activated == 1 %}
+          <td data-label="subscription">Abonnement actif</td>
+          {% else %}
+          <td data-label="subscription">Abonnement inactif</td>
+          {% endif %}
+          {% if user.activated == 1 %}
+          <td data-label="payment">Paiement à jour</td>
+          {% else %}
+          <td data-label="payment">Paiement en attente</td>
+          {% endif %}
+          <td data-label="action">
+            <a href="{{path('update_user', {'id' : user.id})}}">
+              <button class="btn btn-sm btn-primary">Modifier</button>
+            </a>
+            {% if user.roles == ["ROLE_BLOCKED"] %}
+            <a href="{{path('deblock_user', {'id' : user.id})}}">
+              <button class="btn btn-sm btn-primary">Débloquer</button>
+            </a>
+            {% else %}
+            <a href="{{path('block_user', {'id' : user.id})}}">
+              <button class="btn btn-sm btn-primary">Bloquer</button>
+            </a>
+            {% endif %}
+            <a href="{{path('delete_user', {'id' : user.id})}}">
+              <button class="btn btn-sm btn-primary">Supprimer</button>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <ul class="list-group admin-list d-md-none mobile-admin-users-table">
+    {% for user in users %}
+    <div class="mobile-admin-user-list">
+      <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
+      <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
+      <li class="list-group-item">
+        Etat abonnement :
+        {% if user.activated == 1 %}
+        Abonnement actif
+        {% else %}
+        Abonnement inactif
+        {% endif %}
+      </li>
+      <li class="list-group-item">
+        Etat paiement :
+        {% if user.activated == 1 %}
+        Paiement à jour
+        {% else %}
+        Paiement en attente
+        {% endif %}
+      </li>
+      <li class="list-group-item">
+        <a href="{{path('update_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Modifier</button>
+        </a>
+        {% if user.roles == ["ROLE_BLOCKED"] %}
+        <a href="{{path('deblock_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Débloquer</button>
+        </a>
+        {% else %}
+        <a href="{{path('block_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Bloquer</button>
+        </a>
+        {% endif %}
+        <a href="{{path('delete_user', {'id' : user.id})}}">
+          <button class="btn btn-sm btn-primary">Supprimer</button>
+        </a>
+      </li>
+    </div>
+    {% endfor %}
+  </ul>
+  
+  {% if totalUsers > loadMoreStart %}
+  <div class="pagination">
+    <div class="navigation" id="loadbutton">
+      <button class="btn btn-primary" id="loadMoreUsers">Load more</button>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  click = 0;
+
+  function loadMoreUsers(event) {
+    event.preventDefault();
+    click++;
+    var start = 20 * click;
+    const url = "{{path('loadMoreUsers')}}/" + start;
+    axios.get(url).then(function (response) {
+      $("#userslist").append(response.data);
+      if (!response.data) {
+
+        let loadButton = document.getElementById("loadbutton");
+        loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+      }
+    }).catch(function (error) {
+      if (response.status === 403) {
+        window.alert("You are not authorized to perform this action!");
+      } else if (response.status === 404) {
+        window.alert("This page does not exist");
+      } else {
+        window.alert("An error has occurred !");
+      }
+    });
+  }
+  document.getElementById("loadMoreUsers").addEventListener("click", loadMoreUsers);
+</script>
+{% endblock %}

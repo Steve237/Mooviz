@@ -4,57 +4,49 @@
 
 {% block body %}
 <main id="col-main">
+	
+    {% include 'video/_includevideolist.html.twig' %}
 
-<div class="dashboard-container">
-				
-  <ul class="dashboard-genres-pro">
-
-    {% for category in categories %}
-    <li class="imagecategory">
-      <a href="{{path("moviebycategory", {"category":category.id})}}#listvideo">
-        <img src="{{asset('images/' ~ category.imagecategory)}}" alt="image">
-        <h6>{{category.categoryname}}</h6>
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-    <div class="row">
-        {% for video in videos %}
-        <div class="col-12 col-md-6 col-lg-4 col-xl-3">
-            <div class="item-listing-container-skrn">
-                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
-                <div class="item-listing-text-skrn">
-                    <div class="item-listing-text-skrn-vertical-align"><h6><a href="dashboard-movie-profile.html">{{video.videotitle}}</a></h6>
-                      <div
-                        class="circle-rating-pro"
-                        data-value="0.86"
-                        data-animation-start-value="0.86"
-                        data-size="32"
-                        data-thickness="3"
-                        data-fill="{
-                          &quot;color&quot;: &quot;#42b740&quot;
-                        }"
-                        data-empty-fill="#def6de"
-                        data-reverse="true"
-                      ><span style="color:#42b740;">8.6</span></div>
-                    </div><!-- close .item-listing-text-skrn-vertical-align -->
-                </div><!-- close .item-listing-text-skrn -->
-            </div><!-- close .item-listing-container-skrn -->
-        </div><!-- close .col -->
-        {% endfor %}
-    </div><!-- close .row STOP-->
-    
-    
-    <ul class="page-numbers">
-        <li><a class="previous page-numbers" href="#!"><i class="fas fa-chevron-left"></i></a></li>
-        <li><span class="page-numbers current">1</span></li>
-        <li><a class="page-numbers" href="#!">2</a></li>
-        <li><a class="page-numbers" href="#!">3</a></li>
-        <li><a class="page-numbers" href="#!">4</a></li>
-        <li><a class="next page-numbers" href="#!"><i class="fas fa-chevron-right"></i></a></li>
-    </ul>
-    
-            
-</div><!-- close .dashboard-container -->
+	{% if totalVideos > loadMoreStart %}
+		<div class="pagination" id="loadbutton">
+		<div class="navigation">
+			<button class="btn btn-primary" id="loadMore">Load more</button>
+		</div>
+		</div>
+	{% endif %}
+  
+	</div><!-- close .dashboard-container -->
 </main>
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	click = 0;
+	function loadMore(event) {
+		event.preventDefault();
+		click++;
+		var start = 50 * click;
+		const url = "{{path('loadMoreVideos')}}/" + start;
+		axios.get(url).then(function (response) {
+			$("#video").append(response.data);
+			if(!response.data) {
+
+			let loadButton = document.getElementById("loadbutton");
+			loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+			}
+
+		}).catch(function (error) {
+			if (response.status === 403) {
+				window.alert("You are not authorized to perform this action!");
+			} else if (response.status === 404) {
+				window.alert("This page does not exist");
+			} else {
+				window.alert("An error has occurred !");
+			}
+		});
+	}
+	document.getElementById("loadMore").addEventListener("click", loadMore);
+</script>
 {% endblock %}
