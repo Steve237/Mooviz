@@ -34,6 +34,14 @@ class VideoDescriptionType extends AbstractType
             ])
 
             ->add('category')
+
+            ->add('privacy', ChoiceType::class, [
+                
+                'choices'  => [
+                    'Public' => 'public',
+                    'Privé' => 'private'
+                ]
+            ]);
         ;
     }
     

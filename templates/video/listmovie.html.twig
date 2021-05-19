@@ -4,65 +4,49 @@
 
 {% block body %}
 <main id="col-main">
+	
+    {% include 'video/_includevideolist.html.twig' %}
 
-{% for message in app.flashes('no_channels') %}
-  <div class="alert alert-danger">
-      {{ message }}
-  </div>
-{% endfor %}
-
-<div class="dashboard-container">
-				
-  <div class="d-none d-sm-block">
-    <ul class="dashboard-genres-pro" id="listvideo" >
-
-      {% for category in categories %}
-      <li class="imagecategory">
-        <a href="{{path("moviebycategory", {"category":category.id})}}">
-          <img src="{{category.imagecategory}}" alt="image">
-          <h6>{{category.categoryname}}</h6>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-    </div>
-    
-    <ul class="list-group d-sm-none" style="margin-bottom:20px;width:100%">
-
-      {% for category in categories %}
-    <li class="imagecategory list-group-item">
-      <a href="{{path("moviebycategory", {"category":category.id})}}"><img src="{{category.imagecategory}}" alt="image"><h6>{{category.categoryname}}</h6></a>
-    </li>
-    {% endfor %}
-    </ul>
-    
-    <div class="row" id="listvideo">
-        {% for video in videos %}
-        <div class="col-12 col-md-6 col-sm-6 col-lg-4 col-xl-3">
-            <div class="item-listing-container-skrn video-card" style="text-overflow: ellipsis;overflow:hidden">
-                <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}"><img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="movies" class="imagemovie"></a>
-                <div class="item-listing-text-skrn">
-                  <div class="item-listing-text-skrn-vertical-align">
-                    <h6 style="width:300px;text-overflow:ellipsis;white-space: nowrap;overflow:hidden;margin-left:-20px"><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">{{video.videotitle}}</a></h6>
-									  <div style="float:left;margin-left:-20px">
-										  <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle" style="width:35px;height:35px;">
-										  <a href="{{path('channel', {'id': video.username.id})}}" style="color:blue">{{video.username.username}}</a> | {% if video.views is not null %} Vues : {{video.views}} {% else %} Aucune vue {% endif %}
-									  </div>
-                  </div><!-- close .item-listing-text-skrn-vertical-align -->
-                </div><!-- close .item-listing-text-skrn -->
-            </div><!-- close .item-listing-container-skrn -->
-        </div><!-- close .col -->
-        {% endfor %}
-    </div><!-- close .row STOP-->
-    
-    
-    <div class="pagination">
-      <div class="navigation">
-        {{ knp_pagination_render(videos) }}
-      </div>
-    </div>
-    
-            
-</div><!-- close .dashboard-container -->
+	{% if totalVideos > loadMoreStart %}
+		<div class="pagination" id="loadbutton">
+		<div class="navigation">
+			<button class="btn btn-primary" id="loadMore">Load more</button>
+		</div>
+		</div>
+	{% endif %}
+  
+	</div><!-- close .dashboard-container -->
 </main>
+{% endblock %}
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+	click = 0;
+	function loadMore(event) {
+		event.preventDefault();
+		click++;
+		var start = 50 * click;
+		const url = "{{path('loadMoreVideos')}}/" + start;
+		axios.get(url).then(function (response) {
+			$("#video").append(response.data);
+			if(!response.data) {
+
+			let loadButton = document.getElementById("loadbutton");
+			loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+			}
+
+		}).catch(function (error) {
+			if (response.status === 403) {
+				window.alert("You are not authorized to perform this action!");
+			} else if (response.status === 404) {
+				window.alert("This page does not exist");
+			} else {
+				window.alert("An error has occurred !");
+			}
+		});
+	}
+	document.getElementById("loadMore").addEventListener("click", loadMore);
+</script>
 {% endblock %}

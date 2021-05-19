@@ -31,8 +31,14 @@ class VideoType extends AbstractType
                 ]
             ])
             ->add('videodescription', TextareaType::class)
+            
             ->add('videoimage', FileType::class, [
                 "data_class" => null,
+                "attr" => [
+
+                    "accept" => ".png, .jpg, .jpeg",
+
+                ],
                 "constraints" => [
                     new File([
                         'maxSize' => '10000000k',
@@ -48,6 +54,11 @@ class VideoType extends AbstractType
 
             ->add('videolink', FileType::class, [
                 "data_class" => null,
+                "attr" => [
+                    
+                    "accept" => "video/mp4"
+                ],
+                
                 "constraints" => [
                     new File([
                         'maxSize' => '1000M',
@@ -58,8 +69,16 @@ class VideoType extends AbstractType
                     ])
                 ]
             ])
+            
             ->add('category')
-        ;
+
+            ->add('privacy', ChoiceType::class, [
+                
+                'choices'  => [
+                    'Public' => 'public',
+                    'Privé' => 'private'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

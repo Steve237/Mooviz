@@ -1,195 +1,256 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{% block title %}Mylion{% endblock %}</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% block stylesheet %} 
-        <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
-        <link rel="stylesheet" href="{{asset("css/main.css")}}">
-        <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css"/>
-        <script type="text/javascript" src="{{asset('js/java/FWDUVPlayer.js')}}"></script>
-        {% endblock %} 
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
-        <link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}"><!-- FontAwesome Icons -->
-        <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}"><!-- iconsmind.com Icons -->
-        <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<!doctype html>
+<html lang="fr">
+  <head>
+    {% block title %}
+      Mylion
+    {% endblock %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
+    {% block stylesheet %}
+      <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
+      <link rel="stylesheet" href="{{asset("css/main.css")}}">
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
+      <link rel="stylesheet" href="{{asset("icons/fontawesome/css/fontawesome-all.min.css")}}">
+      <link rel="stylesheet" href="{{asset("icons/Iconsmind__Ultimate_Pack/Line/styles.min.css")}}">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+      <script type="text/javascript" src="{{asset("js/loader.js")}}"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css"
+      integrity="sha512-SagM1PHxt5mWDyWARVY6UOdhM5A8J+R1UqIWcGfiwOd+be7uHQagB+JQOmfVZF8jjJQqbyuWzw/KXfb4yqjBkQ=="
+      crossorigin="anonymous"/>
+    {% endblock %}
   </head>
-<body>
-<div id="sidebar-bg">
+  <body>
 
-<header id="videohead-pro" class="sticky-header">
-  <div id="video-logo-background"><a href="{{path("homepage")}}"><h2 style="color:black;margin-top:20px;">Mylion</h2></a></div>
-  
-  <div id="video-search-header">
-  
-    <div id="search-icon-more" style="background-image:url('{{asset("images/mobile-search-icon.png")}}')"></div>
-      {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
-    
-  </div><!-- close .video-search-header -->
-  
-  <div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
-  
-  <div id="header-user-profile">
-    <div id="header-user-profile-click" class="noselect">
-      {{ render(controller('App\\Controller\\UserController::showAvatar'))}}
-      <div id="header-username">{{app.user.username}}</div><i class="fas fa-angle-down"></i>
-    </div><!-- close #header-user-profile-click -->
-    <div id="header-user-profile-menu">
-      <ul>
-        <li><a href="{{path('userprofile')}}"><span class="icon-User"></span>Mon profil</a></li>
-        <li><a href=""><span class="icon-Favorite-Window"></span>My Favorites</a></li>
-        <li><a href="{{path('user_account', {'id': app.user.id})}}"><span class="icon-Gears"></span>Mon compte</a></li>
-        <li><a href="#!"><span class="icon-Life-Safer"></span>Help/Support</a></li>
-        <li><a href="{{path('deconnexion')}}"><span class="icon-Power-3"></span>Deconnexion</a></li>
-      </ul>
-    </div><!-- close #header-user-profile-menu -->
-  </div><!-- close #header-user-profile -->
-  
-  {{ render(controller('App\\Controller\\ProfileController::showNotifications'))}}
-
-  
-  <div class="clearfix"></div>
-  
-  <nav id="mobile-navigation-pro">
-  
-    <ul id="mobile-menu-pro">
-          <li class="current-menu-item">
-            <a href="{{path("homepage")}}">
-        <span class="icon-Old-TV"></span>
-            Accueil
-            </a>
-          <li>
-          <li>
-            <a href="{{path("allvideos")}}">
-        <span class="icon-Reel"></span>
-              Videos
-            </a>
-          </li>
-          <li>
-          <a href="{{path('followed_videos_list')}}">
-        <span class="icon-Movie"></span>
-            Abonnements
-            </a>
-          </li>
-          <li>
-        <a href="{{path('channels_list')}}">
-        <span class="icon-Movie-Ticket"></span>
-          Chaines
-            </a>
-          </li>
-          <li>
-            <a href="{{path('playlistuser')}}">
-        <span class="icon-Clock"></span>
-              Playlist
-            </a>
-          </li>
-          <li>
-            <a href="{{path('addvideo')}}">
-        <span class="icon-Clock"></span>
-              Ajoutez vidéo
-            </a>
-          </li>
-          <li>
-            <a href="{{path('users_list')}}">
-        <span class="icon-Clock"></span>
-              Admin
-            </a>
-          </li>
-          <li>
-            {{ render(controller('App\\Controller\\ProfileController::showNotificationsOnMobile'))}}
-          </li>
-        </ul>
-    <div class="clearfix"></div>
-    
-    <div id="search-mobile-nav-pro">
-      {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
+    <div id="preloader">
+      <center id="preloadIMG">
+        <img src="{{asset('images/loader1.gif')}}" alt="loader"/>
+      </center>
     </div>
-  </nav>
-  
-</header>
-<nav id="sidebar-nav"><!-- Add class="sticky-sidebar-js" for auto-height sidebar -->
+
+    <div id="sidebar-bg">
+
+      <header id="videohead-pro" class="sticky-header">
+        <div id="video-logo-background">
+          <a href="{{path("homepage")}}">
+            <h2 class="website-title">Mylion</h2>
+          </a>
+        </div>
+      
+        <div id="video-search-header">
+        
+          <div id="search-icon-more" style="background-image:url('{{asset("images/mobile-search-icon.png")}}')" alt="background"></div>
+          {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
+          
+        </div><!-- close .video-search-header -->
+      
+        <div id="mobile-bars-icon-pro" class="noselect">
+          <i class="fas fa-bars"></i>
+        </div>
+      
+        <div id="header-user-profile">
+          <div id="header-user-profile-click" class="noselect">
+            {{ render(controller('App\\Controller\\UserController::showAvatar'))}}
+            <div id="header-username">
+              {{app.user.username}}
+            </div>
+            <i class="fas fa-angle-down"></i>
+          </div><!-- close #header-user-profile-click -->
+          <div id="header-user-profile-menu">
+            <ul>
+              <li>
+                <a href="{{path('user_videos')}}">
+                  <span class="icon-User"></span>
+                  Mon profil
+                </a>
+              </li>
+              <li>
+                <a href="{{path('user_account', {'id': app.user.id})}}">
+                  <span class="icon-Gears"></span>
+                  Mon compte
+                </a>
+              </li>
+              <li>
+                <a href="{{path('admin-contact')}}">
+                  <span class="icon-Life-Safer"></span>
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a href="{{path('deconnexion')}}">
+                  <span class="icon-Power-3"></span>
+                  Deconnexion
+                </a>
+              </li>
+            </ul>
+          </div><!-- close #header-user-profile-menu -->
+        </div><!-- close #header-user-profile -->
+      
+        {{render(controller('App\\Controller\\ProfileController::showNotifications'))}}
+        
+        <div class="clearfix"></div>
+      
+        <nav id="mobile-navigation-pro">
+      
+          <ul id="mobile-menu-pro">
+            <li class="current-menu-item">
+              <a href="{{path("homepage")}}">
+                <span class="icon-Old-TV"></span>
+                Accueil
+              </a>
+            </li>
+            <li>
+              <a href="{{path("allvideos")}}">
+                <span class="icon-Reel"></span>
+                Videos
+              </a>
+            </li>
+            <li>
+              <a href="{{path('followed_videos_list')}}">
+                <span class="icon-Movie"></span>
+                Abonnements
+              </a>
+            </li>
+            <li>
+              <a href="{{path('channels_list')}}">
+                <span class="icon-Movie-Ticket"></span>
+                Chaines
+              </a>
+            </li>
+            <li>
+              <a href="{{path('playlistuser')}}">
+                <span class="icon-Clock"></span>
+                Playlist
+              </a>
+            </li>
+            <li>
+              <a href="{{path('addvideo')}}">
+                <span class="icon-Clock"></span>
+                Ajoutez vidéo
+              </a>
+            </li>
+                
+            {% if is_granted('ROLE_ADMIN') %}
+              <li>
+                <a href="{{path('users_list')}}">
+                  <span class="icon-Clock"></span>
+                  Admin
+                </a>
+              </li>
+            {% endif %}
+                
+            <li>
+              {{ render(controller('App\\Controller\\ProfileController::showNotificationsOnMobile'))}}
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+          <div id="search-mobile-nav-pro">
+            {{ render(controller('App\\Controller\\VideoController::searchVideo'))}}
+          </div>
+        </nav>
+      
+      </header>
+      <nav id="sidebar-nav">
         <ul id="vertical-sidebar-nav" class="sf-menu">
           <li class="normal-item-pro current-menu-item">
             <a href="{{path("homepage")}}">
-        <span><img src="https://img.icons8.com/color/48/000000/home.png"/></span>
+              <span>
+                <img src="https://img.icons8.com/color/48/000000/home.png" alt="icone-homepage"/>
+              </span>
               Accueil
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path("allvideos")}}">
-        <span><img src="https://img.icons8.com/color/48/000000/video.png"/></span>
+              <span>
+                <img src="https://img.icons8.com/color/48/000000/video.png" alt="icone-videos"/>
+              </span>
               Videos
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('followed_videos_list')}}">
-        <span><img src="https://img.icons8.com/nolan/64/starred-ticket.png"/></span>
+              <span>
+                <img src="https://img.icons8.com/nolan/64/starred-ticket.png" alt="followed-videos"/>
+              </span>
               Abonnements
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('channels_list')}}">
-        <span><img src="https://img.icons8.com/fluent/48/000000/chain.png"/></span>
+              <span>
+                <img src="https://img.icons8.com/fluent/48/000000/chain.png" alt="channels"/>
+              </span>
               Chaines
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('playlistuser')}}">
-          <span><img src="https://img.icons8.com/color/48/000000/video-playlist.png"/></span>
+              <span>
+                <img src="https://img.icons8.com/color/48/000000/video-playlist.png" alt="playlist"/>
+              </span>
               Playlist
             </a>
           </li>
           <li class="normal-item-pro">
             <a href="{{path('addvideo')}}">
-          <span><img src="https://img.icons8.com/nolan/64/upload.png"/></i></span>
+              <span>
+                <img src="https://img.icons8.com/nolan/64/upload.png" alt="upload"/></i>
+              </span>
               Ajoutez vidéo
             </a>
           </li>
-          <li class="normal-item-pro">
-            <a href="{{path('users_list')}}">
-          <span><img src="https://img.icons8.com/color/48/000000/admin-settings-male.png"/></i></span>
-              Admin
-            </a>
-          </li>
+          {% if is_granted('ROLE_ADMIN') %}
+            <li class="normal-item-pro">
+              <a href="{{path('users_list')}}">
+                <span>
+                  <img src="https://img.icons8.com/color/48/000000/admin-settings-male.png" alt="adminspace"/></i>
+                </span>
+                Admin
+              </a>
+            </li>
+          {% endif %}
         </ul>
-    <div class="clearfix"></div>
-</nav>
+        <div class="clearfix">
+        </div>
+      </nav>
 
-{% block body %}{% endblock %}
+      <main class="animsition">
+        {% block body %}{% endblock %}
+      </main>
+    </div>
+    {% block javascripts %}
+      <!-- Required Framework JavaScript -->
+      <script type="text/javascript" src="{{asset("js/libs/jquery-3.3.1.min.js")}}"></script><!-- jQuery -->
+      <script type="text/javascript" src="{{asset("js/libs/popper.min.js")}}" defer></script><!-- Bootstrap Popper/Extras JS -->
+      <script type="text/javascript" src="{{asset("js/libs/bootstrap.min.js")}}" defer></script><!-- Bootstrap Main JS -->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-</div>
-    {% block javascript %}
-    <!-- Required Framework JavaScript -->
-		<script src="{{asset("js/libs/jquery-3.3.1.min.js")}}"></script><!-- jQuery -->
-		<script src="{{asset("js/libs/popper.min.js")}}" defer></script><!-- Bootstrap Popper/Extras JS -->
-    <script src="{{asset("js/libs/bootstrap.min.js")}}" defer></script><!-- Bootstrap Main JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-		<!-- All JavaScript in Footer -->
-		
-		<!-- Additional Plugins and JavaScript -->
-		<script src="{{asset("js/navigation.js")}}" defer></script><!-- Header Navigation JS Plugin -->
-		<script src="{{asset("js/jquery.flexslider-min.js")}}" defer></script><!-- FlexSlider JS Plugin -->
-		<script src="{{asset("js/jquery-asRange.min.js")}}" defer></script><!-- Range Slider JS Plugin -->
-		<script src="{{asset("js/circle-progress.min.js")}}" defer></script><!-- Circle Progress JS Plugin -->
-		<script src="{{asset("js/afterglow.min.js")}}" defer></script><!-- Video Player JS Plugin -->
-    <script src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
-    <script src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
-    <script src="https://cdn.plyr.io/3.6.2/plyr.polyfilled.js"></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
-    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="{{asset("js/videolike.js")}}"></script>
-    <script src="{{asset("js/playlist.js")}}"></script>
-    <script src="{{asset("js/upload.js")}}"></script>
-    <script src="{{asset("js/input_file.js")}}"></script>
-    <script src="{{asset("js/contactform.js")}}"></script>
-    <script src="{{asset("js/videosingle.js")}}"></script>
-    <script src="{{asset("js/video-header.js")}}"></script>
-  {% endblock %}
-</body>
+      <!-- All JavaScript in Footer -->
+      
+      <!-- Additional Plugins and JavaScript -->
+      <script type="text/javascript" src="{{asset('js/java/FWDUVPlayer.js')}}"></script>
+      <script type="text/javascript" src="{{asset("js/navigation.js")}}" defer></script><!-- Header Navigation JS Plugin -->
+      <script type="text/javascript" src="{{asset("js/jquery.flexslider-min.js")}}" defer></script><!-- FlexSlider JS Plugin -->
+      <script type="text/javascript" src="{{asset("js/jquery-asRange.min.js")}}" defer></script><!-- Range Slider JS Plugin -->
+      <script type="text/javascript" src="{{asset("js/circle-progress.min.js")}}" defer></script><!-- Circle Progress JS Plugin -->
+      <script type="text/javascript" src="{{asset("js/afterglow.min.js")}}" defer></script><!-- Video Player JS Plugin -->
+      <script type="text/javascript" src="{{asset("js/script.js")}}" defer></script><!-- Custom Document Ready JS -->
+      <script type="text/javascript" src="{{asset("js/script-dashboard.js")}}" defer></script><!-- Custom Document Ready for Dashboard Only JS -->
+      <script type="text/javascript" async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v8.0" nonce="rhKkT8lU"></script>
+      <script type="text/javascript" async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script type="text/javascript" src="{{asset("js/videolike.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/playlist.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/upload.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/input_file.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/contactform.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/videosingle.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/video-header.js")}}"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js" integrity="sha512-pYd2QwnzV9JgtoARJf1Ui1q5+p1WHpeAz/M0sUJNprhDviO4zRo12GLlk4/sKBRUCtMHEmjgqo5zcrn8pkdhmQ==" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="{{asset("js/transition.js")}}"></script>
+      <script type="text/javascript" src="{{asset("js/videobackground.js")}}"></script>
+    {% endblock %}
+  </body>
 </html>

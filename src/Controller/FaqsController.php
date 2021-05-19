@@ -10,8 +10,9 @@ class FaqsController extends AbstractController
 {
     /**
      * @Route("/faqs", name="faqs")
+     * Redirige vers la faqs
      */
-    public function index(): Response
+    public function faqs(): Response
     {
         return $this->render('faqs/faqs.html.twig', [
             'controller_name' => 'FaqController',

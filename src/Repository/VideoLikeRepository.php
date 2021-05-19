@@ -19,17 +19,5 @@ class VideoLikeRepository extends ServiceEntityRepository
         parent::__construct($registry, VideoLike::class);
     }
 
-   
 
-    /*
-    public function findOneBySomeField($value): ?VideoLike
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

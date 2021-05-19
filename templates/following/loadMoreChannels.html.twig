@@ -1,0 +1,25 @@
+{% for followed in user.following | slice(start, 20) %}
+<a href="{{path('channel', {'id': followed.id})}}">
+    <div class="col-6 col-md-6 col-sm-6 col-lg-4 col-xl-3">
+        <div class="item-playlist-container-skrn video-card video-card-text">
+            <a href="{{path('channel', {'id': followed.id})}}">
+                {% if followed.imageuser %}
+                    <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" alt="avatar" class="img-responsive">
+                {% else %}
+                    <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="img-responsive">
+                {% endif %}
+            </a>
+            <div class="item-playlist-text-skrn">
+                {% if followed.imageuser %}
+                    <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" alt="avatar" class="img-responsive">
+                {% endif %}
+                <h5>
+                    <a href="{{path('channel', {'id': followed.id})}}">
+                        Chaine de: {{followed.username}}
+                    </a>
+                </h5>
+            </div><!-- close .item-listing-text-skrn -->
+        </div><!-- close .item-playlist-container-skrn -->
+    </div><!-- close .col -->
+</a>
+{% endfor %}

@@ -41,33 +41,18 @@ class WebhookRepository extends ServiceEntityRepository
         
     }
 
+    //affiche le total de webhooks enregistrés en bdd
+    public function countWebhooks() {
 
-    // /**
-    //  * @return Webhook[] Returns an array of Webhook objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
         return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('w.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('count(w.id)')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getSingleScalarResult();  
+        
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Webhook
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
+
+
+
 }

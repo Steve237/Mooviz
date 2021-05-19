@@ -37,7 +37,7 @@ class Videobackground
     private $parutiondate;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetime")
      */
     private $videoduration;
 
@@ -91,12 +91,12 @@ class Videobackground
         return $this;
     }
 
-    public function getVideoduration()
+    public function getVideoduration(): ?\DateTimeInterface
     {
         return $this->videoduration;
     }
 
-    public function setVideoduration($videoduration)
+    public function setVideoduration(\DateTimeInterface $videoduration): self
     {
         $this->videoduration = $videoduration;
 

@@ -24,7 +24,7 @@ $(document).ready(function(){
                 return xhr;
             },
             type: 'POST',
-            url: '/upload',
+            url: '/main/upload',
             data: new FormData(this),
             contentType: false,
             cache: false,
@@ -37,7 +37,7 @@ $(document).ready(function(){
             },
             success: function(resp){
                 if(resp == 'ok'){
-                    window.document.location = '/upload_video_successfull';
+                    window.document.location = '/main/upload_video_successfull';
                 }else if(resp == 'err'){
                     $('#uploadStatus').html('<p style="color:#EA4335;">Le téléchargement a échoué: nous acceptons uniquement les vidéos au format mp4 et les images au format jpg, jpeg, ou png</p>');
                 }
@@ -45,15 +45,4 @@ $(document).ready(function(){
         });
     });
 	
-    // File type validation
-    $("#fileInput").change(function(){
-        var allowedTypes = ['video/mp4'];
-        var file = this.files[0];
-        var fileType = file.type;
-        if(!allowedTypes.includes(fileType)){
-            alert('Veuillez télécharger une vidéo au format mp4.');
-            $("#fileInput").val('');
-            return false;
-        }
-    });
 });

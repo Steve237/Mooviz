@@ -4,47 +4,35 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
     <link rel="stylesheet" href="{{asset('../css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('/css/main.css')}}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
 
-    <link rel="stylesheet" href="icons/fontawesome/css/fontawesome-all.min.css"><!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="icons/Iconsmind__Ultimate_Pack/Line%20icons/styles.min.css">
+    <link rel="stylesheet" href="{{asset('icons/fontawesome/css/fontawesome-all.min.css')}}"><!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="{{asset('icons/Iconsmind__Ultimate_Pack/Line/icons/styles.min.css')}}">
     <!-- iconsmind.com Icons -->
     <script src="https://js.stripe.com/v3/"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
     <title>Mylion</title>
 </head>
-
 <body>
     <header id="masthead-pro">
         <div class="container">
-            
-            <h1><a href="{{path('home')}}"><span class="homepage_title">Mylion</span></a></h1>
-            
+
+            <h1>
+                <a href="{{path('home')}}">
+                    <span class="homepage_title">Mylion</span>
+                </a>
+            </h1>
+
             <nav id="site-navigation-pro">
                 <ul class="sf-menu">
                     <li class="normal-item-pro">
                         <a href="{{path('home')}}">Accueil</a>
                     </li>
-                    <li class="normal-item-pro">
-                        <!-- Sub-Menu Example >
-                        <ul class="sub-menu">
-                            <li class="normal-item-pro">
-                                <a href="#!">Sub-menu item 1</a>
-                            </li>
-                            <li class="normal-item-pro">
-                                <a href="#!">Sub-menu item 2</a>
-                            </li>
-                            <li class="normal-item-pro">
-                                <a href="#!">Sub-menu item 3</a>
-                            </li>
-                        </ul> 
-                        < End Sub-Menu example -->
-                    </li>
                     <li class="normal-item-pro current-menu-item">
-                        <a href="{{path('tarif')}}">Tarifs</a>
+                        <a href="{{path('tarifs')}}">Tarifs</a>
                     </li>
                     <li class="normal-item-pro">
                         <a href="{{path('faqs')}}">FAQs</a>
@@ -54,49 +42,42 @@
                     </li>
                 </ul>
             </nav>
-            
-            <a href="{{path('inscription', {'plan' : 'starter'})}}" class="btn btn-header-pro btn-green-pro noselect">Essai gratuit</a>
-            
-            <a href="{{path('connexion')}}"><button class="btn btn-header-pro noselect">Connectez vous</button></a>
-            
-            <div id="mobile-bars-icon-pro" class="noselect"><i class="fas fa-bars"></i></div>
-            
+
+            <a href="{{path('inscription', {'plan' : 'starter'})}}" class="btn btn-header-pro btn-green-pro noselect">
+                Essai gratuit
+            </a>
+
+            <a href="{{path('connexion')}}">
+                <button class="btn btn-header-pro noselect">
+                    Connectez vous
+                </button>
+            </a>
+
+            <div id="mobile-bars-icon-pro" class="noselect">
+                <i class="fas fa-bars"></i>
+            </div>
+
             <div class="clearfix"></div>
         </div><!-- close .container -->
-        
+
         <nav id="mobile-navigation-pro">
-        
+
             <ul id="mobile-menu-pro">
                 <li>
-                    <a href="index.html">Home</a>
+                    <a href="{{path('homepage')}}">Home</a>
                 </li>
                 <li>
-                    <a href="dashboard-home.html">New Releases</a>
-                    <!-- Mobile Sub-Menu Example >
-                    <ul>
-                        <li class="normal-item-pro">
-                            <a href="#!">Sub-menu item 1</a>
-                        </li>
-                        <li class="normal-item-pro">
-                            <a href="#!">Sub-menu item 2</a>
-                        </li>
-                        <li class="normal-item-pro">
-                            <a href="#!">Sub-menu item 3</a>
-                        </li>
-                    </ul>
-                    < End Mobile Sub-Menu Example -->
+                    <a href="{{path('tarifs')}}">Tarifs</a>
                 </li>
                 <li>
-                    <a href="{{path('tarif')}}">Tarifs</a>
-                </li>
-                <li>
-                    <a href="faqs.html">FAQs</a>
+                    <a href="{{path('faqs')}}">FAQs</a>
                 </li>
             </ul>
             <div class="clearfix"></div>
-        
-            <button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">Sign In</button>
-        
+
+            <button class="btn btn-mobile-pro btn-green-pro noselect" data-toggle="modal" data-target="#LoginModal" role="button">
+                Sign In
+            </button>
         </nav>
     </header>
 
@@ -106,35 +87,35 @@
         <div class="container">
             <div class="centered-headings-pro pricing-plans-headings">
                 <h5 class="free_title">Essai gratuit pendant 1 mois.</h5>
-			    <h3>Regardez et partagez vos vidéos favoris.</h3>
+                <h3>Regardez et partagez vos vidéos favoris.</h3>
             </div>
         </div><!-- close .container -->
 
         <div class="container">
             <ul id="registration-steps-pro">
                 <li>
-                    <a href="">
+                    <a href="#">
                         <div class="registration-step-circle-icon">01.</div>
                         <div class="registration-step-number">Etape 1.</div>
                         <h5 class="registration-step-title">Choisissez votre plan.</h5>
                     </a>
                 </li>
                 <li>
-                    <a href="">
-                    <div class="registration-step-circle-icon">02.</div>
-                    <div class="registration-step-number">Etape 2.</div>
-                    <h5 class="registration-step-title">Créez votre compte.</h5>
+                    <a href="#">
+                        <div class="registration-step-circle-icon">02.</div>
+                        <div class="registration-step-number">Etape 2.</div>
+                        <h5 class="registration-step-title">Créez votre compte.</h5>
                     </a>
                 </li>
                 <li class="current-menu-item">
-                    <a href="">
+                    <a href="#">
                         <div class="registration-step-circle-icon">03.</div>
                         <div class="registration-step-number">Etape 3.</div>
                         <h5 class="registration-step-title">Informations de facturation.</h5>
                     </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="#">
                         <div class="registration-step-circle-icon">04.</div>
                         <div class="registration-step-number">Etape 4.</div>
                         <h5 class="registration-step-title">Activation du compte.</h5>
@@ -156,7 +137,7 @@
                                 <div class="jumbotron jumbotron-fluid jumbotron-pro jumbotron-selected">
                                     <div class="container">
                                         <i class="fas fa-check-circle"></i>
-                                        <img src="{{asset('images/demo/stripe_logo.jpg')}}" alt="Credit Card">
+                                        <img src="{{asset('images/stripe_logo.jpg')}}" alt="Credit Card">
                                         <h6 class="light-weight-heading">Payez avec votre carte bancaire</h6>
                                     </div>
                                 </div><!-- close .jumbotron -->
@@ -169,10 +150,10 @@
                             <div class="billing-form-pro">
                                 <form method="post" id="payment-form" action="{{path('success_payment', {'id':userId})}}">
                                     <input type="hidden" name="action" value="submit-payment">
-
-
                                     <div class="form-group">
-                                        <label for="cardnumber" class="col-form-label">Entrez les numéros de votre carte:</label>
+                                        <label for="cardnumber" class="col-form-label">
+                                            Entrez les numéros de votre carte:
+                                        </label>
                                         <div id="card-element"></div>
                                     </div>
 
@@ -194,7 +175,7 @@
                                 <script>
                                     var stripe = Stripe(
                                         'pk_test_51HpdbCLfEkLbwHD1UtFDGj4m6I3U8JdlzEKugeOjDIK8wzbYWv68cvNuGWzUb9dk8KYnJyaSfeUrEFRYvjtiExsJ00pZMF1kFn'
-                                        );
+                                    );
                                     // Create an instance of Elements.
                                     var elements = stripe.elements();
 
@@ -257,18 +238,30 @@
         <div class="container">
             <div class="row">
                 <div class="col-md">
-                    <div class="copyright-text-pro">&copy; Copyright 2018 SKRN. All Rights Reserved</div>
+                    <div class="copyright-text-pro">&copy; Copyright Mylion. All Rights Reserved</div>
                 </div><!-- close .col -->
                 <div class="col-md">
                     <ul class="social-icons-pro">
-                        <li class="facebook-color"><a href="http://facebook.com/progressionstudios" target="_blank"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="twitter-color"><a href="http://twitter.com/Progression_S" target="_blank"><i
-                                    class="fab fa-twitter"></i></a></li>
-                        <li class="youtube-color"><a href="http://youtube.com" target="_blank"><i
-                                    class="fab fa-youtube"></i></a></li>
-                        <li class="vimeo-color"><a href="http://vimeo.com" target="_blank"><i
-                                    class="fab fa-vimeo-v"></i></a></li>
+                        <li class="facebook-color">
+                            <a href="http://facebook.com/progressionstudios" target="_blank">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="twitter-color">
+                            <a href="http://twitter.com/Progression_S" target="_blank">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li class="youtube-color">
+                            <a href="http://youtube.com" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </li>
+                        <li class="vimeo-color">
+                            <a href="http://vimeo.com" target="_blank">
+                                <i class="fab fa-vimeo-v"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div><!-- close .col -->
             </div><!-- close .row -->
@@ -304,13 +297,19 @@
                             </div>
                             <div class="container-fluid">
                                 <div class="row no-gutters">
-                                    <div class="col checkbox-remember-pro"><input type="checkbox"
-                                            id="checkbox-remember"><label for="checkbox-remember"
-                                            class="col-form-label">Remember me</label></div>
-                                    <div class="col forgot-your-password"><a href="#!">Forgot your password?</a></div>
+                                    <div class="col checkbox-remember-pro">
+                                        <input type="checkbox" id="checkbox-remember">
+                                        <label for="checkbox-remember" class="col-form-label">
+                                            Remember me
+                                        </label>
+                                    </div>
+                                    <div class="col forgot-your-password">
+                                        <a href="#!">
+                                            Forgot your password?
+                                        </a>
+                                    </div>
                                 </div>
                             </div><!-- close .container-fluid -->
-
                         </form>
 
                         <div class="registration-social-login-or">or</div>
@@ -319,22 +318,29 @@
 
                     <div class="registration-social-login-options">
                         <h6>Sign in with your social account</h6>
-                        <div class="social-icon-login facebook-color"><i class="fab fa-facebook-f"></i> Facebook</div>
-                        <div class="social-icon-login twitter-color"><i class="fab fa-twitter"></i> Twitter</div>
-                        <div class="social-icon-login google-color"><i class="fab fa-google-plus-g"></i> Google</div>
+                        <div class="social-icon-login facebook-color">
+                            <i class="fab fa-facebook-f"></i> 
+                            Facebook
+                        </div>
+                        <div class="social-icon-login twitter-color">
+                            <i class="fab fa-twitter"></i> 
+                            Twitter
+                        </div>
+                        <div class="social-icon-login google-color">
+                            <i class="fab fa-google-plus-g"></i> 
+                            Google
+                        </div>
                     </div><!-- close .registration-social-login-options -->
 
                     <div class="clearfix"></div>
-
-
                 </div><!-- close .modal-body -->
 
-                <a class="not-a-member-pro" href="signup-step2.html">Not a member? <span>Join Today!</span></a>
+                <a class="not-a-member-pro" href="signup-step2.html">
+                    Not a member? <span>Join Today!</span>
+                </a>
             </div><!-- close .modal-content -->
         </div><!-- close .modal-dialog -->
     </div><!-- close .modal -->
-
-
     <!-- Required Framework JavaScript -->
     <script src="js/libs/jquery-3.3.1.min.js"></script><!-- jQuery -->
     <script src="js/libs/popper.min.js" defer></script><!-- Bootstrap Popper/Extras JS -->

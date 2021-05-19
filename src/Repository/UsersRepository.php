@@ -21,7 +21,7 @@ class UsersRepository extends ServiceEntityRepository
         parent::__construct($registry, Users::class);
     }
   
-
+    // permet de récupérer un user
     public function findUser($user)
     {
         return $this->createQueryBuilder('u')
@@ -65,6 +65,7 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
 
+    
     public function verifSubscriber($value)
     {
         return $this->createQueryBuilder('u')
@@ -75,14 +76,6 @@ class UsersRepository extends ServiceEntityRepository
         ;
     }
 
-     //permet de réaliser la pagination
-     public function findAllWithPagination() : Query
-     {
-
-        return $this->createQueryBuilder('u')
-            ->getQuery();
-        
-    }
   
      // assure la recherche des utilisateurs par nom
      public function userSearch($username) {
@@ -93,15 +86,15 @@ class UsersRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    /*
-    public function findOneBySomeField($value): ?Users
-    {
+
+    //affiche le total de users inscrits
+    public function countUsers() {
+
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
+            ->select('count(u.id)')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getSingleScalarResult();  
+        
     }
-    */
+
 }

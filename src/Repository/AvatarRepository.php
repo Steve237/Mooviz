@@ -29,15 +29,5 @@ class AvatarRepository extends ServiceEntityRepository
             ->getResult();
     }
    
-    /*
-    public function findOneBySomeField($value): ?Avatar
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
+
 }

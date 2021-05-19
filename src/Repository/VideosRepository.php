@@ -7,6 +7,7 @@ use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 /**
  * @method Videos|null find($id, $lockMode = null, $lockVersion = null)
@@ -21,25 +22,45 @@ class VideosRepository extends ServiceEntityRepository
         parent::__construct($registry, Videos::class);
     }
     
-    //affiche vidéos par categories
+    //affiche vidéos publiques par categorie
     public function getVideoByCategory($category) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.category = :val')
+        ->andwhere('v.privacy != :privacy')
         ->setParameter('val', $category)
-        ->getQuery()
-        ->getResult();
-    }
-
-    //Affiche 21 vidéos à la page de profil (nouveautés)
-    public function getVideos() {
-
-        return $this->createQueryBuilder('v')
-        ->setMaxResults(21)
+        ->setParameter('privacy', 'private')
         ->orderBy('v.id', 'DESC')
         ->getQuery()
         ->getResult();
     }
+
+    //affiche les vidéos publics sur la page accueil
+    public function findAllPublicVideos() {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.privacy != :val')
+        ->setParameter('val', 'private')
+        ->orderBy('v.id', 'DESC')
+        ->getQuery()
+        ->getResult();
+    }
+
+
+    //affiche les nouvelles vidéos publics du site
+    public function getVideos($video) {
+
+        return $this->createQueryBuilder('v')
+        ->andwhere('v.privacy != :val')
+        ->andwhere('v.id != :video')
+        ->setParameter('val', 'private')
+        ->setParameter('video', $video)
+        ->orderBy('v.id', 'DESC')
+        ->setMaxResults(20)
+        ->getQuery()
+        ->getResult();
+    }
+
 
         //recupère vidéo par id
       public function showVideo($id) {
@@ -53,11 +74,15 @@ class VideosRepository extends ServiceEntityRepository
     }
 
       //recupère vidéo par id de celui qui l'a posté
-      public function showVideoByUserId($userId) {
+      public function showVideoByUserId($userId, $video) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.username = :userid')
+        ->andwhere('v.privacy != :val')
+        ->andwhere('v.id != :video')
         ->setParameter('userid', $userId)
+        ->setParameter('val', 'private')
+        ->setParameter('video', $video)
         ->orderBy('v.id', 'DESC')
         ->setMaxResults(20)
         ->getQuery()
@@ -71,8 +96,11 @@ class VideosRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('v')
         ->andwhere('v.category = :val')
         ->andwhere('v.id != :id')
+        ->andwhere('v.privacy != :privacy')
         ->setParameter('val', $category)
         ->setParameter('id', $id)
+        ->setParameter('privacy', 'private')
+        ->orderBy('v.id', 'DESC')
         ->setMaxResults(15)
         ->getQuery()
         ->getResult()
@@ -84,12 +112,14 @@ class VideosRepository extends ServiceEntityRepository
     public function search($videoTitle) {
         return $this->createQueryBuilder('v')
             ->andWhere('v.videotitle LIKE :videotitle')
+            ->andwhere('v.privacy != :privacy')
             ->setParameter('videotitle', '%'.$videoTitle.'%')
+            ->setParameter('privacy', 'private')
             ->getQuery()
             ->execute();
     }
 
-    // assure la recherche des vidéos par titre
+    // assure la recherche des vidéos d'un user par titre
     public function userVideoSearch($videoTitle, $username) {
         return $this->createQueryBuilder('v')
             ->andWhere('v.videotitle LIKE :videotitle')
@@ -98,15 +128,6 @@ class VideosRepository extends ServiceEntityRepository
             ->setParameter('val', $username)
             ->getQuery()
             ->execute();
-    }
-
-    //permet de réaliser la pagination
-    public function findAllWithPagination() : Query{
-
-        return $this->createQueryBuilder('v')
-            ->orderBy('v.id', 'DESC')
-            ->getQuery();
-        
     }
 
     //affiche les vidéos de l'user
@@ -129,14 +150,16 @@ class VideosRepository extends ServiceEntityRepository
         
         return $qb->select('v')
             ->andwhere('v.username IN (:following)')
+            ->andwhere('v.privacy != :privacy')
             ->setParameter('following', $users)
+            ->setParameter('privacy', 'private')
             ->orderBy('v.id', 'DESC')
             ->getQuery()
             ->getResult();
 
     }
 
-    //affiche le total de vidéos postés par user 
+    //affiche le nombre total de vidéos postés par user 
     public function countUserVideos($user) {
 
         return $this->createQueryBuilder('v')
@@ -148,9 +171,32 @@ class VideosRepository extends ServiceEntityRepository
         
     }
 
+     //affiche le nombre total de vidéos postés 
+     public function countVideos() {
+
+        return $this->createQueryBuilder('v')
+            ->select('count(v.id)')
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
 
 
-    //affiche le total de membres qui vous suivent
+     //affiche le nombre total de vidéos postés par catégorie
+     public function countVideosByCategory($category) {
+
+        return $this->createQueryBuilder('v')
+            ->select('count(v.id)')
+            ->andWhere('v.category = :val')
+            ->setParameter('val', $category)
+            ->getQuery()
+            ->getSingleScalarResult();  
+        
+    }
+
+
+
+    //affiche le nombre total de membres qui vous suivent
     public function countFollower(Collection $users) {
 
         return $this->createQueryBuilder('v')
@@ -199,28 +245,41 @@ class VideosRepository extends ServiceEntityRepository
     }
 
 
-    //affiche la vidéo la moins vue
-    public function getMinVideoByUser($user) {
+
+    //permet de supprimer toutes les vidéos
+    public function deleteAllVideos() {
+
+        return $this->createQueryBuilder('v')
+        ->delete()
+        ->where('v.id != 0')
+        ->getQuery()
+        ->getResult();
+
+    }
+
+
+     //permet de supprimer toutes les vidéos de l'user
+     public function deleteAllUserVideos($user) {
+
+        return $this->createQueryBuilder('v')
+        ->delete()
+        ->where('v.id != 0')
+        ->andwhere('v.username = :val')
+        ->setParameter('val', $user)
+        ->getQuery()
+        ->getResult();
+
+    }
+
+
+    //retourne la vidéo la plus vue de l'user
+    public function getVideoImages($user) {
 
         return $this->createQueryBuilder('v')
         ->andwhere('v.username = :val')
         ->setParameter('val', $user)
-        ->orderBy('v.views', 'ASC') 
-        ->setMaxResults(10) 
         ->getQuery() 
         ->getResult(); 
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?Videos
-    {
-        return $this->createQueryBuilder('v')
-            ->andWhere('v.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

@@ -1,0 +1,39 @@
+{% for user in users | slice(start, 20) %}
+<div class="admin-item">
+    <li class="list-group-item">Nom utilisateur : {{user.username}}</li>
+    <li class="list-group-item">Plan souscrit : {{user.plan}}</li>
+    <li class="list-group-item">
+        Etat abonnement :
+        {% if user.activated == 1 %}
+        Abonnement actif
+        {% else %}
+        Abonnement inactif
+        {% endif %}
+    </li>
+    <li class="list-group-item">
+        Etat paiement :
+        {% if user.activated == 1 %}
+        Paiement à jour
+        {% else %}
+        Paiement en attente
+        {% endif %}
+    </li>
+    <li class="list-group-item">
+        <a href="{{path('update_user', {'id' : user.id})}}">
+            <button class="btn btn-sm btn-primary">Modifier</button>
+        </a>
+        {% if user.roles == ["ROLE_BLOCKED"] %}
+        <a href="{{path('deblock_user', {'id' : user.id})}}">
+            <button class="btn btn-sm btn-primary">Débloquer</button>
+        </a>
+        {% else %}
+        <a href="{{path('block_user', {'id' : user.id})}}">
+            <button class="btn btn-sm btn-primary">Bloquer</button>
+        </a>
+        {% endif %}
+        <a href="{{path('delete_user', {'id' : user.id})}}">
+            <button class="btn btn-sm btn-primary">Supprimer</button>
+        </a>
+    </li>
+</div>
+{% endfor %}

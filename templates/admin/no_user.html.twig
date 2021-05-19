@@ -5,21 +5,39 @@
 {% block body %}
 
 <div class="container admin-section">
-   <ul class="dashboard-sub-menu">
-          <li class="current"><a href="{{path('users_list')}}">Liste des membres</a></li>
-          <li><a href="{{path('notifications_list')}}">Notifications</a></li>
-          <li><a href="{{path('videos_background')}}">Vidéos à la une</a></li>
-          <li><a href="{{path('adminspace_videos')}}">Gestion des vidéos</a></li>
-      </ul><!-- close .dashboard-sub-menu -->
-      
-      {{render(controller('App\\Controller\\AdminController::searchUser'))}}
+    <ul class="dashboard-sub-menu">
+        <li class="current">
+            <a href="{{path('users_list')}}">Liste des membres</a>
+        </li>
+        <li>
+            <a href="{{path('notifications_list')}}">
+                Notifications
+            </a>
+        </li>
+        <li>
+            <a href="{{path('videos_background')}}">
+                Vidéos à la une
+            </a>
+        </li>
+        <li>
+            <a href="{{path('adminspace_videos')}}">
+                Gestion des vidéos
+            </a>
+        </li>
+    </ul><!-- close .dashboard-sub-menu -->
+
+    {{render(controller('App\\Controller\\AdminController::searchUser'))}}
 </div>
 
 <main id="col-main">
     <div class="dashboard-container">
         <div class="errormessage">
-            <h4 class="errortext">Aucun utilisateur n'a été trouvée avec ce nom</h4>
-            <h4 class="back_home">Retour à <a href="{{path('users_list')}}">l'espace administrateur</a></h4>
+            <h4 class="errortext">
+                Aucun utilisateur n'a été trouvée avec ce nom
+            </h4>
+            <h4 class="back_home">
+                Retour à <a href="{{path('users_list')}}">l'espace administrateur</a>
+            </h4>
         </div>
     </div>
 </main>

@@ -6,35 +6,53 @@
 
 	
 <main id="col-main">
-			
     <div class="dashboard-container">
-        
         <ul class="dashboard-sub-menu">
-            <li><a href="{{path('user_account', {'id' : app.user.id })}}"><button type="submit" class="btn btn-primary">Paramètres du compte</button></a></li>
-            <form method="POST" action="/create-customer-portal-session" style="position:absolute;left:450px;top:125px;">
-                <button type="submit" class="btn btn-primary">Gestion de la facturation</button>
-            </form>
+            <li>
+                <a href="{{path('user_account', {'id' : app.user.id })}}">
+                    <button type="button" class="btn btn-primary">Paramètres du compte</button>
+                </a>
+            </li>
+            <li>
+                <a href="#deletemodal" data-toggle="modal"  data-target="#billing">
+                <button type="button" class="btn btn-primary">
+                    Facturation
+                </button>
+                </a>
+            </li>
+            <li>
+                <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#deletemodal">
+                    Supprimer votre compte
+                </button>
+            </li>
         </ul><!-- close .dashboard-sub-menu -->
-        
+
         <div class="container-fluid">
             <div class="row">
             
                 <div class="col-12  col-lg-3">
                     <div id="account-edit-photo">
                         {% if avatars %}
-                        {% for avatar in avatars %}
-                            <div><img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account"></div>
-                            <p><a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">Modifiez votre avatar</a></p>
-                        {% endfor %}
+                            {% for avatar in avatars %}
+                                <div>
+                                    <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account">
+                                </div>
+                                <p>
+                                    <a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">
+                                        Modifiez votre avatar
+                                    </a>
+                                </p>
+                            {% endfor %}
                         {% else  %}
-                            <div><img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account"></div>
+                            <div>
+                                <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account">
+                            </div>
                         {% endif %}
-                        <a href="{{path('account_delete', {'id': app.user.id})}}" class="btn btn-primary" style="margin-top:15px;color:white;background-color:red">Supprimer votre compte</a>
                     </div>
                 </div><!-- close .col -->
+                
                 <div class="col">
-                    {{form_start(form)}}
-                    <form class="account-settings-form">
+                    {{form_start(form, {'attr': {'class': 'account-settings-form'}})}}
                 
                     <h5>Nom d'utilisateur</h5>
                     <p class="small-paragraph-spacing">Vous pouvez mettre à jour votre nom d'utilisateur.</p>
@@ -42,30 +60,22 @@
                         <div class="col-sm">
                               <div class="form-group">
                                 <label for="first-name" class="col-form-label">Nom d'utilisateur:</label>
-                                {{form_row(form.username, {
-                                    "attr" : {
-                                        "class":"form-label form-control"
-                                    },
-                                    "label" : "Modifiez votre pseudo"
-                                })}}
+                                {{form_row(form.username, {"attr" : {"class":"form-label form-control"}, "label" : "Modifiez votre pseudo"})}}
                               </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
                     <hr>
                 
                     <h5>Adresse email</h5>
-                    <p class="small-paragraph-spacing">Vous pouvez mettre à jour votre adresse email ici.</p>
+                    <p class="small-paragraph-spacing">
+                        Vous pouvez mettre à jour votre adresse email ici.
+                    </p>
                     
                     <div class="row">
                         <div class="col-sm">
                             <div class="form-group">
                                 <label for="e-mail" class="col-form-label">E-mail</label>
-                                {{form_row(form.email, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Votre email"
-                                })}}
+                                {{form_row(form.email, {"attr" : {"class":"form-label form-control"}, "label" : "Votre email"})}}
                             </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
@@ -75,35 +85,84 @@
                     <p class="small-paragraph-spacing">Veuillez ajouter deux mots de passe identiques.</p>
                     <div class="row">
                         <div class="col-sm">
-                              <div class="form-group">
-                                {{form_row(form.password, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Modifiez votre mot de passe"
-                                })}}
-                              </div>
+                            <div class="form-group">
+                                {{form_row(form.password, {"attr" : {"class":"form-label form-control"}, "label" : "Modifiez votre mot de passe"})}}
+                            </div>
                         </div><!-- close .col -->
                         <div class="col-sm">
                             <div class="form-group">
-                                {{form_row(form.confirmPassword, {
-                                    "attr" : {
-                                            "class":"form-label form-control"
-                                        },
-                                    "label" : "Confirmez le nouveau mot de passe"
-                                })}}
+                                {{form_row(form.confirmPassword, {"attr" : {"class":"form-label form-control"}, "label" : "Confirmez le nouveau mot de passe"})}}
                             </div>
                         </div><!-- close .col -->
                     </div><!-- close .row -->
                     
                     {{form_widget(form)}}
-                    <input class="btn btn-primary button-account" type="submit" value="Mettre à jour">
-                    </form>
+                        <center>
+                            <button type="submit" class="btn btn-secondary btn-lg btn-block">
+                                Mettre à jour
+                            </button>
+                        </center>
                     {{form_end(form)}}
                 </div><!-- close .col -->
+
             
             </div><!-- close .row -->
         </div><!-- close .container-fluid -->
     </div><!-- close .dashboard-container -->
 </main>
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Account delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            La suppression de votre compte est une opération irréversible.
+            En le faisant vous ne pourrez plus vous connecter à ce compte,
+            et tous les éléments que vous avez enregistrés au sein de cette application,
+            notamment les images et les vidéos seront supprimés. Cela entrainera également la résiliation 
+            de votre abonnement mensuel. Confirmez vous la suppression de votre compte?
+         </p>
+        </div>
+        <div class="modal-footer">
+          <a href="{{path('account_delete', {'id' : app.user.id})}}">
+          <button type="button" class="btn btn-primary">Confirmez la suppression</button>
+          </a>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="billing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Facturation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>
+            Le portail de facturation est un portail qui vous permet de suivre
+            vos factures et de connaître l'état de votre abonnement.
+            Cliquez sur le bouton suivant pour y accéder.
+            </p>
+            <form method="post" action="{{path('billing')}}">
+                <button type="submit" class="btn btn-primary">Gestion de la facturation</button>
+            </form>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}

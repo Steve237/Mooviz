@@ -2,221 +2,70 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
-use App\Entity\Videos;
-use App\Form\VideoType;
-use App\Entity\Category;
-use App\Form\UploadType;
-use App\Form\CategoryType;
 use App\Entity\Notifications;
-use App\Form\VideoDescriptionType;
-use App\Repository\VideoRepository;
 use App\Repository\VideosRepository;
-use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\NotificationsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class ProfileController extends AbstractController
 {
-    /**
-     * @Route("/upload", name="addvideo")
-     * //Permet d'ajouter des vidéos
-     */
-    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entitymanager, ValidatorInterface $validator)
-    {
-
-        if (!$video) {
-
-            $video = new Videos();
-        }
-
-        $notification = new Notifications();
-
-        $user = $this->getUser();
-
-        $form = $this->createForm(VideoType::class, $video);
-        $form->handleRequest($request);
-        
-        if($request->isXmlHttpRequest()) {
-        
-            if ($form->isSubmitted() && $form->isValid()) {
-
-
-            //upload de la vidéo
-            $videoFile = $video->getVideoLink();
-            $fileVideo = md5(uniqid()).'.'.$videoFile->guessExtension();
-            $videoFile->move($this->getParameter('video_directory'), $fileVideo);
-
-            $video->setVideoLink('/uploads/'.$fileVideo);
-            
-            $videoImage = $video->getVideoImage();
-            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
-            $videoImage->move($this->getParameter('image_directory'), $fileImage);
-
-            $video->setVideoImage($fileImage);
-            $video->setUsername($user);
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-
-            
-            return new JsonResponse('ok');
-        }
-            return new JsonResponse('err');
-    }
-
-        return $this->render('admin/addvideo.html.twig', [
-
-            "form" => $form->createView(),
-        ]);
-    
-    }
-
-    /**
-     * @Route("/update_video_image/{id}", name="update_video_image")
-     * //Permet de modifier image de la vidéo.
-     */
-    public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
-    {
-        $updateform = $this->createForm(UploadType::class, $video);
-        $updateform->handleRequest($request);
-        
-        if($request->isXmlHttpRequest()) {
-        
-            if ($updateform->isSubmitted() && $updateform->isValid()) {
-            
-
-            $videoImage = $video->getVideoImage();
-            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
-            $videoImage->move($this->getParameter('image_directory'), $fileImage);
-            $video->setVideoImage($fileImage);
-
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-
-
-            return new JsonResponse('ok');
-        }
-            return new JsonResponse('err');
-    }
-
-        return $this->render('admin/update_video.html.twig', [
-
-            "updateform" => $updateform->createView(),
-            "video" => $video
-        ]);
-    
-    }
-
-    /**
-     * @Route("/update_video_description/{id}", name="update_video_description")
-     * //Permet de modifier la description de la vidéo
-     */
-    public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
-    {
-        $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
-        $formvideodescription->handleRequest($request);
-        
-        if ($formvideodescription->isSubmitted() && $formvideodescription->isValid()) {
-            
-            $entitymanager->persist($video);
-            $entitymanager->flush();
-            return $this->redirectToRoute('success_update');
-        }
-
-        return $this->render('admin/update_video_description.html.twig', [
-
-            "formvideodescription" => $formvideodescription->createView(),
-            "video" => $video
-        ]);
-    
-    }
 
 
     /**
-     *  @Route("/upload_video_successfull", name="success_upload")
-     * //cette fonction redirige vers la page des vidéos user avec message success
-     * //route cryptée afin que personne ne puisse la deviner
+     * @Route("/main/user_videos", name="user_videos")
+     * permet à l'user de voir les vidéos qu'il a ajouté
      */
-    public function showMessageSuccessUpload() {
+    public function userVideo(VideosRepository $videorepo) {
 
-        $this->addFlash('success', 'Votre vidéo a été ajouté avec succès.');
         
-        return $this->redirectToRoute('user_videos');
-        
-    }
-
-
-     /**
-     * @Route("/update_video_successfull", name="success_update")
-     */
-    public function showMessageSuccessUpdateVideo() {
-
-        $this->addFlash('success', 'Votre vidéo a été modifié avec succès.');
-        
-        return $this->redirectToRoute('user_videos');
-        
-    }
-
-    /**
-     * @Route("/user_videos", name="user_videos")
-     * //permet à l'user de voir les vidéos qu'il a ajouté
-     */
-    public function userVideo(VideosRepository $videorepo, PaginatorInterface $paginator, Request $request) {
-
-        $user = new Users();
         $userName = $this->getUser();
 
-        $videos = $paginator->paginate(
-            $videorepo->getVideoByUser($userName),
-            $request->query->getInt('page', 1), /*page number*/
-                20 /*limit per page*/
-            );
+
+        // récupère toutes les vidéos de l'user
+        $videos = $videorepo->getVideoByUser($userName);
+
+        // minimum de vidéos à partir duquel s'affiche bouton load more
+        $loadMoreStart = 20;
         
-        $user_videos =  $videorepo->getVideoByUser($userName);
+        // nombre total videos de l'user
+        $totalUserVideos = $videorepo->countUserVideos($userName);
 
-        if(empty($user_videos)) {
-
-            $this->addFlash('no_videos', 'Vous n\'avez ajoutez aucune vidéo pour le moment, merci d\'en ajoutez.');
-            return $this->redirectToRoute('userprofile');
-
-
-        }
-
-        return $this->render('admin/user_video.html.twig', [
+        return $this->render('user/user_video.html.twig', [
             
-            'videos' => $videos
+            'videos' => $videos,
+            'loadMoreStart' => $loadMoreStart,
+            'totalUserVideos' => $totalUserVideos
             
         ]);
 
     }
 
+
      /**
-     * @Route("/delete_video/{id}", name="delete_video")
-     * //permet à l'user de supprimer les vidéos qu'il a ajouté
+     * Permet à l'user de charger plus de vidéos dans sa liste
+     * @Route("/main/loadMoreUserVideos/{start}", name="loadMoreUserVideos", requirements={"start": "\d+"})
      */
-    public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
+    public function loadMoreUserVideos(VideosRepository $videorepo, $start = 20)
+    {   
+        $user = $this->getUser();
 
-        $entityManager->remove($video);
-        $entityManager->flush();
+        // on récupère les 20 prochaines vidéos
+        $videos = $videorepo->getVideoByUser($user);
 
-        $this->addFlash('success', 'votre vidéo a été supprimé avec succès');
-        
-        return $this->redirectToRoute('user_videos');
-        
-        
+        return $this->render('user/loadMoreUserVideos.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
     }
+
+
     
     /**
      * permet d'afficher toutes les notifications sur écran classique
@@ -229,18 +78,39 @@ class ProfileController extends AbstractController
 
         $number = $repo->numberNotif($currentUser);
 
+        $loadMoreStart = 10;
+
 
         return $this->render('notifications/notifications.html.twig', [
 
             "notifications" => $notifications,
-            "number" => $number
+            "number" => $number,
+            "loadMoreStart" => $loadMoreStart
         ]);
 
 
     }
 
     /**
-     * //permet d'afficher nombre notifications sur mobile
+    * Permet de charger plus de notifications
+    * @Route("/main/loadMoreUserNotifications/{start}", name="loadMoreUserNotifications", requirements={"start": "\d+"})
+    */
+    public function loadMoreUserNotifications(NotificationsRepository $repo, $start = 10)
+    {   
+        $currentUser = $this->getUser(); 
+
+        // On récupère les prochaines notifications
+        $notifications = $repo->findAllNotification($currentUser);
+
+        return $this->render('notifications/loadMoreUserNotifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'start' => $start
+        ]);
+    }
+
+    /**
+     * //permet d'afficher nombre notifications sur mobile et lien vers la page mobile notifs
      */
     public function showNotificationsOnMobile(NotificationsRepository $repo) {
 
@@ -261,25 +131,52 @@ class ProfileController extends AbstractController
 
     /**
      * //permet d'afficher toutes les notifications sur mobile
-     * @Route("/mobile_notifications", name="mobile_notifications")
+     * @Route("/main/mobile_notifications", name="mobile_notifications")
      */
     public function showNotifOnMobile(NotificationsRepository $repo) {
 
         $currentUser = $this->getUser(); 
 
         $notifications = $repo->findAllNotification($currentUser);
+        
+        
+        if(empty($notifications)) {
+
+            return $this->redirectToRoute('homepage');
+
+        }
+
+        $loadMoreStart = 10;
 
         return $this->render('notifications/listnotifications.html.twig', [
 
-            "notifications" => $notifications
+            "notifications" => $notifications,
+            "loadMoreStart" => $loadMoreStart
         ]);
 
     }
 
+    /**
+    * Permet de charger plus de notifications pour les mobiles
+    * @Route("/main/loadMoreMobileNotifications/{start}", name="loadMoreMobileNotifications", requirements={"start": "\d+"})
+    */
+    public function loadMoreMobileNotifications(NotificationsRepository $repo, $start = 10)
+    {   
+        $currentUser = $this->getUser(); 
 
-     /**
-     * @Route("/notification_delete/{id}", name="notif_delete")
-     * //permet de supprimer les notifications marqué comme vu
+        // On récupère les prochaines notifications
+        $notifications = $repo->findAllNotification($currentUser);
+
+        return $this->render('notifications/loadMoreMobileNotifications.html.twig', [
+            
+            'notifications' => $notifications,
+            'start' => $start
+        ]);
+    }
+
+    /**
+     * @Route("/main/notification_delete/{id}", name="notif_delete")
+     * //permet de supprimer la notification marqué comme vu
      */
     public function deleteNotifications(Notifications $notification, EntityManagerInterface $entity, Request $request) {
 
@@ -287,17 +184,16 @@ class ProfileController extends AbstractController
             $entity->remove($notification);
             $entity->flush();
 
-            return $this->json([
-                'code' => 200, 
-                'message' => 'user ajouté'
-            ], 200);
+            $this->addFlash('delete-notif', 'La notification a été supprimé avec succès');
+            return $this->redirectToRoute('allvideos');
 
 
     }
 
+    
     /**
-     * @Route("/notifications_delete", name="notif_delete_all")
-     * //permet de supprimer toutes les notifications de l'user
+     * @Route("/main/notifications_delete", name="notif_delete_all")
+     * //permet de supprimer toutes les notifications en un clic 
      */
     public function deleteAllNotifications(NotificationsRepository $repo, EntityManagerInterface $entity) {
 
@@ -305,7 +201,9 @@ class ProfileController extends AbstractController
 
         $repo->deleteAllNotif($currentUser);
 
-        return $this->redirectToRoute('homepage');
+        $this->addFlash('delete-all-notifs', 'Suppression de toutes les notifications réussie.');
+            
+        return $this->redirectToRoute('allvideos');
 
     }
 
@@ -344,11 +242,8 @@ class ProfileController extends AbstractController
         
         if ($query) {
 
-            $videos = $paginator->paginate(
-            $repository->userVideoSearch($query, $user),
-            $request->query->getInt('page', 1),
-            20 /*limit per page*/
-        );
+            $videos = $repository->userVideoSearch($query, $user);
+        
 
             if ($repository->userVideoSearch($query, $user) == null) {
 
@@ -357,29 +252,41 @@ class ProfileController extends AbstractController
 
             else {
 
+                $loadMoreStart = 20;
 
                 return $this->render('user/user_videos_result.html.twig', [
 
-                    'videos' => $videos
+                    'videos' => $videos,
+                    'query' => $query,
+                    'loadMoreStart' => $loadMoreStart
         
                 ]);
 
             }
 
         }
+    
     }
 
 
+    /**
+    * Permet de recharger résultat supplémentaire quand user cherche vidéo dans sa liste de vidéos
+    * @Route("/main/loadMoreVideosResult/{query}/{start}", name="loadMoreVideosResult", requirements={"start": "\d+"})
+    */
+    public function loadMoreVideosResult(VideosRepository $repository, $query, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on charge plus de vidéos de l'user correspondant à la requête formulé dans la searchbar
+        $videos = $repository->userVideoSearch($query, $user);
 
 
-
-
-
-
-
-
-
-
+        return $this->render('user/loadMoreVideosResult.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
 
 
 }

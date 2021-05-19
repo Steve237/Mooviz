@@ -39,7 +39,7 @@ class Notifications
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=50)
      */
     private $type;
 

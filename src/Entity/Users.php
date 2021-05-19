@@ -71,13 +71,9 @@ class Users implements UserInterface, \Serializable
      */
     private $roles;
 
-    /**
-     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="user")
-     */
-    private $likes;
 
     /**
-     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Playlist::class, mappedBy="user", orphanRemoval=true)
      */
     private $playlists;
 
@@ -87,7 +83,7 @@ class Users implements UserInterface, \Serializable
     private $imageuser;
 
     /**
-     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="username")
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="username", orphanRemoval=true)
      */
     private $videos;
 
@@ -115,14 +111,14 @@ class Users implements UserInterface, \Serializable
     private $abonnements;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="username")
-     */
-    private $comments;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="origin")
+     * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="origin", orphanRemoval=true)
      */
     private $notifications;
+
+     /**
+     * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="destination", orphanRemoval=true)
+     */
+    private $destination;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -155,19 +151,13 @@ class Users implements UserInterface, \Serializable
     private $payed;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Likes::class, mappedBy="userid")
+     * @ORM\OneToMany(targetEntity=VideoLike::class, mappedBy="user", orphanRemoval=true)
      */
-    private $userlikes;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Videodislike::class, mappedBy="user", orphanRemoval=true)
-     */
-    private $dislikes;
+    private $videoLikes;
 
 
     public function __construct()
     {
-        $this->likes = new ArrayCollection();
         $this->playlists = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->followers = new ArrayCollection();
@@ -175,8 +165,8 @@ class Users implements UserInterface, \Serializable
         $this->abonnements = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
-        $this->userlikes = new ArrayCollection();
-        $this->dislikes = new ArrayCollection();
+        $this->videoLikes = new ArrayCollection();
+       
 
        
     }
@@ -286,36 +276,7 @@ class Users implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * @return Collection|VideoLike[]
-     */
-    public function getLikes(): Collection
-    {
-        return $this->likes;
-    }
-
-    public function addLike(VideoLike $like): self
-    {
-        if (!$this->likes->contains($like)) {
-            $this->likes[] = $like;
-            $like->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeLike(VideoLike $like): self
-    {
-        if ($this->likes->contains($like)) {
-            $this->likes->removeElement($like);
-            // set the owning side to null (unless already changed)
-            if ($like->getUser() === $this) {
-                $like->setUser(null);
-            }
-        }
-
-        return $this;
-    }
+ 
 
     /**
      * @return Collection|Playlist[]
@@ -466,36 +427,6 @@ class Users implements UserInterface, \Serializable
             return $this;
         }
 
-        /**
-         * @return Collection|Comments[]
-         */
-        public function getComments(): Collection
-        {
-            return $this->comments;
-        }
-
-        public function addComment(Comments $comment): self
-        {
-            if (!$this->comments->contains($comment)) {
-                $this->comments[] = $comment;
-                $comment->setUsername($this);
-            }
-
-            return $this;
-        }
-
-        public function removeComment(Comments $comment): self
-        {
-            if ($this->comments->contains($comment)) {
-                $this->comments->removeElement($comment);
-                // set the owning side to null (unless already changed)
-                if ($comment->getUsername() === $this) {
-                    $comment->setUsername(null);
-                }
-            }
-
-            return $this;
-        }
 
         /**
          * @return Collection|Notifications[]
@@ -527,6 +458,43 @@ class Users implements UserInterface, \Serializable
 
             return $this;
         }
+
+
+
+        /**
+         * @return Collection|Notifications[]
+         */
+        public function getDestination(): Collection
+        {
+            return $this->destination;
+        }
+
+        public function addDestination(Notifications $destination): self
+        {
+            if (!$this->notifications->contains($destination)) {
+                $this->notifications[] = $destination;
+                $destination->setDestination($this);
+            }
+
+            return $this;
+        }
+
+        public function removeDestination(Notifications $destination): self
+        {
+            if ($this->notifications->contains($destination)) {
+                $this->notifications->removeElement($destination);
+                // set the owning side to null (unless already changed)
+                if ($destination->getDestination() === $this) {
+                    $destination->setDestination(null);
+                }
+            }
+
+            return $this;
+        }
+
+
+
+
 
         public function getCustomerid(): ?string
         {
@@ -601,59 +569,33 @@ class Users implements UserInterface, \Serializable
         }
 
         /**
-         * @return Collection|Likes[]
+         * @return Collection|VideoLike[]
          */
-        public function getUserlikes(): Collection
+        public function getVideoLikes(): Collection
         {
-            return $this->userlikes;
+            return $this->videoLikes;
         }
 
-        public function addUserlike(Likes $userlike): self
+        public function addVideoLike(VideoLike $videoLike): self
         {
-            if (!$this->userlikes->contains($userlike)) {
-                $this->userlikes[] = $userlike;
-                $userlike->addUserid($this);
+            if (!$this->videoLikes->contains($videoLike)) {
+                $this->videoLikes[] = $videoLike;
+                $videoLike->setUser($this);
             }
 
             return $this;
         }
 
-        public function removeUserlike(Likes $userlike): self
+        public function removeVideoLike(VideoLike $videoLike): self
         {
-            if ($this->userlikes->removeElement($userlike)) {
-                $userlike->removeUserid($this);
-            }
-
-            return $this;
-        }
-
-        /**
-         * @return Collection|Videodislike[]
-         */
-        public function getDislikes(): Collection
-        {
-            return $this->dislikes;
-        }
-
-        public function addDislike(Videodislike $dislike): self
-        {
-            if (!$this->dislikes->contains($dislike)) {
-                $this->dislikes[] = $dislike;
-                $dislike->setUser($this);
-            }
-
-            return $this;
-        }
-
-        public function removeDislike(Videodislike $dislike): self
-        {
-            if ($this->dislikes->removeElement($dislike)) {
+            if ($this->videoLikes->removeElement($videoLike)) {
                 // set the owning side to null (unless already changed)
-                if ($dislike->getUser() === $this) {
-                    $dislike->setUser(null);
+                if ($videoLike->getUser() === $this) {
+                    $videoLike->setUser(null);
                 }
             }
 
             return $this;
         }
-}
+
+    }

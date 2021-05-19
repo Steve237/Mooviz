@@ -1,0 +1,30 @@
+{% for followed in user.following | slice(start, 20) %}
+<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+    <div class="item-listing-container-skrn video-card video-card-text">
+        <a href="{{path('channel', {'id': followed.id})}}">
+            
+            {% if followed.imageuser %}
+                <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" alt="Listing" class="imagemovie">
+            {% else %}
+                <img src="{{asset('images/avatar/mylion.jpg')}}" alt="Listing" class="imagemovie">
+            {% endif %}
+           
+        </a>
+        <div class="item-listing-text-skrn">
+            <div class="item-listing-text-skrn-vertical-align">
+                <h6>
+                    <a href="{{path('channel', {'id': followed.id})}}">
+                        {{followed.username}}
+                    </a>
+                </h6>
+                <div>
+                    {% if followed.imageuser %}
+                        <img src="{{asset('images/upload/' ~ followed.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
+                    {% endif %}
+                </div>
+            </div><!-- close .item-listing-text-skrn-vertical-align -->
+        </div><!-- close .item-listing-text-skrn -->
+    </div><!-- close .item-listing-container-skrn -->
+</div><!-- close .col -->
+{% endfor %}
+{% endfor %}

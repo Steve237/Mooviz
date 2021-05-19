@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<div id="content-pro" style="height:80vh;">
+<div id="content-pro" class="payment-section-container">
   <div class="container">
     <div class="centered-headings-pro pricing-plans-headings">
       <h6>For one low monthly price</h6>
@@ -46,15 +46,17 @@
   <div class="clearfix"></div>
 </div>
 
-<div class="card w-75" style="margin:auto;margin-top:150px;height:300px;">
+<div class="card w-75 payment-section-message">
     <div class="card-body">
       <p class="card-text">Votre inscription a bien été prise en compte, vous pouvez procéder au paiement.</p>
-      <p class="card-text"><button style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em" id="checkout-button-price_1Hq0LzLfEkLbwHD1z4dIcDsD" role="link" type="button">Checkout</button></p>
+      <p class="card-text">
+        <button class="button-checkout" id="checkout-button-price_1Hq0LzLfEkLbwHD1z4dIcDsD" role="link" type="button">
+          Checkout
+        </button>
+      </p>
     </div>
     <div id="error-message"></div>
-
 </div>
 </div>
-
 {% endblock %}
 

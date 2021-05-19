@@ -11,7 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BillingController extends AbstractController
 {
     /**
-     * @Route("/create-customer-portal-session", name="billing")
+     * @Route("/main/create-customer-portal-session", name="billing")
+     * // permet à user d'accéder à son portail facturation de stripe
      */
     public function customerPortal()
     {
