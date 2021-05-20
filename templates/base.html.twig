@@ -3,9 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {% block title %}
-      Mylion
-    {% endblock %}
     {% block stylesheet %}
       <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
       <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
@@ -20,6 +17,7 @@
       integrity="sha512-SagM1PHxt5mWDyWARVY6UOdhM5A8J+R1UqIWcGfiwOd+be7uHQagB+JQOmfVZF8jjJQqbyuWzw/KXfb4yqjBkQ=="
       crossorigin="anonymous"/>
     {% endblock %}
+    <title>{% block title %}Mylion{% endblock %}</title>
   </head>
   <body>
 
