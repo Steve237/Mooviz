@@ -79,8 +79,8 @@
         },
         
         "database-setup": [
-            "php bin/console make:migration --no-interaction",
             "php bin/console doctrine:migrations:migrate --no-interaction"
+
         ],
         
         "post-install-cmd": [
