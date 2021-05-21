@@ -23,10 +23,6 @@ class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-
-        if (in_array($this->getEnvironment(), array('prod'))) {
-            $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
-        }
     }
 
     public function getProjectDir(): string
