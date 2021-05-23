@@ -24,7 +24,7 @@
     </li>
 
 	{% for video in videos %}
-        <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{ absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
+        <li data-thumb-source="{{asset('images/upload/' ~ video.videoimage)}}" data-video-source="{{absolute_url(asset('videos/' ~ video.videolink))}}" data-poster-source="{{asset('images/upload/' ~ video.videoimage)}}" data-downloadable="yes">
             <div data-video-short-description="{{video.videodescription}}">
                 <div>
                     <p class="fwduvp-thumbnail-title">{{video.videotitle}}</p>
