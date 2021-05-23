@@ -24,16 +24,16 @@
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1">
                     <i class="fas fa-play"></i>Voir la vidéo
                 </a>
-                <video id="VideoLightbox-1" src="{{firstBackgroundVideo[0].videolink}}" width="960" height="540">
+                <video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}" width="960" height="540">
                 </video>
             </div>
             <video autoplay loop muted id="video-header" class="video-background">
-                <source src="{{firstBackgroundVideo[0].videolink}}">
+                <source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
             </video>
         </div>
         <div class="carousel-item">
             <video autoplay loop muted id="video-header">
-                <source src="{{secondBackgroundVideo[0].videolink}}">
+                <source src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}">
             </video>
             <div class="carousel-caption">
                 <h2 class="video-background-title">
@@ -56,7 +56,7 @@
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2">
                     <i class="fas fa-play"></i>Voir la vidéo
                 </a>
-                <video id="VideoLightbox-2" src="{{secondBackgroundVideo[0].videolink}}" width="960" height="540">
+                <video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}" width="960" height="540">
                 </video>
             </div>
         </div>
