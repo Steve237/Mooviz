@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    {% block title %}
-      Mylion
-    {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
@@ -19,6 +16,7 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css"
       integrity="sha512-SagM1PHxt5mWDyWARVY6UOdhM5A8J+R1UqIWcGfiwOd+be7uHQagB+JQOmfVZF8jjJQqbyuWzw/KXfb4yqjBkQ=="
       crossorigin="anonymous"/>
+      <title>{% block title %}Mylion{% endblock %}</title>
     {% endblock %}
   </head>
   <body>
