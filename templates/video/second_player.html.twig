@@ -2,12 +2,11 @@
 <html lang="en">
 
 	<head>
-		{% block title %}
-			Mylion
-		{% endblock %}
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
+		<title>{% block title %}Mylion{% endblock %}</title>
+		
 		{% block stylesheet %}
 			<link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
 			<link rel="stylesheet" href="{{asset("css/main.css")}}">
