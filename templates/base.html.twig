@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block description %}
+      <meta property="og:title" content="Mylion"/>
+      <meta property="og:description" content="Mylion, l'excellence du streaming."/>
+      <meta property="og:image" content="{{asset('images/mylion.jpg')}}"/>
+    {% endblock %}
     {% block stylesheet %}
       <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
       <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">

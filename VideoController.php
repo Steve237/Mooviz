@@ -209,7 +209,7 @@ class VideoController extends AbstractController
 
     /**
     * Permet de partager une vidéo
-    * @Route("/share/movie/{id}", name="partage")
+    * @Route("/main/share/movie/{id}", name="partage")
     * //Permet de partager une vidéo.
     */
     public function shareMovie(Videos $video, EntityManagerInterface $entity)
@@ -503,7 +503,7 @@ class VideoController extends AbstractController
             
             $entitymanager->persist($video);
             $entitymanager->flush();
-            return $this->redirectToRoute('success_update');
+            return $this->redirectToRoute('user_videos');
         }
 
         return $this->render('video/update_video_description.html.twig', [

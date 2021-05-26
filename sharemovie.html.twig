@@ -6,6 +6,8 @@
 		<meta charset="utf-8">
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta property="og:url" content="{{path('partage', {'id' : video.id})}}"/>
+		<meta property="og:type" content="video"/>
 		<meta property="og:title" content="{{video.videotitle}}"/>
 		<meta property="og:description" content="{{video.videodescription}}"/>
 		<meta property="og:image" content="{{asset('images/upload/' ~ video.videoimage)}}"/>
