@@ -10,8 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use App\Entity\Abonnements;
-
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
@@ -87,29 +85,6 @@ class Users implements UserInterface, \Serializable
      */
     private $videos;
 
-     /**
-     * @ORM\ManyToMany(targetEntity=Users::class, mappedBy="following")
-     */
-    private $followers;
-
-     /**
-     * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="followers")
-     * @ORM\JoinTable(name="following", 
-     *      joinColumns={
-     *      @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *      },
-     *      inverseJoinColumns={
-     *          @ORM\JoinColumn(name="following_user_id", referencedColumnName="id")
-     *      }
-     * )
-     */
-    private $following;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Abonnements::class, mappedBy="abonne", orphanRemoval=true)
-     */
-    private $abonnements;
-
     /**
      * @ORM\OneToMany(targetEntity=Notifications::class, mappedBy="origin", orphanRemoval=true)
      */
@@ -160,15 +135,9 @@ class Users implements UserInterface, \Serializable
     {
         $this->playlists = new ArrayCollection();
         $this->videos = new ArrayCollection();
-        $this->followers = new ArrayCollection();
-        $this->following = new ArrayCollection();
-        $this->abonnements = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->notifications = new ArrayCollection();
         $this->videoLikes = new ArrayCollection();
-       
-
-       
     }
 
     public function getId(): ?int
@@ -376,58 +345,7 @@ class Users implements UserInterface, \Serializable
 
             return $this;
         }
-
-
-        /**
-         * @return mixed
-         */
-        public function getFollowers(){
-
-
-            return $this->followers;
-        }
-
-        /**
-         * @return mixed
-         */
-        public function getFollowing(){
-
-
-            return $this->following;
-        }
-
-        /**
-         * @return Collection|Abonnements[]
-         */
-        public function getAbonnements(): Collection
-        {
-            return $this->abonnements;
-        }
-
-        public function addAbonnement(Abonnements $abonnement): self
-        {
-            if (!$this->abonnements->contains($abonnement)) {
-                $this->abonnements[] = $abonnement;
-                $abonnement->setAbonne($this);
-            }
-
-            return $this;
-        }
-
-        public function removeAbonnement(Abonnements $abonnement): self
-        {
-            if ($this->abonnements->contains($abonnement)) {
-                $this->abonnements->removeElement($abonnement);
-                // set the owning side to null (unless already changed)
-                if ($abonnement->getAbonne() === $this) {
-                    $abonnement->setAbonne(null);
-                }
-            }
-
-            return $this;
-        }
-
-
+        
         /**
          * @return Collection|Notifications[]
          */
@@ -460,7 +378,6 @@ class Users implements UserInterface, \Serializable
         }
 
 
-
         /**
          * @return Collection|Notifications[]
          */
@@ -491,9 +408,6 @@ class Users implements UserInterface, \Serializable
 
             return $this;
         }
-
-
-
 
 
         public function getCustomerid(): ?string

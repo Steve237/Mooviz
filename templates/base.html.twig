@@ -3,8 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
+    {% block description %}
+      <meta property="og:url" content="https://mylion-streaming.com/"/>
+      <meta property="og:title" content="Mylion"/>
+      <meta property="og:description" content="Mylion, l'excellence du streaming."/>
+      <meta property="og:image" content="{{asset('images/mylion.jpg')}}"/>
+    {% endblock %}
     {% block stylesheet %}
+      <link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
       <link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
       <link rel="stylesheet" href="{{asset("css/main.css")}}">
       <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
@@ -16,8 +22,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css"
       integrity="sha512-SagM1PHxt5mWDyWARVY6UOdhM5A8J+R1UqIWcGfiwOd+be7uHQagB+JQOmfVZF8jjJQqbyuWzw/KXfb4yqjBkQ=="
       crossorigin="anonymous"/>
-      <title>{% block title %}Mylion{% endblock %}</title>
     {% endblock %}
+    <title>{% block title %}Mylion{% endblock %}</title>
   </head>
   <body>
 
@@ -58,12 +64,6 @@
           <div id="header-user-profile-menu">
             <ul>
               <li>
-                <a href="{{path('user_videos')}}">
-                  <span class="icon-User"></span>
-                  Mon profil
-                </a>
-              </li>
-              <li>
                 <a href="{{path('user_account', {'id': app.user.id})}}">
                   <span class="icon-Gears"></span>
                   Mon compte
@@ -85,7 +85,7 @@
           </div><!-- close #header-user-profile-menu -->
         </div><!-- close #header-user-profile -->
       
-        {{render(controller('App\\Controller\\ProfileController::showNotifications'))}}
+        {{render(controller('App\\Controller\\NotificationsController::showNotifications'))}}
         
         <div class="clearfix"></div>
       
@@ -101,19 +101,7 @@
             <li>
               <a href="{{path("allvideos")}}">
                 <span class="icon-Reel"></span>
-                Videos
-              </a>
-            </li>
-            <li>
-              <a href="{{path('followed_videos_list')}}">
-                <span class="icon-Movie"></span>
-                Abonnements
-              </a>
-            </li>
-            <li>
-              <a href="{{path('channels_list')}}">
-                <span class="icon-Movie-Ticket"></span>
-                Chaines
+                Films
               </a>
             </li>
             <li>
@@ -122,24 +110,23 @@
                 Playlist
               </a>
             </li>
+            
+            {% if is_granted('ROLE_ADMIN') %}
             <li>
               <a href="{{path('addvideo')}}">
                 <span class="icon-Clock"></span>
                 Ajoutez vidéo
               </a>
             </li>
-                
-            {% if is_granted('ROLE_ADMIN') %}
-              <li>
-                <a href="{{path('users_list')}}">
-                  <span class="icon-Clock"></span>
-                  Admin
-                </a>
-              </li>
-            {% endif %}
-                
             <li>
-              {{ render(controller('App\\Controller\\ProfileController::showNotificationsOnMobile'))}}
+              <a href="{{path('users_list')}}">
+                <span class="icon-Clock"></span>
+                Admin
+              </a>
+            </li>
+            {% endif %}
+            <li>
+              {{ render(controller('App\\Controller\\NotificationsController::showNotificationsOnMobile'))}}
             </li>
           </ul>
           <div class="clearfix"></div>
@@ -164,23 +151,7 @@
               <span>
                 <img src="https://img.icons8.com/color/48/000000/video.png" alt="icone-videos"/>
               </span>
-              Videos
-            </a>
-          </li>
-          <li class="normal-item-pro">
-            <a href="{{path('followed_videos_list')}}">
-              <span>
-                <img src="https://img.icons8.com/nolan/64/starred-ticket.png" alt="followed-videos"/>
-              </span>
-              Abonnements
-            </a>
-          </li>
-          <li class="normal-item-pro">
-            <a href="{{path('channels_list')}}">
-              <span>
-                <img src="https://img.icons8.com/fluent/48/000000/chain.png" alt="channels"/>
-              </span>
-              Chaines
+              Films
             </a>
           </li>
           <li class="normal-item-pro">
@@ -191,15 +162,15 @@
               Playlist
             </a>
           </li>
-          <li class="normal-item-pro">
-            <a href="{{path('addvideo')}}">
-              <span>
-                <img src="https://img.icons8.com/nolan/64/upload.png" alt="upload"/></i>
-              </span>
-              Ajoutez vidéo
-            </a>
-          </li>
           {% if is_granted('ROLE_ADMIN') %}
+            <li class="normal-item-pro">
+              <a href="{{path('addvideo')}}">
+                <span>
+                  <img src="https://img.icons8.com/nolan/64/upload.png" alt="upload"/></i>
+                </span>
+                Ajoutez vidéo
+              </a>
+            </li>
             <li class="normal-item-pro">
               <a href="{{path('users_list')}}">
                 <span>
@@ -241,14 +212,12 @@
       <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
       <script type="text/javascript" src="{{asset("js/videolike.js")}}"></script>
       <script type="text/javascript" src="{{asset("js/playlist.js")}}"></script>
-      <script type="text/javascript" src="{{asset("js/upload.js")}}"></script>
       <script type="text/javascript" src="{{asset("js/input_file.js")}}"></script>
       <script type="text/javascript" src="{{asset("js/contactform.js")}}"></script>
       <script type="text/javascript" src="{{asset("js/videosingle.js")}}"></script>
       <script type="text/javascript" src="{{asset("js/video-header.js")}}"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js" integrity="sha512-pYd2QwnzV9JgtoARJf1Ui1q5+p1WHpeAz/M0sUJNprhDviO4zRo12GLlk4/sKBRUCtMHEmjgqo5zcrn8pkdhmQ==" crossorigin="anonymous"></script>
       <script type="text/javascript" src="{{asset("js/transition.js")}}"></script>
-      <script type="text/javascript" src="{{asset("js/videobackground.js")}}"></script>
     {% endblock %}
   </body>
 </html>

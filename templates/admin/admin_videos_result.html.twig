@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vos vidéos{% endblock %}
+
+{% block body %}
+
+    <main id="col-main">
+        <div class="dashboard-container">
+            <ul class="dashboard-sub-menu">
+                <li>
+                    <a href="{{path('users_list')}}">
+                        Liste des membres
+                    </a>
+                </li>
+                <li>
+                    <a href="{{path('notifications_list')}}">
+                        Notifications
+                    </a>
+                </li>
+                <li>
+                    <a href="{{path('videos_background')}}">
+                        Vidéos à la une
+                    </a>
+                    </li>
+                <li class="current">
+                    <a href="{{path('adminspace_videos')}}">
+                        Gestion des vidéos
+                    </a>
+                </li>
+                <li>
+                    <a href="{{path('admin_dashboard')}}">
+                        Récapitulatif
+                    </a>
+                </li>
+            </ul><!-- close .dashboard-sub-menu -->
+      
+
+            <a href="{{path('addvideo')}}">
+                <button class="btn btn-primary add_video">Ajouter vidéos</button>
+            </a>
+            
+            {{render(controller('App\\Controller\\AdminController::searchAdminVideos'))}}
+
+            <div class="row" id="videosresult">
+                {% for video in videos | slice(0, 20) %}
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+                        <div class="item-listing-container-skrn video-card">
+                            <a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                                <img src="{{asset('images/upload/' ~ video.videoimage)}}" alt="Listing" class="imagemovie img-responsive">
+                            </a>
+                            <div class="item-listing-text-skrn">
+                                <div class="item-listing-text-skrn-vertical-align">
+                                    <h6><a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
+                                        {{video.videotitle}}</a>
+                                    </h6>
+                                </div><!-- close .item-listing-text-skrn-vertical-align -->
+                            </div><!-- close .item-listing-text-skrn -->
+                            <div class="buttons-update-video">
+                                <a href="{{path('update_video_image', {'id': video.id})}}">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-image fa-2x"></i>
+                                    </button>
+                                </a>
+                                <a href="{{path('update_video_description', {'id': video.id})}}">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="far fa-edit fa-2x"></i>
+                                    </button>
+                                </a>
+                                <a href="{{path('delete_video', {'id': video.id})}}">
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-trash-alt fa-2x"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div><!-- close .col -->
+                {% endfor %}
+            </div><!-- close .row -->
+            
+            {% if videos | length > loadMoreStart %}
+                <div class="pagination">
+                    <div class="navigation" id="loadbutton">
+                        <button class="btn btn-primary" id="loadMoreVideosResult">
+                            Load more
+                        </button>
+                    </div>
+                </div>
+            {% endif %}
+        </div><!-- close .dashboard-container -->
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent()}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    click = 0;
+
+    function loadMoreVideosResult(event) {
+        
+        event.preventDefault();
+        click++;
+        var start = 20 * click;
+        const url = "{{path('loadMoreVideosResult', {'query': query})}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#videosresult").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune vidéo à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreVideosResult").addEventListener("click", loadMoreVideosResult);
+</script>
+{% endblock %}

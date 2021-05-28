@@ -18,7 +18,6 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class AuthController extends AbstractController
 {
    
-
     /**
     * @Route("/activation/{token}", name="activation")
     * Permet activer le compte user

@@ -11,11 +11,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
             <div class="form_upload_video">
-                <div class="progress invisible" id="progress-bar">
-                    <div class="progress-bar"></div>
-                </div>
                 <div id="uploadStatus"></div>
-                {{form_start(videoBackgroundForm,  {"attr" : {'id':'background_video_update'}}, {'action': path('update_video_background', {'id': video.id}), 'method': 'POST'})}}
+                {{form_start(videoBackgroundForm, {'action': path('update_video_background', {'id': video.id}), 'method': 'POST'})}}
 
                 <div class="form-group">
                     {{form_row(videoBackgroundForm.videotitle, {"label":"Titre", "attr" : {'class':'form-control'}})}}
@@ -24,15 +21,18 @@
                     {{form_row(videoBackgroundForm.videodescription, {"label":"Description", "attr" : {'class':'form-control', 'rows':'5'}})}}
                 </div>
                 <div class="form-group">
-                    {{form_row(videoBackgroundForm.videolink, {"label" : "Vidéo (format autorisé: mp4)", "attr" : {'class':'form-control-file text-truncate', 'placeholder': video.videolink}})}}
+                    {{form_row(videoBackgroundForm.videolink, {"label" : "Vidéo (format autorisé: mp4)", "attr" : {'class': 'form-control text-truncate', 'placeholder': video.videolink}})}}
                 </div>
-                <div class="form-group">{{form_row(videoBackgroundForm.category, {"attr" : {'class':'form-control'}})}}
+                <div class="form-group">
+                    {{form_row(videoBackgroundForm.category, {"attr" : {'class':'form-control'}})}}
                 </div>
-                <div class="form-group">{{form_row(videoBackgroundForm.parutiondate, {"label" : "Date de sortie"})}}
+                <div class="form-group">
+                    {{form_row(videoBackgroundForm.parutiondate, {"label" : "Date de sortie"})}}
                 </div>
-                <div class="form-group">{{form_row(videoBackgroundForm.videoduration, {"label" : "Durée de la vidéo"})}}
+                <div class="form-group">
+                    {{form_row(videoBackgroundForm.videoduration, {"label" : "Durée de la vidéo"})}}
                 </div>
-                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video" onclick="hideBar()">Ajouter video</button>
+                <button type="submit" class="btn btn-alert btn-sm btn-block btn_video">Ajouter video</button>
             </div>
         </div>
     </div>

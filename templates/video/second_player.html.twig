@@ -2,9 +2,6 @@
 <html lang="en">
 
 	<head>
-		{% block title %}
-			Mylion
-		{% endblock %}
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
@@ -21,6 +18,7 @@
 			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 			integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 		{% endblock %}
+		<title>{% block title %}Mylion{% endblock %}</title>
 	</head>
 
 	<body>
@@ -39,15 +37,6 @@
 						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 							<div class="video-description-block">
 								<div class="video-user-info">
-									{% if video.username.imageuser %}
-										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
-									{% endif %}
-									<span class="text-size">
-										<a href="{{path('channel', {'id': video.username.id})}}" class="link-color">
-											{{video.username.username}}
-										</a>
-										| Followers: {{video.username.followers | length}}
-									</span>
 									<ul class="list-inline buttons-block">
 									
 										{% if is_granted('ROLE_USER') and video.username != app.user %}
@@ -80,17 +69,6 @@
 													{% endif %}
 												</a>
 											</li>
-											<li class="list-inline-item">
-											{% set isFollowed = video.username.followers.contains(app.user) %}
-											<button style="display: {% if not isFollowed %}block{% else %}none{% endif %}"
-												class="btn btn-sm btn-primary button_follow" id="follow" data-toggle="tooltip" data-placement="top" title="S'abonner">
-												<i class="fas fa-link"></i>
-											</button>
-											<button style="display: {% if isFollowed %}block{% else %}none{% endif %}"
-												class="btn btn-sm btn-primary button_follow" id="unfollow" data-toggle="tooltip" data-placement="top" title="Se désabonner">
-												<i class="fas fa-unlink"></i>
-											</button>
-											</li>
 										{% endif %}
 										<li class="list-inline-item">
 											<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}" data-toggle="tooltip" data-placement="top" title="Retour au lecteur vidéo principale">
@@ -120,22 +98,7 @@
 							<ul class="list-inline">
 								<li class="list-inline-item">
 									<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&t={{video.videotitle}}" class="share facebook" data-network="facebook" target="_blank">
-										<img src="{{asset('images/icones/facebook-icon.png')}}">
-									</a>
-								</li>
-								<li class="list-inline-item">
-									<a href="https://twitter.com/share?url=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&text={{video.videotitle}}" class="share twitter" data-network="twitter" target="_blank">
-										<img src="{{asset('images/icones/twitter-icon.png')}}">
-									</a>
-								</li>
-								<li class="list-inline-item">
-									<a href="https://www.linkedin.com/shareArticle?mini=true&url=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&title={{video.videotitle}}&source=mylion" class="share linkedin" data-network="linkedin" target="_blank"> 
-										<img src="{{asset('images/icones/linkedin.png')}}">
-									</a>
-								</li>
-								<li class="list-inline-item">
-									<a href="http://pinterest.com/pin/create/button/?url={{path('partage', {'id' : video.id})}}&description={{video.videotitle}}" target="_blank">
-										<img src="{{asset('images/icones/pinterest-icon.png')}}">
+										<button class="btn btn-primary btn-small">Facebook</button>
 									</a>
 								</li>
 							</ul>
@@ -169,10 +132,6 @@
 														</a>
 													</p>
 													<div class="avatar-position">
-														<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
-														<a href="{{path('channel', {'id': video.username.id})}}" class="color-link">
-															{{video.username.username}}
-														</a> | 
 														{% if video.views is not null %} 
 															Vues : {{video.views}} 
 														{% else %} 
@@ -199,16 +158,14 @@
 														</a>
 													</p>
 													<div class="avatar-position">
-														{% if video.username.imageuser %}
-															<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
-														{% endif %}
-															<a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
-																{{video.username.username}}
-															</a> 
 														{% if video.views is not null %}
-															<p class="mobile-text text-position">Vues : {{video.views}}</p>
+															<p class="mobile-text text-position">
+																Vues : {{video.views}}
+															</p>
 														{% else %}
-															<p class="mobile-text text-position">Aucune vue</p>
+															<p class="mobile-text text-position">
+																Aucune vue
+															</p>
 														{% endif %}
 													</div>
 												</div><!-- close .item-listing-text-skrn-vertical-align -->
@@ -234,22 +191,7 @@
 						<ul class="social-icons-pro">
 							<li class="facebook-color">
 								<a href="http://facebook.com/progressionstudios" target="_blank">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="twitter-color">
-								<a href="http://twitter.com/Progression_S" target="_blank">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="youtube-color">
-								<a href="http://youtube.com" target="_blank">
-									<i class="fab fa-youtube"></i>
-								</a>
-							</li>
-							<li class="vimeo-color">
-								<a href="http://vimeo.com" target="_blank">
-									<i class="fab fa-vimeo-v"></i>
+									<button class="btn btn-primary btn-small">Facebook</button>
 								</a>
 							</li>
 						</ul>
@@ -499,53 +441,6 @@
 						contextMenuItemDisabledColor: "#AAA"
 					});
 				});
-			</script>
-			<script>
-			var followButton = document.getElementById('follow');
-			var unfollowButton = document.getElementById('unfollow');
-
-			addOnClick(
-			followButton,
-			unfollowButton,
-			'{{ path("following", {"id":video.username.id})}}'
-
-			);
-
-			addOnClick(
-			unfollowButton,
-			followButton,
-			'{{ path("unfollowing", {"id":video.username.id})}}'
-
-			);
-
-			function switchButtons(button, oppositeButton) {
-			button.disabled = false;
-			button.style.display = 'none';
-			oppositeButton.style.display = 'block';
-			}
-
-			function addOnClick(button, oppositeButton, path) {
-
-			button.addEventListener('click', function (event) {
-			button.disabled = true;
-
-			fetch(path, {
-			'credentials': 'include'
-			}).then(function () {
-
-
-			switchButtons(button, oppositeButton);
-
-			}).catch(function () {
-
-			switchButtons(button, oppositeButton);
-
-
-			});
-
-			event.preventDefault();
-			});
-			}
 			</script>
 		</footer>
 	</body>

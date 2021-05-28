@@ -2,21 +2,21 @@
 
 namespace App\Controller;
 
-use Stripe\Stripe;
 use App\Entity\Users;
 use App\Entity\Avatar;
 use App\Entity\Webhook;
 use App\Form\UsersType;
 use App\Form\AvatarType;
+use App\Form\InscriptionType;
 use App\Repository\UsersRepository;
 use App\Repository\AvatarRepository;
 use App\Repository\VideosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -73,7 +73,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/main/user_videos_channels", name="user_video_channels")
+     * @Route("/main/homepage_channels", name="user_video_channels")
      * //permet d'accéder à la liste des vidéos des chaînes auxquelles on s'est abonné
      */
     public function showAllChannelVideos(TokenStorageInterface $tokenStorage, VideosRepository $videorepo) {
@@ -93,7 +93,7 @@ class UserController extends AbstractController
 
         $loadMoreStart = 20;
 
-        return $this->render('user/user_videos_channels.html.twig', [
+        return $this->render('user/homepage_channels.html.twig', [
             'videos' => $videos,
             'loadMoreStart' => $loadMoreStart
      
@@ -129,7 +129,7 @@ class UserController extends AbstractController
      * @Route("/main/add_avatar", name="avatar_update")
      * //permet d'ajouter un avatar
      */
-    public function userAvatar(Request $request, EntityManagerInterface $entity, AvatarRepository $repoAvatar) { 
+    public function userAvatar(Request $request, EntityManagerInterface $entity) { 
 
 
         $avatar = new Avatar();
@@ -148,7 +148,7 @@ class UserController extends AbstractController
             $avatar->setUpdatedAt($date);
             $entity->persist($avatar);
             $entity->flush();
-            return $this->redirectToRoute("user_videos");
+            return $this->redirectToRoute("homepage");
 
         }
 
@@ -161,13 +161,22 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/main/update_avatar/{id}", name="update_image")
+     * @Route("/main/update_avatar/{id}/{user}", name="update_image")
      * //permet de modifier un avatar
      */
-    public function updateUser(Avatar $avatar, Request $request, EntityManagerInterface $entity) { 
+    public function updateUser(Avatar $avatar, Users $user, Request $request, EntityManagerInterface $entity) { 
         
         // On récupère nom de l'avatar en bdd
         $image = $avatar->getAvatar();
+
+        // On vérifie si l'avatar appartient à celui qui réalise l'action
+        $userConnected = $this->getUser();
+
+        if ($user != $userConnected) {
+
+            return $this->redirectToRoute('homepage');
+        
+        }
 
         // chemin vers le dossier qui contient l'avatar
         $imageFile = 'images/upload/'.$image;
@@ -192,7 +201,7 @@ class UserController extends AbstractController
             $entity->persist($avatar);
             $entity->flush();
             
-            return $this->redirectToRoute("user_videos");
+            return $this->redirectToRoute("homepage");
 
         }
 
@@ -210,8 +219,17 @@ class UserController extends AbstractController
     */
     public function userAccount(Users $user, Request $request, EntityManagerInterface $entity, AvatarRepository $repoAvatar, UsersRepository $repoUser, UserPasswordEncoderInterface $encoder) { 
 
+        $userConnected = $this->getUser();
         
-        $form = $this->createForm(UsersType::class, $user);
+        // si utilisateur qui réalise action différent de l'user connecté
+        if($user != $userConnected) {
+
+            // on redirige vers la page accueil
+            return $this->redirectToRoute('homepage');
+        }
+
+        
+        $form = $this->createForm(InscriptionType::class, $user);
 
         $form->handleRequest($request);
         
@@ -252,7 +270,7 @@ class UserController extends AbstractController
 
                 // message flash pour indiquer que les modifs ont bien été réalisés
                 $this->addflash('update_user_infos', 'Vos identifiants ont été modifiés avec succès.');
-                return $this->redirectToRoute("user_videos");
+                return $this->redirectToRoute("homepage");
 
         }
 
@@ -282,40 +300,6 @@ class UserController extends AbstractController
     }
 
 
-
-    
-    /**
-     * @Route("/main/user_dashboard/{id}", name="user_dashboard")
-     * //permet d'accéder au tableau de bord de l'user
-    */
-    public function userDashboard(Users $user, VideosRepository $videoRepo) { 
-
-        // nombre total de vidéos de l'user
-        $videoCount = $videoRepo->countUserVideos($user);
-
-        // nombre total de followers
-        $followerCount = $videoRepo->countFollower($user->getFollowers());
-
-        // nombre total de chaines auxquels il est abonné
-        $followingCount = $videoRepo->countFollowing($user->getFollowing());
-
-        // nombre total de vues
-        $viewCount = $videoRepo->CountViews($user);
-
-        // vidéos la plus vue
-        $maxVideoViews = $videoRepo->getMaxVideoByUser($user);
-
-        return $this->render('user/dashboard.html.twig', [
-
-            "videoCount" => $videoCount,
-            "followerCount" => $followerCount,
-            "followingCount" => $followingCount,
-            "viewCount" => $viewCount,
-            "maxVideoViews" => $maxVideoViews,
-
-        ]);
-    }
-
     /**
     * @Route("/main/account_delete/{id}", name="account_delete")
     * // Permet de supprimer le compte de l'user
@@ -332,7 +316,7 @@ class UserController extends AbstractController
         if($user != $userConnected) {
 
             // on redirige vers la page accueil
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('homepage');
         }
 
         // si tout est ok on envoie notif admin pour indiquer suppression de compte

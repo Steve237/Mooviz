@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Stripe\Stripe;
 use Stripe\BillingPortal\Session;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 

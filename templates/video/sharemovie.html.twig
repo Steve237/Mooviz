@@ -6,6 +6,11 @@
 		<meta charset="utf-8">
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta property="og:type" content="video"/>
+		<meta property="og:title" content="{{video.videotitle}}"/>
+		<meta property="og:description" content="{{video.videodescription}}"/>
+		<meta property="og:image" content="{{asset('images/upload/' ~ video.videoimage)}}"/>
+		<meta property="og:image" content="{{asset('images/upload/' ~ video.videoimage)}}"/>
 		{% block stylesheet %}
 		<link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
 		<link rel="stylesheet" href="{{asset("css/main.css")}}">
@@ -20,17 +25,17 @@
 
 	<body>
 		{% if app.user %}
-		<a href="{{path('homepage')}}">
-			<h3 class="share-page-site-title">Mylion</h3>
-		</a>
+			<a href="{{path('homepage')}}">
+				<h3 class="share-page-site-title">Mylion</h3>
+			</a>
 		{% else %}
-		<a href="{{path('home')}}">
-			<h3 class="share-page-site-title">Mylion</h3>
-		</a>
+			<a href="{{path('home')}}">
+				<h3 class="share-page-site-title">Mylion</h3>
+			</a>
 		{% endif %}
 		<main id="col-main-with-sidebar shared-video-section">
 			<section class="share-video-container">
-				<video src="{{asset('videos/' ~ video.videolink)}}" class="video" autoplay>
+				<video src="{{video.videolink}}" class="video" poster="{{asset('images/upload/' ~ video.videoimage)}}">
 					Sorry your browser can't support video tag.
 				</video>
 				<div class="video-controls">
@@ -86,26 +91,6 @@
 				<div class="dashboard-container">
 					<div class="row">
 						<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-							<div class="video-description-block">
-								<div class="video-user-info">
-									{% if video.username.imageuser %}
-										<img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle user-video-avatar">
-									{% endif %}
-									<a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
-										{{video.username.username}}
-									</a> 
-									<div class="number-followers">
-										followers : {{video.username.followers | length}}
-									</div>
-								</div>
-								{% if is_granted('ROLE_USER') %}
-									<div>
-										<a href="{{path("movie", {"id" : video.id, "idcategory" : video.category.id})}}">
-											<button class="btn btn-primary btn-sm">Back</button>
-										</a>
-									</div>
-								{% endif %}
-							</div>
 							<p class="videoname mobile-text">
 								{{video.videotitle}}
 							</p>
@@ -136,30 +121,6 @@
 						<div class="copyright-text-pro">
 							&copy; Copyright 2021 Mylion. All Rights Reserved
 						</div>
-					</div><!-- close .col -->
-					<div class="col-md">
-						<ul class="social-icons-pro">
-							<li class="facebook-color">
-								<a href="http://facebook.com/progressionstudios" target="_blank">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="twitter-color">
-								<a href="http://twitter.com/Progression_S" target="_blank">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="youtube-color">
-								<a href="http://youtube.com" target="_blank">
-									<i class="fab fa-youtube"></i>
-								</a>
-							</li>
-							<li class="vimeo-color">
-								<a href="http://vimeo.com" target="_blank">
-									<i class="fab fa-vimeo-v"></i>
-								</a>
-							</li>
-						</ul>
 					</div><!-- close .col -->
 				</div><!-- close .row -->
 			</div><!-- close .container -->
