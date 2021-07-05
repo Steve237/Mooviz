@@ -15,6 +15,9 @@
 ###< symfony/phpunit-bridge ###
 node_modules
 
+/public/images
+public/videos
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/

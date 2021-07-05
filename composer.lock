@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+
     "content-hash": "113689320be4515a64106aa866e774db",
     "packages": [
         {
@@ -3065,6 +3066,7 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+
         },
         {
             "name": "ralouphie/getallheaders",

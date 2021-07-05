@@ -5,6 +5,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
+		<title>{% block title %}Mylion{% endblock %}</title>
+		
 		{% block stylesheet %}
 			<link rel="stylesheet" href="{{asset("css/bootstrap.min.css")}}">
 			<link rel="stylesheet" href="{{asset("css/main.css")}}">
@@ -97,7 +99,11 @@
 						<div class="share-buttons-section">
 							<ul class="list-inline">
 								<li class="list-inline-item">
+
 									<a href="https://www.facebook.com/sharer/sharer.php?u=http://127.0.0.1:8000/{{path('partage', {'id' : video.id})}}&t={{video.videotitle}}" class="share facebook" data-network="facebook" target="_blank">
+
+									<a href="https://www.facebook.com/sharer/sharer.php?u=https://mylion-streaming.com/{{path('partage', {'id' : video.id})}}&t={{video.videotitle}}" class="share facebook" data-network="facebook" target="_blank">
+
 										<button class="btn btn-primary btn-small">Facebook</button>
 									</a>
 								</li>

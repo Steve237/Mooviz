@@ -99,8 +99,6 @@ class Videos
         $this->notifications = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->videoLikes = new ArrayCollection();
-       
-
     }
 
     public function getId(): ?int

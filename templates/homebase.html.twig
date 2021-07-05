@@ -8,6 +8,13 @@
 		<meta property="og:title" content="Mylion"/>
 		<meta property="og:description" content="Mylion, l'excellence du streaming."/>
 		<meta property="og:image" content="{{asset('images/movielist.jpg')}}"/>
+		
+    {% block description %}
+			<meta property="og:title" content="Mylion"/>
+			<meta property="og:description" content="Mylion, l'excellence du streaming."/>
+			<meta property="og:image" content="{{asset('images/mylion.jpg')}}"/>
+		{% endblock %}
+
 		<link rel="icon" type="image/png" href="{{asset("images/icones/favicon.png")}}">
 		<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:400,700%7CMontserrat:300,400,600,700">
