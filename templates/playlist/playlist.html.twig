@@ -25,15 +25,8 @@
                                     {{playlist.video.videotitle}}
                                 </a>
                             </div>
-                            
-                            {% if playlist.video.username.imageuser %}
-                                <img src="{{asset('images/upload/' ~ playlist.video.username.imageuser.avatar)}}" class="logo-avatar">
-                            {% endif %}
 
                             <div class="videolist-title">
-                                <a href="{{path('channel', {'id': playlist.video.username.id})}}" class="link-color">
-                                    {{playlist.video.username.username}}
-                                </a> |
                                 {% if playlist.video.views is not null %}
                                     Vues : {{playlist.video.views}}
                                 {% else %}

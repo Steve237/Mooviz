@@ -60,12 +60,6 @@
                       </a>
                     </div>
                     <div class="avatar-position">
-                      {% if video.username.imageuser %}
-                        <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
-                      {% endif %}
-                      <a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">
-                        {{video.username.username}}
-                      </a> 
                       {% if video.views is not null %}
                         <p class="mobile-text text-position">
                           Vues : {{video.views}}

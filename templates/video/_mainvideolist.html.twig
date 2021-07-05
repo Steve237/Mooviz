@@ -24,16 +24,16 @@
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-1">
                     <i class="fas fa-play"></i>Voir la vidéo
                 </a>
-                <video id="VideoLightbox-1" src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}" width="960" height="540">
+                <video id="VideoLightbox-1" src="{{asset(firstBackgroundVideo[0].videolink)}}" width="960" height="540">
                 </video>
             </div>
             <video autoplay loop muted id="video-header" class="video-background">
-                <source src="{{asset('videos/' ~ firstBackgroundVideo[0].videolink)}}">
+                <source src="{{asset(firstBackgroundVideo[0].videolink)}}">
             </video>
         </div>
         <div class="carousel-item">
             <video autoplay loop muted id="video-header">
-                <source src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}">
+                <source src="{{asset(secondBackgroundVideo[0].videolink)}}">
             </video>
             <div class="carousel-caption">
                 <h2 class="video-background-title">
@@ -56,7 +56,7 @@
                 <a class="btn btn-green-pro btn-slider-pro btn-shadow-pro afterglow" href="#VideoLightbox-2">
                     <i class="fas fa-play"></i>Voir la vidéo
                 </a>
-                <video id="VideoLightbox-2" src="{{asset('videos/' ~ secondBackgroundVideo[0].videolink)}}" width="960" height="540">
+                <video id="VideoLightbox-2" src="{{asset(secondBackgroundVideo[0].videolink)}}" width="960" height="540">
                 </video>
             </div>
         </div>
@@ -109,10 +109,6 @@
                                     </a>
                                 </div>
                                 <div class="avatar-position">
-                                    {% if video.username.imageuser %}
-                                        <img src="{{asset('images/upload/' ~ video.username.imageuser.avatar)}}" class="rounded-circle avatar-height" id="width-avatar">
-                                    {% endif %}
-                                    <a href="{{path('channel', {'id': video.username.id})}}" class="link-color mobile-text">{{video.username.username}}</a> 
                                     {% if video.views is not null %}
                                         <p class="mobile-text text-position">
                                             Vues : {{video.views}}

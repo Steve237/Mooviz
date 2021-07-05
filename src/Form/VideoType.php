@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
+
 
 
 
@@ -28,17 +30,19 @@ class VideoType extends AbstractType
                         'minMessage' => "Votre titre doit contenir au moins 2 caractères",
                         'maxMessage' => "Votre titre doit contenir au moins 35 caractères"
                     ])
-                ]
-            ])
+                    ],
+
+                    'attr' => array(
+                    
+                        'placeholder' => 'Entrez le titre de la vidéo',
+                    )
+            
+                ])
             ->add('videodescription', TextareaType::class)
             
             ->add('videoimage', FileType::class, [
                 "data_class" => null,
-                "attr" => [
-
-                    "accept" => ".png, .jpg, .jpeg",
-
-                ],
+                
                 "constraints" => [
                     new File([
                         'maxSize' => '10000000k',
@@ -52,22 +56,13 @@ class VideoType extends AbstractType
                 ]
             ])
 
-            ->add('videolink', FileType::class, [
-                "data_class" => null,
-                "attr" => [
+            ->add('videolink', UrlType::class, [
+
+                'attr' => array(
                     
-                    "accept" => "video/mp4"
-                ],
-                
-                "constraints" => [
-                    new File([
-                        'maxSize' => '1000M',
-                        'mimeTypes' => [
-                            'video/mp4'
-                        ],
-                        'mimeTypesMessage' => 'Nous acceptons uniquement les vidéos au format mp4.'
-                    ])
-                ]
+                    'placeholder' => 'Entrez le lien vers la vidéo',
+                )
+
             ])
             
             ->add('category')

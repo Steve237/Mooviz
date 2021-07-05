@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use Stripe\Stripe;
 use App\Entity\Users;
-use App\Entity\Webhook;
-use App\Entity\Videobackground;
 use App\Entity\Videos;
+use App\Entity\Webhook;
+use App\Form\VideoType;
+use App\Entity\Notifications;
+use App\Entity\Videobackground;
 use App\Form\VideoBackgroundType;
 use App\Repository\UsersRepository;
 use App\Repository\VideosRepository;
@@ -17,9 +19,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
@@ -240,12 +241,21 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/block_user/{id}", name="block_user")
      */
-    public function blockUser(Users $user, EntityManagerInterface $entity)
+    public function blockUser(Users $user, EntityManagerInterface $entity, \Swift_Mailer $mailer)
     {
         // permet de bloquer accès du site un user 
         $user->setRoles('ROLE_BLOCKED');
         $entity->persist($user);
         $entity->flush();
+
+         // On génère l'e-mail
+         $message = (new \Swift_Message('Blocage de votre compte Mylion'))
+         ->setFrom('essonoadou@gmail.com')
+         ->setTo($user->getEmail())
+         ->setBody($this->renderView('email/block_user.html.twig'), 'text/html');
+        
+         // On envoie l'e-mail
+         $mailer->send($message);
 
         $this->addflash('user-block', 'Le blocage a été réalisé avec succès.');
         return $this->redirectToRoute('users_list');
@@ -255,153 +265,25 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/deblock_user/{id}", name="deblock_user")
      */
-    public function deblockUser(Users $user, EntityManagerInterface $entity)
+    public function deblockUser(Users $user, EntityManagerInterface $entity, \Swift_Mailer $mailer)
     {
         // permet de débloquer l'accès à un user
         $user->setRoles('ROLE_USER');
         $entity->persist($user);
         $entity->flush();
 
+        // On génère l'e-mail
+        $message = (new \Swift_Message('Déblocage de votre compte Mylion'))
+        ->setFrom('essonoadou@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody($this->renderView('email/deblock_user.html.twig'), 'text/html');
+        
+        $mailer->send($message);
+
+
         $this->addflash('user-deblock', 'Le déblocage a été réalisé avec succès.');
         return $this->redirectToRoute('users_list');
     }
-
-
-    /**
-     * @Route("/admin/webhook", name="webhook")
-     */
-    public function Webhook()
-    {
-
-        // assure envoi webhook de stripe à l'espace admin en fonction des évènements
-
-        Stripe::setApiKey('sk_test_51HpdbCLfEkLbwHD1453jzn7Y69TdfWFJ9zzpYWSlL6Y7w3RgWgTOs7MQN91BzrP11C5jUquQFi1b8LK4GyIs10Gu00jH3iKTqe');
-
-
-        $payload = @file_get_contents('php://input');
-        $event = null;
-        try {
-            $event = \Stripe\Event::constructFrom(
-                json_decode($payload, true)
-            );
-        } catch (\UnexpectedValueException $e) {
-            // Invalid payload
-            return new Response(Response::HTTP_OK);
-            exit();
-        }
-
-        // Handle the event
-        switch ($event->type) {
-            case 'payment_intent.succeeded':
-
-                $paymentIntent = $event->data->object; // contains a \Stripe\PaymentIntent
-                return $this->handlePaymentIntentSucceeded($paymentIntent);
-
-                break;
-            case 'invoice.payment_failed':
-                $paymentIntent = $event->data->object; // contains a \Stripe\PaymentMethod
-                // Then define and call a method to handle the successful attachment of a PaymentMethod.
-                return $this->invoicePaymentFailed($paymentIntent);
-                break;
-            default:
-                // Unexpected event type
-                return $this->redirectToRoute('home');
-        }
-
-        return new Response(Response::HTTP_OK);
-    }
-
-
-    /**
-     * //Envoi notification pour indiquer paiement réussie
-     * @Route("/admin/payment_intent_success", name="payment_intent_success")
-     */
-    public function handlePaymentIntentSucceeded($paymentIntent)
-    {
-
-        // se déclenche en cas de réussite de paiement sur stripe
-
-        $customer = $paymentIntent->customer;
-        $user = $this->getDoctrine()->getRepository(Users::class)
-            ->getCustomer($customer);
-
-        $username = $user['username'];
-
-        $date = new \Datetime();
-        $entity = $this->getDoctrine()->getManager();
-
-        $notification = new Webhook();
-        $notification->setType('paiement réussi');
-        $notification->setContent('mensualité payée');
-        $notification->setCreatedAt($date);
-        $notification->setUsername($username);
-        $entity->persist($notification);
-        $entity->flush();
-
-        return $this->redirectToRoute('update_payment_status', ['customer' => $customer]);
-    }
-
-    /**
-     * Met à jour le statut de paiement de l'utilisateur pour indiquer que son abonnement est à jour
-     * @Route("/admin/update_payment_status/{customer}", name="update_payment_status")
-     */
-    public function updatePaymentStatus($customer, UsersRepository $repoUser, EntityManagerInterface $entity)
-    {
-        $user = $repoUser->findCustomer($customer);
-
-        $user->setPayed(true);
-        $entity->persist($user);
-        $entity->flush();
-
-        return new Response(Response::HTTP_OK);
-    }
-
-    /**
-     * //Envoi notification pour indiquer paiement échoué
-     * @Route("/admin/payment_intent_failed", name="payment_intent_failed")
-     */
-    public function invoicePaymentFailed($paymentIntent)
-    {
-
-        // se déclenche en cas d'échec de paiement sur stripe 
-
-        $customer = $paymentIntent->customer;
-        $user = $this->getDoctrine()->getRepository(Users::class)
-            ->getCustomer($customer);
-
-        $username = $user['username'];
-
-        $date = new \Datetime();
-        $entity = $this->getDoctrine()->getManager();
-
-        $notification = new Webhook();
-        $notification->setType('echec de paiement');
-        $notification->setContent('mensualité impayée');
-        $notification->setCreatedAt($date);
-        $notification->setUsername($username);
-        $entity->persist($notification);
-        $entity->flush();
-
-        return $this->redirectToRoute('failed_payment_status', ['customer' => $customer]);
-    }
-
-    /**
-     * Met à jour le statut de paiement de l'utilisateur pour indiquer que son abonnement a échoué.
-     * @Route("/admin/failed_payment_status/{customer}", name="failed_payment_status")
-     */
-    public function paymentFailed($customer, UsersRepository $repoUser, EntityManagerInterface $entity)
-    {
-        $user = $repoUser->findCustomer($customer);
-
-        // On indique que le paiement est pas à jour et on bloque le compte
-        $user->setPayed(false);
-        $user->setRoles('ROLE_BLOCKED');
-        $entity->persist($user);
-        $entity->flush();
-
-        return new Response(Response::HTTP_OK);
-    }
-
 
     /** 
      * //donne accès à la liste des backgrounds videos
@@ -520,48 +402,6 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/admin_delete_video/{id}", name="admin_delete_video")
-     * //permet à l'admin de supprimer les vidéos
-     */
-    public function deleteVideoInAdminspace(Videos $video, EntityManagerInterface $entityManager, \Swift_Mailer $mailer)
-    {
-
-        // nom des fichiers image et vidéo
-        $videoName = $video->getVideolink();
-        $videoImage = $video->getVideoimage();
-
-
-        // chemin vers les fichiers
-        $videoFile = 'videos/' . $videoName;
-        $imageFile = 'images/upload/' . $videoImage;
-
-        // suppression de la vidéo et de l'image des dossiers
-        unlink($videoFile);
-        unlink($imageFile);
-
-        $videotitle = $video->getVideotitle();
-        $username = $video->getusername();
-        $email = $username->getEmail();
-
-        // On crée le message
-        $message = (new \Swift_Message('Suppression de vidéo'))
-            // On attribue l'expéditeur
-            ->setFrom('essonoadou@gmail.com')
-            // On attribue le destinataire
-            ->setTo($email)
-            // On crée le texte avec la vue
-            ->setBody($this->renderView('email/delete_video_message.html.twig', ["videotitle" => $videotitle]), 'text/html');
-        $mailer->send($message);
-
-        $entityManager->remove($video);
-        $entityManager->flush();
-
-        $this->addFlash('admin_delete_video', 'Cette vidéo a été supprimé avec succès');
-
-        return $this->redirectToRoute('adminspace_videos');
-    }
-
-    /**
      * //retourne le formulaire de recherche d'utilisateur
      */
     public function searchUser()
@@ -633,15 +473,288 @@ class AdminController extends AbstractController
     }
 
 
+
+    /**
+     * //retourne le formulaire de recherche de vidéos dans l'espace admin
+    */
+    public function searchAdminVideos() {
+    
+        $form = $this->createFormBuilder(null)
+            
+        ->setAction($this->generateUrl("admin_videos_search"))
+            ->add('query', TextType::class)
+
+            ->getForm();
+        
+        
+        return $this->render('admin/admin_videos_search.html.twig', [
+
+
+            'form' => $form->createView()
+
+        ]);
+
+    }
+
+    /**
+     * //traite la requête envoyé dans le formulaire de recherche.
+     * @Route("/admin/user_videos_search", name="admin_videos_search")
+     *
+     */
+    public function resultVideoSearch(Request $request, VideosRepository $repository) {
+
+        $user = $this->getUser();
+        $query = $request->request->get('form')['query'];
+        
+        if ($query) {
+
+            $videos = $repository->userVideoSearch($query, $user);
+        
+
+            if ($repository->userVideoSearch($query, $user) == null) {
+
+                return $this->render('admin/no_video_found.html.twig');
+            }
+
+            else {
+
+                $loadMoreStart = 20;
+
+                return $this->render('admin/admin_videos_result.html.twig', [
+
+                    'videos' => $videos,
+                    'query' => $query,
+                    'loadMoreStart' => $loadMoreStart
+        
+                ]);
+
+            }
+
+        }
+    
+    }
+
+
+    /**
+    * Permet de recharger résultat supplémentaire quand admin cherche vidéo dans sa liste de vidéos
+    * @Route("/admin/loadMoreVideosResult/{query}/{start}", name="loadMoreVideosResult", requirements={"start": "\d+"})
+    */
+    public function loadMoreVideosResult(VideosRepository $repository, $query, $start = 20)
+    {   
+        $user = $this->getUser();
+
+        // on charge plus de vidéos de l'user correspondant à la requête formulé dans la searchbar
+        $videos = $repository->userVideoSearch($query, $user);
+
+
+        return $this->render('admin/loadMoreVideosResult.html.twig', [
+            
+            'videos' => $videos,
+            'start' => $start
+        ]);
+    }
+
+
+    /**
+     * @Route("/admin/upload", name="addvideo")
+     * Permet d'ajouter des vidéos
+     */
+    public function AddVideo(Videos $video = null, Request $request, EntityManagerInterface $entityManager, UsersRepository $repoUser)
+    {
+
+        if (!$video) {
+
+            $video = new Videos();
+        }
+
+        $admin = $this->getUser();
+
+        $form = $this->createForm(VideoType::class, $video);
+        $form->handleRequest($request);
+    
+        
+            if ($form->isSubmitted() && $form->isValid()) {
+
+            //upload de la vidéo
+            $videoFile = $video->getVideoLink();
+
+            $videoTitle = $video->getVideotitle();
+            
+            $videoImage = $video->getVideoImage();
+            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
+            $videoImage->move($this->getParameter('image_directory'), $fileImage);
+
+            $video->setVideoImage($fileImage);
+            $video->setVideoLink($videoFile);
+            $video->setUsername($admin);
+            $entityManager->persist($video);
+            $entityManager->flush();
+
+            $users =  $repoUser->findAll();
+
+            // On envoie une notification à chaque inscrit pour indiquer qu'une nouvelle vidéo a été ajouté
+            foreach($users as $user) {
+
+                $notification = new Notifications();
+                
+                $notification->setOrigin($admin);
+
+                $notification->setDestination($user);
+                
+                $notification->setContent('La vidéo ' . $videoTitle . ' a été ajouté');
+                
+                $date = new \Datetime();
+                $notification->setDate($date);
+
+                $notification->setType('nouvelle vidéo');
+
+                $entityManager->persist($notification);
+
+                $entityManager->flush();
+            }
+
+            return $this->redirectToRoute('adminspace_videos');
+
+        }
+
+        return $this->render('video/addvideo.html.twig', [
+
+            "form" => $form->createView(),
+        ]);
+    
+    }
+
+    
+    /**
+     * @Route("/admin/update_video_image/{id}", name="update_video_image")
+     * //Permet de modifier image de la vidéo.
+     */
+    public function UpdateVideoImage(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    {
+
+        // On récupère le nom de l'image actuellement en bdd
+        $videoImage = $video->getVideoimage();
+           
+        $updateform = $this->createForm(UploadType::class, $video);
+        $updateform->handleRequest($request);
+        
+        // remplacement par une autre
+        if ($updateform->isSubmitted() && $updateform->isValid()) {
+            
+            // chemin vers image actuellement en bdd
+            $imageFile = 'images/upload/'.$videoImage;
+         
+            // suppression de l'image actuelle du dossier
+            unlink($imageFile);
+            
+            // remplacement de l'image par une autre
+            $videoImage = $video->getVideoImage();
+            $fileImage = md5(uniqid()).'.'.$videoImage->guessExtension();
+            $videoImage->move($this->getParameter('image_directory'), $fileImage);
+            $video->setVideoImage($fileImage);
+
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+
+            $this->addFlash('success', 'Votre vidéo a été correctement modifié.');
+
+            return $this->redirectToRoute('adminspace_videos');
+        
+        }
+
+        return $this->render('video/update_video.html.twig', [
+
+            "updateform" => $updateform->createView(),
+            "video" => $video
+        ]);
+    
+    }
+
+    
+    /**
+     * @Route("/admin/update_video_description/{id}", name="update_video_description")
+     * //Permet de modifier la description de la vidéo
+     */
+    public function UpdateVideoDescription(Videos $video, Request $request, EntityManagerInterface $entitymanager)
+    {
+        
+        $formvideodescription = $this->createForm(VideoDescriptionType::class, $video);
+        $formvideodescription->handleRequest($request);
+        
+        if ($formvideodescription->isSubmitted() && $formvideodescription->isValid()) {
+            
+            $entitymanager->persist($video);
+            $entitymanager->flush();
+            return $this->redirectToRoute('adminspace_videos');
+        }
+
+        return $this->render('video/update_video_description.html.twig', [
+
+            "formvideodescription" => $formvideodescription->createView(),
+            "video" => $video
+        ]);
+    
+    }
+
+    /**
+     * @Route("/admin/delete_video/{id}", name="delete_video")
+     * //permet à l'admin de supprimer les vidéos qu'il a ajouté
+     */
+    public function deleteVideo(Videos $video, EntityManagerInterface $entityManager) {
+
+
+         $videoImage = $video->getVideoimage();
+ 
+ 
+         $imageFile = 'images/upload/'.$videoImage;
+         
+         unlink($imageFile);
+        
+         // suppression de la vidéo de la base de données
+         $entityManager->remove($video);
+         $entityManager->flush();
+ 
+         $this->addFlash('success', 'Votre vidéo a été supprimé avec succès');
+         
+         return $this->redirectToRoute('adminspace_videos');
+         
+     }
+
+    /**
+     * @Route("/admin/admin_dashboard", name="admin_dashboard")
+     * //permet d'accéder au tableau de bord de l'admin
+    */
+    public function userDashboard(VideosRepository $videoRepo, UsersRepository $userRepo) { 
+
+        // nombre total de vidéos du site
+        $videoCount = $videoRepo->countVideos();
+
+        // nombre total de vues
+        $viewCount = $videoRepo->CountViews();
+
+        $totalUsers = $userRepo->countUsers();
+
+        // vidéos la plus vue
+        $maxVideoViews = $videoRepo->getMaxVideoByUser();
+
+        return $this->render('admin/dashboard.html.twig', [
+
+            "videoCount" => $videoCount,
+            "viewCount" => $viewCount,
+            "totalUsers" => $totalUsers,
+            "maxVideoViews" => $maxVideoViews,
+
+        ]);
+    }
+
+
     /**
      * Permet de supprimer toutes les vidéos du site
      * @Route("/admin/delete-all-videos", name="delete-all-videos")
      */
     public function deleteAllVideos(VideosRepository $repo)
     {
-        // On supprime tous les vidéos de leur dossier
-        array_map('unlink', glob("videos/uploads/*"));
-
+        
         // On supprime toutes les images de leur dossier
         array_map('unlink', glob("images/upload/*"));
 

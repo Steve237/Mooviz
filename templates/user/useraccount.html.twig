@@ -38,7 +38,7 @@
                                     <img src="{{asset('images/upload/' ~ avatar.avatar)}}" alt="avatar" class="avatar-account">
                                 </div>
                                 <p>
-                                    <a href="{{path('update_image', {'id' : avatar.id})}}" class="btn btn-green-pro">
+                                    <a href="{{path('update_image', {'id' : avatar.id, 'user' : app.user.id})}}" class="btn btn-green-pro">
                                         Modifiez votre avatar
                                     </a>
                                 </p>
@@ -47,6 +47,11 @@
                             <div>
                                 <img src="{{asset('images/avatar/image_profile_default.png')}}" alt="avatar" class="avatar-account">
                             </div>
+                            <p>
+                                <a href="{{path('avatar_update')}}" class="btn btn-green-pro">
+                                    Ajoutez votre avatar
+                                </a>
+                            </p>
                         {% endif %}
                     </div>
                 </div><!-- close .col -->

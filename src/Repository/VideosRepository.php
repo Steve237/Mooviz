@@ -220,32 +220,26 @@ class VideosRepository extends ServiceEntityRepository
         
     }
     
-    // récupère le nombre total de vues/user
-    public function CountViews($user) {
+    // récupère le nombre total de vues du site
+    public function CountViews() {
 
         return $this->createQueryBuilder('v')
         ->select('SUM (v.views) as numberView')
-        ->andWhere('v.username = :val')
-        ->setParameter('val', $user)
         ->getQuery()
         ->getSingleScalarResult();
     }
 
 
-    //retourne la vidéo la plus vue de l'user
-    public function getMaxVideoByUser($user) {
+    //retourne les 10 vidéos les plus vues
+    public function getMaxVideoByUser() {
 
         return $this->createQueryBuilder('v')
-        ->andwhere('v.username = :val')
-        ->setParameter('val', $user)
         ->orderBy('v.views', 'DESC') 
         ->setMaxResults(10) 
         ->getQuery() 
         ->getResult(); 
     }
-
-
-
+    
     //permet de supprimer toutes les vidéos
     public function deleteAllVideos() {
 
@@ -256,21 +250,6 @@ class VideosRepository extends ServiceEntityRepository
         ->getResult();
 
     }
-
-
-     //permet de supprimer toutes les vidéos de l'user
-     public function deleteAllUserVideos($user) {
-
-        return $this->createQueryBuilder('v')
-        ->delete()
-        ->where('v.id != 0')
-        ->andwhere('v.username = :val')
-        ->setParameter('val', $user)
-        ->getQuery()
-        ->getResult();
-
-    }
-
 
     //retourne la vidéo la plus vue de l'user
     public function getVideoImages($user) {

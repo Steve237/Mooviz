@@ -1,0 +1,109 @@
+<div id="header-user-notification">
+    {% if notifications %}
+    <div id="header-user-notification-click" class="noselect">
+        <i class="fas fa-bell"></i>
+        <span class="user-notification-count">{{number}}</span>
+    </div><!-- close #header-user-profile-click -->
+    {% else %}
+    <div id="header-user-notification-click" class="noselect">
+        <i class="far fa-bell"></i>
+        <span class="user-notification-count">0</span>
+    </div><!-- close #header-user-profile-click -->
+    {% endif %}
+
+    <div id="header-user-notification-menu" class="notifications-box">
+        <h3>Notifications</h3>
+        <div id="header-notification-menu-padding">
+            {% if notifications %}
+                <div id="header-user-notification-list notifications-section">
+                    {% for notification in notifications | slice(0, 10) %}
+                        <div class="user-notifs">
+                            {% if notification.origin.imageuser %}
+                                <img src="{{asset('images/upload/' ~ notification.origin.imageuser.avatar)}}" 
+                                class="rounded-circle avatar-notification-size">
+                            {% endif %}
+                            {{notification.content}} | {{notification.date | date("d/m/y") }}.
+                            <a href="{{path('notif_delete', {'id' : notification.id })}}">
+                                <button class="btn btn-primary btn-sm delete_notif">
+                                    Vu <i class="fas fa-check"></i>
+                                </button>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            
+                {% if notifications | length > loadMoreStart %}
+                <div class="pagination">
+                    <div class="navigation" id="loadbutton">
+                        <button class="btn btn-primary" id="loadMoreUserNotifications">
+                            Load more
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
+            
+                <a href="{{path('notif_delete_all')}}">
+                    <button class="btn btn-secondary btn-sm btn-block delete-all-notifications">
+                        Marquez tout comme vu
+                    </button>
+                </a>
+            {% else %}
+                <ul id="header-user-notification-list">
+                    <p class="no-notifications">
+                        Aucune notification à afficher
+                    </p>
+                </ul>
+            {% endif %}
+            <div class="clearfix"></div>
+        </div><!-- close #header-user-profile-menu -->
+    </div>
+</div><!-- close #header-user-notification -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    function onClickAddPlaylist(event) {
+
+        event.preventDefault();
+
+        const url = this.href;
+
+        axios.get(url).then(function () {
+
+            window.location.reload();
+
+        });
+
+    }
+
+    document.querySelectorAll('a.delete_notif').forEach(function (link) {
+
+        link.addEventListener('click', onClickAddPlaylist);
+    })
+</script>
+<script>
+    click = 0;
+
+    function loadMoreUserNotifications(event) {
+        event.preventDefault();
+        click++;
+        var start = 10 * click;
+        const url = "{{path('loadMoreUserNotifications')}}/" + start;
+        axios.get(url).then(function (response) {
+            $("#notifications-section").append(response.data);
+            if (!response.data) {
+
+                let loadButton = document.getElementById("loadbutton");
+                loadButton.textContent = 'Plus aucune notifications à afficher';
+
+            }
+        }).catch(function (error) {
+            if (response.status === 403) {
+                window.alert("You are not authorized to perform this action!");
+            } else if (response.status === 404) {
+                window.alert("This page does not exist");
+            } else {
+                window.alert("An error has occurred !");
+            }
+        });
+    }
+    document.getElementById("loadMoreUserNotifications").addEventListener("click", loadMoreUserNotifications);
+</script>
